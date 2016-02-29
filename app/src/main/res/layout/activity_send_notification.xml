@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.xb_sushil.iseva.Activity_Send_Notification">
+
+    <include layout="@layout/app_header"></include>
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp">
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtRemainingNotification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:textSize="17sp"
+                android:text=""
+                android:visibility="visible"
+                android:textStyle="bold"
+                />
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/headingWrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp">
+
+
+                <EditText
+                    android:id="@+id/edtNotiHeading"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:hint="Heading"
+                    android:maxLines="2" />
+
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/TextWrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp">
+
+
+                <EditText
+                    android:id="@+id/edtNotiContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/nav_header_height"
+                    android:layout_margin="5dp"
+                    android:gravity="top"
+                    android:hint="Content"
+                    android:maxLines="6" />
+
+
+            </android.support.design.widget.TextInputLayout>
+
+
+            <Button
+                android:id="@+id/btnSendNoti"
+                android:layout_margin="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Send Notification"
+                android:paddingTop="3dp"
+                android:background="@drawable/selector_btn_app"
+                android:textColor="@drawable/selector_btn_text_app"
+                android:paddingBottom="3dp"
+                />
+
+
+        </LinearLayout>
+    </ScrollView>
+
+</android.support.v7.widget.CardView>
+</LinearLayout>

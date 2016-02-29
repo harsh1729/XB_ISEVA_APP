@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.xb_sushil.iseva.Activity_BusinessExtra_Type">
+
+    <include layout="@layout/app_header" ></include>
+
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="7dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:text="@string/app_businessextra"
+                android:layout_marginBottom="10dp"
+               />
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="20dp"
+                android:gravity="center">
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="Choose "
+                   android:textSize="17sp"
+                   android:layout_weight="1"/>
+                <Spinner
+                    android:id="@+id/spinnerBusiExtra"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                </Spinner>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+               <Button
+                    android:id="@+id/btnAdnewOffers"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_margin="10dp"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:gravity="center"
+                    android:background="@drawable/selector_btn_app"
+                    android:textColor="@drawable/selector_btn_text_app"
+                    android:text="Add New"/>
+
+                <Button
+                    android:id="@+id/btnMyOffers"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_margin="10dp"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:background="@drawable/selector_btn_app"
+                    android:textColor="@drawable/selector_btn_text_app"
+                    android:text="My Items"/>
+
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
+
+
+
+        </android.support.v7.widget.CardView>
+
+</LinearLayout>

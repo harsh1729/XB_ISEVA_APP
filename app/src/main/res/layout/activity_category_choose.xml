@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.xb_sushil.iseva.Activity_Category_Choose">
+
+    <include
+        android:id="@+id/header"
+        layout="@layout/app_header" />
+
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="3dp"
+        android:layout_weight="1"
+
+        >
+
+        <ScrollView
+            android:id="@+id/scrollViewBasicInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+
+                    <LinearLayout
+                        android:id="@+id/linearRegisterCity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/txtCity"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.0"
+                            android:text=" City"
+                            android:textSize="@dimen/txt_app_labels_normal" />
+
+
+                        <Spinner
+                            android:id="@+id/spinnerCity"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
+                            android:spinnerMode="dropdown" />
+
+                    </LinearLayout>
+
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/txtMerchantName"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.0"
+                            android:text="Firmname"
+                            android:textSize="@dimen/txt_app_labels_normal" />
+
+                        <EditText
+                            android:id="@+id/edtMerchantName"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="2.0"
+                            android:ems="10"
+
+                            android:maxLines="1"
+                            android:textSize="@dimen/txt_app_labels_normal">
+
+                            <requestFocus />
+                        </EditText>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/txtContact"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.0"
+                            android:text="Firmcontact"
+                            android:textSize="@dimen/txt_app_labels_normal" />
+
+                        <EditText
+                            android:id="@+id/edtContact"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="2.0"
+                            android:ems="10"
+                            android:inputType="number"
+                            android:maxLines="1"
+                            android:textSize="@dimen/txt_app_labels_normal">
+
+                            <requestFocus />
+                        </EditText>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/txtMerchantAddres"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.0"
+                            android:text="Address"
+                            android:textSize="@dimen/txt_app_labels_normal" />
+
+                        <EditText
+                            android:id="@+id/edtMerchantAddress"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="2.0"
+                            android:ems="10"
+                            android:maxLines="1"
+                            android:textSize="@dimen/txt_app_labels_normal">
+
+                            <requestFocus />
+                        </EditText>
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/txtProfile"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.0"
+                            android:text="Profile Image"
+                            android:textSize="@dimen/txt_app_labels_normal" />
+
+                        <ImageView
+                            android:id="@+id/imgProfileMerchant"
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:clickable="true"
+                            android:src="@drawable/default_user" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/linearMainCate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/txtCate"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.0"
+                            android:text="Category"
+                            android:textSize="@dimen/txt_app_labels_normal" />
+
+
+                        <Spinner
+                            android:id="@+id/spinnerMainCategory"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
+                            android:spinnerMode="dropdown" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linearSubCate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:visibility="gone"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/txtSubCate"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.0"
+                            android:text="Sub. Category "
+                            android:textSize="@dimen/txt_app_labels_normal" />
+
+
+                        <Spinner
+                            android:id="@+id/spinnerSubCategory"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
+                            android:spinnerMode="dropdown" />
+
+                    </LinearLayout>
+
+                    <!--  <LinearLayout
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:orientation="horizontal"
+                          android:gravity="center_horizontal|center_vertical">
+
+                          <TextView
+                              android:id="@+id/txtState"
+                              android:layout_width="0dp"
+                              android:layout_weight="1.0"
+                              android:textSize="@dimen/txt_app_labels_normal"
+                              android:layout_height="wrap_content"
+                              android:text="State" />
+
+
+                          <Spinner
+                              android:id="@+id/spinnerState"
+                              android:layout_width="0dp"
+                              android:spinnerMode="dropdown"
+                              android:layout_height="wrap_content"
+                              android:layout_marginLeft="10dp"
+                              android:layout_weight="1" />
+
+                      </LinearLayout>
+
+                      <LinearLayout
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:orientation="horizontal"
+                          android:gravity="center_horizontal|center_vertical">
+
+                          <TextView
+                              android:id="@+id/txtCity"
+                              android:layout_width="0dp"
+                              android:layout_weight="1.0"
+                              android:textSize="@dimen/txt_app_labels_normal"
+                              android:layout_height="wrap_content"
+                              android:text="City " />
+
+
+                          <Spinner
+                              android:id="@+id/spinnerCity"
+                              android:layout_width="0dp"
+                              android:spinnerMode="dropdown"
+                              android:layout_height="wrap_content"
+                              android:layout_marginLeft="10dp"
+                              android:layout_weight="1" />
+
+                      </LinearLayout>-->
+                    <Button
+                        android:id="@+id/btnUserSelect"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:text="Add More Images"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/selector_btn_app"
+                        android:textColor="@drawable/selector_btn_text_app"
+                        android:layout_marginBottom="5dp"/>
+
+                    <HorizontalScrollView
+                        android:id="@+id/horizontalScrollView1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fadeScrollbars="false">
+
+                        <LinearLayout
+                            android:id="@+id/linearImageUser"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:padding ="8dp"
+                            >
+
+                        </LinearLayout>
+                    </HorizontalScrollView>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/txtMerchantServices"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.0"
+                            android:text="My Service"
+                            android:textSize="@dimen/txt_app_labels_normal" />
+
+                        <EditText
+                            android:id="@+id/edtMerchantServices"
+                            android:layout_width="0dp"
+                            android:layout_height="100dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="2.0"
+                            android:ems="10"
+                            android:maxLines="4"
+                            android:textSize="@dimen/txt_app_labels_normal">
+
+                            <requestFocus />
+                        </EditText>
+
+                    </LinearLayout>
+
+
+
+                    <Button
+                        android:id="@+id/btnsb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:background="@drawable/selector_btn_app"
+                        android:text="Register"
+                        android:textColor="@drawable/selector_btn_text_app" />
+
+
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </android.support.v7.widget.CardView>
+
+
+</LinearLayout>

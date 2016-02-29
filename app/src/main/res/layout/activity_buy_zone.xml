@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.xb_sushil.iseva.Activity_Buy_Zone">
+
+    <include layout="@layout/app_header" />
+
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:text="Buy Zone"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/txt_app_labels_normal"
+                android:typeface="monospace" />
+
+            <ListView
+                android:id="@+id/listItemPurchaseNoti"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+
+            </ListView>
+
+            <!--<TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:text="Buy Offers"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/txt_app_labels_normal"
+                android:typeface="monospace" />
+
+            <ListView
+                android:id="@+id/listItemPurchaseoffers"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+
+            </ListView>-->
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

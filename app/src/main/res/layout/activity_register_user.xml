@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.xb_sushil.iseva.Activity_RegisterUser">
+
+    <include layout="@layout/app_header"
+        android:id="@+id/header"/>
+
+
+
+        <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/card_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/header"
+            android:layout_margin="7dp"
+            >
+
+            <ScrollView
+                android:id="@+id/scrollViewBasicInfo"
+                android:layout_width="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_height="wrap_content" >
+
+             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" >
+
+                 <LinearLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="horizontal"
+                     android:layout_margin="5dp">
+
+                     <TextView
+                         android:id="@+id/txtName"
+                         android:layout_width="0dp"
+                         android:layout_weight="1.0"
+                         android:textSize="@dimen/txt_app_labels_normal"
+                         android:layout_height="wrap_content"
+                         android:text="Name" />
+
+                     <EditText
+                         android:id="@+id/edtDoctorName"
+                         android:layout_width="0dp"
+                         android:layout_height="wrap_content"
+                         android:layout_marginLeft="10dp"
+                         android:textSize="@dimen/txt_app_labels_normal"
+                         android:maxLines="1"
+
+                         android:layout_weight="2.0"
+                         android:ems="10" >
+
+                         <requestFocus />
+                     </EditText>
+
+                 </LinearLayout>
+
+                 <LinearLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="horizontal"
+                     android:layout_margin="5dp">
+
+                     <TextView
+                         android:id="@+id/txtemail"
+                         android:layout_width="0dp"
+                         android:layout_weight="1.0"
+                         android:textSize="@dimen/txt_app_labels_normal"
+                         android:layout_height="wrap_content"
+                         android:text="Email" />
+
+                     <EditText
+                         android:id="@+id/edtEmail"
+                         android:layout_width="0dp"
+                         android:layout_height="wrap_content"
+                         android:layout_marginLeft="10dp"
+                         android:textSize="@dimen/txt_app_labels_normal"
+                         android:maxLines="1"
+                         android:layout_weight="2.0"
+                         android:ems="10" >
+
+                         <requestFocus />
+                     </EditText>
+
+                 </LinearLayout>
+
+
+                <!-- <LinearLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="horizontal"
+                     android:layout_margin="5dp">
+
+                     <TextView
+                         android:id="@+id/txtAddres"
+                         android:layout_width="0dp"
+                         android:layout_weight="1.0"
+                         android:textSize="@dimen/txt_app_labels_normal"
+                         android:layout_height="wrap_content"
+                         android:text="Address" />
+
+                     <EditText
+                         android:id="@+id/edtAddress"
+                         android:layout_width="0dp"
+                         android:layout_height="wrap_content"
+                         android:layout_marginLeft="10dp"
+                         android:textSize="@dimen/txt_app_labels_normal"
+                         android:maxLines="3"
+                         android:layout_weight="2.0"
+                         android:ems="10" >
+
+                         <requestFocus />
+                     </EditText>
+
+                 </LinearLayout>-->
+
+                 <LinearLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="horizontal"
+                     android:layout_margin="5dp">
+
+                     <TextView
+                         android:id="@+id/txtNumber"
+                         android:layout_width="0dp"
+                         android:layout_weight="1.0"
+                         android:textSize="@dimen/txt_app_labels_normal"
+                         android:layout_height="wrap_content"
+                         android:text="Number" />
+
+                     <EditText
+                         android:id="@+id/edtNumber"
+                         android:layout_width="0dp"
+                         android:layout_height="wrap_content"
+                         android:layout_marginLeft="10dp"
+                         android:textSize="@dimen/txt_app_labels_normal"
+                         android:maxLines="1"
+                         android:inputType="number"
+                         android:layout_weight="2.0"
+                         android:ems="10" >
+
+                         <requestFocus />
+                     </EditText>
+
+                 </LinearLayout>
+
+                 <LinearLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="horizontal"
+                     android:layout_margin="5dp">
+
+                     <TextView
+                         android:id="@+id/txtuserName"
+                         android:layout_width="0dp"
+                         android:layout_weight="1.0"
+                         android:textSize="@dimen/txt_app_labels_normal"
+                         android:layout_height="wrap_content"
+                         android:text="Username" />
+
+                     <EditText
+                         android:id="@+id/edtUsername"
+                         android:layout_width="0dp"
+                         android:layout_height="wrap_content"
+                         android:layout_marginLeft="10dp"
+                         android:textSize="@dimen/txt_app_labels_normal"
+                         android:maxLines="1"
+                         android:layout_weight="2.0"
+                         android:ems="10" >
+
+                         <requestFocus />
+                     </EditText>
+
+                 </LinearLayout>
+
+                 <LinearLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="horizontal"
+                     android:layout_margin="5dp">
+
+                     <TextView
+                         android:id="@+id/txtPassword"
+                         android:layout_width="0dp"
+                         android:layout_weight="1.0"
+                         android:textSize="@dimen/txt_app_labels_normal"
+                         android:layout_height="wrap_content"
+                         android:text="Password" />
+
+                     <EditText
+                         android:id="@+id/edtPassword"
+                         android:layout_width="0dp"
+                         android:layout_height="wrap_content"
+                         android:layout_marginLeft="10dp"
+                         android:textSize="@dimen/txt_app_labels_normal"
+                         android:maxLines="1"
+                         android:inputType="textPassword"
+                         android:layout_weight="2.0"
+                         android:ems="10" >
+
+                         <requestFocus />
+                     </EditText>
+
+
+
+                 </LinearLayout>
+
+                 <!--<TextView
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:textColor="@drawable/selector_text_black_to_white"
+                     android:layout_gravity="end"
+                     android:layout_marginRight="5dp"
+                     android:text="show"/>-->
+
+
+
+
+                 <CheckBox
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:text="Show"
+                     android:id="@+id/checkBoxPassword"
+                     android:layout_marginRight="5dp"
+                     android:layout_gravity="right" />
+
+
+                 <LinearLayout
+                     android:id="@+id/PromoCode"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="horizontal"
+                     android:visibility="gone"
+                     android:layout_margin="5dp">
+
+                     <TextView
+                         android:id="@+id/txtPromo"
+                         android:layout_width="wrap_content"
+                         android:layout_weight="1.0"
+                         android:textSize="@dimen/txt_app_labels_normal"
+                         android:layout_height="wrap_content"
+                         android:text="Promo Code" />
+
+                     <EditText
+                         android:id="@+id/edtPromo"
+                         android:layout_width="0dp"
+                         android:layout_height="wrap_content"
+                         android:layout_marginLeft="10dp"
+                         android:textSize="@dimen/txt_app_labels_normal"
+                         android:maxLines="1"
+                         android:inputType="text"
+                         android:layout_weight="2.0"
+                         android:ems="10" >
+
+                         <requestFocus />
+                     </EditText>
+
+                 </LinearLayout>
+
+                 <CheckBox
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:text="Have promo code"
+                     android:id="@+id/checkBoxPromoCode" />
+
+                 <!--  <CheckBox
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="I am a merchant"
+                       android:id="@+id/checkBoxRegister" />-->
+
+                 <Button
+                     android:id="@+id/btnRegister"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_marginTop="15dp"
+                     android:layout_marginBottom="15dp"
+                     android:onClick="registerUser"
+                     android:text="Next"
+                     android:background="@drawable/selector_btn_app"
+                     android:textColor="@drawable/selector_btn_text_app"
+                     android:layout_gravity="center"/>
+
+
+             </LinearLayout>
+            </ScrollView>
+
+        </android.support.v7.widget.CardView>
+
+
+
+
+</RelativeLayout>

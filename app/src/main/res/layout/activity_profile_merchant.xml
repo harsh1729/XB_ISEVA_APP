@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:orientation="vertical"
+    tools:context="com.example.xb_sushil.iseva.Activity_Profile_Merchant">
+
+    <include layout="@layout/app_header"></include>
+
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        >
+    <ScrollView
+        android:id="@+id/scrollViewBasicInfo"
+        android:layout_width="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txtUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="30dp"
+        android:textSize="@dimen/txt_app_labels_normal"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:text=""/>
+
+
+
+    <com.example.xb_sushil.iseva.Custom_RoundedImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:id="@+id/imgprofile"
+        android:src="@drawable/default_user"/>
+
+
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="7dp"
+        android:background="@color/app_gray"></LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="7dp"
+        android:paddingRight="7dp"
+        android:paddingTop="10dp"
+        android:clickable="true"
+        android:layout_marginTop="10dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:paddingBottom="10dp">
+
+        <TextView
+            android:id="@+id/txtProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@drawable/selector_text_black_to_white"
+            android:layout_marginLeft="10dp"
+            android:text="Edit Profile"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="7dp"
+        android:paddingRight="7dp"
+        android:paddingTop="10dp"
+        android:clickable="true"
+        android:layout_marginTop="10dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:paddingBottom="10dp">
+
+        <TextView
+            android:id="@+id/txtMyWallet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@drawable/selector_text_black_to_white"
+            android:layout_marginLeft="10dp"
+            android:text="My Wallet (Rs.)"/>
+        <TextView
+            android:id="@+id/txtMywalletRs"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textColor="@drawable/selector_text_black_to_white"
+            android:layout_marginRight="10dp"
+            android:gravity="right"
+            android:text=""/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="7dp"
+        android:paddingRight="7dp"
+        android:paddingTop="10dp"
+        android:clickable="true"
+        android:layout_marginTop="10dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:paddingBottom="10dp">
+
+        <TextView
+            android:id="@+id/txtPromo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@drawable/selector_text_black_to_white"
+            android:layout_marginLeft="10dp"
+            android:text="Your promo code"/>
+        <TextView
+            android:id="@+id/txtPromoRealText"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textColor="@drawable/selector_text_black_to_white"
+            android:layout_marginRight="10dp"
+            android:gravity="right"
+            android:text="dfghs"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="7dp"
+        android:paddingRight="7dp"
+        android:paddingTop="10dp"
+        android:clickable="true"
+        android:background="?android:attr/selectableItemBackground"
+        android:paddingBottom="10dp">
+
+       <!-- <TextView
+            android:id="@+id/txtLogOut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@drawable/selector_text_black_to_white"
+            android:layout_marginLeft="10dp"
+            android:text="Log out"/>-->
+
+    </LinearLayout>
+
+</LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
