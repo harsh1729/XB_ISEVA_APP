@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.xb_sushil.iseva.Activity_BusinessExtraShow">
+    android:id="@+id/RootView"
+    tools:context="com.iseva.app.source.Activity_BusinessExtraShow">
 
     <android.support.design.widget.AppBarLayout android:layout_height="wrap_content"
         android:layout_width="match_parent" android:theme="@style/AppTheme.AppBarOverlay"
@@ -27,7 +28,8 @@
             android:visibility="gone"
             android:layout_marginTop="4dp"
             android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp">
+            android:layout_marginRight="4dp"
+            >
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/view_pagerbusinessExtra"
@@ -41,7 +43,7 @@
                 android:paddingBottom="3dp"
                 android:paddingTop="3dp">-->
 
-            <com.example.xb_sushil.iseva.CirclePageIndicator
+            <com.iseva.app.source.CirclePageIndicator
                 android:id="@+id/indicatorBusinessExtra"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -53,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1.0"
             android:id="@+id/listViewOffers"
-            android:layout_marginTop="3dp"
+            android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"

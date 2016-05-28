@@ -6,7 +6,7 @@
     >
 
 
-    <com.example.xb_sushil.iseva.Custom_SlidingTabLayout
+    <com.app.iseva.Custom_SlidingTabLayout
         android:id="@+id/sliding_tabs"
         android:background="@color/colorPrimary"
         android:layout_width="match_parent"

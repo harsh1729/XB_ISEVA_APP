@@ -6,7 +6,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:background="@color/app_blue"
-    tools:context="com.example.xb_sushil.iService.Activity_Splash">
+    tools:context="com.app.iService.Activity_Splash">
 
 
     <ImageView

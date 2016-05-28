@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.xb_sushil.iseva.Activity_ServiceProvider">
+    android:id="@+id/RootView"
+    tools:context="com.iseva.app.source.Activity_ServiceProvider">
 
    <!-- <android.support.design.widget.AppBarLayout android:layout_height="wrap_content"
         android:layout_width="match_parent" android:theme="@style/AppTheme.AppBarOverlay"

@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.xb_sushil.iseva.Activity_SubCategory">
+    android:id="@+id/RootView"
+    tools:context="com.iseva.app.source.Activity_SubCategory">
 
     <include
         android:id="@+id/activity_header"
@@ -34,7 +35,7 @@
                 android:paddingBottom="3dp"
                 android:paddingTop="3dp">-->
 
-            <com.example.xb_sushil.iseva.CirclePageIndicator
+            <com.iseva.app.source.CirclePageIndicator
                 android:id="@+id/indicatorSub"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

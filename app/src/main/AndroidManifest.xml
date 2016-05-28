@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.xb_sushil.iseva" >
+    package="com.iseva.app.source" >
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
 
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <permission
-        android:name="com.example.xb_sushil.iseva.permission.C2D_MESSAGE"
+        android:name="com.app.iseva.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
     -->
     <!-- Permissions -->
@@ -28,7 +28,7 @@
     <uses-permission android:name="com.android.vending.BILLING" />
 
     <application
-        android:name="com.example.xb_sushil.iseva.Custom_VolleyAppController"
+        android:name="com.iseva.app.source.Custom_VolleyAppController"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -39,10 +39,10 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <service android:name="com.example.xb_sushil.iseva.GCMIntentService" />
+        <service android:name="com.iseva.app.source.GCMIntentService" />
 
         <receiver
-            android:name="com.example.xb_sushil.iseva.GCMBroadcastReceiver"
+            android:name="com.iseva.app.source.GCMBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
@@ -52,8 +52,18 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name="com.iseva.app.source.Call_BroadcastReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
+               <action android:name="android.intent.action.PHONE_STATE" />
+                <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            </intent-filter>
+        </receiver>
+
         <activity
-            android:name="com.example.xb_sushil.iseva.Activity_Splash"
+            android:name="com.iseva.app.source.Activity_Splash"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -62,7 +72,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.xb_sushil.iseva.Activity_Home"
+            android:name="com.iseva.app.source.Activity_Home"
             android:label="@string/title_activity_activity__home"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
@@ -77,110 +87,115 @@
                 android:resource="@xml/searchable_config" />
         </activity>
         <activity
-            android:name="com.example.xb_sushil.iseva.Activity_ServiceProvider"
+            android:name="com.iseva.app.source.Activity_ServiceProvider"
             android:label="@string/title_activity_activity__home"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name="com.example.xb_sushil.iseva.Activity_Login_Merchant"
+            android:name="com.iseva.app.source.Activity_Login_Merchant"
             android:label="@string/title_activity_activity__login__merchant"
             android:screenOrientation="portrait"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name="com.example.xb_sushil.iseva.Activity_RegisterUser"
+            android:name="com.iseva.app.source.Activity_RegisterUser"
             android:screenOrientation="portrait"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name="com.example.xb_sushil.iseva.Activity_Merchant_register"
+            android:name="com.iseva.app.source.Activity_Merchant_register"
             android:screenOrientation="portrait"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name="com.example.xb_sushil.iseva.Activity_BusinessExtraShow"
+            android:name="com.iseva.app.source.Activity_BusinessExtraShow"
             android:screenOrientation="portrait"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name="com.example.xb_sushil.iseva.Activity_City_Choose"
+            android:name="com.iseva.app.source.Activity_City_Choose"
             android:screenOrientation="portrait"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name="com.example.xb_sushil.iseva.Activity_Profile_Merchant"
+            android:name="com.iseva.app.source.Activity_Profile_Merchant"
             android:label="@string/title_activity_activity__profile__merchant"
             android:screenOrientation="portrait"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name="com.example.xb_sushil.iseva.Activity_SubCategory"
+            android:name="com.iseva.app.source.Activity_SubCategory"
             android:screenOrientation="portrait"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name="com.example.xb_sushil.iseva.Activity_Add_New_BusinessExtra"
+            android:name="com.iseva.app.source.Activity_Add_New_BusinessExtra"
             android:screenOrientation="portrait"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name="com.example.xb_sushil.iseva.Activity_Send_Notification"
+            android:name="com.iseva.app.source.Activity_Send_Notification"
             android:screenOrientation="portrait"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name="com.example.xb_sushil.iseva.Activity_Buy_Zone"
+            android:name="com.iseva.app.source.Activity_Buy_Zone"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name="com.example.xb_sushil.iseva.Activity_Settings"
+            android:name="com.iseva.app.source.Activity_Settings"
             android:screenOrientation="portrait"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name="com.example.xb_sushil.iseva.Activity_ImageViewer"
+            android:name="com.iseva.app.source.Activity_ImageViewer"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name="com.example.xb_sushil.iseva.Activity_Category_Choose"
+            android:name="com.iseva.app.source.Activity_Category_Choose"
             android:screenOrientation="portrait"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name="com.example.xb_sushil.iseva.Activity_About_Us"
+            android:name="com.iseva.app.source.Activity_About_Us"
             android:screenOrientation="portrait"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name="com.example.xb_sushil.iseva.Activity_BusinessExtraDetails_Show"
+            android:name="com.iseva.app.source.Activity_BusinessExtraDetails_Show"
             android:screenOrientation="portrait"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name="com.example.xb_sushil.iseva.Activity_ServiceProviderDetails_Show"
+            android:name="com.iseva.app.source.Activity_ServiceProviderDetails_Show"
             android:screenOrientation="portrait"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name="com.example.xb_sushil.iseva.Activity_MyBusinessExtra"
+            android:name="com.iseva.app.source.Activity_MyBusinessExtra"
             android:screenOrientation="portrait"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name="com.example.xb_sushil.iseva.Activity_Google_Payment"
+            android:name="com.iseva.app.source.Activity_Google_Payment"
             android:screenOrientation="portrait"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name="com.example.xb_sushil.iseva.Activity_BusinessExtra_Type"
+            android:name="com.iseva.app.source.Activity_BusinessExtra_Type"
             android:screenOrientation="portrait"
             android:launchMode="singleTask">
         </activity>
-        <activity android:name="com.example.xb_sushil.iseva.Activity_AdverImageView" >
+        <activity android:name="com.iseva.app.source.Activity_AdverImageView" >
+        </activity>
+        <activity
+            android:name="com.iseva.app.source.Activity_EPaperReader"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask">
         </activity>
     </application>
 

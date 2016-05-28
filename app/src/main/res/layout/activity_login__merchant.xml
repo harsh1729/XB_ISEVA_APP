@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context="com.example.xb_sushil.iseva.Activity_Login_Merchant">
+    tools:context="com.iseva.app.source.Activity_Login_Merchant">
 
     <include layout="@layout/app_header" />
 
@@ -49,6 +49,7 @@
                         android:hint="@string/prompt_username"
                         android:inputType="text"
                         android:maxLines="1"
+                        android:typeface="serif"
                         android:singleLine="true" />
                 </android.support.design.widget.TextInputLayout>
 
@@ -68,6 +69,7 @@
                         android:imeOptions="actionUnspecified"
                         android:inputType="textPassword"
                         android:maxLines="1"
+                        android:typeface="serif"
                         android:singleLine="true" />
                 </android.support.design.widget.TextInputLayout>
 
@@ -75,8 +77,8 @@
                     android:id="@+id/email_sign_in_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_margin="5dp"
+                    android:layout_margin="8dp"
+                    android:typeface="serif"
                     android:text="@string/action_sign_in"
                     android:background="@drawable/selector_btn_app"
                     android:textColor="@drawable/selector_btn_text_app"
@@ -85,20 +87,25 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_margin="8dp"
                 android:orientation="horizontal">
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.0"></LinearLayout>
 
+
+
+
                 <TextView
-                    android:id="@+id/forgatepassword"
+                    android:id="@+id/registerNew"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:clickable="true"
-                     android:text="Forgot Password"
-                    android:padding="2dp"
+                    android:onClick="iAgree"
+                    android:text=" Register"
+                    android:padding="3dp"
+                    android:typeface="serif"
                     android:textColor="@drawable/selector_text_black_to_white" />
 
             </LinearLayout>
@@ -106,17 +113,20 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
+                   android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/registerNew"
+                        android:id="@+id/forgatepassword"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:clickable="true"
-                        android:onClick="register"
-                        android:text=" Register"
-                        android:padding="2dp"
+                        android:text="Forgot Password"
+                        android:padding="3dp"
+                        android:typeface="serif"
                         android:textColor="@drawable/selector_text_black_to_white" />
 
                     <LinearLayout
@@ -128,9 +138,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:clickable="true"
-                        android:text="Terms and condition"
+                        android:text="Disclaimer"
                         android:onClick="termsCondition"
-                        android:padding="2dp"
+                        android:padding="3dp"
+                        android:typeface="serif"
                         android:textColor="@drawable/selector_text_black_to_white"
 
 

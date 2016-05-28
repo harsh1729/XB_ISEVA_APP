@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.xb_sushil.iseva.Activity_RegisterUser">
+    tools:context="com.iseva.app.source.Activity_RegisterUser">
 
     <include layout="@layout/app_header"
         android:id="@+id/header"/>
@@ -39,6 +39,7 @@
                          android:layout_width="0dp"
                          android:layout_weight="1.0"
                          android:textSize="@dimen/txt_app_labels_normal"
+                         android:typeface="serif"
                          android:layout_height="wrap_content"
                          android:text="Name" />
 
@@ -49,7 +50,7 @@
                          android:layout_marginLeft="10dp"
                          android:textSize="@dimen/txt_app_labels_normal"
                          android:maxLines="1"
-
+                         android:typeface="serif"
                          android:layout_weight="2.0"
                          android:ems="10" >
 
@@ -58,7 +59,7 @@
 
                  </LinearLayout>
 
-                 <LinearLayout
+                <!-- <LinearLayout
                      android:layout_width="match_parent"
                      android:layout_height="wrap_content"
                      android:orientation="horizontal"
@@ -69,6 +70,7 @@
                          android:layout_width="0dp"
                          android:layout_weight="1.0"
                          android:textSize="@dimen/txt_app_labels_normal"
+                         android:typeface="serif"
                          android:layout_height="wrap_content"
                          android:text="Email" />
 
@@ -79,13 +81,14 @@
                          android:layout_marginLeft="10dp"
                          android:textSize="@dimen/txt_app_labels_normal"
                          android:maxLines="1"
+                         android:typeface="serif"
                          android:layout_weight="2.0"
                          android:ems="10" >
 
                          <requestFocus />
                      </EditText>
 
-                 </LinearLayout>
+                 </LinearLayout>-->
 
 
                 <!-- <LinearLayout
@@ -128,6 +131,7 @@
                          android:layout_width="0dp"
                          android:layout_weight="1.0"
                          android:textSize="@dimen/txt_app_labels_normal"
+                         android:typeface="serif"
                          android:layout_height="wrap_content"
                          android:text="Number" />
 
@@ -138,6 +142,7 @@
                          android:layout_marginLeft="10dp"
                          android:textSize="@dimen/txt_app_labels_normal"
                          android:maxLines="1"
+                         android:typeface="serif"
                          android:inputType="number"
                          android:layout_weight="2.0"
                          android:ems="10" >
@@ -158,6 +163,7 @@
                          android:layout_width="0dp"
                          android:layout_weight="1.0"
                          android:textSize="@dimen/txt_app_labels_normal"
+                         android:typeface="serif"
                          android:layout_height="wrap_content"
                          android:text="Username" />
 
@@ -168,6 +174,7 @@
                          android:layout_marginLeft="10dp"
                          android:textSize="@dimen/txt_app_labels_normal"
                          android:maxLines="1"
+                         android:typeface="serif"
                          android:layout_weight="2.0"
                          android:ems="10" >
 
@@ -187,6 +194,7 @@
                          android:layout_width="0dp"
                          android:layout_weight="1.0"
                          android:textSize="@dimen/txt_app_labels_normal"
+                         android:typeface="serif"
                          android:layout_height="wrap_content"
                          android:text="Password" />
 
@@ -197,6 +205,7 @@
                          android:layout_marginLeft="10dp"
                          android:textSize="@dimen/txt_app_labels_normal"
                          android:maxLines="1"
+                         android:typeface="serif"
                          android:inputType="textPassword"
                          android:layout_weight="2.0"
                          android:ems="10" >
@@ -223,6 +232,7 @@
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
                      android:text="Show"
+                     android:typeface="serif"
                      android:id="@+id/checkBoxPassword"
                      android:layout_marginRight="5dp"
                      android:layout_gravity="right" />
@@ -241,6 +251,7 @@
                          android:layout_width="wrap_content"
                          android:layout_weight="1.0"
                          android:textSize="@dimen/txt_app_labels_normal"
+                         android:typeface="serif"
                          android:layout_height="wrap_content"
                          android:text="Promo Code" />
 
@@ -251,6 +262,7 @@
                          android:layout_marginLeft="10dp"
                          android:textSize="@dimen/txt_app_labels_normal"
                          android:maxLines="1"
+                         android:typeface="serif"
                          android:inputType="text"
                          android:layout_weight="2.0"
                          android:ems="10" >
@@ -264,6 +276,7 @@
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
                      android:text="Have promo code"
+                     android:typeface="serif"
                      android:id="@+id/checkBoxPromoCode" />
 
                  <!--  <CheckBox
@@ -280,6 +293,7 @@
                      android:layout_marginBottom="15dp"
                      android:onClick="registerUser"
                      android:text="Next"
+                     android:typeface="serif"
                      android:background="@drawable/selector_btn_app"
                      android:textColor="@drawable/selector_btn_text_app"
                      android:layout_gravity="center"/>

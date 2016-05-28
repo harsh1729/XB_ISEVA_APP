@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.xb_sushil.iseva.Activity_Send_Notification">
+    tools:context="com.iseva.app.source.Activity_Send_Notification">
 
     <include layout="@layout/app_header"></include>
     <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"

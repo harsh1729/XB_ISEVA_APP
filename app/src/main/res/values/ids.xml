@@ -2,4 +2,5 @@
 <resources>
     <item name="imageViewId" type="id" />
     <item name="svId" type="id" />
+    <item name="selected_view" type="id"/>
 </resources>

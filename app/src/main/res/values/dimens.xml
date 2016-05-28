@@ -8,4 +8,5 @@
     <dimen name="fab_margin">10dp</dimen>
     <dimen name="txt_app_labels_normal">17sp</dimen>
     <dimen name="text_margin">16dp</dimen>
+    <dimen name="shadow_width">15dp</dimen>
 </resources>

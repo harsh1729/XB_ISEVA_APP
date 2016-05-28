@@ -5,13 +5,13 @@
     android:orientation="vertical">
 
 
-    <TextView
+   <!-- <TextView
         android:id="@+id/txtHeadingNoti"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="7dp"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold" />-->
 
     <ScrollView
         android:layout_width="match_parent"
@@ -24,6 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
+            android:layout_gravity="center_horizontal"
             android:orientation="vertical">
 
             <TextView
@@ -33,16 +34,43 @@
                 android:layout_margin="7dp"
                 android:textSize="15sp"
                 android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/txtCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="25sp"
+                android:textColor="@android:color/black"
+                android:text=""
+                android:textStyle="normal"
+                android:layout_gravity="center_horizontal" />
         </LinearLayout>
     </ScrollView>
 
-    <Button
-        android:id="@+id/btnOkNoti"
+
+
+    <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+    <Button
+        android:id="@+id/btnRegisterGcm"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content"
         android:layout_margin="7dp"
         android:background="@drawable/selector_btn_app"
-        android:text="OK" />
+        android:text="Register" />
 
+    <Button
+        android:id="@+id/btnOkNoti"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_margin="7dp"
+        android:background="@drawable/selector_btn_app"
+        android:text="Share Code" />
+    </LinearLayout>
 
 </LinearLayout>

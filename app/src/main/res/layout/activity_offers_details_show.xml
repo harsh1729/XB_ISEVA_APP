@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.xb_sushil.iseva.Activity_BusinessExtraDetails_Show">
+    android:id="@+id/RootView"
+    tools:context="com.iseva.app.source.Activity_BusinessExtraDetails_Show">
 
     <include layout="@layout/app_header"/>
 

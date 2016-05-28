@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.xb_sushil.iseva.Activity_Category_Choose">
+    android:id="@+id/RootView"
+    tools:context="com.iseva.app.source.Activity_Category_Choose">
 
     <include
         android:id="@+id/header"
@@ -50,6 +51,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1.0"
                             android:text=" City"
+                            android:typeface="serif"
                             android:textSize="@dimen/txt_app_labels_normal" />
 
 
@@ -77,6 +79,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1.0"
                             android:text="Firmname"
+                            android:typeface="serif"
                             android:textSize="@dimen/txt_app_labels_normal" />
 
                         <EditText
@@ -85,6 +88,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
                             android:layout_weight="2.0"
+                            android:typeface="serif"
                             android:ems="10"
 
                             android:maxLines="1"
@@ -107,6 +111,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1.0"
                             android:text="Firmcontact"
+                            android:typeface="serif"
                             android:textSize="@dimen/txt_app_labels_normal" />
 
                         <EditText
@@ -117,8 +122,41 @@
                             android:layout_weight="2.0"
                             android:ems="10"
                             android:inputType="number"
+                            android:typeface="serif"
                             android:maxLines="1"
                             android:textSize="@dimen/txt_app_labels_normal">
+
+                            <requestFocus />
+                        </EditText>
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_margin="5dp">
+
+                        <TextView
+                            android:id="@+id/txtemail"
+                            android:layout_width="0dp"
+                            android:layout_weight="1.0"
+                            android:textSize="@dimen/txt_app_labels_normal"
+                            android:typeface="serif"
+                            android:layout_height="wrap_content"
+                            android:text="Email" />
+
+                        <EditText
+                            android:id="@+id/edtEmail"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:textSize="@dimen/txt_app_labels_normal"
+                            android:maxLines="1"
+                            android:typeface="serif"
+                            android:layout_weight="2.0"
+                            android:ems="10" >
 
                             <requestFocus />
                         </EditText>
@@ -137,6 +175,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1.0"
                             android:text="Address"
+                            android:typeface="serif"
                             android:textSize="@dimen/txt_app_labels_normal" />
 
                         <EditText
@@ -146,6 +185,7 @@
                             android:layout_marginLeft="10dp"
                             android:layout_weight="2.0"
                             android:ems="10"
+                            android:typeface="serif"
                             android:maxLines="1"
                             android:textSize="@dimen/txt_app_labels_normal">
 
@@ -167,6 +207,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1.0"
                             android:text="Profile Image"
+                            android:typeface="serif"
                             android:textSize="@dimen/txt_app_labels_normal" />
 
                         <ImageView
@@ -174,7 +215,7 @@
                             android:layout_width="120dp"
                             android:layout_height="120dp"
                             android:clickable="true"
-                            android:src="@drawable/default_user" />
+                            android:src="@drawable/default_offer" />
 
                     </LinearLayout>
 
@@ -193,6 +234,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1.0"
                             android:text="Category"
+                            android:typeface="serif"
                             android:textSize="@dimen/txt_app_labels_normal" />
 
 
@@ -221,6 +263,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1.0"
                             android:text="Sub. Category "
+                            android:typeface="serif"
                             android:textSize="@dimen/txt_app_labels_normal" />
 
 
@@ -290,6 +333,7 @@
                         android:layout_marginLeft="8dp"
                         android:layout_marginRight="8dp"
                         android:text="Add More Images"
+                        android:typeface="serif"
                         android:layout_marginTop="15dp"
                         android:background="@drawable/selector_btn_app"
                         android:textColor="@drawable/selector_btn_text_app"
@@ -306,7 +350,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="horizontal"
-                            android:padding ="8dp"
+                            android:layout_margin="8dp"
                             >
 
                         </LinearLayout>
@@ -325,6 +369,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1.0"
                             android:text="My Service"
+                            android:typeface="serif"
                             android:textSize="@dimen/txt_app_labels_normal" />
 
                         <EditText
@@ -334,6 +379,7 @@
                             android:layout_marginLeft="10dp"
                             android:layout_weight="2.0"
                             android:ems="10"
+                            android:typeface="serif"
                             android:maxLines="4"
                             android:textSize="@dimen/txt_app_labels_normal">
 
@@ -353,6 +399,7 @@
                         android:layout_marginBottom="10dp"
                         android:paddingLeft="8dp"
                         android:paddingRight="8dp"
+                        android:typeface="serif"
                         android:background="@drawable/selector_btn_app"
                         android:text="Register"
                         android:textColor="@drawable/selector_btn_text_app" />

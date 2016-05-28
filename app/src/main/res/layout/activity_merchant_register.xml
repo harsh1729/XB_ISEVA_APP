@@ -26,14 +26,14 @@
 
           </LinearLayout>
   </ScrollView>-->
-    <com.example.xb_sushil.iseva.Custom_ViewPager
+    <com.iseva.app.source.Custom_ViewPager
         android:id="@+id/customViewPager"
         android:layout_height="0dp"
         android:layout_weight="1.0"
         android:layout_width="match_parent" />
 
 
-    <com.example.xb_sushil.iseva.CirclePageIndicator
+    <com.iseva.app.source.CirclePageIndicator
         android:id="@+id/indicator"
         android:padding="5dp"
         android:layout_width="match_parent"
@@ -58,7 +58,7 @@
         xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-       tools:context="com.example.xb_sushil.iservice.Activity_Merchant_register">
+       tools:context="com.bitsandbytesndbytes.iservice.Activity_Merchant_register">
 
         <include layout="@layout/app_header"
             />

@@ -3,17 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
 
     android:orientation="vertical"
-    tools:context="com.example.xb_sushil.iseva.Activity_Profile_Merchant">
+    tools:context="com.iseva.app.source.Activity_Profile_Merchant">
 
     <include layout="@layout/app_header"></include>
 
     <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/card_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp">
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        card_view:cardBackgroundColor="@color/app_white">
 
         <ScrollView
             android:id="@+id/scrollViewBasicInfo"
@@ -40,6 +42,7 @@
                         android:layout_marginTop="20dp"
                         android:text="GENRAL SETTINGS"
                         android:textSize="@dimen/txt_app_labels_normal"
+                        android:typeface="serif"
                         android:textColor="@android:color/black" />
 
                     <!--<LinearLayout
@@ -52,7 +55,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="?android:attr/selectableItemBackground"
+                        android:background="@drawable/selecter_settings"
                         android:clickable="true"
                         android:paddingBottom="5dp"
                         android:paddingLeft="7dp"
@@ -66,7 +69,8 @@
                             android:layout_marginLeft="10dp"
                             android:text="Notification"
                             android:textSize="@dimen/txt_app_labels_normal"
-                            android:textColor="@drawable/selector_text_black_to_white" />
+                            android:typeface="serif"
+                            android:textColor="@drawable/selector_black_to_white_txt" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -89,13 +93,41 @@
 
                     </LinearLayout>
 
+
+                    <LinearLayout
+                        android:id="@+id/Disclaimer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/selecter_settings"
+                        android:clickable="true"
+                        android:onClick="termsCondition"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="7dp"
+
+                        android:paddingRight="7dp"
+                        android:paddingTop="10dp">
+
+
+                        <TextView
+                            android:id="@+id/txtDisclaimer"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:text="Disclaimer"
+                            android:textSize="@dimen/txt_app_labels_normal"
+                            android:typeface="serif"
+                            android:textColor="@drawable/selector_black_to_white_txt"/>
+
+                    </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/linearContact"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="?android:attr/selectableItemBackground"
+                        android:background="@drawable/selecter_settings"
                         android:clickable="true"
                         android:paddingBottom="10dp"
+
                         android:paddingLeft="7dp"
                         android:paddingRight="7dp"
                         android:paddingTop="10dp">
@@ -108,16 +140,19 @@
                             android:layout_marginLeft="10dp"
                             android:text="Contact Us"
                             android:textSize="@dimen/txt_app_labels_normal"
-                            android:textColor="@drawable/selector_text_black_to_white" />
+                            android:typeface="serif"
+                            android:textColor="@drawable/selector_black_to_white_txt" />
 
                     </LinearLayout>
 
-                   <!-- <LinearLayout
+                   <LinearLayout
+                       android:id="@+id/linearShare"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="?android:attr/selectableItemBackground"
+                       android:background="@drawable/selecter_settings"
                         android:clickable="true"
                         android:paddingBottom="10dp"
+
                         android:paddingLeft="7dp"
                         android:paddingRight="7dp"
                         android:paddingTop="10dp">
@@ -128,19 +163,22 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
                             android:text="Share App"
+                            android:typeface="serif"
                             android:textSize="@dimen/txt_app_labels_normal"
-                            android:textColor="@drawable/selector_text_black_to_white" />
+                            android:textColor="@drawable/selector_black_to_white_txt" />
 
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/linearRate"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="?android:attr/selectableItemBackground"
+                        android:background="@drawable/selecter_settings"
                         android:clickable="true"
                         android:paddingBottom="10dp"
                         android:paddingLeft="7dp"
                         android:paddingRight="7dp"
+
                         android:paddingTop="10dp">
 
                         <TextView
@@ -148,10 +186,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
-                            android:text="Rate App"
-                            android:textColor="@drawable/selector_text_black_to_white" />
+                            android:text="Rate Us"
+                            android:typeface="serif"
+                            android:textSize="@dimen/txt_app_labels_normal"
+                            android:textColor="@drawable/selector_black_to_white_txt" />
 
-                    </LinearLayout>-->
+                    </LinearLayout>
 
 
                 </LinearLayout>
@@ -162,4 +202,5 @@
     </android.support.v7.widget.CardView>
 
 </LinearLayout>
+    <!--android:background="?android:attr/selectableItemBackground"-->
 

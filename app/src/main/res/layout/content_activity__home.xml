@@ -5,8 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
+    android:id="@+id/RootView"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.xb_sushil.iseva.Activity_Home"
+    tools:context="com.iseva.app.source.Activity_Home"
     tools:showIn="@layout/app_bar_activity__home">
 
 
@@ -36,7 +37,7 @@
                 android:paddingBottom="3dp"
                 android:paddingTop="3dp">-->
 
-            <com.example.xb_sushil.iseva.CirclePageIndicator
+            <com.iseva.app.source.CirclePageIndicator
                 android:id="@+id/indicator"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

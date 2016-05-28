@@ -1,4 +1,4 @@
-package com.example.xb_sushil.iseva;
+package com.app.iseva;
 
 import org.junit.Test;
 

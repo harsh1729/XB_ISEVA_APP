@@ -30,6 +30,7 @@
             android:text=""
             android:textColor="@drawable/selector_black_to_white_txt"
             android:layout_marginLeft="8dp"
+            android:typeface="serif"
             android:id="@+id/txtSubCatename" />
 
         <LinearLayout

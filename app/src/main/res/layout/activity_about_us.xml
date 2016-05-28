@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.xb_sushil.iseva.Activity_About_Us">
+    tools:context="com.iseva.app.source.Activity_About_Us">
 
     <include layout="@layout/app_header" />
 
@@ -56,9 +56,10 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:textColor="@android:color/black"
-                    android:typeface="normal"
+
                     android:textStyle="bold"
                     android:textSize="20sp"
+                    android:typeface="serif"
                     android:text="Contact Us" />
                 <TextView
 
@@ -66,6 +67,7 @@
                     android:layout_height="wrap_content"
                      android:layout_marginLeft="10dp"
                     android:textSize="17sp"
+                    android:typeface="serif"
                     android:textColor="@android:color/black"
                     android:text="Email  iseva721@gmail.com" />
                 <TextView
@@ -74,6 +76,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:textSize="17sp"
+                    android:typeface="serif"
                     android:textColor="@android:color/black"
                     android:text="Number  9314816515" />
 
@@ -84,9 +87,10 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:textColor="@android:color/black"
-                    android:typeface="normal"
+
                     android:textStyle="bold"
                     android:textSize="20sp"
+                    android:typeface="serif"
                     android:text="About Us" />
 
                 <TextView
@@ -95,6 +99,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:textSize="17sp"
+                    android:typeface="serif"
                     android:textColor="@android:color/black"
                     android:text="@string/about_us" />
                <!-- <TextView
