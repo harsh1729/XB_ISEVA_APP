@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+
+    tools:context="com.iseva.app.source.Activity_Resume_Post_Basic">
+
+
+    <include layout="@layout/app_header" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/linear"
+        android:background="@drawable/selecter_home_category"
+        android:layout_margin="5dp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Full Name"/>
+
+            <EditText
+                android:id="@+id/edtName"
+
+                android:layout_width="match_parent"
+                android:background="@drawable/rounded_grey_border"
+                android:layout_marginTop="5dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Phone Number"/>
+
+            <EditText
+                android:id="@+id/edtNumber"
+                android:background="@drawable/rounded_grey_border"
+                android:layout_width="match_parent"
+                android:layout_marginTop="5dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:inputType="number"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email (Username)"/>
+
+            <EditText
+                android:id="@+id/edtUsername"
+                android:background="@drawable/rounded_grey_border"
+                android:layout_width="match_parent"
+                android:layout_marginTop="5dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Password"/>
+
+            <EditText
+                android:id="@+id/edtPassword"
+                android:background="@drawable/rounded_grey_border"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_marginTop="5dp"
+
+                android:inputType="textPassword"
+
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+      <Button
+          android:id="@+id/btnRegister"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:background="@drawable/selector_btn_app"
+          android:layout_marginTop="20dp"
+          android:textColor="@drawable/selector_btn_text_app"
+          android:layout_gravity="center"
+          android:text="Register"/>
+
+    </LinearLayout>
+
+</LinearLayout>

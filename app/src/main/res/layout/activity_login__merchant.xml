@@ -97,7 +97,7 @@
 
 
 
-                <TextView
+               <!-- <TextView
                     android:id="@+id/registerNew"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -106,7 +106,7 @@
                     android:text=" Register"
                     android:padding="3dp"
                     android:typeface="serif"
-                    android:textColor="@drawable/selector_text_black_to_white" />
+                    android:textColor="@drawable/selector_text_black_to_white" /> -->
 
             </LinearLayout>
 
@@ -134,7 +134,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1.0"></LinearLayout>
 
-                    <TextView
+                   <!-- <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:clickable="true"
@@ -143,9 +143,18 @@
                         android:padding="3dp"
                         android:typeface="serif"
                         android:textColor="@drawable/selector_text_black_to_white"
+                     />-->
 
-
-                        />
+                    <TextView
+                        android:id="@+id/registerNew"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:onClick="iAgree"
+                        android:text=" Register"
+                        android:padding="3dp"
+                        android:typeface="serif"
+                        android:textColor="@drawable/selector_text_black_to_white" />
 
 
                 </LinearLayout>

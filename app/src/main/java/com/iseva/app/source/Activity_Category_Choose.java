@@ -84,8 +84,8 @@ public class Activity_Category_Choose extends Activity {
     protected void onDestroy() {
         super.onDestroy();
 
-        unbindDrawables(findViewById(R.id.RootView));
-        System.gc();
+        //unbindDrawables(findViewById(R.id.RootView));
+       // System.gc();
     }
 
     private void unbindDrawables(View view) {

@@ -112,8 +112,8 @@ public class Activity_ServiceProviderDetails_Show extends FragmentActivity {
     }
 
     private void callIntent() {
-        Call_PhoneListener cList = new Call_PhoneListener(this);
-        cList.registerNumber(Globals.getSimnumber(this));
+        //Call_PhoneListener cList = new Call_PhoneListener(this);
+        //cList.registerNumber(Globals.getSimnumber(this));
         Intent callIntent = new Intent(
                 Intent.ACTION_CALL);
         callIntent.setData(Uri.parse("tel:"
@@ -132,8 +132,8 @@ public class Activity_ServiceProviderDetails_Show extends FragmentActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        unbindDrawables(findViewById(R.id.RootView));
-        System.gc();
+       // unbindDrawables(findViewById(R.id.RootView));
+       // System.gc();
     }
 
     private void unbindDrawables(View view) {

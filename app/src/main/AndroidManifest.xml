@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.iseva.app.source" >
+    package="com.iseva.app.source">
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
 
@@ -9,7 +9,7 @@
     <permission
         android:name="com.app.iseva.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
-    -->
+
     <!-- Permissions -->
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -26,24 +26,26 @@
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.android.vending.BILLING" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
 
     <application
-        android:name="com.iseva.app.source.Custom_VolleyAppController"
+        android:name=".Custom_VolleyAppController"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <service android:name="com.iseva.app.source.GCMIntentService" />
+        <service android:name=".GCMIntentService" />
 
         <receiver
-            android:name="com.iseva.app.source.GCMBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND" >
+            android:name=".GCMBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
@@ -52,19 +54,32 @@
             </intent-filter>
         </receiver>
 
+        <!--
         <receiver android:name="com.iseva.app.source.Call_BroadcastReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
                <action android:name="android.intent.action.PHONE_STATE" />
-                <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+                &lt;!&ndash; <category android:name="android.intent.category.LAUNCHER" /> &ndash;&gt;
             </intent-filter>
         </receiver>
+        -->
+        <!--
+        This part is inside the application
+        <receiver android:name="com.iseva.app.source.Call_BroadcastReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.PHONE_STATE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
+            </intent-filter>
+        </receiver>
+        -->
 
         <activity
-            android:name="com.iseva.app.source.Activity_Splash"
-            android:screenOrientation="portrait" >
+            android:name=".Activity_Splash"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -72,12 +87,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.iseva.app.source.Activity_Home"
+            android:name=".Activity_Home"
             android:label="@string/title_activity_activity__home"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan|adjustResize" >
+            android:windowSoftInputMode="adjustPan|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.search" />
             </intent-filter>
@@ -87,116 +102,148 @@
                 android:resource="@xml/searchable_config" />
         </activity>
         <activity
-            android:name="com.iseva.app.source.Activity_ServiceProvider"
+            android:name=".Activity_ServiceProvider"
             android:label="@string/title_activity_activity__home"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name="com.iseva.app.source.Activity_Login_Merchant"
+            android:name=".Activity_Login_Merchant"
             android:label="@string/title_activity_activity__login__merchant"
-            android:screenOrientation="portrait"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name="com.iseva.app.source.Activity_RegisterUser"
-            android:screenOrientation="portrait"
+            android:name=".Activity_RegisterUser"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name="com.iseva.app.source.Activity_Merchant_register"
-            android:screenOrientation="portrait"
+            android:name=".Activity_Merchant_register"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name="com.iseva.app.source.Activity_BusinessExtraShow"
-            android:screenOrientation="portrait"
+            android:name=".Activity_BusinessExtraShow"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name="com.iseva.app.source.Activity_City_Choose"
-            android:screenOrientation="portrait"
+            android:name=".Activity_City_Choose"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name="com.iseva.app.source.Activity_Profile_Merchant"
+            android:name=".Activity_Profile_Merchant"
             android:label="@string/title_activity_activity__profile__merchant"
-            android:screenOrientation="portrait"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name="com.iseva.app.source.Activity_SubCategory"
-            android:screenOrientation="portrait"
+            android:name=".Activity_SubCategory"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name="com.iseva.app.source.Activity_Add_New_BusinessExtra"
-            android:screenOrientation="portrait"
+            android:name=".Activity_Add_New_BusinessExtra"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name="com.iseva.app.source.Activity_Send_Notification"
-            android:screenOrientation="portrait"
+            android:name=".Activity_Send_Notification"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustPan|adjustResize" />
-        <activity
-            android:name="com.iseva.app.source.Activity_Buy_Zone"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name="com.iseva.app.source.Activity_Settings"
+            android:name=".Activity_Buy_Zone"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|adjustResize" />
+        <activity
+            android:name=".Activity_Settings"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name="com.iseva.app.source.Activity_ImageViewer"
+            android:name=".Activity_ImageViewer"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar"
-            android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name="com.iseva.app.source.Activity_Category_Choose"
-            android:screenOrientation="portrait"
+            android:name=".Activity_Category_Choose"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name="com.iseva.app.source.Activity_About_Us"
-            android:screenOrientation="portrait"
+            android:name=".Activity_About_Us"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name="com.iseva.app.source.Activity_BusinessExtraDetails_Show"
-            android:screenOrientation="portrait"
+            android:name=".Activity_BusinessExtraDetails_Show"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name="com.iseva.app.source.Activity_ServiceProviderDetails_Show"
-            android:screenOrientation="portrait"
+            android:name=".Activity_ServiceProviderDetails_Show"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name="com.iseva.app.source.Activity_MyBusinessExtra"
-            android:screenOrientation="portrait"
+            android:name=".Activity_MyBusinessExtra"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name="com.iseva.app.source.Activity_Google_Payment"
-            android:screenOrientation="portrait"
+            android:name=".Activity_Google_Payment"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name="com.iseva.app.source.Activity_BusinessExtra_Type"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTask">
-        </activity>
-        <activity android:name="com.iseva.app.source.Activity_AdverImageView" >
-        </activity>
+            android:name=".Activity_BusinessExtra_Type"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Activity_AdverImageView" />
         <activity
-            android:name="com.iseva.app.source.Activity_EPaperReader"
+            android:name=".Activity_EPaperReader"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Search_Resume"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:launchMode="singleTask">
-        </activity>
+            android:windowSoftInputMode="adjustPan|adjustResize" />
+        <activity
+            android:name=".Activity_Post_Job"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity_Post_Resume"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+
+        <activity android:name=".Activity_List_Resume"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|adjustResize"/>
+
+        <activity android:name=".Activity_Search_Jobs"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|adjustResize"/>
+
+        <activity android:name=".Activity_Resume_Post_Basic"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|adjustResize"/>
+
+        <activity android:name=".Activity_List_Jobs"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|adjustResize"></activity>
     </application>
 
 </manifest>

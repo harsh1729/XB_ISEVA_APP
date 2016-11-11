@@ -8,6 +8,7 @@ public class Object_BusinessExtraData {
     int masterid;
     String heading;
     String content;
+    String contact;
     int userid;
     ArrayList<String> images;
 

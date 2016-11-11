@@ -265,6 +265,9 @@ public class Activity_BusinessExtraShow extends FragmentActivity {
                                         if (object.has("content")) {
                                             objOffers.content = object.getString("content");
                                         }
+                                        if(object.has("contact")){
+                                            objOffers.contact = object.getString("contact");
+                                        }
                                         if (object.has("images")) {
                                             JSONArray imageArray = object.getJSONArray("images");
                                             ArrayList<String> listImage = new ArrayList<>();

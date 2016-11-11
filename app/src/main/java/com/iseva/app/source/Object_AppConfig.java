@@ -52,6 +52,24 @@ public class Object_AppConfig {
 		}
 
 	}
+
+
+	public int getEmpId() {
+		int appConfig_empId = -1;
+
+		if(prefs != null)
+			appConfig_empId = prefs.getInt("appConfig_empId", -1);
+
+		return appConfig_empId;
+	}
+	public void setEmpId(int id) {
+
+		if (editor != null) {
+			editor.putInt("appConfig_empId", id);
+			editor.commit();
+		}
+
+	}
 	public int getCatId() {
 		int CatId = -1;
 		

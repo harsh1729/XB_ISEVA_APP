@@ -32,6 +32,8 @@ import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Display;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -91,6 +93,19 @@ public class Globals {
         return size;
     }
 
+    public static void clearForm(ViewGroup group)
+    {
+        for (int i = 0, count = group.getChildCount(); i < count; ++i) {
+            View view = group.getChildAt(i);
+            if (view instanceof EditText) {
+                ((EditText)view).setText("");
+            }
+
+            if(view instanceof ViewGroup && (((ViewGroup)view).getChildCount() > 0))
+                clearForm((ViewGroup)view);
+        }
+    }
+
     public static void setAppFontTextView(Context mContext, TextView txt) {
         Typeface custom_font = Typeface.createFromAsset(mContext.getAssets(), "Quicksand-Regular.otf");
         txt.setTypeface(custom_font);
@@ -101,7 +116,7 @@ public class Globals {
     }
     static  public String getSimnumber(Context con){
         TelephonyManager TMgr = (TelephonyManager)con.getSystemService(Context.TELEPHONY_SERVICE);
-        return TMgr.getLine1Number();
+        return TMgr.getSubscriberId();
     }
 
     public static void setAppFontEditView(Context mContext, EditText txt) {
@@ -142,11 +157,15 @@ public class Globals {
     static public String getdeviceId(Context context) {
         // GET DEVICE ID
         String deviceId = "";
-        TelephonyManager telephonyManager = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
-        deviceId = telephonyManager.getDeviceId();
-        if(deviceId.equals("") && deviceId==null) {
-              deviceId = Settings.Secure.getString(context.getContentResolver(),
-                    Settings.Secure.ANDROID_ID);
+        try {
+            TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+            deviceId = telephonyManager.getDeviceId();
+            if (deviceId.equals("") && deviceId == null) {
+                deviceId = Settings.Secure.getString(context.getContentResolver(),
+                        Settings.Secure.ANDROID_ID);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
         return deviceId;
     }
@@ -484,7 +503,7 @@ public class Globals {
 
                 @Override
                 public void onSuccess() {
-                    Log.i("SUSHIL", "Image Loaded");
+                    //Log.i("SUSHIL", "Image Loaded");
                 }
 
                 @Override

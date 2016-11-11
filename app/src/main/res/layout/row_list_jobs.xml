@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:padding="5dp"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="5dp"
+
+        android:background="@drawable/selecter_home_category">
+
+        <TextView
+            android:id="@+id/JobTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"/>
+
+        <TextView
+            android:id="@+id/Eligibility"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textStyle="bold"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:layout_marginTop="5dp"
+            android:textColor="@android:color/black"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/salary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:layout_marginTop="5dp"
+            android:textColor="@android:color/black"/>
+
+
+        <Button
+            android:layout_width="70dp"
+            android:layout_height="40dp"
+            android:text="Call"
+            android:id="@+id/buttonCall"
+            android:layout_gravity="right"
+            android:background="@drawable/selecter_call_btn_listview"
+            />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

@@ -2,11 +2,14 @@ package com.iseva.app.source;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -60,8 +63,91 @@ public class Custom_Adapter_BusinessExtra extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Holder_BusinessExtra hb;
+
+        Holder_ServiceProvider hd;
         if (convertView == null) {
+            // This a new view we inflate the new layout
+            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.custom_row_iservice_provider, parent, false);
+
+            hd = new Holder_ServiceProvider();
+
+            hd.txtName = (TextView) convertView.findViewById(R.id.txtBrandName);
+            hd.txtAddress = (TextView) convertView.findViewById(R.id.txtBrandAddress);
+            hd.txtContact = (TextView) convertView.findViewById(R.id.txtBrandQuality);
+            hd.img = (ImageView) convertView.findViewById(R.id.imgBrand);
+            hd.btnCall = (Button) convertView.findViewById(R.id.buttonCall);
+            int totalContent = Globals.getScreenSize((Activity) mContext).x;
+            int imgWidth = totalContent - ((totalContent * 75) / 100);
+
+
+            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) hd.img
+                    .getLayoutParams();
+            lp.width = imgWidth;
+            lp.height = (int) (imgWidth * 1.3);
+
+            hd.img.setLayoutParams(lp);
+            convertView.setTag(hd);
+        }else{
+            hd = (Holder_ServiceProvider)convertView.getTag();
+        }
+        //final LinearLayout linearRating = (LinearLayout)convertView.findViewById(R.id.linearratingView);
+        //final View viewMain= convertView;
+        final Object_BusinessExtraData obj = filteredList.get(position);
+
+       /* LinearLayout linearRatingbtn = (LinearLayout) convertView.findViewById(R.id.ratingLinearunder);
+        linearRatingbtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    serviceId = obj.id;
+                    if (obj.userrate != 0) {
+                        openDialog((float) 3.5);
+                    } else {
+                        openDialog(0);
+                    }
+
+                } catch (Exception e) {
+                    openDialog(0);
+                    e.printStackTrace();
+                }
+            }
+        });*/
+        /*Button btnCall = (Button) convertView.findViewById(R.id.buttonCall);
+        TextView txtBrandName = (TextView) convertView.findViewById(R.id.txtBrandName);
+        TextView txtBrandQua = (TextView) convertView.findViewById(R.id.txtBrandQuality);
+        TextView txtBrandAdd = (TextView) convertView.findViewById(R.id.txtBrandAddress);*/
+        //TextView txtBrandRate = (TextView) convertView.findViewById(R.id.rate);
+
+        /*Globals.setAppFontTextView(mContext, txtBrandName);
+        Globals.setAppFontTextView(mContext, txtBrandQua);
+        Globals.setAppFontTextView(mContext, txtBrandAdd);*/
+        //Globals.setAppFontTextView(mContext, txtBrandRate);
+        // txtBrandName.setTypeface(null, Typeface.BOLD);
+        if (obj.heading != null)
+            hd.txtName.setText(obj.heading);
+        /*if (obj.contact != null)
+            hd.txtContact.setText(obj.contact);*/
+        if (obj.content != null)
+            hd.txtAddress.setText(obj.content);
+        /*if (obj.ratingSeviceProvider != null)
+            txtBrandRate.setText(obj.ratingSeviceProvider);
+        else
+            linearRatingbtn.setVisibility(View.GONE);*/
+        if (obj.images.size() != 0) {
+            //ImageView img = (ImageView) convertView.findViewById(R.id.imgBrand);
+            Globals.loadImageIntoImageView(hd.img, obj.images.get(0), mContext,R.drawable.default_offer,R.drawable.default_offer);
+        }
+        hd.btnCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callMerchant(obj.contact);
+            }
+        });
+
+
+        //Holder_BusinessExtra hb;
+        /*if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.custom_row_offers, parent, false);
             hb = new Holder_BusinessExtra();
@@ -90,8 +176,8 @@ public class Custom_Adapter_BusinessExtra extends BaseAdapter {
     //TextView txtNameOffers = (TextView)convertView.findViewById(R.id.txtNameOffers);
     //TextView txtContent = (TextView)convertView.findViewById(R.id.txtContent);
 
-       /* Globals.setAppFontTextView(mContext,txtContent);
-        Globals.setAppFontTextView(mContext, txtNameOffers);*/
+       *//* Globals.setAppFontTextView(mContext,txtContent);
+        Globals.setAppFontTextView(mContext, txtNameOffers);*//*
 
     final Object_BusinessExtraData obj = filteredList.get(position);
     if(obj.heading!=null)
@@ -99,15 +185,15 @@ public class Custom_Adapter_BusinessExtra extends BaseAdapter {
     {
         hb.txtHeading.setText(obj.heading);
     }
-       /* if(obj.content!=null){
+       *//* if(obj.content!=null){
             txtContent.setText(obj.content);
-        }*/
+        }*//*
     if(obj.images.size()!=0)
    {
         String url = obj.images.get(0);
         Globals.loadImageIntoImageView(hb.img, url, mContext, R.drawable.default_offer, R.drawable.default_offer);
     }
-
+*/
     final int id = obj.id;
     convertView.setOnClickListener(new View.OnClickListener()
 
@@ -123,6 +209,49 @@ public class Custom_Adapter_BusinessExtra extends BaseAdapter {
 
     return convertView;
 }
+
+
+    private void callMerchant(final String con) {
+        Globals.showAlertDialog(
+                "Alert",
+                "Are you sure to call?",
+                mContext,
+                "Ok",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,
+                                        int id) {
+                        callIntent(con);
+                    }
+                }, "Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,
+                                        int id) {
+                        return;
+                    }
+                }, false);
+    }
+
+
+    private void callIntent(String con) {
+        // Call_PhoneListener cList = new Call_PhoneListener(mContext);
+
+        // cList.registerNumber(Globals.getSimnumber(mContext));
+        Intent callIntent = new Intent(
+                Intent.ACTION_CALL);
+        callIntent.setData(Uri.parse("tel:"
+                + con));
+        // callIntent.putExtra("com.android.phone.extra.slot", 0);
+        // callIntent.putExtra("com.android.phone.extra.slot", 0);
+        try {
+            ((Activity) mContext).startActivity(callIntent);
+
+        } catch (SecurityException ex) {
+            ex.printStackTrace();
+        }
+
+
+    }
+
 
     private void navigationOffers(View v, int id, int masterid) {
 

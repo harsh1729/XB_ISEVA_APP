@@ -35,9 +35,9 @@ public class Custom_URLs_Params {
         return Globals.DEFAULT_APP_SERVER_PATH + "user/register";
     }
 
-    public static String getURL_SUBCATE(int cateId) {
+    public static String getURL_citycate() {
 
-        return Globals.DEFAULT_APP_SERVER_PATH + "city/getAllCities";
+        return Globals.DEFAULT_APP_SERVER_PATH + "jobs/getcitiescate";
     }
 
     public static String getURL_Login_Merchant() {
@@ -106,9 +106,31 @@ public class Custom_URLs_Params {
         return Globals.DEFAULT_APP_SERVER_PATH +"businessextra/add";
     }
 
+    public static String getURL_UploadResumeFile() {
+
+        return Globals.DEFAULT_APP_SERVER_PATH +"gallery/uploadresume";
+    }
+    public static String getURL_PostJob() {
+
+        return Globals.DEFAULT_APP_SERVER_PATH +"jobs/addjobs";
+    }
+
+    public static String getURL_UploadData() {
+
+        return Globals.DEFAULT_APP_SERVER_PATH +"jobs/registerall";
+    }
+    public static String getURL_ResumeRegister() {
+
+        return Globals.DEFAULT_APP_SERVER_PATH +"jobs/register";
+    }
     public static String getURL_Get_Service_Provider() {
 
         return Globals.DEFAULT_APP_SERVER_PATH +"user/get";
+    }
+
+    public static String getURL_Get_Jobs() {
+
+        return Globals.DEFAULT_APP_SERVER_PATH +"jobs/getjobs";
     }
     public static String getURL_Get_Service_Provider_Data() {
 
@@ -350,6 +372,81 @@ public class Custom_URLs_Params {
         Log.i("SUSHIL", "getParams_ --->" + map);
         return map;
     }
+
+    public static HashMap<String, String> getParams_UploadResume(Context con, int profileid, String Fname,String DOB,String gender,String Address,
+                                                               String qualification,String experience,String currentJob,String currentSalary,String others,int fileid,int cityID,int catid) {
+
+        Object_AppConfig config = new Object_AppConfig(con);
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("imgid", profileid+"");
+        map.put("fname", Fname);
+        map.put("age", DOB+" Years");
+        map.put("gender",gender);
+        map.put("address",Address);
+       // map.put("number",number);
+
+       // map.put("email", email);
+        map.put("quali", qualification);
+        map.put("experi", experience);
+        map.put("currentjob",currentJob);
+        map.put("currentsalary",currentSalary);
+        map.put("others",others);
+
+        map.put("resume",fileid+"");
+        map.put("cityid",cityID+"");
+        map.put("empid",config.getEmpId()+"");
+        map.put("catid",catid+"");
+
+
+
+        Log.i("SUSHIL", "getParams_ --->" + map);
+        return map;
+    }
+
+
+    public static HashMap<String,String> getParams_ResumeRegister(String name,String number,String username,String password){
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("name", name);
+        map.put("number", number);
+
+        map.put("username", username);
+        map.put("password",password);
+
+        Log.i("SUSHIL","Hash Map "+map);
+
+        return map;
+    }
+
+
+
+
+    public static HashMap<String, String> getParams_UploadJob(Context con, String jobTitle,String Address,String number,
+                                                                 String expdate,String eligi,String profile,String salary,String holiday,String timings,String others,int cityID,int cateID) {
+
+        //Object_AppConfig config = new Object_AppConfig(con);
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("title", jobTitle);
+        map.put("eligibility", eligi);
+
+        map.put("job_profile", profile);
+        map.put("salary",salary);
+        map.put("personname",Address);
+        map.put("personnumber",number);
+
+        map.put("expdate", expdate);
+        map.put("holidays", holiday);
+        map.put("timings", timings);
+        map.put("others",others);
+
+        map.put("catid",cateID+"");
+        map.put("cityid",cityID+"");
+
+
+
+        Log.i("SUSHIL", "getParams_ --->" + map);
+        return map;
+    }
+
 
     public static HashMap<String, String> getParams_UploadImageStringParams(Context con, String key) {
 

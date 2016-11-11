@@ -15,7 +15,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -83,7 +82,11 @@ public class Activity_Home extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Custom_GetMobile_Number.app_launched(this) ;
-
+        /*Call_PhoneListener phoneListener = new Call_PhoneListener(this);
+        TelephonyManager telephony = (TelephonyManager)
+                getSystemService(Context.TELEPHONY_SERVICE);
+        telephony.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
+        Log.i("SUSHIL", "PhoneStateListener");*/
         //NavigationView nav = (NavigationView) findViewById(R.id.nav_view);
 
        /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -234,8 +237,8 @@ public class Activity_Home extends AppCompatActivity
     protected void onDestroy() {
         super.onDestroy();
 
-        unbindDrawables(findViewById(R.id.RootView));
-        System.gc();
+       // unbindDrawables(findViewById(R.id.RootView));
+      //  System.gc();
     }
 
     private void unbindDrawables(View view) {
@@ -1008,9 +1011,19 @@ public class Activity_Home extends AppCompatActivity
             naviContactUs();
             return true;
         }
+        else if(id==R.id.action_Job) {
+            naviJobs();
+            return  true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
+
+    private void naviJobs(){
+        Intent i = new Intent(this,Activity_Search_Resume.class);
+        startActivity(i);
+    }
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override

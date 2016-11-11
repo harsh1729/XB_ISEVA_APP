@@ -188,14 +188,18 @@ public class Custom_Adapter_ServiceProvider extends BaseAdapter implements Filte
     }
 
     private void callIntent(String con) {
-        Call_PhoneListener cList = new Call_PhoneListener(mContext);
-        cList.registerNumber(Globals.getSimnumber(mContext));
+       // Call_PhoneListener cList = new Call_PhoneListener(mContext);
+
+       // cList.registerNumber(Globals.getSimnumber(mContext));
         Intent callIntent = new Intent(
                 Intent.ACTION_CALL);
         callIntent.setData(Uri.parse("tel:"
                 + con));
+       // callIntent.putExtra("com.android.phone.extra.slot", 0);
+       // callIntent.putExtra("com.android.phone.extra.slot", 0);
         try {
             ((Activity) mContext).startActivity(callIntent);
+
         } catch (SecurityException ex) {
             ex.printStackTrace();
         }

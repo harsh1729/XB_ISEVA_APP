@@ -399,8 +399,8 @@ private String getEpaperBigImageUrl(int pos , String url){
 		//selectedCity = null;
 	   Picasso.with(this).cancelRequest(target);
 	   super.onDestroy();
-		unbindDrawables(findViewById(R.id.rlytRoot));
-		System.gc();
+		//unbindDrawables(findViewById(R.id.rlytRoot));
+		//System.gc();
 	}
 
 	private void setSlidingMenu(ArrayList<Object_Epaper> list){

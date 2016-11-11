@@ -305,8 +305,9 @@ public class Activity_Login_Merchant extends AppCompatActivity implements TextWa
 
     public void iAgree(View v){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(this.getResources().getString(R.string.app_name));
-        builder.setMessage(this.getResources().getString(R.string.agreement))
+        builder.setTitle("Disclaimer");
+        //this.getResources().getString(R.string.app_name)
+        builder.setMessage(this.getResources().getString(R.string.disclaimer))
                 .setCancelable(false)
                 .setPositiveButton("I Agree", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {

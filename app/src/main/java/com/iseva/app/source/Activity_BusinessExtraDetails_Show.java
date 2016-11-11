@@ -79,8 +79,8 @@ public class Activity_BusinessExtraDetails_Show extends Activity {
     protected void onDestroy() {
         super.onDestroy();
 
-        unbindDrawables(findViewById(R.id.RootView));
-        System.gc();
+       // unbindDrawables(findViewById(R.id.RootView));
+        //System.gc();
     }
 
     private void unbindDrawables(View view) {
@@ -336,8 +336,8 @@ public class Activity_BusinessExtraDetails_Show extends Activity {
 
     private void callIntent() {
 
-        Call_PhoneListener cList = new Call_PhoneListener(this);
-        cList.registerNumber(Globals.getSimnumber(this));
+       // Call_PhoneListener cList = new Call_PhoneListener(this);
+        //cList.registerNumber(Globals.getSimnumber(this));
         Intent callIntent = new Intent(
                 Intent.ACTION_CALL);
         callIntent.setData(Uri.parse("tel:"

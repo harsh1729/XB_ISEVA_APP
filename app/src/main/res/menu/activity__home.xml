@@ -7,6 +7,9 @@
         android:orderInCategory="100" app:showAsAction="never" />
     <item android:id="@+id/action_contactus" android:title="@string/action_contact"
         android:orderInCategory="100" app:showAsAction="never" />
+
+    <item android:id="@+id/action_Job" android:title="Jobs"
+        android:orderInCategory="100" app:showAsAction="never" />
     <item
         android:id="@+id/action_search"
         android:icon="@android:drawable/ic_search_category_default"
