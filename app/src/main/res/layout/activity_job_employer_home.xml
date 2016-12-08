@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_white"
+    android:orientation="vertical"
+    tools:context="com.iseva.app.source.Activity_Job_Employer_Home">
+
+<!--    <include layout="@layout/app_header"></include>-->
+
+    <!--<ImageView
+        android:id="@+id/imgLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_marginRight="10dp"
+        android:visibility="gone"
+        android:onClick="imgLogout"
+        android:layout_gravity="right"
+        android:src="@drawable/logout"/>-->
+
+    <LinearLayout
+        android:id="@+id/imgLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="imgLogout"
+        android:layout_gravity="right"
+        android:layout_marginRight="10dp"
+        android:padding="10dp"
+
+        android:visibility="gone"
+        android:orientation="horizontal"
+        android:layout_alignParentRight="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Logout"
+            android:layout_gravity="center_vertical"
+            android:typeface="serif"
+            android:layout_marginRight="5dp"
+            android:textColor="@android:color/black"/>
+        <ImageView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:src="@drawable/logout"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:padding="5dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+         <TextView
+             android:id="@+id/txtWelcome"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:textColor="@color/colorPrimary"
+             android:textStyle="bold"
+             android:typeface="serif"
+             android:visibility="gone"
+             android:text="Welcome"
+             android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/txtDes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:text="To browse resumes and post new jobs, please register with us. Press login if you are already registered."
+            android:typeface="serif"
+            android:textSize="17sp"/>
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_weight="8"
+        android:gravity="bottom"
+
+        android:background="@drawable/employeess"
+        android:layout_height="0dp" android:orientation="vertical">
+
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:onClick="login"
+            android:background="@drawable/selector_btn_app"
+            android:textColor="@drawable/selector_btn_text_app"
+            android:text="Login"/>
+
+        <Button
+            android:id="@+id/btnRegister"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:onClick="register"
+            android:background="@drawable/selector_btn_app"
+            android:textColor="@drawable/selector_btn_text_app"
+            android:text="Register"/>
+
+
+        <LinearLayout
+            android:id="@+id/linear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnFindResume"
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:onClick="findResume"
+                android:background="@drawable/selector_btn_app"
+                android:textColor="@drawable/selector_btn_text_app"
+                android:text="Find Resume"/>
+
+            <Button
+                android:id="@+id/btnPostJobs"
+                android:layout_width="match_parent"
+                android:onClick="postJob"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/selector_btn_app"
+                android:textColor="@drawable/selector_btn_text_app"
+                android:text="Post Jobs"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <include layout="@layout/app_footer"></include>
+
+</LinearLayout>

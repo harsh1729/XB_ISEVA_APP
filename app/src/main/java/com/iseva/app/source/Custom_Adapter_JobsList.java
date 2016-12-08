@@ -79,10 +79,18 @@ public class Custom_Adapter_JobsList extends RecyclerView.Adapter<Custom_Adapter
         holder.btnCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                call(obj.getContact());
+                Globals.call(mContext,obj.getContact());
             }
         });
 
+
+        holder.txtTitle.getRootView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Globals.showShortToast(mContext,"Clicked");
+                naviDetails(obj.getId());
+            }
+        });
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -91,39 +99,9 @@ public class Custom_Adapter_JobsList extends RecyclerView.Adapter<Custom_Adapter
         return mDataset.size();
     }
 
-    private void call(final String con) {
-        Globals.showAlertDialog(
-                "Alert",
-                "Are you sure to call?",
-                mContext,
-                "Ok",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,
-                                        int id) {
-                        callIntent(con);
-                    }
-                }, "Cancel",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,
-                                        int id) {
-                        return;
-                    }
-                }, false);
-    }
-
-    private void callIntent(String con) {
-
-        Intent callIntent = new Intent(
-                Intent.ACTION_CALL);
-        callIntent.setData(Uri.parse("tel:"
-                + con));
-        try {
-            ((Activity) mContext).startActivity(callIntent);
-
-        } catch (SecurityException ex) {
-            ex.printStackTrace();
-        }
-
-
+    private void naviDetails(int id){
+        Intent i = new Intent(mContext,Activity_Job_Details.class);
+        i.putExtra("id",id);
+        ((Activity)mContext).startActivity(i);
     }
 }

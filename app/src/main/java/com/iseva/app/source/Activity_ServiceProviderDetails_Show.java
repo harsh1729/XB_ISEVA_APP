@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.CardView;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -86,12 +88,12 @@ public class Activity_ServiceProviderDetails_Show extends FragmentActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callMerchant();
+                Globals.call(Activity_ServiceProviderDetails_Show.this,contact);
             }
         });
     }
 
-    private void callMerchant() {
+    /*private void callMerchant() {
         Globals.showAlertDialog(
                 "Alert",
                 "Are you sure to call?",
@@ -125,7 +127,7 @@ public class Activity_ServiceProviderDetails_Show extends FragmentActivity {
         }
 
 
-    }
+    }*/
 
 
     @Override
@@ -217,7 +219,7 @@ public class Activity_ServiceProviderDetails_Show extends FragmentActivity {
                         img.setLayoutParams(lp);
 
 
-                        Globals.loadImageIntoImageView(img, objectImageProfile.getString("imageurl"), this, R.drawable.default_offer, R.drawable.default_offer);
+                        Globals.loadImageIntoImageView(img, objectImageProfile.getString("imageurl"), this, R.drawable.default_offer, R.drawable.default_offer,200,200);
                     }
 
 
@@ -251,7 +253,7 @@ public class Activity_ServiceProviderDetails_Show extends FragmentActivity {
                                 Globals.preloadImage(getApplicationContext(), objImage.getString("imageurl"));
                                 final ImageView img = Custom_Control.getImageView(this, 130, 130, 1);
                                 //downloadImag(objImage.getString("imageurl"),img);
-                                Globals.loadImageIntoImageView(img, objImage.getString("imageurl"), this, R.drawable.default_offer, R.drawable.default_offer);
+                                Globals.loadImageIntoImageView(img, objImage.getString("imageurl"), this, R.drawable.default_offer, R.drawable.default_offer,150,150);
                                 layoutMainHor.addView(img);
                                 img.setTag(j);
                                 listImageUrls.add(objImage.getString("imageurl"));
@@ -276,9 +278,23 @@ public class Activity_ServiceProviderDetails_Show extends FragmentActivity {
                             linear.setVisibility(View.VISIBLE);
                             TextView txtDetails = (TextView) findViewById(R.id.txtContact);
                             txtDetails.setText(obj.getString("contactdetails"));
+
+                            Linkify.addLinks(txtDetails, Linkify.ALL);
                         }
                     }
 
+
+                    /*if (obj.has("email")) {
+                        LinearLayout linear = (LinearLayout) findViewById(R.id.linearEmails);
+                        if (obj.getString("email").isEmpty() && obj
+                                .getString("email").equals("")) {
+                            linear.setVisibility(View.GONE);
+                        } else {
+                            linear.setVisibility(View.VISIBLE);
+                            TextView txtDetails = (TextView) findViewById(R.id.txtEmail);
+                            txtDetails.setText(obj.getString("email"));
+                        }
+                    }*/
                     if (obj.has("services")) {
                         LinearLayout linear = (LinearLayout) findViewById(R.id.linearServices);
                         if (obj.getString("services").isEmpty()) {
@@ -287,6 +303,7 @@ public class Activity_ServiceProviderDetails_Show extends FragmentActivity {
                             linear.setVisibility(View.VISIBLE);
                             TextView txtDetails = (TextView) findViewById(R.id.txtServices);
                             txtDetails.setText(obj.getString("services"));
+                            Linkify.addLinks(txtDetails, Linkify.ALL);
                         }
                     }
 
@@ -330,6 +347,11 @@ public class Activity_ServiceProviderDetails_Show extends FragmentActivity {
 
                                                 txtContent = Custom_Control.getTextViewWithoutWeight(this, values);
                                                 txtContent.setTextSize(15);
+                                                //Linkify.addLinks(txtContent, Linkify.PHONE_NUMBERS);
+                                               // Linkify.addLinks(txtContent, Linkify.ALL);
+                                                //txtContent.setAutoLinkMask(Linkify.ALL);
+                                                //txtContent.setLinksClickable(true);
+                                                //txtContent.setMovementMethod(LinkMovementMethod.getInstance());
                                                 txtContent.setTextColor(getResources().getColor(android.R.color.black));
 
                                                 layoutSub.addView(txtLabel);

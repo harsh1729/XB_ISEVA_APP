@@ -205,7 +205,7 @@ public class Activity_Login_Merchant extends AppCompatActivity implements TextWa
             Custom_VolleyObjectRequest jsonObjectRQST = new Custom_VolleyObjectRequest(
                     Request.Method.POST,
                     Custom_URLs_Params.getURL_Login_Merchant(),
-                    Custom_URLs_Params.getParams_Login(this, username, password), new Response.Listener<JSONObject>() {
+                    Custom_URLs_Params.getParams_LoginMerchant(this, username, password), new Response.Listener<JSONObject>() {
 
                 @Override
                 public void onResponse(JSONObject response) {
@@ -304,29 +304,11 @@ public class Activity_Login_Merchant extends AppCompatActivity implements TextWa
 
 
     public void iAgree(View v){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Disclaimer");
-        //this.getResources().getString(R.string.app_name)
-        builder.setMessage(this.getResources().getString(R.string.disclaimer))
-                .setCancelable(false)
-                .setPositiveButton("I Agree", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        register();
-                    }
-                })
-                .setNegativeButton("Decline", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
+        Globals.iAgree(this,register(),getResources().getString(R.string.disclaimer));
     }
 
-    private void register(){
-        Intent i  = new Intent(this,Activity_RegisterUser.class);
-        startActivity(i);
-        this.finish();
+    private Intent register(){
+        return new Intent(this,Activity_RegisterUser.class);
     }
 
     private void inti(){

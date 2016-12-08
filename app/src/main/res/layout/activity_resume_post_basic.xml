@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
 
-    tools:context="com.iseva.app.source.Activity_Resume_Post_Basic">
+    tools:context=".Activity_Job_Employee_Employer_Basic">
 
 
     <include layout="@layout/app_header" />
@@ -36,8 +36,7 @@
                 android:layout_width="match_parent"
                 android:background="@drawable/rounded_grey_border"
                 android:layout_marginTop="5dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
+                android:padding="8dp"
                 android:layout_height="wrap_content" />
 
         </LinearLayout>
@@ -58,8 +57,7 @@
                 android:background="@drawable/rounded_grey_border"
                 android:layout_width="match_parent"
                 android:layout_marginTop="5dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
+                android:padding="8dp"
                 android:inputType="number"
                 android:layout_height="wrap_content" />
 
@@ -81,8 +79,7 @@
                 android:background="@drawable/rounded_grey_border"
                 android:layout_width="match_parent"
                 android:layout_marginTop="5dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
+                android:padding="8dp"
                 android:layout_height="wrap_content" />
 
         </LinearLayout>
@@ -101,8 +98,7 @@
             <EditText
                 android:id="@+id/edtPassword"
                 android:background="@drawable/rounded_grey_border"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp"
+                android:padding="8dp"
                 android:layout_width="match_parent"
                 android:layout_marginTop="5dp"
 
@@ -111,6 +107,14 @@
                 android:layout_height="wrap_content" />
 
         </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:typeface="serif"
+            android:layout_marginLeft="8dp"
+            android:text="*all fields are required."
+            android:textColor="#cc0000"/>
 
       <Button
           android:id="@+id/btnRegister"

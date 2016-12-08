@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.MenuItemCompat;
@@ -39,10 +40,12 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
+import com.jude.rollviewpager.hintview.ColorPointHintView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -74,6 +77,7 @@ public class Activity_Home extends AppCompatActivity
     View mainContent;
     NavigationView navigationView;
     private float lastTranslate = 0.0f;
+    private com.jude.rollviewpager.RollPagerView mRollPagerView;
     //private boolean alreadyHeader;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -419,13 +423,18 @@ public class Activity_Home extends AppCompatActivity
             //height = height/3;
             lpCard.height = (int) (width*0.60);
            // cv.setLayoutParams(lpCard);
-            mViewPager = (ViewPager) findViewById(R.id.view_pager);
+            Custom_Adapter_Home_Addver adapter = new Custom_Adapter_Home_Addver(this, false, offers);
+            mRollPagerView = (com.jude.rollviewpager.RollPagerView)findViewById(R.id.viewPager);
+            mRollPagerView.setHintView(new ColorPointHintView(this, Color.WHITE, Color.BLACK));
+            mRollPagerView.setAdapter(adapter);
+          /*  mViewPager = (ViewPager) findViewById(R.id.view_pager);
             mIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
             Custom_Adapter_Home_Addver adapter = new Custom_Adapter_Home_Addver(this, false, offers);
+            mViewPager.setOffscreenPageLimit(1);
             mViewPager.setAdapter(adapter);
             mIndicator.setViewPager(mViewPager);
             size = offers.size();
-            pageSwitcher();
+            pageSwitcher();*/
         } else {
             CardView cv = (CardView) findViewById(R.id.card_viewHome);
             cv.setVisibility(View.GONE);
@@ -672,10 +681,10 @@ public class Activity_Home extends AppCompatActivity
         int width = (Globals.getScreenSize(this).x  -(marginDefault*3))/ 2;
         // int heightLinear = Globals.getScreenSize(this).y/3;
         int height = width;//(int) (Globals.getScreenSize(this).y / 3.5);
-        ScrollView sc = (ScrollView) findViewById(R.id.scrollView1);
-        sc.setSmoothScrollingEnabled(true);
-        sc.smoothScrollBy(0, sc.getScrollY());
-        LinearLayout scrollView = (LinearLayout) findViewById(R.id.scRollLinear);
+       final ScrollView sc = (ScrollView) findViewById(R.id.scrollView1);
+        //sc.setSmoothScrollingEnabled(true);
+        //sc.smoothScrollBy(0, sc.getScrollY());
+       final LinearLayout scrollView = (LinearLayout) findViewById(R.id.scRollLinear);
         scrollView.removeAllViews();
         for (int i = 0; i < catList.size(); i++) {
             Log.i("SUSHIL","cnt i "+i);
@@ -692,7 +701,8 @@ public class Activity_Home extends AppCompatActivity
                 String imagename = objectCategory.image;
                 // img.setImageBitmap(BitmapFactory.decodeByteArray(objectCategory.image, 0, objectCategory.image.length));
                 int resID = getResources().getIdentifier(imagename, "drawable", getPackageName());
-                img.setBackgroundDrawable(getResources().getDrawable(resID));
+                //img.setBackgroundDrawable(getResources().getDrawable(resID));
+                Picasso.with(this).load(resID).into(img);
                 txtName.setText(objectCategory.name);
                 LinearLayout.LayoutParams lpLinear = new LinearLayout.LayoutParams(width , LinearLayout.LayoutParams.WRAP_CONTENT);
                 LinearLayout.LayoutParams lpImg = new LinearLayout.LayoutParams(width - marginDefault * 2, height - marginDefault *2);
@@ -738,7 +748,8 @@ public class Activity_Home extends AppCompatActivity
                     String imagename1 = objectCategory1.image;
                     // img.setImageBitmap(BitmapFactory.decodeByteArray(objectCategory.image, 0, objectCategory.image.length));
                     int resID1 = getResources().getIdentifier(imagename1, "drawable", getPackageName());
-                    img1.setBackgroundDrawable(getResources().getDrawable(resID1));
+                    //img1.setBackgroundDrawable(getResources().getDrawable(resID1));
+                    Picasso.with(this).load(resID1).into(img1);
                     txtName1.setText(objectCategory1.name);
                     LinearLayout.LayoutParams lpLinear1 = new LinearLayout.LayoutParams(width, LinearLayout.LayoutParams.WRAP_CONTENT);
                     LinearLayout.LayoutParams lpImg1 = new LinearLayout.LayoutParams(width - marginDefault * 2, height- marginDefault * 2);
@@ -780,6 +791,15 @@ public class Activity_Home extends AppCompatActivity
 
             scrollView.addView(layout);
         }
+
+        /*sc.post(new Runnable() {
+
+            @Override
+            public void run() {
+                Log.i("SUSHIL","smoothScroll");
+                sc.smoothScrollTo(0,scrollView.getHeight());
+            }
+        });*/
     }
 
 
@@ -1011,16 +1031,16 @@ public class Activity_Home extends AppCompatActivity
             naviContactUs();
             return true;
         }
-        else if(id==R.id.action_Job) {
-            naviJobs();
+        else if(id==R.id.action_about) {
+            naviAboutDev();
             return  true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void naviJobs(){
-        Intent i = new Intent(this,Activity_Search_Resume.class);
+    private void naviAboutDev(){
+        Intent i = new Intent(this,Activity_About_Developer.class);
         startActivity(i);
     }
 

@@ -180,6 +180,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/selecter_details_call_btn"
         android:paddingBottom="5dp"
+        android:textColor="@color/app_dark"
         android:paddingTop="5dp"
         android:text="CALL" />
 

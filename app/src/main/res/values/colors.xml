@@ -7,15 +7,17 @@
     <color name="statusBarColor">#0d0d0e</color>
     <color name="app_white">#ffffff</color>
     <color name="app_gray">#bcb8b8</color>
+    <color name="app_light_gray">#DADADA</color>
 
     <color name="holo_blue_dark">#ff0099cc</color>
     <color name="view_divider_color">#BABABA</color>
     <color name="view_divider_color_2">#DADADA</color>
 
-    <color name="app_green">#32CD32</color>
+    <color name="app_green">#49E20E</color><!-- #0bae0b -->
+    <color name="app_dark">#202021</color>
     <color name="app_blue">#1BAFCD</color>
     <color name="app_darkblue">#15879e</color>
-    <color name="app_darkgreen">#228B22</color>
+    <color name="app_darkgreen">#0bae0b</color><!-- #0bae0b #228B22-->
     <color name="windowBackground">#eeecde</color>
 
 </resources>

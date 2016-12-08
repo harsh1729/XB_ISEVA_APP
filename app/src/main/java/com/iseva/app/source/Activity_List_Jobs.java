@@ -43,10 +43,14 @@ public class Activity_List_Jobs extends Activity {
                 finish();
             }
         });
-        getJobs();
+        if(getIntent()!=null){
+
+            getJobs(getIntent().getIntExtra("catid",-1),getIntent().getIntExtra("cityid",-1));
+        }
+
     }
 
-    private void getJobs(){
+    private void getJobs(int catid,int cityid){
         Custom_ConnectionDetector cd = new Custom_ConnectionDetector(this);
         if(!cd.isConnectingToInternet()){
             Globals.showAlert("Error",Globals.INTERNET_ERROR,this);
@@ -56,6 +60,13 @@ public class Activity_List_Jobs extends Activity {
                 pd = Globals.showLoadingDialog(pd, this, false, "");
                 //later add catid and cityid in map to get catid and cityid wise jobs
                 HashMap<String,String> map = new HashMap<>();
+                if(catid!=-1){
+                    map.put("catid",catid+"");
+                }
+                if(cityid!=-1){
+                    map.put("cityid",cityid+"");
+                }
+                Log.i("SUSHIL","map is "+map);
                 Custom_VolleyObjectRequest jsonObjectRQST = new Custom_VolleyObjectRequest(
                         Request.Method.POST,
                         Custom_URLs_Params.getURL_Get_Jobs(),

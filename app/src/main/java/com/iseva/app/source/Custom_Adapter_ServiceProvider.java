@@ -141,7 +141,7 @@ public class Custom_Adapter_ServiceProvider extends BaseAdapter implements Filte
             linearRatingbtn.setVisibility(View.GONE);*/
         if (obj.imageUrl != null) {
             //ImageView img = (ImageView) convertView.findViewById(R.id.imgBrand);
-           Globals.loadImageIntoImageView(hd.img, obj.imageUrl, mContext,R.drawable.default_offer,R.drawable.default_offer);
+           Globals.loadImageIntoImageView(hd.img, obj.imageUrl, mContext,R.drawable.default_offer,R.drawable.default_offer,300,400);
         }
 
         final int userid = obj.id;
@@ -150,7 +150,7 @@ public class Custom_Adapter_ServiceProvider extends BaseAdapter implements Filte
         hd.btnCall.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                callMerchant(obj.contact);
+                Globals.call(mContext,obj.contact);
             }
         });
         convertView.setOnClickListener(new OnClickListener() {
@@ -167,45 +167,6 @@ public class Custom_Adapter_ServiceProvider extends BaseAdapter implements Filte
     }
 
 
-    private void callMerchant(final String con) {
-        Globals.showAlertDialog(
-                "Alert",
-                "Are you sure to call?",
-                mContext,
-                "Ok",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,
-                                        int id) {
-                        callIntent(con);
-                    }
-                }, "Cancel",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,
-                                        int id) {
-                        return;
-                    }
-                }, false);
-    }
-
-    private void callIntent(String con) {
-       // Call_PhoneListener cList = new Call_PhoneListener(mContext);
-
-       // cList.registerNumber(Globals.getSimnumber(mContext));
-        Intent callIntent = new Intent(
-                Intent.ACTION_CALL);
-        callIntent.setData(Uri.parse("tel:"
-                + con));
-       // callIntent.putExtra("com.android.phone.extra.slot", 0);
-       // callIntent.putExtra("com.android.phone.extra.slot", 0);
-        try {
-            ((Activity) mContext).startActivity(callIntent);
-
-        } catch (SecurityException ex) {
-            ex.printStackTrace();
-        }
-
-
-    }
 
     private void navigate(int userid) {
         Object_AppConfig config = new Object_AppConfig(mContext);

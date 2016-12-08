@@ -4,8 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="0dp"
     android:layout_weight="1"
-    android:padding="1dp"
-    android:background="?attr/colorPrimary"
     android:orientation="vertical" >
 
 <!--
@@ -21,12 +19,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="9.5"
-        android:paddingBottom="4dp"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp"
-        android:paddingTop="4dp" >
+         >
 
-        <ImageButton
+        <!--<ImageButton
             android:id="@+id/imgBtnFooterFind"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -35,20 +30,41 @@
             android:contentDescription="Find Resume"
             android:scaleType="fitCenter"
             android:onClick="footerBtnClick"
-            android:src="@drawable/footer_selecter_search" />
+            android:src="@drawable/footer_selecter_search" />-->
 
-        <ImageButton
+        <TextView
             android:id="@+id/imgBtnFooterPostResume"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:contentDescription="Post Resume"
-            android:scaleType="fitCenter"
             android:onClick="footerBtnClick"
-            android:src="@drawable/footer_selecter_post_resume" />
+            android:gravity="center"
+            android:text="Find Talent"
+            android:typeface="serif"
+            android:background="@drawable/footer_selecter_post_resume"
+            android:textSize="@dimen/txt_app_labels_normal"
+           android:textColor="@drawable/footer_selecter_post_job" />
 
-        <ImageButton
+        <LinearLayout
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/app_white"></LinearLayout>
+
+
+        <TextView
+            android:id="@+id/imgBtnFooterPostJob"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:onClick="footerBtnClick"
+            android:gravity="center"
+            android:typeface="serif"
+            android:textSize="@dimen/txt_app_labels_normal"
+            android:text="Find Jobs"
+            android:background="@drawable/footer_selecter_post_resume"
+            android:textColor="@drawable/footer_selecter_post_job" />
+
+       <!-- <ImageButton
             android:id="@+id/imgBtnFooterPostJob"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -57,7 +73,7 @@
             android:contentDescription="Post Job"
             android:scaleType="fitCenter"
             android:onClick="footerBtnClick"
-            android:src="@drawable/footer_selecter_post_job" />
+            android:src="@drawable/footer_selecter_post_job" />-->
 
 
 </LinearLayout>

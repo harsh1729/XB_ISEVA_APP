@@ -70,6 +70,23 @@ public class Object_AppConfig {
 		}
 
 	}
+
+	public int getEmperId() {
+		int appConfig_empId = -1;
+
+		if(prefs != null)
+			appConfig_empId = prefs.getInt("appConfig_emperId", -1);
+
+		return appConfig_empId;
+	}
+	public void setEmperId(int id) {
+
+		if (editor != null) {
+			editor.putInt("appConfig_emperId", id);
+			editor.commit();
+		}
+
+	}
 	public int getCatId() {
 		int CatId = -1;
 		
@@ -116,6 +133,24 @@ public class Object_AppConfig {
 		
 		if (editor != null) {
 			editor.putString("appConfig_CateName", CateName);
+			editor.commit();
+		}
+
+	}
+
+
+	public String getEmployeeResponse() {
+		String response = "" ;
+
+		if(prefs != null)
+			response = prefs.getString("appConfig_response", "");
+
+		return response;
+	}
+	public void setEmployeeResponse(String response) {
+
+		if (editor != null) {
+			editor.putString("appConfig_response", response);
 			editor.commit();
 		}
 

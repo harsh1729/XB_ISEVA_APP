@@ -207,7 +207,7 @@ public class Activity_Category_Choose extends Activity {
                 Images.put((int) img.getTag(), selectedImagePath);
             }
             else {
-                Globals.loadImageIntoImageView(img, selectedImagePath, this,R.drawable.default_offer,R.drawable.default_offer);
+                Globals.loadImageIntoImageView(img, selectedImagePath, this,R.drawable.default_offer,R.drawable.default_offer,150,150);
                 //offersImages.put((int) img.getTag(), String.valueOf(id));
                 imageid.put((int) img.getTag(),id);
             }
@@ -320,7 +320,7 @@ public class Activity_Category_Choose extends Activity {
                             imageObj = obj.getJSONObject("image");
 
                             if (imageObj.has("imageurl")) {
-                                Globals.loadImageIntoImageView(img, imageObj.getString("imageurl"), this,R.drawable.default_offer,R.drawable.default_offer);
+                                Globals.loadImageIntoImageView(img, imageObj.getString("imageurl"), this,R.drawable.default_offer,R.drawable.default_offer,200,200);
                             }
                             if (imageObj.has("id")) {
                                 imageId = imageObj.getInt("id");

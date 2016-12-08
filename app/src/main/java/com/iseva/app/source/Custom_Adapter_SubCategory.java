@@ -75,19 +75,27 @@ public class Custom_Adapter_SubCategory extends BaseAdapter {
     private void navigation(int catid,int isbusiness,String catName){
           if(isbusiness==0){
               Log.i("SUSHIL","business call id is "+catid);
-              Intent i = new Intent(mContext,Activity_BusinessExtraShow.class);
-              i.putExtra("array","");
-              i.putExtra("bextraid", catid);
-              Object_AppConfig obj = new Object_AppConfig(mContext);
-              obj.setCateName(catName);
-                      ((Activity) mContext).startActivity(i);
+
+                  Intent i = new Intent(mContext, Activity_BusinessExtraShow.class);
+                  i.putExtra("array", "");
+                  i.putExtra("bextraid", catid);
+                  Object_AppConfig obj = new Object_AppConfig(mContext);
+                  obj.setCateName(catName);
+                  ((Activity) mContext).startActivity(i);
+
           }else{
-              Intent i = new Intent(mContext, Activity_ServiceProvider.class);
-              i.putExtra("object", "");
-              i.putExtra("catid", catid);
-              Object_AppConfig obj = new Object_AppConfig(mContext);
-              obj.setCateName(catName);
-              ((Activity) mContext).startActivity(i);
+              if(catid==125){
+                  //hardcoded for more jobs section
+                  Intent i = new Intent(mContext,Activity_Job_Employer_Home.class);
+                  ((Activity)mContext).startActivity(i);
+              }else {
+                  Intent i = new Intent(mContext, Activity_ServiceProvider.class);
+                  i.putExtra("object", "");
+                  i.putExtra("catid", catid);
+                  Object_AppConfig obj = new Object_AppConfig(mContext);
+                  obj.setCateName(catName);
+                  ((Activity) mContext).startActivity(i);
+              }
           }
 
 

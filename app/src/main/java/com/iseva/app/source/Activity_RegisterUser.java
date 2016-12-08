@@ -191,7 +191,7 @@ public class Activity_RegisterUser extends AppCompatActivity {
                 return;
 
             } else {
-                if (!isUsernameValid(edtUsername_login.getText().toString())) {
+                if (!Globals.isUsernameValid(edtUsername_login.getText().toString())) {
                     //Toast.makeText(this,"Please add Valid Username.length upto 8 ", Toast.LENGTH_SHORT).show();
                     edtUsername_login.setError("Username length should be greater than 6 characters.");
                     edtUsername_login.requestFocus();
@@ -312,23 +312,6 @@ public class Activity_RegisterUser extends AppCompatActivity {
         return false;
     }
 
-    private boolean isUsernameValid(String Username) {
-        //TODO: Replace this with your own logic
-        return Username.length() > 6;
-    }
 
-    private boolean isPhoneValid(String phone) {
-        //TODO: Replace this with your own logic
-
-        return phone.length() == 10;
-    }
-
-    public final static boolean isValidEmail(CharSequence target) {
-        if (target == null) {
-            return false;
-        } else {
-            return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
-        }
-    }
 
 }

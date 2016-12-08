@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.iseva.app.source.Activity_Job_Details">
+
+    <include layout="@layout/app_header"/>
+    <ScrollView
+        android:id="@+id/scrollViewDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_weight="1"
+        android:background="@drawable/selector_row_item_listview"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:id="@+id/scrollLinearDetails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="7dp">
+
+            <LinearLayout
+                android:id="@+id/linearTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Business/Institute name"
+                    android:typeface="serif"
+                    android:layout_marginLeft="8dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="17sp"
+
+                    />
+
+                <TextView
+                    android:id="@+id/txtTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@android:color/black"
+                    android:layout_margin="8dp"
+                    android:textSize="15sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0.8dp"
+                    android:layout_marginBottom="6dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@color/colorPrimary"></LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearEligi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Eligibility"
+                        android:typeface="serif"
+                        android:layout_marginLeft="8dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="17sp"
+
+                        />
+
+                    <TextView
+                        android:id="@+id/txtEligiblity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@android:color/black"
+                        android:layout_margin="8dp"
+                        android:textSize="15sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0.8dp"
+                        android:layout_marginBottom="6dp"
+                        android:layout_marginLeft="4dp"
+                        android:layout_marginRight="4dp"
+                        android:layout_marginTop="6dp"
+                        android:background="@color/colorPrimary"></LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearEmployer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Employer"
+                    android:typeface="serif"
+                    android:layout_marginLeft="8dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="17sp"
+
+                    />
+                <TextView
+                    android:id="@+id/txtEmplyerName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:autoLink="phone"
+                    android:textColor="@android:color/black"
+                    android:layout_margin="8dp"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/txtNumberEmplyer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:autoLink="phone"
+                    android:textColor="@android:color/black"
+                    android:layout_margin="8dp"
+                    android:textSize="15sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0.8dp"
+                    android:layout_marginBottom="6dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@color/colorPrimary"></LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearTimings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Timings"
+                    android:typeface="serif"
+                    android:layout_marginLeft="8dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="17sp"
+
+                    />
+
+                <TextView
+                    android:id="@+id/txtTimings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@android:color/black"
+                    android:layout_margin="8dp"
+                    android:textSize="15sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0.8dp"
+                    android:layout_marginBottom="6dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@color/colorPrimary"></LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/linearHolidays"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Working Days"
+                    android:typeface="serif"
+                    android:layout_marginLeft="8dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="17sp"
+
+                    />
+
+                <TextView
+                    android:id="@+id/txtHolidays"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@android:color/black"
+                    android:layout_margin="8dp"
+                    android:textSize="15sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0.8dp"
+                    android:layout_marginBottom="6dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@color/colorPrimary"></LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLastDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Last Date"
+                    android:typeface="serif"
+                    android:layout_marginLeft="8dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="17sp"
+
+                    />
+
+                <TextView
+                    android:id="@+id/txtLastDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@android:color/black"
+                    android:layout_margin="8dp"
+                    android:textSize="15sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0.8dp"
+                    android:layout_marginBottom="6dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@color/colorPrimary"></LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearPayScale"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Pay Scale"
+                    android:typeface="serif"
+                    android:layout_marginLeft="8dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="17sp"
+
+                    />
+
+                <TextView
+                    android:id="@+id/txtPayScale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@android:color/black"
+                    android:layout_margin="8dp"
+                    android:textSize="15sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0.8dp"
+                    android:layout_marginBottom="6dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@color/colorPrimary"></LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearJobProfile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Job Profile"
+                    android:typeface="serif"
+                    android:layout_marginLeft="8dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="17sp"
+
+                    />
+
+                <TextView
+                    android:id="@+id/txtJobProfile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@android:color/black"
+                    android:layout_margin="8dp"
+                    android:textSize="15sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0.8dp"
+                    android:layout_marginBottom="6dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@color/colorPrimary"></LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/linearOthers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Others"
+                    android:typeface="serif"
+                    android:layout_marginLeft="8dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="17sp"
+
+                    />
+
+                <TextView
+                    android:id="@+id/txtOthers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@android:color/black"
+                    android:layout_margin="8dp"
+                    android:textSize="15sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0.8dp"
+                    android:layout_marginBottom="6dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@color/colorPrimary"></LinearLayout>
+            </LinearLayout>
+
+       </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/callBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selecter_details_call_btn"
+        android:paddingBottom="3dp"
+        android:paddingTop="3dp"
+        android:text="CALL" />
+</LinearLayout>

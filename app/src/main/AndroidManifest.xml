@@ -11,7 +11,7 @@
         android:protectionLevel="signature" />
 
     <!-- Permissions -->
-    <uses-permission android:name="android.permission.CALL_PHONE" />
+
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -24,10 +24,8 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.android.vending.BILLING" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
+
 
     <application
         android:name=".Custom_VolleyAppController"
@@ -210,8 +208,7 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activity_Search_Resume"
-            android:launchMode="singleTask"
+            android:name=".Activity_Job_Resume_Search"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
@@ -224,23 +221,48 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible|adjustResize" />
-
-        <activity android:name=".Activity_List_Resume"
+        <activity
+            android:name=".Activity_List_Resume"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|adjustResize"/>
-
-        <activity android:name=".Activity_Search_Jobs"
+            android:windowSoftInputMode="adjustPan|adjustResize" />
+        <activity
+            android:name=".Activity_Job_Employee_Home"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|adjustResize"/>
-
-        <activity android:name=".Activity_Resume_Post_Basic"
+            android:windowSoftInputMode="adjustPan|adjustResize" />
+        <activity
+            android:name=".Activity_Job_Employee_Employer_Basic"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|adjustResize"/>
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Activity_List_Jobs"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|adjustResize" />
+        <activity
+            android:name=".Activity_Resume_Details"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|adjustResize" />
+        <activity
+            android:name=".Activity_Login_Jobs_Dep"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|adjustResize" />
+        <activity
+            android:name=".Activity_Job_Details"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|adjustResize" />
+        <activity
+            android:name=".Activity_Job_Employer_Home"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|adjustResize" />
 
-        <activity android:name=".Activity_List_Jobs"
+        <activity android:name=".Activity_About_Developer"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|adjustResize"></activity>

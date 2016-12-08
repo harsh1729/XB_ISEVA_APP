@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class Custom_Adapter_Home_Addver extends PagerAdapter {
 
     FragmentActivity activity;
-
+   private View view  = null;
    private boolean isTwo;
     private ArrayList<String> listImageUrls;
     ///int[] image = {R.drawable.xerces_logo, R.drawable.default_user, R.drawable.doctor, R.drawable.ic_action_back};
@@ -46,19 +46,18 @@ public class Custom_Adapter_Home_Addver extends PagerAdapter {
 
     @Override
     public View instantiateItem(ViewGroup container, final int position) {
-        LayoutInflater inflater = (LayoutInflater) activity
-                .getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.vp_image, container, false);
 
-        ImageView mImageView = (ImageView) view
-
-
-                .findViewById(R.id.image_display);
+            LayoutInflater inflater = (LayoutInflater) activity
+                    .getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+           View view = inflater.inflate(R.layout.vp_image, container, false);
+            //hd = new Object_Holder_Adds();
+            ImageView img = (ImageView) view.findViewById(R.id.image_display);
+          //  view.setTag(hd);
        // mImageView.setBackgroundDrawable(activity.getResources().getDrawable(l));
-        //Log.i("SUSHIL", "offers list size    " + listOffres.get(position).offersimage.size());
-        Globals.loadImageIntoImageView(mImageView, listOffres.get(position).images.get(0), activity, R.drawable.default_add, R.drawable.default_add);
-        mImageView.setClickable(true);
-        mImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        //Log.i("SUSHIL", "offers list size    " + listOffres.get(position).offersimage.size());s
+        Globals.loadImageIntoImageView(img, listOffres.get(position).images.get(0), activity, R.drawable.default_add, R.drawable.default_add);
+        img.setClickable(true);
+        img.setScaleType(ImageView.ScaleType.CENTER_CROP);
       // final int offersid = listOffres.get(position).id;
        /* mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,12 +65,13 @@ public class Custom_Adapter_Home_Addver extends PagerAdapter {
                 clickOffres(offersid);
             }
         });*/
-        mImageView.setOnClickListener(new View.OnClickListener() {
+        img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 navi(position);
             }
         });
+
         container.addView(view);
         return view;
     }

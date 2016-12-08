@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +60,7 @@ public class Activity_BusinessExtraDetails_Show extends Activity {
         btnCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callMerchant();
+                Globals.call(Activity_BusinessExtraDetails_Show.this,numbers);
             }
         });
        /* txtGoto.setOnClickListener(new View.OnClickListener() {
@@ -226,11 +227,14 @@ public class Activity_BusinessExtraDetails_Show extends Activity {
                                                 linearLayout.setVisibility(View.VISIBLE);
                                                 TextView txt = (TextView)findViewById(R.id.txtContactDetails);
                                                 txt.setText(object.getString("contactdetails"));
+                                                Linkify.addLinks(txt, Linkify.ALL);
                                             }
                                         }
+                                        final ImageView imagMain = (ImageView)findViewById(R.id.mainImage);
+                                        LinearLayout layoutImage = (LinearLayout) findViewById(R.id.linearOffersImage);
                                         if (object.has("images")) {
 
-                                            LinearLayout layoutImage = (LinearLayout) findViewById(R.id.linearOffersImage);
+
                                             layoutImage.setVisibility(View.VISIBLE);
                                             LinearLayout layout = (LinearLayout) findViewById(R.id.scrollLinearHorOffersDetails);
                                             JSONArray imageArray = object.getJSONArray("images");
@@ -246,7 +250,7 @@ public class Activity_BusinessExtraDetails_Show extends Activity {
                                                         if(j==0){
                                                             int height = Globals.getScreenSize(this).y;
                                                             height = height / 3;
-                                                            final ImageView imagMain = (ImageView)findViewById(R.id.mainImage);
+
                                                             LinearLayout.LayoutParams lpImage = (LinearLayout.LayoutParams)imagMain.getLayoutParams();
                                                             lpImage.height = height;
                                                             imagMain.setLayoutParams(lpImage);
@@ -281,6 +285,9 @@ public class Activity_BusinessExtraDetails_Show extends Activity {
                                                 layoutImage.setVisibility(View.GONE);
                                             }
                                             // objOffers.offersimage = listImage;
+                                        }else {
+                                            imagMain.setVisibility(View.GONE);
+                                            layoutImage.setVisibility(View.GONE);
                                         }
                                         //list.add(objOffers);
                                     }
@@ -314,41 +321,6 @@ public class Activity_BusinessExtraDetails_Show extends Activity {
             startActivity(i);
         }
     }
-    private void callMerchant() {
-        Globals.showAlertDialog(
-                "Alert",
-                "Are you sure to call?",
-                this,
-                "Ok",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,
-                                        int id) {
-                        callIntent();
-                    }
-                }, "Cancel",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,
-                                        int id) {
-                        return;
-                    }
-                }, false);
-    }
 
-    private void callIntent() {
-
-       // Call_PhoneListener cList = new Call_PhoneListener(this);
-        //cList.registerNumber(Globals.getSimnumber(this));
-        Intent callIntent = new Intent(
-                Intent.ACTION_CALL);
-        callIntent.setData(Uri.parse("tel:"
-                + numbers));
-        try {
-            this.startActivity(callIntent);
-        } catch (SecurityException ex) {
-            ex.printStackTrace();
-        }
-
-
-    }
 
 }

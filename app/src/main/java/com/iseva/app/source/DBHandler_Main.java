@@ -9,7 +9,7 @@ import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 public class DBHandler_Main extends SQLiteAssetHelper {
 
     private static final String DATABASE_NAME = "iServiceDatabase.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     public DBHandler_Main(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

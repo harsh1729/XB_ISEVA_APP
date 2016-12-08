@@ -21,6 +21,17 @@
             android:layout_margin="5dp"
             android:orientation="vertical">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Profile Photo"
+                android:typeface="serif"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                android:layout_gravity="center_horizontal"
+                android:textSize="@dimen/txt_app_labels_normal"/>
+
 
             <ImageView
                 android:id="@+id/imgProfile"
@@ -69,6 +80,21 @@
                 android:layout_margin="5dp"
                 android:orientation="horizontal">
 
+                <EditText
+                    android:id="@+id/edtMatirial"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Marital status"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
+
                 <Spinner
                     android:id="@+id/spinReCity"
                     android:layout_width="match_parent"
@@ -95,7 +121,7 @@
 
 
             </LinearLayout>
-            <LinearLayout
+            <!--<LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
@@ -107,6 +133,45 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:hint="Age (in Years)"/>
+
+
+            </LinearLayout>-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="5dp"
+                    android:textSize="@dimen/txt_app_labels_normal"
+                    android:textColor="@android:color/black"
+                    android:text="Date of Birth"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:id="@+id/txtDOBDate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:text=""
+                    android:textSize="@dimen/txt_app_labels_normal"
+                    android:textColor="@android:color/black"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"/>
+
+                <ImageView
+                    android:id="@+id/calender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/calendar"
+                    />
 
 
             </LinearLayout>
@@ -174,20 +239,7 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:orientation="horizontal">
 
-                <EditText
-                    android:id="@+id/edtExPerience"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Experience"/>
-
-
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -200,6 +252,22 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Current Job"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/edtCurrentCompany"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:hint="Current Company"/>
 
 
             </LinearLayout>
@@ -227,6 +295,36 @@
                 android:orientation="horizontal">
 
                 <EditText
+                    android:id="@+id/edtExPerience"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Experience"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/edtAchive"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Achievement"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
+
+                <EditText
                     android:id="@+id/edtOthers"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -243,17 +341,22 @@
                 android:layout_margin="5dp"
                 android:gravity="right"
                 android:orientation="horizontal">
-               <TextView
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Resume"
+                    android:textSize="@dimen/txt_app_labels_normal"
+                    android:layout_marginRight="5dp"/>
+               <ImageView
                    android:id="@+id/txtAttacheds"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-                   android:textSize="@dimen/txt_app_labels_normal"
-                   android:textStyle="bold"
                    android:layout_gravity="left"
-
                    android:layout_weight="1"
-                   android:layout_margin="10dp"
-                   android:textColor="@color/app_green"/>
+                   android:visibility="gone"
+                   android:layout_margin="5dp"
+                   android:src="@drawable/check"
+                   />
 
 
 
@@ -262,11 +365,24 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Attach File"
+                   android:paddingLeft="5dp"
+                   android:paddingRight="5dp"
                     android:textColor="@drawable/selector_btn_text_app"
                     android:background="@drawable/selector_btn_app"/>
 
 
             </LinearLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:typeface="serif"
+                android:layout_marginLeft="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="*fields are required."
+                android:textColor="#cc0000"/>
 
 
        <Button
@@ -284,6 +400,6 @@
 
     </ScrollView>
 
-    <include layout="@layout/app_footer" />
+    <!--<include layout="@layout/app_footer" />-->
 
 </LinearLayout>

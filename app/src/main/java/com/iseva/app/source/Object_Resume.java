@@ -21,6 +21,7 @@ public class Object_Resume {
     private String filename;
     private Object_City objectCity;
     private Object_Category objectCategory;
+    private String imgUrl;
 
     public int getId() {
         return id;
@@ -148,5 +149,13 @@ public class Object_Resume {
 
     public void setQualification(String qualification) {
         this.qualification = qualification;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 }

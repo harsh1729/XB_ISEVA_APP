@@ -2,6 +2,8 @@ package com.iseva.app.source;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentUris;
 import android.content.Context;
@@ -25,6 +27,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -48,6 +51,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -70,10 +74,10 @@ public class Activity_Post_Resume extends Activity {
     private int imageId = -1;
     //**********
 
-    private TextView txtAttacheds;
+    private ImageView txtAttacheds;
     private EditText edtFName;
     private EditText edtGender;
-    private EditText edtAge;
+   // private EditText edtAge;
 
     private EditText edtQuali;
     //  EditText edtNumber = (EditText) findViewById(R.id.edtMobNumber);
@@ -84,8 +88,18 @@ public class Activity_Post_Resume extends Activity {
     private EditText edtCurrentJob;
     private EditText edtCurrentSalary;
     private EditText edtOthers;
+    private EditText edtCurrentCompany;
+    private EditText edtMatrialStatus;
+    private EditText edtAchivement;
     private Spinner spinCategory;
+    private boolean isEdit = false;
+    private ArrayList<Object_City> listCity = null;
+    private ArrayList<Object_Category> list= null;
 
+    private DatePicker datePicker;
+    private Calendar calendar;
+    private int year, month, day;
+    private TextView txtDOBDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,13 +110,13 @@ public class Activity_Post_Resume extends Activity {
     }
 
     private void init() {
-        setFooterAndHeader(R.id.imgBtnFooterPostResume,"Post Resume");
+        setHeader("Post Resume");
         spinnerCity = (Spinner) findViewById(R.id.spinReCity);
         spinCategory = (Spinner)findViewById(R.id.spinCate);
 
          edtFName = (EditText) findViewById(R.id.edtFName);
         edtGender = (EditText) findViewById(R.id.edtGender);
-        edtAge = (EditText) findViewById(R.id.edtDOB);
+       // edtAge = (EditText) findViewById(R.id.edtDOB);
 
         edtQuali = (EditText) findViewById(R.id.edtQualification);
         //  EditText edtNumber = (EditText) findViewById(R.id.edtMobNumber);
@@ -113,7 +127,13 @@ public class Activity_Post_Resume extends Activity {
          edtCurrentJob = (EditText) findViewById(R.id.edtCurrentJob);
         edtCurrentSalary = (EditText) findViewById(R.id.edtCurrentSalary);
         edtOthers = (EditText) findViewById(R.id.edtOthers);
+        edtCurrentCompany = (EditText)findViewById(R.id.edtCurrentCompany);
+        edtAchivement = (EditText)findViewById(R.id.edtAchive);
+        edtMatrialStatus = (EditText)findViewById(R.id.edtMatirial);
 
+//
+        EditText[] editTextsRequired = {edtFName,edtQuali,edtAddress};
+        Globals.setHintRequired(editTextsRequired);
 
         Button btnAttach = (Button)findViewById(R.id.btnAttach);
         btnAttach.setOnClickListener(new View.OnClickListener() {
@@ -130,22 +150,22 @@ public class Activity_Post_Resume extends Activity {
             }
         });
         getCateCityData();
-        txtAttacheds = (TextView)findViewById(R.id.txtAttacheds);
+        txtAttacheds = (ImageView) findViewById(R.id.txtAttacheds);
         Button btnUpload = (Button)findViewById(R.id.btnResumeSubmit);
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Globals.showAlertDialog(
                         "Alert",
-                        "Please check all data carefully you have entered, you won't  be able to change it later !",
+                        "Are you sure to upload information.",
                         Activity_Post_Resume.this,
-                        "Ok",
+                        "Yes",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,
                                                 int id) {
                                 upload(file);
                             }
-                        }, "Cancel",
+                        }, "No",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,
                                                 int id) {
@@ -154,7 +174,21 @@ public class Activity_Post_Resume extends Activity {
                         }, false);
             }
         });
+        txtDOBDate = (TextView) findViewById(R.id.txtDOBDate);
+        calendar = Calendar.getInstance();
+        year = calendar.get(Calendar.YEAR);
 
+        month = calendar.get(Calendar.MONTH);
+        day = calendar.get(Calendar.DAY_OF_MONTH);
+        showDate(year, month+1, day);
+
+        ImageView imgCalender = (ImageView)findViewById(R.id.calender);
+        imgCalender.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setDate(v);
+            }
+        });
 
         img = (ImageView)findViewById(R.id.imgProfile);
         img.setOnClickListener(new View.OnClickListener() {
@@ -163,9 +197,187 @@ public class Activity_Post_Resume extends Activity {
                 selectImage();
             }
         });
+
+
+        Intent intent = getIntent();
+        if(intent!=null){
+            isEdit = intent.getBooleanExtra("isEdit",false);
+            if(isEdit){
+
+                btnUpload.setText("Update");
+                initEdit();
+            }
+        }
     }
 
 
+    public void setDate(View view) {
+        showDialog(999);
+        /*Toast.makeText(getApplicationContext(), "ca", Toast.LENGTH_SHORT)
+                .show();*/
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        // TODO Auto-generated method stub
+        if (id == 999) {
+            return new DatePickerDialog(this, myDateListener, year, month, day);
+        }
+        return null;
+    }
+
+    private DatePickerDialog.OnDateSetListener myDateListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker arg0, int arg1, int arg2, int arg3) {
+            // TODO Auto-generated method stub
+            // arg1 = year
+            // arg2 = month
+            // arg3 = day
+            showDate(arg1, arg2+1, arg3);
+        }
+    };
+
+    private void showDate(int year, int month, int day) {
+        txtDOBDate.setText(new StringBuilder().append(year).append("/")
+                .append(Globals.bindZero(month)).append("/").append(Globals.bindZero(day)));
+    }
+    private void initEdit(){
+        Object_AppConfig config = new Object_AppConfig(this);
+        if(config.getEmployeeResponse().equals("")){
+            return;
+        }else{
+            try {
+                JSONObject res = new JSONObject(config.getEmployeeResponse());
+                if(res.has("image")){
+                    JSONObject imgObj = res.getJSONObject("image");
+                    Globals.loadImageIntoImageView(img,imgObj.getString("imageurl"),this,R.drawable.default_offer,R.drawable.default_offer);
+                    if(imgObj.has("id"))
+                       imageId = imgObj.getInt("id");
+                }
+                if(res.has("fname")){
+                    if(res.getString("fname")!=null)
+                       edtFName.setText(res.getString("fname"));
+                }
+                if(res.has("address")){
+                    if(res.getString("address")!=null)
+                        edtAddress.setText(res.getString("address"));
+                }
+                if(res.has("qualification")){
+                    if(res.getString("qualification")!=null)
+                        edtQuali.setText(res.getString("qualification"));
+                }
+                if(res.has("experience")){
+                    if(res.getString("experience")!=null)
+                        edtExperi.setText(res.getString("experience"));
+                }
+                if(res.has("currentjob")){
+                    if(res.getString("currentjob")!=null)
+                        edtCurrentJob.setText(res.getString("currentjob"));
+                }
+                if(res.has("mstatus")){
+                    if(res.getString("mstatus")!=null)
+                        edtMatrialStatus.setText(res.getString("mstatus"));
+                }
+                if(res.has("currentcompany")) {
+                    if (res.getString("currentcompany") != null)
+                        edtCurrentCompany.setText(res.getString("currentcompany"));
+                }
+                if(res.has("achive")) {
+                    if (res.getString("achive") != null)
+                        edtAchivement.setText(res.getString("achive"));
+                }
+                if(res.has("others")){
+                    if(res.getString("others")!=null)
+                        edtOthers.setText(res.getString("others"));
+                }
+
+                if(res.has("currentsalary")){
+                    if(res.getString("currentsalary")!=null)
+                        edtCurrentSalary.setText(res.getString("currentsalary"));
+                }
+                if(res.has("cityid")){
+                    int cityid = res.getInt("cityid");
+                    //int index = getselectionPosition(cityid,true);
+                    //Log.i("SUSHIL","index "+index);
+                   // spinnerCity.setSelection(index);
+                    cityID = cityid;
+                }
+                if(res.has("catid")){
+                    int id = res.getInt("catid");
+                    //spinCategory.setSelection(getselectionPosition(id,false));
+                    categoryID = id;
+                }
+                if(res.has("gender")){
+                    if(res.getString("gender")!=null)
+                        edtGender.setText(res.getString("gender"));
+                }
+
+                if(res.has("age")){
+                    if(res.getString("age")!=null) {
+                      //  if(res.getString("age").length()>3) {
+                             //String subString = res.getString("age").substring(0,2);
+                                   String date = res.getString("age");
+                        try {
+                             year = Integer.parseInt(date.substring(0,4));
+                             month = Integer.parseInt(date.substring(5,7));
+                            day = Integer.parseInt(date.substring(8,10));
+                            month = month-1;
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                                    txtDOBDate.setText(res.getString("age"));
+                       // }
+                    }
+                }
+                if(res.has("resume")){
+                    JSONObject resume = res.getJSONObject("resume");
+                    if(resume!=null){
+                        if(resume.has("id")) {
+                            resumeName = resume.getInt("id");
+                            txtAttacheds.setVisibility(View.VISIBLE);
+                        }
+                    }
+
+                }
+
+
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private int getselectionPosition(int id,boolean isCity){
+         if(isCity){
+             //city posotion
+             if(listCity!=null && listCity.size()!=0){
+                // int index = -1;
+
+                 for (int city=0;city<listCity.size();city++){
+                     //index++;
+                     Object_City objectCity = listCity.get(city);
+                     if(objectCity.cityId==id){
+                         //city found
+                         return city;
+                     }
+                 }
+             }
+         }else{
+             //category posotion
+             if(list!=null && list.size()!=0){
+                 for (int c=0;c<list.size();c++){
+                     //index++;
+                     Object_Category object = list.get(c);
+                     if(object.catId==id){
+                         //city found
+                         return c;
+                     }
+                 }
+             }
+         }
+        return 0;
+    }
 
     private void getCateCityData() {
         Custom_ConnectionDetector connection = new Custom_ConnectionDetector(this);
@@ -214,7 +426,7 @@ public class Activity_Post_Resume extends Activity {
     }
 
     private void parseResponce(JSONObject object) {
-        ArrayList<Object_City> listCity = new ArrayList<Object_City>();
+         listCity = new ArrayList<Object_City>();
         try {
             if (object != null) {
                 JSONArray Array = object.getJSONArray("cities");
@@ -243,7 +455,7 @@ public class Activity_Post_Resume extends Activity {
                     setCitySpinner(listCity);
                 }
                 if(arrayCate.length()!=0){
-                    ArrayList<Object_Category> list = new ArrayList<>();
+                    list = new ArrayList<>();
                     for (int i=0;i<arrayCate.length();i++){
                         try {
                             JSONObject obj = arrayCate.getJSONObject(i);
@@ -296,6 +508,8 @@ public class Activity_Post_Resume extends Activity {
                                        int position, long id) {
                 if(position!=0)
                     cityID = cityList.get(position-1).cityId;
+                else
+                    cityID = -1;
 
             }
 
@@ -306,6 +520,14 @@ public class Activity_Post_Resume extends Activity {
             }
         });
 
+        if(isEdit){
+            if(cityID!=-1 && cityID!=0)
+             spinnerCity.setSelection(getselectionPosition(cityID,true)+1);
+            else {
+                spinnerCity.setSelection(0);
+                cityID = -1;
+            }
+        }
     }
 
     private void setCateSpinner(final ArrayList<Object_Category> List) {
@@ -331,6 +553,8 @@ public class Activity_Post_Resume extends Activity {
                                        int position, long id) {
                 if(position!=0)
                     categoryID = List.get(position-1).catId;
+                else
+                    categoryID = -1;
 
             }
 
@@ -340,20 +564,17 @@ public class Activity_Post_Resume extends Activity {
 
             }
         });
-
-    }
-
-    private void setFooterAndHeader(int footerbtnId,String headerText){
-        if(footerbtnId != -1)
-        {
-            View v = this.findViewById(footerbtnId);
-            if(v!= null){
-                v.setSelected(true);
-                Log.i("FOOTER", "Set Selected");
-            }else{
-                Log.i("FOOTER", "Null Button");
+        if(isEdit){
+            if(categoryID!=0 && categoryID!=-1)
+            spinCategory.setSelection(getselectionPosition(categoryID,false)+1);
+            else {
+                spinCategory.setSelection(0);
+                categoryID = -1;
             }
         }
+    }
+
+    private void setHeader(String headerText){
 
         TextView txtH = (TextView)this.findViewById(R.id.txtHeader);
         if(txtH!=null)
@@ -361,33 +582,7 @@ public class Activity_Post_Resume extends Activity {
 
     }
 
-    public void footerBtnClick(View v){
 
-        Class<?> nextClass = null;
-
-        switch (v.getId()) {
-            case R.id.imgBtnFooterFind:
-                nextClass = Activity_Search_Resume.class;
-                break;
-            case R.id.imgBtnFooterPostResume:
-                nextClass = Activity_Post_Resume.class;
-                break;
-            case R.id.imgBtnFooterPostJob:
-                nextClass = Activity_Search_Jobs.class;
-                break;
-
-            default:
-                break;
-        }
-
-        if(nextClass != null){
-            if(this.getClass() != nextClass){
-                Intent i = new Intent(this,nextClass);
-                startActivity(i);
-            }
-        }
-
-    }
     private void attachResume(){
 
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -412,15 +607,36 @@ public class Activity_Post_Resume extends Activity {
             case 1:
                 if (resultCode == RESULT_OK) {
                     // Get the Uri of the selected file
-                    Uri uri = data.getData();
+                    //Uri uri = data.getData();
                    // Log.d(TAG, "File Uri: " + uri.toString());
                     // Get the path
+                    Uri selectedImageUri = data.getData();
+                    int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+                    if (currentapiVersion >= Build.VERSION_CODES.KITKAT){
+                        // Do something for lollipop and above versions
+                        file = new File(getPath(this,selectedImageUri));
+                    } else{
+                        // do something for phones running an SDK before lollipop
 
-                    file = new File(getPath(this,uri));
+                        // Log.i("SUSHIL","selected path ............................................."+selectedImageUri.getPath());
+                        String[] projection = {MediaStore.MediaColumns.DATA};
+                        CursorLoader cursorLoader = new CursorLoader(this, selectedImageUri, projection, null, null,
+                                null);
+                        Cursor cursor = cursorLoader.loadInBackground();
+                        int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+                        cursor.moveToFirst();
+
+                        String selectedImagePath = cursor.getString(column_index);
+                        file = new File(selectedImagePath);
+                    }
+
+
+
                     if(file!=null){
-                        txtAttacheds.setText("Resume are Attached.");
+                        txtAttacheds.setVisibility(View.VISIBLE);
                     }else{
-                        txtAttacheds.setText("");
+                       // txtAttacheds.setText("");
+                        txtAttacheds.setVisibility(View.GONE);
                     }
                    // Log.i("SUSHIL","path "+getPath(this,uri));
 
@@ -646,11 +862,27 @@ public class Activity_Post_Resume extends Activity {
 //        return result;
 //    }
 
-    private void upload(final File file) {
 
-        if(path.equals("")){
-            Globals.showShortToast(this,"Select your Profile Image");
-        }
+    private void upload(final File file) {
+      if(!isEdit) {
+          if (path.equals("")) {
+              Globals.showShortToast(this, "Select your Profile Image");
+          }
+          if (file == null) {
+              Toast.makeText(this, "Choose a Resume file", Toast.LENGTH_SHORT).show();
+              return;
+          }
+      }else{
+          if(imageId==-1)
+          if (path.equals("")) {
+              Globals.showShortToast(this, "Select your Profile Image");
+          }
+          if(resumeName==-1)
+          if (file == null) {
+              Toast.makeText(this, "Choose a Resume file", Toast.LENGTH_SHORT).show();
+              return;
+          }
+      }
          if (edtFName.getText().toString().equals("")) {
              Toast.makeText(this, "Enter your Father's Name", Toast.LENGTH_SHORT).show();
              return;
@@ -659,6 +891,10 @@ public class Activity_Post_Resume extends Activity {
              Toast.makeText(this, "Enter your Qualification", Toast.LENGTH_SHORT).show();
              return;
          }
+        /*if(edtAge.getText().equals("")){
+            Toast.makeText(this, "Enter your Age", Toast.LENGTH_SHORT).show();
+            return;
+        }*/
 
          if (edtAddress.getText().toString().equals("")) {
              Toast.makeText(this, "Enter your Address", Toast.LENGTH_SHORT).show();
@@ -672,14 +908,15 @@ public class Activity_Post_Resume extends Activity {
             Toast.makeText(this, "Choose your Category", Toast.LENGTH_SHORT).show();
             return;
         }
-         if (file == null) {
-             Toast.makeText(this, "Choose a Resume file", Toast.LENGTH_SHORT).show();
-             return;
-         }
+
 
          //******upload *******//
+        if(file!=null)
           uploadResume(file);
-
+        else if(!path.equals(""))
+            uploadProfileImage();
+        else
+            uploadData();
 
 
      }
@@ -691,8 +928,9 @@ public class Activity_Post_Resume extends Activity {
             Custom_VolleyObjectRequest jsonObjectRQST = new Custom_VolleyObjectRequest(
                     Request.Method.POST,
                     Custom_URLs_Params.getURL_UploadData(),
-                    Custom_URLs_Params.getParams_UploadResume(this,imageId,edtFName.getText().toString(),edtAge.getText().toString(),edtGender.getText().toString(),edtAddress.getText().toString(),
-                            edtQuali.getText().toString(),edtExperi.getText().toString(),edtCurrentJob.getText().toString(),edtCurrentSalary.getText().toString(),edtOthers.getText().toString(),resumeName,cityID,categoryID), new Response.Listener<JSONObject>() {
+                    Custom_URLs_Params.getParams_UploadResume(this,imageId,edtFName.getText().toString(),txtDOBDate.getText().toString(),edtGender.getText().toString(),edtAddress.getText().toString(),
+                            edtQuali.getText().toString(),edtExperi.getText().toString(),edtCurrentJob.getText().toString(),edtCurrentSalary.getText().toString(),edtOthers.getText().toString(),resumeName,cityID,categoryID,edtAchivement.getText().toString(),
+                            edtCurrentCompany.getText().toString(),edtMatrialStatus.getText().toString()), new Response.Listener<JSONObject>() {
 
                 @Override
                 public void onResponse(JSONObject response) {

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/rlytRoot"
-    tools:context="${relativePackage}.${activityClass}" >
+     >
     <include layout="@layout/app_header_epaper"
     android:id="@+id/llytHeader"/>
 
@@ -11,7 +11,8 @@
             android:id="@+id/imageViewEpaper"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/llytHeader" />
+            android:layout_below="@+id/llytHeader"
+         android:paddingBottom="50dp"/>
      
       <ImageButton
         android:id="@+id/imgBtnPrev"

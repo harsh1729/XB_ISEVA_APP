@@ -2,6 +2,7 @@ package com.iseva.app.source;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.jude.rollviewpager.hintview.ColorPointHintView;
 
 
 import org.json.JSONArray;
@@ -35,11 +37,12 @@ public class Activity_BusinessExtraShow extends FragmentActivity {
     private Custom_Adapter_BusinessExtra adapter = null;
     private ProgressDialog pd;
     private EditText edtSearch;
-    private ViewPager mViewPager;
-    private PageIndicator mIndicator;
+   /* private ViewPager mViewPager;
+    private PageIndicator mIndicator;*/
     private Timer timer;
     private int pageIndex = 1;
     private int size;
+    private com.jude.rollviewpager.RollPagerView mRollPagerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -268,9 +271,10 @@ public class Activity_BusinessExtraShow extends FragmentActivity {
                                         if(object.has("contact")){
                                             objOffers.contact = object.getString("contact");
                                         }
+                                        ArrayList<String> listImage = new ArrayList<>();
                                         if (object.has("images")) {
                                             JSONArray imageArray = object.getJSONArray("images");
-                                            ArrayList<String> listImage = new ArrayList<>();
+
                                             for (int j = 0; j < imageArray.length(); j++) {
                                                // String url = imageArray.getString(j);
                                                 try {
@@ -283,8 +287,9 @@ public class Activity_BusinessExtraShow extends FragmentActivity {
                                                     e.printStackTrace();
                                                 }
                                             }
-                                            objOffers.images = listImage;
+
                                         }
+                                        objOffers.images = listImage;
                                         list.add(objOffers);
                                     }
                                 }
@@ -468,20 +473,25 @@ public class Activity_BusinessExtraShow extends FragmentActivity {
             //height = height/3;
             lpCard.height = (int) (width*0.60);
             cv.setLayoutParams(lpCard);
-            mViewPager = (ViewPager) findViewById(R.id.view_pagerbusinessExtra);
+            Custom_Adapter_Home_Addver adapter = new Custom_Adapter_Home_Addver(this, true, offers);
+            mRollPagerView = (com.jude.rollviewpager.RollPagerView)findViewById(R.id.viewPager);
+            mRollPagerView.setHintView(new ColorPointHintView(this, Color.WHITE, Color.BLACK));
+            mRollPagerView.setAdapter(adapter);
+            /*mViewPager = (ViewPager) findViewById(R.id.view_pagerbusinessExtra);
             mIndicator = (CirclePageIndicator) findViewById(R.id.indicatorBusinessExtra);
             Custom_Adapter_Home_Addver adapter = new Custom_Adapter_Home_Addver(this, true, offers);
+            mViewPager.setOffscreenPageLimit(1);
             mViewPager.setAdapter(adapter);
             mIndicator.setViewPager(mViewPager);
             size = offers.size();
-            pageSwitcher();
+            pageSwitcher();*/
         } else {
             CardView cv = (CardView) findViewById(R.id.card_viewbusinessExtra);
             cv.setVisibility(View.GONE);
         }
     }
 
-    public void pageSwitcher() {
+  /* public void pageSwitcher() {
         timer = new Timer(); // At this line a new Thread will be created
         timer.scheduleAtFixedRate(new RemindTask(), 0, 3000); // delay
         // in
@@ -499,12 +509,12 @@ public class Activity_BusinessExtraShow extends FragmentActivity {
             runOnUiThread(new Runnable() {
                 public void run() {
 
-                    /*if (page > 4) { // In my case the number of pages are 5
+                    *//*if (page > 4) { // In my case the number of pages are 5
                         timer.cancel();
                         // Showing a toast for just testing purpose
                         Toast.makeText(getApplicationContext(), "Timer stoped",
                                 Toast.LENGTH_LONG).show();
-                    } else {*/
+                    } else {*//*
 
                     // }
                     if (pageIndex <= size) {
@@ -519,6 +529,6 @@ public class Activity_BusinessExtraShow extends FragmentActivity {
             });
 
         }
-    }
+    }*/
 
 }

@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Activity_Search_Resume">
+
+    tools:context=".Activity_Job_Resume_Search">
 
     <include layout="@layout/app_header" />
 
@@ -63,7 +64,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_marginBottom="5dp"
-                    android:text="Find Resume"
+                    android:text="Find"
                     android:background="@drawable/selector_btn_app"
                     android:textColor="@drawable/selector_btn_text_app"/>
 
@@ -75,6 +76,6 @@
 
     </LinearLayout>
 
-    <include layout="@layout/app_footer" />
+    <!--<include layout="@layout/app_footer" />-->
 
 </LinearLayout>

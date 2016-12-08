@@ -39,6 +39,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
                 android:src="@drawable/default_offer" />
 
         </LinearLayout>
@@ -125,6 +126,7 @@
                     android:text="Call"
                     android:id="@+id/buttonCall"
 
+                    android:textColor="@color/app_dark"
                     android:background="@drawable/selecter_call_btn_listview"
                      />
 

@@ -68,6 +68,7 @@
                      android:layout_marginLeft="10dp"
                     android:textSize="17sp"
                     android:typeface="serif"
+                    android:autoLink="email"
                     android:textColor="@android:color/black"
                     android:text="Email  iseva721@gmail.com" />
                 <TextView
@@ -77,8 +78,9 @@
                     android:layout_marginLeft="10dp"
                     android:textSize="17sp"
                     android:typeface="serif"
+                    android:autoLink="phone"
                     android:textColor="@android:color/black"
-                    android:text="Number  9314816515" />
+                    android:text="Number  9314816515,7230002908" />
 
 
 

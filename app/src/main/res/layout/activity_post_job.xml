@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-
     tools:context="com.iseva.app.source.Activity_Post_Job">
 
     <include layout="@layout/app_header" />
@@ -20,7 +19,10 @@
             android:layout_height="wrap_content"
             android:background="@drawable/selecter_home_category"
             android:layout_margin="5dp"
+            android:padding="5dp"
             android:orientation="vertical">
+
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -28,18 +30,18 @@
                 android:padding="5dp"
                 android:orientation="horizontal">
 
-                <TextView
+                <!--<TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="5dp"
                     android:text="Category"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"/>-->
 
                 <Spinner
                     android:id="@+id/spinCategory"
                     android:layout_width="0dp"
-                    android:padding="2dp"
+                    android:padding="5dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"></Spinner>
 
@@ -50,8 +52,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
+                android:layout_marginTop="5dp"
                 android:orientation="horizontal">
 
+<!--
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -59,11 +63,12 @@
                     android:layout_marginLeft="5dp"
                     android:text="City"
                     android:layout_weight="1"/>
+-->
 
                 <Spinner
                     android:id="@+id/spinCity"
                     android:layout_width="0dp"
-                    android:padding="2dp"
+                    android:padding="5dp"
                     android:layout_gravity="center_vertical"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"></Spinner>
@@ -78,20 +83,20 @@
                 android:padding="5dp"
                 android:orientation="horizontal">
 
-                <TextView
+                <!--<TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="5dp"
                     android:text="Job Title"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"/>-->
 
                 <EditText
                     android:id="@+id/edtJobTitle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
-                    android:hint="Job Title"
+                    android:hint="Business/Institute name"
                     android:layout_gravity="center_horizontal"
                     android:layout_weight="1"/>
 
@@ -104,72 +109,20 @@
                 android:padding="5dp"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="5dp"
-                    android:text="Person Mobile"
-                    android:layout_weight="1"/>
-
-                <EditText
-                    android:id="@+id/edtNumber"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:hint=""
-                    android:layout_gravity="center_horizontal"
-                    android:layout_weight="1"/>
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="5dp"
-                    android:text="Expiry Date"
-                    android:layout_weight="1"/>
-
-                <EditText
-                    android:id="@+id/edtEmail"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:hint="YYYY/MM/DD"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_weight="1"/>
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:orientation="horizontal">
-
-                <TextView
+                <!--<TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="5dp"
                     android:text="Person Name"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"/>-->
 
                 <EditText
                     android:id="@+id/edtAddress"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
-                    android:hint=""
+                    android:hint="Address"
                     android:layout_gravity="center_horizontal"
                     android:layout_weight="1"/>
 
@@ -182,20 +135,51 @@
                 android:padding="5dp"
                 android:orientation="horizontal">
 
-                <TextView
+                <!--<TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="5dp"
+                    android:text="Person Mobile"
+                    android:layout_weight="1"/>-->
+
+                <EditText
+                    android:id="@+id/edtNumber"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:inputType="number"
+                    android:hint="Contact"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"/>
+
+
+            </LinearLayout>
+
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:orientation="horizontal">
+
+                <!--<TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="5dp"
                     android:text="Salary Range"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"/>-->
 
                 <EditText
                     android:id="@+id/edtSalary"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
-                    android:hint="Ex. 21000/-"
+                    android:hint="Salary Range"
                     android:layout_gravity="center_horizontal"
                     android:layout_weight="1"/>
 
@@ -208,6 +192,7 @@
                 android:padding="5dp"
                 android:orientation="horizontal">
 
+<!--
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -215,12 +200,14 @@
                     android:layout_marginLeft="5dp"
                     android:text="Job Profile"
                     android:layout_weight="1"/>
+-->
 
                 <EditText
                     android:id="@+id/edtProfile"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
+                    android:hint="Job Profile"
                     android:layout_gravity="center_horizontal"
                     android:layout_weight="1"/>
 
@@ -233,20 +220,20 @@
                 android:padding="5dp"
                 android:orientation="horizontal">
 
-                <TextView
+                <!--<TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="5dp"
                     android:text="Timings"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"/>-->
 
                 <EditText
                     android:id="@+id/edtTimings"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
-                    android:hint="10:00 to 06:00"
+                    android:hint="Timings as 10:00 am to 06:00 pm"
                     android:layout_gravity="center_horizontal"
                     android:layout_weight="1"/>
 
@@ -259,20 +246,20 @@
                 android:padding="5dp"
                 android:orientation="horizontal">
 
-                <TextView
+               <!-- <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="5dp"
                     android:text="Holiday"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"/>-->
 
                 <EditText
                     android:id="@+id/edtHoliday"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
-                    android:hint="Sunday"
+                    android:hint="Working Days(Mon-Sat)"
                     android:layout_gravity="center_horizontal"
                     android:layout_weight="1"/>
 
@@ -285,21 +272,50 @@
                 android:padding="5dp"
                 android:orientation="horizontal">
 
-                <TextView
+                <!--<TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginLeft="5dp"
                     android:text="Eligibility"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"/>-->
 
                 <EditText
                     android:id="@+id/edtEligibility"
                     android:layout_width="0dp"
                     android:layout_height="100dp"
                     android:maxLines="5"
-                    android:hint="Qualification and DOB"
+                    android:hint="Eligibility like Qualification and DOB"
                     android:gravity="top"
+                    android:layout_weight="1"/>
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:orientation="horizontal">
+
+                <!--
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginLeft="5dp"
+                                    android:text="Others"
+                                    android:layout_weight="1"/>
+                -->
+
+                <EditText
+                    android:id="@+id/edtMinExp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:maxLines="5"
+                    android:hint="Minimum Experience"
+                    android:layout_gravity="center_horizontal"
                     android:layout_weight="1"/>
 
 
@@ -311,6 +327,7 @@
                 android:padding="5dp"
                 android:orientation="horizontal">
 
+<!--
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -318,6 +335,7 @@
                     android:layout_marginLeft="5dp"
                     android:text="Others"
                     android:layout_weight="1"/>
+-->
 
                 <EditText
                     android:id="@+id/edtOthers"
@@ -331,11 +349,63 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="5dp"
+                    android:textSize="@dimen/txt_app_labels_normal"
+                    android:textColor="@android:color/black"
+                    android:text="Last date to Apply"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:id="@+id/txtLastDate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:text=""
+                    android:textSize="@dimen/txt_app_labels_normal"
+                    android:textColor="@android:color/black"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"/>
+
+                <ImageView
+                    android:id="@+id/calender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/calendar"
+                    />
+
+
+            </LinearLayout>
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:typeface="serif"
+                android:layout_marginLeft="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="*fields are required."
+                android:textColor="#cc0000"/>
+
             <Button
                 android:id="@+id/btnSave"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+
                 android:text="Submit"
                 android:layout_marginBottom="@dimen/text_margin"
                 android:textColor="@drawable/selector_btn_text_app"
@@ -347,6 +417,6 @@
 
     </ScrollView>
 
-    <include layout="@layout/app_footer" />
+    <!--<include layout="@layout/app_footer" />-->
 
 </LinearLayout>

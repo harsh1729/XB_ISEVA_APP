@@ -40,9 +40,18 @@ public class Custom_URLs_Params {
         return Globals.DEFAULT_APP_SERVER_PATH + "jobs/getcitiescate";
     }
 
+    public static String getURL_GetResume() {
+
+        return Globals.DEFAULT_APP_SERVER_PATH + "jobs/getresume";
+    }
     public static String getURL_Login_Merchant() {
 
         return Globals.DEFAULT_APP_SERVER_PATH+"user/login";
+    }
+
+    public static String getURL_EmpLogin() {
+
+        return Globals.DEFAULT_APP_SERVER_PATH+"jobs/login";
     }
 
     public static String getURL_GET_PROFILE() {
@@ -90,7 +99,7 @@ public class Custom_URLs_Params {
     }
     public static String getURL_GetEpaperUser() {
 
-        return Globals.DEFAULT_APP_SERVER_PATH1 + "user/getepaper_user";
+        return Globals.DEFAULT_APP_SERVER_PATH + "user/getepaper_user";
     }
     public static String getURL_OnsubmitCate() {
 
@@ -341,11 +350,28 @@ public class Custom_URLs_Params {
         return map;
     }
 
-    public static HashMap<String, String> getParams_Login(Context con, String username, String password) {
+
+    public static HashMap<String, String> getParams_LoginMerchant(Context con, String username, String password) {
 
         HashMap<String, String> map = new HashMap<String, String>();
+
         map.put("username", username);
         map.put("password", password);
+
+        Log.i("SUSHIL", "getParams_ --->" + map);
+        return map;
+    }
+    public static HashMap<String, String> getParams_Login(Context con, String username, String password,boolean isemp) {
+
+        HashMap<String, String> map = new HashMap<String, String>();
+        int emp;
+        if(isemp)
+            emp=1;
+        else
+        emp =0;
+        map.put("username", username);
+        map.put("password", password);
+        map.put("isemployee",emp+"");
 
         Log.i("SUSHIL", "getParams_ --->" + map);
         return map;
@@ -374,13 +400,14 @@ public class Custom_URLs_Params {
     }
 
     public static HashMap<String, String> getParams_UploadResume(Context con, int profileid, String Fname,String DOB,String gender,String Address,
-                                                               String qualification,String experience,String currentJob,String currentSalary,String others,int fileid,int cityID,int catid) {
+                                                               String qualification,String experience,String currentJob,String currentSalary,String others,int fileid,int cityID,int catid,
+                                                                 String achive,String currentcompany,String mstatus) {
 
         Object_AppConfig config = new Object_AppConfig(con);
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("imgid", profileid+"");
         map.put("fname", Fname);
-        map.put("age", DOB+" Years");
+        map.put("age", DOB);
         map.put("gender",gender);
         map.put("address",Address);
        // map.put("number",number);
@@ -391,6 +418,9 @@ public class Custom_URLs_Params {
         map.put("currentjob",currentJob);
         map.put("currentsalary",currentSalary);
         map.put("others",others);
+        map.put("achive",achive);
+        map.put("currentcompany",currentcompany);
+        map.put("mstatus",mstatus);
 
         map.put("resume",fileid+"");
         map.put("cityid",cityID+"");
@@ -404,13 +434,19 @@ public class Custom_URLs_Params {
     }
 
 
-    public static HashMap<String,String> getParams_ResumeRegister(String name,String number,String username,String password){
+    public static HashMap<String,String> getParams_ResumeRegister(String name,String number,String username,String password,boolean isemp){
         HashMap<String, String> map = new HashMap<String, String>();
+        int emp;
+        if(isemp)
+            emp = 1;
+        else
+            emp = 0;
         map.put("name", name);
         map.put("number", number);
 
         map.put("username", username);
         map.put("password",password);
+        map.put("isemployee",emp+"");
 
         Log.i("SUSHIL","Hash Map "+map);
 
@@ -421,9 +457,9 @@ public class Custom_URLs_Params {
 
 
     public static HashMap<String, String> getParams_UploadJob(Context con, String jobTitle,String Address,String number,
-                                                                 String expdate,String eligi,String profile,String salary,String holiday,String timings,String others,int cityID,int cateID) {
+                                                                 String expdate,String eligi,String profile,String salary,String holiday,String timings,String others,int cityID,int cateID,String minExperi) {
 
-        //Object_AppConfig config = new Object_AppConfig(con);
+        Object_AppConfig config = new Object_AppConfig(con);
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("title", jobTitle);
         map.put("eligibility", eligi);
@@ -437,9 +473,10 @@ public class Custom_URLs_Params {
         map.put("holidays", holiday);
         map.put("timings", timings);
         map.put("others",others);
-
+        map.put("minexp",minExperi);
         map.put("catid",cateID+"");
         map.put("cityid",cityID+"");
+        map.put("employerid",config.getEmperId()+"");
 
 
 

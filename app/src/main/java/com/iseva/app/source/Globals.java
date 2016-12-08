@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -14,6 +15,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -27,9 +29,15 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.TextPaint;
+import android.text.style.URLSpan;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
@@ -37,6 +45,7 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -79,6 +88,8 @@ public class Globals {
     public static final int IMAGELIMIT = 6;
 
 
+
+
     /*********************************************/
 
     static public Point getAppButtonSize(Activity context) {
@@ -91,6 +102,15 @@ public class Globals {
         size.y = size.x / 3;
 
         return size;
+    }
+
+    public static String bindZero(int value){
+        if(value<10){
+            return "0"+value;
+        }else{
+            return ""+value;
+        }
+        //return "";
     }
 
     public static void clearForm(ViewGroup group)
@@ -394,6 +414,85 @@ public class Globals {
         return format;
     }
 
+    public static void stripUnderlines(TextView textView) {
+        Spannable s = new SpannableString(textView.getText());
+        URLSpan[] spans = s.getSpans(0, s.length(), URLSpan.class);
+        for (URLSpan span: spans) {
+            int start = s.getSpanStart(span);
+            int end = s.getSpanEnd(span);
+            s.removeSpan(span);
+            span = new URLSpanNoUnderline(span.getURL());
+            s.setSpan(span, start, end, 0);
+        }
+        textView.setText(s);
+    }
+
+    public static  class URLSpanNoUnderline extends URLSpan {
+        public URLSpanNoUnderline(String url) {
+            super(url);
+        }
+        @Override public void updateDrawState(TextPaint ds) {
+            super.updateDrawState(ds);
+            ds.setUnderlineText(false);
+        }
+    }
+
+
+    public static void call(final Context mContext,final String number) {
+        Globals.showAlertDialog(
+                "Alert",
+                "Are you sure to call?",
+                mContext,
+                "Ok",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,
+                                        int id) {
+                        callIntent(mContext,number);
+                    }
+                }, "Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,
+                                        int id) {
+                        return;
+                    }
+                }, false);
+    }
+
+    public static void callIntent(Context mContext,String num) {
+
+        Intent callIntent = new Intent(
+                Intent.ACTION_CALL);
+        callIntent.setData(Uri.parse("tel:"
+                + num));
+        try {
+            mContext.startActivity(callIntent);
+        } catch (SecurityException ex) {
+            ex.printStackTrace();
+        }
+
+
+    }
+
+
+    public static boolean isUsernameValid(String Username) {
+        //TODO: Replace this with your own logic
+        return Username.length() > 6;
+    }
+
+    public static boolean isPhoneValid(String phone) {
+        //TODO: Replace this with your own logic
+
+        return phone.length() == 10;
+    }
+
+    public static boolean isValidEmail(CharSequence target) {
+        if (target == null) {
+            return false;
+        } else {
+            return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+        }
+    }
+
     public static String getCalculatedDate(String date, String dateFormat, int days) {
         //Calendar cal = Calendar.getInstance();
         SimpleDateFormat s = new SimpleDateFormat(dateFormat);
@@ -409,6 +508,37 @@ public class Globals {
     }
 
 
+    public static void iAgree(final Context mContext, final Intent intent,String msg){
+        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(mContext);
+        builder.setTitle("Disclaimer");
+        //this.getResources().getString(R.string.app_name)
+        builder.setMessage(msg)
+                .setCancelable(false)
+                .setPositiveButton("I Agree", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                       // register();
+                        if(intent!=null)
+                        ((Activity)mContext).startActivity(intent);
+                    }
+                })
+                .setNegativeButton("Decline", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        android.support.v7.app.AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+
+    public static boolean checkDateFormat(String date){
+        //formate YYYY/MM/DD
+        Log.i("SUSHIL","char at 4,7 "+date.charAt(4)+","+date.charAt(7));
+        if ((date.charAt(4) == '/') && (date.charAt(7) == '/')) {
+           return true;
+        }
+        return false;
+    }
 
     public static void loadImageIntoImageView(ImageView iv, String imgURL,
                                               Context context) {
@@ -423,6 +553,12 @@ public class Globals {
                 0, 0, 0, 0);
     }
 
+    public static void loadImageIntoImageView(ImageView iv, String imgURL,
+                                              Context context, int loadingImgId, int errorImgId,int width,int height) {
+
+        loadImageIntoImageView(iv, imgURL, context, loadingImgId, errorImgId,
+                0, 0, width, height);
+    }
     public static void loadImageIntoImageView(ImageView iv, String imgURL,
                                               int transformRadius, int transformMargin, Context context) {
 
@@ -439,6 +575,15 @@ public class Globals {
     }
 
 
+    public static void setHintRequired(EditText[]editTextsRequired){
+
+        for (int i=0;i<editTextsRequired.length;i++){
+            EditText edt = editTextsRequired[i];
+            String starRequired = "<font color='#cc0000'>*</font>";
+            edt.setHint(Html.fromHtml(edt.getHint()+starRequired));
+        }
+    }
+
     public static void loadImageIntoImageView(final ImageView iv, String imgURL,
                                               Context context, final int loadingImgId, int errorImgId,
                                               int transformRadius, int transformMargin, int height, int width) {
@@ -450,7 +595,10 @@ public class Globals {
                     .build();*/
             /*Picasso p=  new Picasso.Builder(context).downloader(new OkHttpDownloader(context.getCacheDir(), 250000000)).build();
             Picasso.setSingletonInstance(p);*/
-            Picasso p = Picasso.with(context);
+            //Picasso p = Picasso.with(context);
+
+
+            Picasso p = PicassoBigCache.INSTANCE.getPicassoBigCache(context);
 
             RequestCreator rq = null;
 
@@ -468,8 +616,8 @@ public class Globals {
                 if (width != 0) {
                     // Log.i("SUSHIL",
                     // "size of height width "+width+","+height);
-                    // rq.resize(width, height);
-                    // rq.centerCrop();
+                    rq.resize(width, height);
+                    //rq.centerCrop();
                 }
             } else
                 rq = p.load(errorImgId);

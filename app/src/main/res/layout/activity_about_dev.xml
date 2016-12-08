@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/selecter_home_category"
+    tools:context="com.iseva.app.source.Activity_About_Developer">
+
+    <include layout="@layout/app_header"></include>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+
+        android:orientation="vertical">
+
+
+        <!--<ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:src="@drawable/xb_blue"/>-->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:text="Xerces Blue Software Solutions Pvt Ltd"
+            android:textSize="@dimen/txt_app_labels_normal"
+            android:typeface="serif"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:typeface="serif"
+            android:layout_margin="5dp"
+            android:text="Xerces Blue is a fast growing company in the field of mobile app development. We are committed to develop applications which takes a place in your life. In this fast paced world a successful business is only an app away and we make sure that your app is best in the business."
+            android:textColor="@android:color/black"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_margin="5dp"
+            android:text="Contacts Us"
+            android:textSize="@dimen/txt_app_labels_normal"
+            android:typeface="serif"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:typeface="serif"
+            android:autoLink="email"
+            android:layout_marginLeft="5dp"
+            android:textColor="@android:color/black"
+            android:text="harsh.v@xercesblue.in"/>
+
+
+        <TextView
+            android:id="@+id/btnCall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="phone"
+            android:typeface="serif"
+            android:layout_marginLeft="5dp"
+            android:gravity="center_vertical"
+            android:text="7043891873"/>
+        <TextView
+            android:id="@+id/website"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="10dp"
+            android:typeface="serif"
+
+            android:gravity="center_vertical"
+            android:text="xercesblue.in"/>
+
+
+
+    </LinearLayout>
+    </ScrollView>
+</LinearLayout>

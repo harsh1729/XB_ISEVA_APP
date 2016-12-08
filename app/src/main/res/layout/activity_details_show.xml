@@ -157,6 +157,45 @@
                     android:layout_marginTop="6dp"
                     android:background="@color/colorPrimary"></LinearLayout>
             </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearEmails"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/textVi"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Email"
+                        android:layout_marginLeft="8dp"
+                        android:typeface="serif"
+                        android:textColor="@android:color/black"
+                        android:textSize="17sp"
+                        />
+
+                    <TextView
+                        android:id="@+id/txtEmail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:autoLink="email"
+                        android:textSize="15sp"
+                        android:textColor="@android:color/black"
+                        android:layout_margin="8dp"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0.8dp"
+                        android:layout_marginBottom="6dp"
+                        android:layout_marginLeft="4dp"
+                        android:layout_marginRight="4dp"
+                        android:layout_marginTop="6dp"
+                        android:background="@color/colorPrimary"></LinearLayout>
+                </LinearLayout>
                 <LinearLayout
                     android:id="@+id/linearServices"
                     android:layout_width="match_parent"
@@ -204,6 +243,7 @@
         android:id="@+id/callBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/app_dark"
         android:background="@drawable/selecter_details_call_btn"
         android:paddingBottom="3dp"
         android:paddingTop="3dp"

@@ -27,19 +27,24 @@ public class Custom_VolleyAppController extends Application {
 	  System.out.println("AppController onCreate Called!");
 	  appControllerContext = this;
 
-
+		/* Picasso.Builder builder = new Picasso.Builder(this);
+		 builder.downloader(new OkHttpDownloader(this,Integer.MAX_VALUE));
+		 Picasso built = builder.build();
+		 built.setIndicatorsEnabled(true);
+		 built.setLoggingEnabled(true);
+		 Picasso.setSingletonInstance(built);*/
 		 /*int memClass = ((ActivityManager) this
 				 .getSystemService(Context.ACTIVITY_SERVICE))
 				 .getLargeMemoryClass();
 		 int cacheSize = 1024 * 1024 * memClass / 4;
            Picasso p = new Picasso.Builder(this).memoryCache(
                     new LruCache(cacheSize)).build();*/
-		 Picasso.Builder builder = new Picasso.Builder(this);
+		 /*Picasso.Builder builder = new Picasso.Builder(this);
 		 builder.downloader(new OkHttpDownloader(getCacheDir(),250000000));
 		 Picasso built = builder.build();
 		 //built.setIndicatorsEnabled(true);
 		 //built.setLoggingEnabled(true);
-		 Picasso.setSingletonInstance(built);
+		 Picasso.setSingletonInstance(built);*/
 
 		 /*// Size in bytes (10 MB)
 		  final long PICASSO_DISK_CACHE_SIZE = 1024 * 1024 * 10;

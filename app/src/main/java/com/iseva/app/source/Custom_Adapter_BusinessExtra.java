@@ -136,12 +136,12 @@ public class Custom_Adapter_BusinessExtra extends BaseAdapter {
             linearRatingbtn.setVisibility(View.GONE);*/
         if (obj.images.size() != 0) {
             //ImageView img = (ImageView) convertView.findViewById(R.id.imgBrand);
-            Globals.loadImageIntoImageView(hd.img, obj.images.get(0), mContext,R.drawable.default_offer,R.drawable.default_offer);
+            Globals.loadImageIntoImageView(hd.img, obj.images.get(0), mContext,R.drawable.default_offer,R.drawable.default_offer,200,300);
         }
         hd.btnCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callMerchant(obj.contact);
+                Globals.call(mContext,obj.contact);
             }
         });
 
@@ -211,7 +211,7 @@ public class Custom_Adapter_BusinessExtra extends BaseAdapter {
 }
 
 
-    private void callMerchant(final String con) {
+ /*   private void callMerchant(final String con) {
         Globals.showAlertDialog(
                 "Alert",
                 "Are you sure to call?",
@@ -250,7 +250,7 @@ public class Custom_Adapter_BusinessExtra extends BaseAdapter {
         }
 
 
-    }
+    }*/
 
 
     private void navigationOffers(View v, int id, int masterid) {
