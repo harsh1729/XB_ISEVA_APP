@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -61,9 +62,13 @@ public class Custom_AppRater {
 
 		//Window window = dialog.getWindow();
 		//window.setLayout(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		
+
+		LinearLayout.LayoutParams l1lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		l1lp.setMargins(20,0,20,0);
+
 		LinearLayout ll = new LinearLayout(mContext);
-		ll.setPadding(10,10,10,10);
+		ll.setLayoutParams(l1lp);
+		ll.setPadding(20,0,20,20);
 		ll.setOrientation(LinearLayout.VERTICAL);
 		TextView tv = new TextView(mContext);
 		tv.setText("If you liked this app, please take a moment to rate it. Thanks for your support!");

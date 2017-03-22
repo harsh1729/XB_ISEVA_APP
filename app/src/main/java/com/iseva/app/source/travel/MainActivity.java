@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -114,7 +116,7 @@ public class MainActivity extends Activity{
         else
         {
             progress.dismiss();
-            Toast.makeText(MainActivity.this,R.string.internet_connection_error_title,Toast.LENGTH_LONG).show();
+
             callAlertBox();
         }
 
@@ -144,8 +146,16 @@ public class MainActivity extends Activity{
 
     public void callAlertBox()
     {
+        TextView title_tv = new TextView(this);
+        title_tv.setPadding(0,10,0,0);
+        title_tv.setTextColor(ContextCompat.getColor(MainActivity.this,R.color.black));
+        title_tv.setTextSize(18);
+        title_tv.setTypeface(null, Typeface.BOLD);
+        title_tv.setGravity(Gravity.CENTER);
+        title_tv.setText(getResources().getString(R.string.internet_connection_error_title));
+
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setTitle(R.string.internet_connection_error_title)
+        builder.setCustomTitle(title_tv)
                 .setMessage(R.string.internet_connection_error_message_try_again)
                 .setCancelable(false)
                 .setNegativeButton("Retry",new DialogInterface.OnClickListener() {
@@ -172,8 +182,16 @@ public class MainActivity extends Activity{
     public void showAlertDialog(String title,String message,String buttonlabel)
     {
 
+        TextView title_tv = new TextView(this);
+        title_tv.setPadding(0,10,0,0);
+        title_tv.setTextColor(ContextCompat.getColor(MainActivity.this,R.color.black));
+        title_tv.setTextSize(18);
+        title_tv.setTypeface(null, Typeface.BOLD);
+        title_tv.setGravity(Gravity.CENTER);
+        title_tv.setText(title);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setTitle(title)
+        builder.setCustomTitle(title_tv)
                 .setMessage(message)
                 .setCancelable(false)
                 .setNegativeButton(buttonlabel,new DialogInterface.OnClickListener() {
@@ -257,17 +275,17 @@ public class MainActivity extends Activity{
                 if(Get_From_Cities_et.getText().length() == 0)
                 {
 
-                    showAlertDialog(getResources().getString(R.string.validating_error_title),"Please Insert Origin City !","Ok");
+                    showAlertDialog(getResources().getString(R.string.validating_error_title),"Please insert origin city !","Ok");
 
                 }
                 else if(Get_To_Cities_et.getText().length() == 0)
                 {
-                    showAlertDialog(getResources().getString(R.string.validating_error_title),"Please Insert Destination City !","Ok");
+                    showAlertDialog(getResources().getString(R.string.validating_error_title),"Please insert destination city !","Ok");
 
                 }
                 else if(Journey_Date_et.getText().length() == 0)
                 {
-                    showAlertDialog(getResources().getString(R.string.validating_error_title),"Please Insert Journey Date !","Ok");
+                    showAlertDialog(getResources().getString(R.string.validating_error_title),"Please insert journey date !","Ok");
 
                 }
                 else
@@ -437,7 +455,7 @@ public class MainActivity extends Activity{
                     }
                     else
                     {
-                        Toast.makeText(MainActivity.this,R.string.internet_connection_error_title,Toast.LENGTH_LONG).show();
+
                         callAlertBox();
                     }
                 }
@@ -448,7 +466,7 @@ public class MainActivity extends Activity{
             }
             else
             {
-                showAlertDialog(getResources().getString(R.string.validating_error_title),"Some Error Accured Please Try Again !","Ok");
+                showAlertDialog(getResources().getString(R.string.validating_error_title),"Some error accured please try again !","Ok");
             }
 
 
@@ -465,7 +483,7 @@ public class MainActivity extends Activity{
             SoapObject request = new SoapObject(Constants.GLOBEL_NAMESPACE, Constants.METHOD_AUNTHENTICATION);
 
 
-            PropertyInfo loginid = new PropertyInfo();
+        /*    PropertyInfo loginid = new PropertyInfo();
             loginid.setName("LoginID");
             loginid.setValue("test");
             loginid.setType(String.class);
@@ -489,9 +507,9 @@ public class MainActivity extends Activity{
             logincode.setName("LoginCode");
             logincode.setValue("9542");
             logincode.setType(Integer.class);
-            request.addProperty(logincode);
+            request.addProperty(logincode);*/
 
-           /* PropertyInfo loginid = new PropertyInfo();
+            PropertyInfo loginid = new PropertyInfo();
             loginid.setName("LoginID");
             loginid.setValue("ISEVA");
             loginid.setType(String.class);
@@ -515,7 +533,7 @@ public class MainActivity extends Activity{
             logincode.setName("LoginCode");
             logincode.setValue("9542");
             logincode.setType(Integer.class);
-            request.addProperty(logincode);*/
+            request.addProperty(logincode);
 
 
 

@@ -1,12 +1,22 @@
 package com.iseva.app.source.travel;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,8 +57,23 @@ public class Activity_show_detail_cancel_ticket extends Activity {
 
         initialize();
         setclicklistner();
-        getTicketdetail();
+        if(isNetworkConnected())
+        {
+            getTicketdetail();
+        }
+        else
+        {
+            showAlertDialog(getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
+        }
 
+
+    }
+
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo() != null;
     }
 
     public void initialize()
@@ -198,5 +223,35 @@ public class Activity_show_detail_cancel_ticket extends Activity {
 
 
 
+    }
+
+    public void showAlertDialog(String title,String message,String buttonlabel)
+    {
+        TextView title_tv = new TextView(this);
+        title_tv.setPadding(0,10,0,0);
+        title_tv.setTextColor(ContextCompat.getColor(Activity_show_detail_cancel_ticket.this,R.color.black));
+        title_tv.setTextSize(18);
+        title_tv.setTypeface(null, Typeface.BOLD);
+        title_tv.setGravity(Gravity.CENTER);
+        title_tv.setText(title);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(Activity_show_detail_cancel_ticket.this);
+        builder.setCustomTitle(title_tv)
+                .setMessage(message)
+                .setCancelable(false)
+                .setNegativeButton(buttonlabel,new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        activity_dismiss();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        Button b = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
+        b.setLayoutParams(lp);
+        b.setBackgroundResource(R.drawable.btn_background);
+        b.setTextColor(ContextCompat.getColor(Activity_show_detail_cancel_ticket.this, R.color.app_white));
     }
 }

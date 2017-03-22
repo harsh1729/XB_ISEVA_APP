@@ -6,10 +6,12 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,7 +83,7 @@ public class Activity_show_booked_ticket extends Activity {
         }
         else
         {
-            callAlertBox();
+           showAlertDialog(getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
         }
     }
 
@@ -327,13 +329,22 @@ public class Activity_show_booked_ticket extends Activity {
 
     public void showAlertDialog(String title,String message,String buttonlabel)
     {
+        TextView title_tv = new TextView(this);
+        title_tv.setPadding(0,10,0,0);
+        title_tv.setTextColor(ContextCompat.getColor(Activity_show_booked_ticket.this,R.color.black));
+        title_tv.setTextSize(18);
+        title_tv.setTypeface(null, Typeface.BOLD);
+        title_tv.setGravity(Gravity.CENTER);
+        title_tv.setText(title);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(Activity_show_booked_ticket.this);
-        builder.setTitle(title)
+        builder.setCustomTitle(title_tv)
                 .setMessage(message)
                 .setCancelable(false)
                 .setNegativeButton(buttonlabel,new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
+                        activity_dismiss();
                     }
                 });
         AlertDialog alert = builder.create();

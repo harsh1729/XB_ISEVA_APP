@@ -75,7 +75,7 @@ public class Datepicker extends DialogFragment implements DatePickerDialog.OnDat
     public String changeDateForm(String date)
     {
 
-        String[] days ={"Sunday","Monday","Tuesday","Wednesday","Thirsday","Friday","Saturday"};
+        String[] days ={"Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"};
         String[] months={"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"};
 
         String day = date.substring(8,10);

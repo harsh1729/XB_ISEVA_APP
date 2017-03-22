@@ -73,9 +73,15 @@ public class Custom_GetMobile_Number {
 
         //Window window = dialog.getWindow();
         //window.setLayout(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams l1lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        l1lp.setMargins(20,0,20,0);
 
         LinearLayout ll = new LinearLayout(mContext);
+        ll.setLayoutParams(l1lp);
+        ll.setPadding(20,0,20,20);
+
         ll.setOrientation(LinearLayout.VERTICAL);
+
         TextView tv = new TextView(mContext);
         tv.setText("Register with us to WIN EXICITING PRIZE and get offers & discounts updates");
         tv.setWidth(240);

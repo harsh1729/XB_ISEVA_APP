@@ -5,9 +5,11 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -77,7 +79,7 @@ public class Activity_login extends Activity {
 
         if(login_email_et_text.length() == 0 || !validatemail(login_email_et_text))
         {
-            showAlertDialog(getResources().getString(R.string.validating_error_title),"Insert Valid Email !","Ok");
+            showAlertDialog(getResources().getString(R.string.validating_error_title),"Insert valid email !","Ok");
         }
         else if(login_password_et_text.length() == 0)
         {
@@ -204,8 +206,16 @@ public class Activity_login extends Activity {
 
     public void showAlertDialog(String title,String message,String buttonlabel)
     {
+        TextView title_tv = new TextView(this);
+        title_tv.setPadding(0,10,0,0);
+        title_tv.setTextColor(ContextCompat.getColor(Activity_login.this,R.color.black));
+        title_tv.setTextSize(18);
+        title_tv.setTypeface(null, Typeface.BOLD);
+        title_tv.setGravity(Gravity.CENTER);
+        title_tv.setText(title);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(Activity_login.this);
-        builder.setTitle(title)
+        builder.setCustomTitle(title_tv)
                 .setMessage(message)
                 .setCancelable(false)
                 .setNegativeButton(buttonlabel,new DialogInterface.OnClickListener() {
@@ -215,6 +225,7 @@ public class Activity_login extends Activity {
                 });
         AlertDialog alert = builder.create();
         alert.show();
+
 
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         Button b = alert.getButton(DialogInterface.BUTTON_NEGATIVE);

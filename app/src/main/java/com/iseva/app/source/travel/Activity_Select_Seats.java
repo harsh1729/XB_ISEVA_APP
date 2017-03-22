@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -16,6 +17,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -230,7 +232,7 @@ public class Activity_Select_Seats extends AppCompatActivity {
 
                 if(All_row.size() == 0)
                 {
-                    showAlertDialog(getResources().getString(R.string.validating_error_title),"Select Atleast 1 Seat !","ok");
+                    showAlertDialog(getResources().getString(R.string.validating_error_title),"Select atleast one seat !","ok");
                 }
                 else
                 {
@@ -272,8 +274,16 @@ public class Activity_Select_Seats extends AppCompatActivity {
 
     public void showAlertDialog(String title,String message,String buttonlabel)
     {
+        TextView title_tv = new TextView(this);
+        title_tv.setPadding(0,10,0,0);
+        title_tv.setTextColor(ContextCompat.getColor(Activity_Select_Seats.this,R.color.black));
+        title_tv.setTextSize(18);
+        title_tv.setTypeface(null, Typeface.BOLD);
+        title_tv.setGravity(Gravity.CENTER);
+        title_tv.setText(title);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(Activity_Select_Seats.this);
-        builder.setTitle(title)
+        builder.setCustomTitle(title_tv)
                 .setMessage(message)
                 .setCancelable(false)
                 .setNegativeButton(buttonlabel,new DialogInterface.OnClickListener() {
@@ -488,7 +498,7 @@ public class Activity_Select_Seats extends AppCompatActivity {
             }
             else
             {
-                showAlertDialog(getResources().getString(R.string.validating_error_title),"Some Error Accured Please Try Again !","Ok");
+                showAlertDialog(getResources().getString(R.string.validating_error_title),"Some error accured please try again !","Ok");
             }
 
 

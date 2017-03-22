@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -203,7 +205,7 @@ public class Activity_register extends Activity {
         }
         else if(register_password_et_text.trim().equals(register_password_confirm_et_text.trim()) == false )
         {
-            showAlertDialog(getResources().getString(R.string.validating_error_title),"Password and Password Confirm Should be Same !","Ok");
+            showAlertDialog(getResources().getString(R.string.validating_error_title),"Password and password confirm should be same !","Ok");
 
             Flag = false;
             return Flag;
@@ -243,8 +245,16 @@ public class Activity_register extends Activity {
 
     public void showAlertDialog(String title,String message,String buttonlabel)
     {
+        TextView title_tv = new TextView(this);
+        title_tv.setPadding(0,10,0,0);
+        title_tv.setTextColor(ContextCompat.getColor(Activity_register.this,R.color.black));
+        title_tv.setTextSize(18);
+        title_tv.setTypeface(null, Typeface.BOLD);
+        title_tv.setGravity(Gravity.CENTER);
+        title_tv.setText(title);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(Activity_register.this);
-        builder.setTitle(title)
+        builder.setCustomTitle(title_tv)
                 .setMessage(message)
                 .setCancelable(false)
                 .setNegativeButton(buttonlabel,new DialogInterface.OnClickListener() {

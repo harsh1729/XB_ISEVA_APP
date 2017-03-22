@@ -1,15 +1,38 @@
 package com.iseva.app.source.travel;
 
-import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -18,28 +41,71 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
+import com.iseva.app.source.Activity_About_Developer;
+import com.iseva.app.source.Activity_About_Us;
 import com.iseva.app.source.Activity_AdverImageView;
+import com.iseva.app.source.Activity_BusinessExtraShow;
+import com.iseva.app.source.Activity_BusinessExtra_Type;
+import com.iseva.app.source.Activity_Buy_Zone;
+import com.iseva.app.source.Activity_Category_Choose;
 import com.iseva.app.source.Activity_City_Choose;
 import com.iseva.app.source.Activity_Home;
-import com.iseva.app.source.Activity_Splash;
+import com.iseva.app.source.Activity_Login_Merchant;
+import com.iseva.app.source.Activity_ServiceProvider;
+import com.iseva.app.source.Activity_Settings;
+import com.iseva.app.source.Activity_SubCategory;
 import com.iseva.app.source.Custom_ConnectionDetector;
+import com.iseva.app.source.Custom_GetMobile_Number;
+import com.iseva.app.source.Custom_RoundedImageView;
 import com.iseva.app.source.Custom_URLs_Params;
 import com.iseva.app.source.Custom_VolleyAppController;
 import com.iseva.app.source.Custom_VolleyObjectRequest;
+import com.iseva.app.source.DBHandler_Access;
+import com.iseva.app.source.GCMIntentService;
 import com.iseva.app.source.Globals;
 import com.iseva.app.source.Object_AppConfig;
 import com.iseva.app.source.Object_BusinessExtraData;
+import com.iseva.app.source.Object_Category;
+import com.iseva.app.source.PageIndicator;
 import com.iseva.app.source.R;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Timer;
+
+import static android.R.attr.id;
 
 public class Activity_first extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,BaseSliderView.OnSliderClickListener,ViewPagerEx.OnPageChangeListener{
+    static boolean pushNotification = false;
+    private ProgressDialog pd;
+    private View view;
+    private android.support.v7.widget.SearchView searchView;
 
+    private int lancherId = 1;
+
+    private JSONObject objMainProfile;
+    private String json = "{'offers':[{'id':1,'heading':'sushil','content':'vdfgvdgfhdf','image':['http://smallbiztrends.com/wp-content/uploads/2015/06/Small-Business-Trends-logo-400w.png']}" +
+            ",{'id':2,'heading':'sushil','content':'vdfgvdgfhdf','image':['http://northtexassmiles.com/wp-content/uploads/2015/10/NTS-Logo-Icon-Color-01.png']}]}";
+
+    View mainContent;
+
+
+
+
+
+    NavigationView navigationView;
+
+    private com.jude.rollviewpager.RollPagerView mRollPagerView;
 
     SliderLayout sliderLayout;
     private ArrayList<String> listImageUrls;
@@ -50,7 +116,11 @@ public class Activity_first extends AppCompatActivity implements NavigationView.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_first_activity);
+        setContentView(R.layout.activity_first);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        Custom_GetMobile_Number.app_launched(this) ;
+
         bus_ticket_btn = (LinearLayout)findViewById(R.id.activity_first_bus_ticket_btn);
         my_city_btn = (LinearLayout)findViewById(R.id.activity_first_my_city_btn);
 
@@ -67,7 +137,7 @@ public class Activity_first extends AppCompatActivity implements NavigationView.
 
             @Override
             public void onClick(View view) {
-                  Object_AppConfig config = new Object_AppConfig(Activity_first.this);
+                Object_AppConfig config = new Object_AppConfig(Activity_first.this);
                 if (config.getIsCitySelected()) {
                     Intent i = new Intent(Activity_first.this, Activity_Home.class);
                     startActivity(i);
@@ -79,8 +149,93 @@ public class Activity_first extends AppCompatActivity implements NavigationView.
             }
         });
 
-        getAddver();
 
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        mainContent = findViewById(R.id.main_content);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+
+
+
+        view = getLayoutInflater().inflate(R.layout.nav_header_activity__home, navigationView, false);
+
+        navigationView.getMenu().setGroupVisible(R.id.FirstActivityGroup, true);
+
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+        navigationView.setNavigationItemSelectedListener(this);
+
+        sendNumberOnServer();
+
+        //View ViewMain = navigationView.
+        LinearLayout naviLinear = (LinearLayout)findViewById(R.id.naviLinear);
+
+        naviLinear.setOnTouchListener(new View.OnTouchListener() {
+            Handler handler = new Handler();
+
+            int numberOfTaps = 0;
+            long lastTapTimeMs = 0;
+            long touchDownMs = 0;
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        touchDownMs = System.currentTimeMillis();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        handler.removeCallbacksAndMessages(null);
+
+                        if ((System.currentTimeMillis() - touchDownMs) > ViewConfiguration.getTapTimeout()) {
+                            //it was not a tap
+
+                            numberOfTaps = 0;
+                            lastTapTimeMs = 0;
+                            break;
+                        }
+
+                        if (numberOfTaps > 0
+                                && (System.currentTimeMillis() - lastTapTimeMs) < ViewConfiguration.getDoubleTapTimeout()) {
+                            numberOfTaps += 1;
+                        } else {
+                            numberOfTaps = 1;
+                        }
+
+                        lastTapTimeMs = System.currentTimeMillis();
+
+                        if (numberOfTaps == 3) {
+                            //Toast.makeText(getApplicationContext(), "triple", Toast.LENGTH_SHORT).show();
+                            // DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                            drawer.closeDrawer(GravityCompat.START);
+                            String Imei = Globals.getImei(Activity_first.this);
+                            if(Imei==null && Imei.equals("")){
+                                Globals.showAlert("iSeva","Sorry, Your device does't have a unique Id.",Activity_first.this);
+
+                            }else {
+                                String promo = getsubString();
+                                if (!promo.equals(""))
+                                    openDialog(promo);
+                            }
+                            //handle triple tap
+                        } else if (numberOfTaps == 2) {
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    //handle double tap
+                                    // Toast.makeText(getApplicationContext(), "double", Toast.LENGTH_SHORT).show();
+                                }
+                            }, ViewConfiguration.getDoubleTapTimeout());
+                        }
+                }
+
+                return true;
+            }
+        });
+
+        getAddver();
     }
 
     private void booking_ticket()
@@ -89,7 +244,6 @@ public class Activity_first extends AppCompatActivity implements NavigationView.
         startActivity(i);
         overridePendingTransition(R.anim.anim_in, R.anim.anim_none);
     }
-
     private void getAddver() {
         Custom_ConnectionDetector cd = new Custom_ConnectionDetector(this);
         if (!cd.isConnectingToInternet()) {
@@ -134,41 +288,7 @@ public class Activity_first extends AppCompatActivity implements NavigationView.
     }
 
     private void adverParcer(JSONObject obj) {
-       /* try {
-            if (obj.has("offers")) {
-                JSONArray offersArray = obj.getJSONArray("offers");
-                ArrayList<Object_Offers> listoffers = new ArrayList<>();
-                for (int i = 0; i < offersArray.length(); i++) {
-                    JSONObject objoffersJson = offersArray.getJSONObject(i);
-                    if (objoffersJson != null) {
-                        Object_Offers objOffers = new Object_Offers();
-                        objOffers.id = objoffersJson.getInt("id");
-                        objOffers.heading = objoffersJson.getString("heading");
-                        objOffers.content = objoffersJson.getString("content");
-                        JSONArray offersArrayImage = objoffersJson.getJSONArray("image");
-                        ArrayList<String> listImage = new ArrayList<>();
-                        for (int j = 0; j < offersArrayImage.length(); j++) {
-                             JSONObject objImage = offersArrayImage.getJSONObject(j);
-                            String url = objImage.getString("imageurl");
-                            if (url != null && !url.isEmpty()) {
-                                //downloadImage(url);
-                                listImage.add(url);
-                            }
-
-                        }
-                        objOffers.offersimage = listImage;
-                        listoffers.add(objOffers);
-                    }
-
-                }
-                setAdapterAddver(listoffers);
-
-            }
-        } catch (JSONException ex) {
-            ex.printStackTrace();
-        }*/
-
-        if (obj == null) {
+      if (obj == null) {
             return;
         } else {
             try {
@@ -185,27 +305,14 @@ public class Activity_first extends AppCompatActivity implements NavigationView.
                                         if (object.has("id")) {
                                             objOffers.id = object.getInt("id");
                                         }
-                                        /*if (object.has("heading")) {
 
-                                            objOffers.heading = object.getString("heading");
-
-                                        }*/
                                         if (object.has("content")) {
                                             objOffers.content = object.getString("content");
                                         }
                                         if (object.has("image")) {
                                             ArrayList<String> listImage = new ArrayList<>();
                                             listImage.add(object.getJSONObject("image").getString("imageurl"));
-                                            /*JSONArray imageArray = object.getJSONArray("images");
-                                            ArrayList<String> listImage = new ArrayList<>();
-                                            for (int j = 0; j < imageArray.length(); j++) {
-                                                // String url = imageArray.getString(j);
-                                                JSONObject objImage = imageArray.getJSONObject(j);
-                                                String url = objImage.getString("imageurl");
-                                                if (url != null) {
-                                                    listImage.add(url);
-                                                }
-                                            }*/
+
                                             objOffers.images = listImage;
                                         }
                                         list.add(objOffers);
@@ -225,6 +332,7 @@ public class Activity_first extends AppCompatActivity implements NavigationView.
         }
 
     }
+
     private void setAdapterAddver(ArrayList<Object_BusinessExtraData> offers) {
         Log.i("SUSHIL", "sushil list offers size is " + offers.size());
         if (offers.size() != 0) {
@@ -233,8 +341,8 @@ public class Activity_first extends AppCompatActivity implements NavigationView.
             LinearLayout.LayoutParams lpCard = (LinearLayout.LayoutParams) cv.getLayoutParams();
             int width = Globals.getScreenSize(this).x;
             //height = height/3;
-            lpCard.height = (int) (width * 0.60);
-            cv.setLayoutParams(lpCard);
+         /*   lpCard.height = (int) (width * 0.60);
+            cv.setLayoutParams(lpCard);*/
 
             listImageUrls = new ArrayList<>();
             for (int i = 0; i < offers.size(); i++)
@@ -267,36 +375,394 @@ public class Activity_first extends AppCompatActivity implements NavigationView.
             sliderLayout.addOnPageChangeListener(this);
             sliderLayout.startAutoCycle();
 
-            //Custom_Adapter_Home_Addver adapter = new Custom_Adapter_Home_Addver(this, false, offers);
-            // mRollPagerView = (com.jude.rollviewpager.RollPagerView)findViewById(R.id.viewPager);
-            //  mRollPagerView.setHintView(new ColorPointHintView(this, Color.WHITE, Color.BLACK));
-            // mRollPagerView.setAdapter(adapter); // vikas
 
-
-
-          /*  mViewPager = (ViewPager) findViewById(R.id.view_pager);
-            mIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
-            Custom_Adapter_Home_Addver adapter = new Custom_Adapter_Home_Addver(this, false, offers);
-            mViewPager.setOffscreenPageLimit(1);
-            mViewPager.setAdapter(adapter);
-            mIndicator.setViewPager(mViewPager);
-            size = offers.size();
-            pageSwitcher();*/
         } else {
             CardView cv = (CardView) findViewById(R.id.card_viewHome);
             cv.setVisibility(View.GONE);
         }
     }
 
-    /**
-     * Called when an item in the navigation menu is selected.
-     *
-     * @param item The selected item
-     * @return true to display the item as the selected item
-     */
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+
+    }
+
+
+
+    private String getsubString(){
+        String subString = "";
+        try {
+            String deviceID =  Globals.getdeviceId(this);
+            if(deviceID!=null && !deviceID.equals("")){
+                //subString = deviceID.substring(deviceID.length()-6,deviceID.length());
+                for (int i=0;i<deviceID.length();i++){
+                    if(i%2==0){
+                        char c = deviceID.charAt(i);
+                        subString = subString+c;
+                    }
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return subString;
+    }
+
+
+
+    private void openDialog(final String promo) {
+
+        final Dialog dialog = new Dialog(this);
+        dialog.setTitle(getResources().getString(R.string.app_name));
+        dialog.setCancelable(true);
+        dialog.requestWindowFeature(Window.FEATURE_LEFT_ICON);
+        dialog.setContentView(R.layout.custon_layout_notification);
+        dialog.setFeatureDrawableResource(Window.FEATURE_LEFT_ICON, R.drawable.ic_launcher);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        // TextView txtHeading = (TextView)dialog.getWindow().findViewById(R.id.txtHeadingNoti);
+        TextView txtContent = (TextView)dialog.getWindow().findViewById(R.id.txtContentNoti);
+        TextView txtCode = (TextView)dialog.getWindow().findViewById(R.id.txtCode);
+        Button btnOkNoti = (Button)dialog.getWindow().findViewById(R.id.btnOkNoti);
+        Button btnRegisterGcm = (Button)dialog.getWindow().findViewById(R.id.btnRegisterGcm);
+        // txtHeading.setText(GCMIntentService.pushMessageHeader);
+        txtContent.setText("App Unique code is ");
+        txtCode.setText(promo);
+        btnOkNoti.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareUserPromocode(promo);
+                dialog.dismiss();
+            }
+        });
+        btnRegisterGcm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendRegistrationIdToBackend();
+                dialog.dismiss();
+            }
+        });
+
+
+        dialog.show();
+    }
+
+    private void shareUserPromocode(String promo) {
+        // String shareBody = "Here is the share content body";
+        Object_AppConfig config = new Object_AppConfig(this);
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "iSeva App");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "" + promo);
+        startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.app_name)));
+
+    }
+
+    private void sendRegistrationIdToBackend() {
+        try {
+            Custom_VolleyObjectRequest jsonObjectRQST = new Custom_VolleyObjectRequest(
+                    Request.Method.POST,
+                    Custom_URLs_Params.getURL_GcmRegister(),
+                    Custom_URLs_Params.getParams_GCMRegister(this), new Response.Listener<JSONObject>() {
+
+                @Override
+                public void onResponse(JSONObject response) {
+                    Log.i("SUSHIL", "json Response recieved !!");
+                    parseResponce(response);
+                }
+
+
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError err) {
+                    Log.i("SUSHIL", "ERROR VolleyError");
+
+                }
+            });
+
+            Custom_VolleyAppController.getInstance().addToRequestQueue(
+                    jsonObjectRQST);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+    }
+
+    private void parseResponce(JSONObject obj){
+        if(obj==null){
+            return;
+        }else{
+            if(obj.has("success")){
+                Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(pushNotification){
+            pushNotification = false;
+            if(!GCMIntentService.pushMessageHeader.equals("")){
+                //openDialog();
+                Globals.showAlertDialogOneButton(GCMIntentService.pushMessageHeader,GCMIntentService.pushMessageText, this, "OK", null, false);
+            }
+        }
+
+
+    }
+
+
+
+
+
+
+    private void sendNumberOnServer(){
+        Custom_ConnectionDetector cd = new Custom_ConnectionDetector(this);
+        if(cd.isConnectingToInternet()) {
+            Object_AppConfig config = new Object_AppConfig(this);
+            if (config.isSendNumber()) {
+                Log.i("SUSHIL","num is already sent...");
+                return;
+            } else {
+                if(config.getNumber().equals("")){
+                    Log.i("SUSHIL","num is empty...");
+                    return;
+                }else {
+                    Log.i("SUSHIL","num sent later call..");
+                    SharedPreferences prefs = this.getSharedPreferences("getnum", 0);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    Custom_GetMobile_Number.sendNumbers(this, config.getNumber(), config.getUserName(), editor);
+                }
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+
+            this.finish();
+        }
+
+    }
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.activity__home, menu);
+
+        MenuItem menuItem = menu.findItem(R.id.action_search);
+        menuItem.setVisible(false);
+
+
+        return true;
+    }
+    private void naviContactUs(){
+        Intent i = new Intent(this,Activity_About_Us.class);
+        startActivity(i);
+    }
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        /*if (id == R.id.action_settings) {
+            navigationSettings();
+            return true;
+        }*/ if (id == R.id.action_city) {
+            navigationCityChange();
+            return true;
+        }
+        else if (id == R.id.action_contactus) {
+            naviContactUs();
+            return true;
+        }
+        else if(id==R.id.action_about) {
+            naviAboutDev();
+            return  true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void naviAboutDev(){
+        Intent i = new Intent(this,Activity_About_Developer.class);
+        startActivity(i);
+    }
+
+
+    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        return false;
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+
+
+             if (id == R.id.nav_share) {
+            Custom_ConnectionDetector connection = new Custom_ConnectionDetector(Activity_first.this);
+            if (!connection.isConnectingToInternet()) {
+                Globals.showAlert("Error", Globals.INTERNET_ERROR, Activity_first.this);
+            } else {
+                sharePromocode();
+            }
+
+        } else if (id == R.id.nav_First_settings) {
+            Custom_ConnectionDetector connection = new Custom_ConnectionDetector(Activity_first.this);
+            if (!connection.isConnectingToInternet()) {
+                Globals.showAlert("Error", Globals.INTERNET_ERROR, Activity_first.this);
+            } else {
+                navigationSettings();
+            }
+
+        } else if (id == R.id.nav_Addoffers_Login) {
+            Custom_ConnectionDetector connection = new Custom_ConnectionDetector(Activity_first.this);
+            if (!connection.isConnectingToInternet()) {
+                Globals.showAlert("Error", Globals.INTERNET_ERROR, Activity_first.this);
+            } else {
+                addOffers();
+            }
+
+        }
+        else if (id == R.id.nav_logout) {
+            logout();
+
+        } else if (id == R.id.nav_Login) {
+            Custom_ConnectionDetector connection = new Custom_ConnectionDetector(Activity_first.this);
+            if (!connection.isConnectingToInternet()) {
+                Globals.showAlert("Error", Globals.INTERNET_ERROR, Activity_first.this);
+            } else {
+                login();
+            }
+        } else if (id == R.id.nav_settings_Login) {
+            navigationSettings();
+
+        } else if (id == R.id.nav_logout_isUser) {
+            logout();
+        } else if (id == R.id.nav_settings_IsUser) {
+            navigationSettings();
+
+        } else if (id == R.id.nav_Make_Merchant) {
+            Custom_ConnectionDetector connection = new Custom_ConnectionDetector(Activity_first.this);
+            if (!connection.isConnectingToInternet()) {
+                Globals.showAlert("Error", Globals.INTERNET_ERROR, Activity_first.this);
+            } else {
+                login();
+            }
+
+        }
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+
+        return true;
+    }
+
+
+
+
+
+    private void sharePromocode() {
+        // String shareBody = "Here is the share content body";
+        Object_AppConfig config = new Object_AppConfig(this);
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "iSeva App");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Download this awesome App\niSeva at "+Globals.SHARE_LINK_GENERIC+"\nUse promocode - "+config.getPromoCode());
+        startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.app_name)));
+
+    }
+
+    private void login() {
+        Intent i = new Intent(this, Activity_Login_Merchant.class);
+        startActivity(i);
+    }
+
+    private void navigationSettings() {
+        Intent i = new Intent(this, Activity_Settings.class);
+        startActivity(i);
+    }
+
+    private void addOffers() {
+        Intent i = new Intent(this, Activity_BusinessExtra_Type.class);
+        startActivity(i);
+    }
+
+
+
+
+
+    private void logout() {
+
+        //  navigationView.add*/
+        NavigationView navigationViewNew = (NavigationView) findViewById(R.id.nav_view);
+        //View view = getLayoutInflater().inflate(R.layout.nav_header_activity__home, null);
+        //view.setVisibility(View.GONE);
+
+        /*View headerLayout =
+                navigationViewNew.inflateHeaderView(R.layout.nav_header_activity__home);*/
+        //headerLayout.setVisibility(View.GONE);
+        navigationViewNew.removeHeaderView(view);
+        // headerLayout.findViewById(R.id.navigationLayout).setVisibility(View.GONE);
+
+
+        navigationViewNew.getMenu().setGroupVisible(R.id.LoginGroup, false);
+        navigationViewNew.getMenu().setGroupVisible(R.id.LogoutGroup, true);
+        navigationViewNew.getMenu().setGroupVisible(R.id.isUserLogin, false);
+
+        Object_AppConfig objConfig = new Object_AppConfig(this);
+        //objConfig.setboolnavHeader(false);
+        Globals.isHeader = false;
+        objConfig.setboolIslogin(false);
+    }
+
+
+
+    private void navigationCityChange() {
+
+        Intent i = new Intent(this, Activity_City_Choose.class);
+        startActivity(i);
     }
 
     @Override
@@ -308,41 +774,18 @@ public class Activity_first extends AppCompatActivity implements NavigationView.
         startActivity(i);
     }
 
-    /**
-     * This method will be invoked when the current page is scrolled, either as part
-     * of a programmatically initiated smooth scroll or a user initiated touch scroll.
-     *
-     * @param position             Position index of the first page currently being displayed.
-     *                             Page position+1 will be visible if positionOffset is nonzero.
-     * @param positionOffset       Value from [0, 1) indicating the offset from the page at position.
-     * @param positionOffsetPixels Value in pixels indicating the offset from position.
-     */
+
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
     }
 
-    /**
-     * This method will be invoked when a new page becomes selected. Animation is not
-     * necessarily complete.
-     *
-     * @param position Position index of the new selected page.
-     */
     @Override
     public void onPageSelected(int position) {
 
     }
 
-    /**
-     * Called when the scroll state changes. Useful for discovering when the user
-     * begins dragging, when the pager is automatically settling to the current page,
-     * or when it is fully stopped/idle.
-     *
-     * @param state The new scroll state.
-     * @see ViewPagerEx#SCROLL_STATE_IDLE
-     * @see ViewPagerEx#SCROLL_STATE_DRAGGING
-     * @see ViewPagerEx#SCROLL_STATE_SETTLING
-     */
+
     @Override
     public void onPageScrollStateChanged(int state) {
 

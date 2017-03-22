@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.iseva.app.source.R;
 import com.iseva.app.source.Realm_objets.Bus_routes_detail;
@@ -523,7 +523,7 @@ public class Activity_filter extends Activity{
                                 Busbrand_Scania_flag = false;
                                 setdynamiclayout();
                             } else if (view.getTag(R.string.tag_name).toString().contains("Price")) {
-                                Toast.makeText(Activity_filter.this, "price calling", Toast.LENGTH_LONG).show();
+
                                 price_range_flag = false;
                                 setdynamiclayout();
 

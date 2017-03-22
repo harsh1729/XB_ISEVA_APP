@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -522,11 +523,11 @@ public class Activity_review_itinerary extends Activity {
     {
         session_manager = new Session_manager(Activity_review_itinerary.this);
 
-        String phone = "7230002908";
-        String productName = "ISEVA";
-        String firstName = "vikrant";
+        String phone = session_manager.getphone();
+        String productName = "Book TIcket";
+        String firstName = session_manager.getname();
         String txnId = payu_transaction_id;
-        String email="iseva721@gmail.com";
+        String email=session_manager.getusername();
         String sUrl = "http://xercesblue.website/iservice/success";
         String fUrl = "http://xercesblue.website/iservice/failiar";
         String udf1 = "";
@@ -545,7 +546,7 @@ public class Activity_review_itinerary extends Activity {
         PaymentParam.Builder builder = new PaymentParam.Builder();
 
 
-        builder.setAmount(Double.parseDouble("2"))
+        builder.setAmount(Double.parseDouble(TotalFare))
                 .setTnxId(txnId)
                 .setPhone(phone)
                 .setProductName(productName)
@@ -582,7 +583,7 @@ public class Activity_review_itinerary extends Activity {
         // Replace your server side hash generator API URL
        // String url = "https://test.payumoney.com/payment/op/calculateHashForTest";
       String url = "http://xercesblue.website/iservice/client_requests/transaction/create_hash";
-        Toast.makeText(this, "Please wait... Generating hash from server ... ", Toast.LENGTH_LONG).show();
+
         StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -594,15 +595,14 @@ public class Activity_review_itinerary extends Activity {
                         if (status != null || status.equals("1")) {
 
                             String hash = jsonObject.getString(SdkConstants.RESULT);
-                            Log.i("app_activity", "Server calculated Hash :  " + hash);
+
+
 
                             paymentParam.setMerchantHash(hash);
 
                             startPaymentActivityForResult(Activity_review_itinerary.this, paymentParam);
                         } else {
-                            Toast.makeText(Activity_review_itinerary.this,
-                                    jsonObject.getString(SdkConstants.RESULT),
-                                    Toast.LENGTH_SHORT).show();
+
                         }
 
                     }
@@ -712,7 +712,7 @@ public class Activity_review_itinerary extends Activity {
             public void onErrorResponse(VolleyError error) {
                 progress.dismiss();
 
-                Toast.makeText(getApplicationContext(),"Error is -->> " + error.toString(),Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"Something accured wrong",Toast.LENGTH_LONG).show();
             }
         }) {
             @Override
@@ -759,7 +759,7 @@ public class Activity_review_itinerary extends Activity {
             public void onErrorResponse(VolleyError error) {
                 progress.dismiss();
 
-                Toast.makeText(getApplicationContext(),"Error is -->> " + error.toString(),Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"Something accured wrong",Toast.LENGTH_LONG).show();
             }
         }) {
             @Override
@@ -797,7 +797,7 @@ public class Activity_review_itinerary extends Activity {
             public void onErrorResponse(VolleyError error) {
                 progress.dismiss();
 
-                Toast.makeText(getApplicationContext(),"Error is -->> " + error.toString(),Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"Something accured wrong",Toast.LENGTH_LONG).show();
             }
         }) {
             @Override
@@ -835,7 +835,7 @@ public class Activity_review_itinerary extends Activity {
             public void onErrorResponse(VolleyError error) {
                 progress.dismiss();
 
-                Toast.makeText(getApplicationContext(),"Error is -->> " + error.toString(),Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"Something accured wrong",Toast.LENGTH_LONG).show();
             }
         }) {
             @Override
@@ -1016,7 +1016,7 @@ public class Activity_review_itinerary extends Activity {
             public void onErrorResponse(VolleyError error) {
                 progress.dismiss();
 
-                Toast.makeText(getApplicationContext(),"Error is -->> " + error.toString(),Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"Something accured wrong",Toast.LENGTH_LONG).show();
             }
         }) {
             @Override
@@ -1063,7 +1063,7 @@ public class Activity_review_itinerary extends Activity {
             public void onErrorResponse(VolleyError error) {
                 progress.dismiss();
 
-                Toast.makeText(getApplicationContext(),"Error is -->> " + error.toString(),Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"Something accured wrong",Toast.LENGTH_LONG).show();
             }
         }) {
             @Override
@@ -1165,8 +1165,16 @@ public class Activity_review_itinerary extends Activity {
 
     public void activity_dismiss()
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Alert")
+        TextView title_tv = new TextView(this);
+        title_tv.setPadding(0,10,0,0);
+        title_tv.setTextColor(ContextCompat.getColor(Activity_review_itinerary.this,R.color.black));
+        title_tv.setTextSize(18);
+        title_tv.setTypeface(null, Typeface.BOLD);
+        title_tv.setGravity(Gravity.CENTER);
+        title_tv.setText("Alert");
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(Activity_review_itinerary.this);
+        builder.setCustomTitle(title_tv)
                 .setMessage("You are not unable to book this ticket till next 10 minutes.")
                 .setCancelable(false)
 
@@ -1209,8 +1217,16 @@ public class Activity_review_itinerary extends Activity {
         }
         else
         {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Alert")
+            TextView title_tv = new TextView(this);
+            title_tv.setPadding(0,10,0,0);
+            title_tv.setTextColor(ContextCompat.getColor(Activity_review_itinerary.this,R.color.black));
+            title_tv.setTextSize(18);
+            title_tv.setTypeface(null, Typeface.BOLD);
+            title_tv.setGravity(Gravity.CENTER);
+            title_tv.setText("Alert");
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(Activity_review_itinerary.this);
+            builder.setCustomTitle(title_tv)
                     .setMessage("You are not unable to book this ticket till next 10 minutes.")
                     .setCancelable(false)
 
@@ -1322,7 +1338,7 @@ public class Activity_review_itinerary extends Activity {
                 }
 
             } else {
-                showAlertDialog(getResources().getString(R.string.validating_error_title),"Some Error Accured Please Try Again !","Ok");
+                showAlertDialog(getResources().getString(R.string.validating_error_title),"Some error accured please try again !","Ok");
             }
 
 
@@ -1552,7 +1568,7 @@ public class Activity_review_itinerary extends Activity {
             public void onErrorResponse(VolleyError error) {
 
                 progress.dismiss();
-                Toast.makeText(getApplicationContext(),"Error is -->> " + error.toString(),Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"Something accured wrong",Toast.LENGTH_LONG).show();
             }
         }) {
             @Override
@@ -1594,7 +1610,7 @@ public class Activity_review_itinerary extends Activity {
             public void onErrorResponse(VolleyError error) {
 
 
-                Toast.makeText(getApplicationContext(),"Error is -->> " + error.toString(),Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"Something accured wrong",Toast.LENGTH_LONG).show();
             }
         }) {
             @Override
@@ -1657,8 +1673,16 @@ public class Activity_review_itinerary extends Activity {
 
     public void showAlertDialog(String title,String message,String buttonlabel)
     {
+        TextView title_tv = new TextView(this);
+        title_tv.setPadding(0,10,0,0);
+        title_tv.setTextColor(ContextCompat.getColor(Activity_review_itinerary.this,R.color.black));
+        title_tv.setTextSize(18);
+        title_tv.setTypeface(null, Typeface.BOLD);
+        title_tv.setGravity(Gravity.CENTER);
+        title_tv.setText(title);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(Activity_review_itinerary.this);
-        builder.setTitle(title)
+        builder.setCustomTitle(title_tv)
                 .setMessage(message)
                 .setCancelable(false)
                 .setNegativeButton(buttonlabel,new DialogInterface.OnClickListener() {

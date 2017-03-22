@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -30,7 +31,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.iseva.app.source.R;
 import com.iseva.app.source.Realm_objets.Pickup_Place_Detail;
@@ -186,23 +187,23 @@ public class Activity_Passenger_Details extends Activity {
                 }
                 else if(validate_result.equals("boarding_point"))
                 {
-                    showAlertDialog(getResources().getString(R.string.validating_error_title),"Please Select a Boarding Point !","Ok");
+                    showAlertDialog(getResources().getString(R.string.validating_error_title),"Please select a boarding point !","Ok");
                 }
                 else if(validate_result.contains("Passenger"))
                 {
-                    showAlertDialog(getResources().getString(R.string.validating_error_title),"Complete "+validate_result+" Information","Ok");
+                    showAlertDialog(getResources().getString(R.string.validating_error_title),"Complete "+validate_result+" information","Ok");
                 }
                 else if(validate_result.equals("name"))
                 {
-                    showAlertDialog(getResources().getString(R.string.validating_error_title),"Please Insert Contact Name !","Ok");
+                    showAlertDialog(getResources().getString(R.string.validating_error_title),"Please insert contact name !","Ok");
                 }
                 else if(validate_result.equals("phone"))
                 {
-                    showAlertDialog(getResources().getString(R.string.validating_error_title),"Please Insert a 10 disit Mobile No !","Ok");
+                    showAlertDialog(getResources().getString(R.string.validating_error_title),"Please insert a 10 disit mobile no !","Ok");
                 }
                 else if(validate_result.equals("email"))
                 {
-                    showAlertDialog(getResources().getString(R.string.validating_error_title),"Please Insert valid email Id !","Ok");
+                    showAlertDialog(getResources().getString(R.string.validating_error_title),"Please insert valid email id !","Ok");
                 }
 
             }
@@ -243,7 +244,7 @@ public class Activity_Passenger_Details extends Activity {
         }
         else if(!contact_email.getText().toString().trim().matches(emailPattern))
         {
-            Toast.makeText(Activity_Passenger_Details.this,""+contact_mobile.getText(),Toast.LENGTH_LONG).show();
+
             return "email";
         }
         else
@@ -480,7 +481,7 @@ public class Activity_Passenger_Details extends Activity {
             }
             else
             {
-                showAlertDialog(getResources().getString(R.string.validating_error_title),"Some Error Accured Please Try Again !","Ok");
+                showAlertDialog(getResources().getString(R.string.validating_error_title),"Some error accured please try again !","Ok");
             }
 
             progress.dismiss();
@@ -625,8 +626,17 @@ public class Activity_Passenger_Details extends Activity {
 
     public void showAlertDialog(String title,String message,String buttonlabel)
     {
+
+        TextView title_tv = new TextView(this);
+        title_tv.setPadding(0,10,0,0);
+        title_tv.setTextColor(ContextCompat.getColor(Activity_Passenger_Details.this,R.color.black));
+        title_tv.setTextSize(18);
+        title_tv.setTypeface(null, Typeface.BOLD);
+        title_tv.setGravity(Gravity.CENTER);
+        title_tv.setText(title);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(Activity_Passenger_Details.this);
-        builder.setTitle(title)
+        builder.setCustomTitle(title_tv)
                 .setMessage(message)
                 .setCancelable(false)
                 .setNegativeButton(buttonlabel,new DialogInterface.OnClickListener() {

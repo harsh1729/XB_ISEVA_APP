@@ -5,11 +5,13 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -73,7 +75,7 @@ public class Activity_loading extends Activity {
         }
         else
         {
-            Toast.makeText(Activity_loading.this,R.string.internet_connection_error_title,Toast.LENGTH_LONG).show();
+            showAlertDialog(getResources().getString(R.string.validating_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
         }
 
     }
@@ -188,6 +190,11 @@ public class Activity_loading extends Activity {
                 }
                 else
                 {
+                    Intent i = new Intent(Activity_loading.this,Activity_Bus_Routes.class);
+                    i.putExtra("response",""+response);
+                    startActivity(i);
+                    overridePendingTransition(R.anim.anim_in, R.anim.anim_none);
+                    activity_dismiss();
                     /*loader_layout.setVisibility(View.GONE);
                     showAlertDialog(getResources().getString(R.string.validating_error_title),((SoapObject)search_bus_result.getProperty("Response")).getPrimitivePropertyAsString("Message"),"Ok");*/
                 }
@@ -199,7 +206,7 @@ public class Activity_loading extends Activity {
             else
             {
                 loader_layout.setVisibility(View.GONE);
-                showAlertDialog(getResources().getString(R.string.validating_error_title),"Some Error Accured Please Try Again !","Ok");
+                showAlertDialog(getResources().getString(R.string.validating_error_title),"Some error accured please try again !","Ok");
 
 
             }
@@ -214,7 +221,7 @@ public class Activity_loading extends Activity {
 
             Realm thread_realm = Realm.getInstance(getApplicationContext());
 
-            SoapObject request = new SoapObject(Constants.GLOBEL_NAMESPACE,Constants.METHOD_GET_ROUTES);
+            SoapObject request = new SoapObject(Constants.GLOBEL_NAMESPACE,Constants.METHOD_GET_ROUTES1);
 
             SoapObject sa = new SoapObject(null,"Authentication");
             SoapObject search_request = new SoapObject(null,"SearchRequest");
@@ -300,7 +307,7 @@ public class Activity_loading extends Activity {
             httpTransport.debug = true;
 
             try {
-                httpTransport.call(Constants.GLOBEL_NAMESPACE+Constants.METHOD_GET_ROUTES, envelope);
+                httpTransport.call(Constants.GLOBEL_NAMESPACE+Constants.METHOD_GET_ROUTES1, envelope);
             } catch (HttpResponseException e) {
 
                 e.printStackTrace();
@@ -431,15 +438,24 @@ public class Activity_loading extends Activity {
 
 
 
-
+        super.onBackPressed();
+        overridePendingTransition(R.anim.anim_none, R.anim.anim_out);
 
 
     }
 
     public void showAlertDialog(String title,String message,String buttonlabel)
     {
+        TextView title_tv = new TextView(this);
+        title_tv.setPadding(0,10,0,0);
+        title_tv.setTextColor(ContextCompat.getColor(Activity_loading.this,R.color.black));
+        title_tv.setTextSize(18);
+        title_tv.setTypeface(null, Typeface.BOLD);
+        title_tv.setGravity(Gravity.CENTER);
+        title_tv.setText(title);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(Activity_loading.this);
-        builder.setTitle(title)
+        builder.setCustomTitle(title_tv)
                 .setMessage(message)
                 .setCancelable(false)
                 .setNegativeButton(buttonlabel,new DialogInterface.OnClickListener() {
@@ -450,7 +466,8 @@ public class Activity_loading extends Activity {
                 });
         AlertDialog alert = builder.create();
         alert.show();
-
+        TextView titleview = (TextView)alert.findViewById(android.R.id.title);
+        titleview.setGravity(Gravity.CENTER);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         Button b = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
         b.setLayoutParams(lp);
