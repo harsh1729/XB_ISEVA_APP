@@ -20,7 +20,65 @@
         <item name="android:windowExitAnimation">@anim/slide_out_down</item>
     </style>
 
+    <style name="et_login">
+        <item name="android:background">@drawable/bg_et_box</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:inputType">textEmailAddress</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:padding">@dimen/margin_10dp</item>
+        <item name="android:textColorHint">@color/txt_editbox</item>
+        <item name="android:textColor">@color/text_name</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textSize">@dimen/font_18sp</item>
+        <item name="android:layout_marginLeft">@dimen/margin_20dp</item>
+        <item name="android:layout_marginRight">@dimen/margin_20dp</item>
+        <item name="android:drawablePadding">@dimen/margin_10dp</item>
 
+
+
+        <!--<item name="font_name">@string/font_name_opensans_regular</item>-->
+
+    </style>
+
+    <style name="et_default">
+        <item name="android:background">@drawable/bg_et_box</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:inputType">textEmailAddress</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:padding">@dimen/margin_10dp</item>
+        <item name="android:textColorHint">@color/txt_editbox</item>
+        <item name="android:textColor">@color/text_name</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textSize">@dimen/font_18sp</item>
+
+        <item name="android:drawablePadding">@dimen/margin_10dp</item>
+    </style>
+
+    <style name="btn_style_full_width">
+        <item name="android:background">@drawable/btn_background</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:padding">@dimen/margin_10dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/font_18sp</item>
+        <item name="android:layout_marginLeft">@dimen/margin_20dp</item>
+        <item name="android:layout_marginRight">@dimen/margin_20dp</item>
+
+
+    </style>
+
+
+    <style name="custom_appcompact" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/app_theme_color</item>
+    </style>
+
+    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <!-- Customize your theme here. -->
+
+
+    </style>
 
 
 </resources>

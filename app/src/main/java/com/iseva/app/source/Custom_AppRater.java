@@ -63,6 +63,7 @@ public class Custom_AppRater {
 		//window.setLayout(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		
 		LinearLayout ll = new LinearLayout(mContext);
+		ll.setPadding(10,10,10,10);
 		ll.setOrientation(LinearLayout.VERTICAL);
 		TextView tv = new TextView(mContext);
 		tv.setText("If you liked this app, please take a moment to rate it. Thanks for your support!");

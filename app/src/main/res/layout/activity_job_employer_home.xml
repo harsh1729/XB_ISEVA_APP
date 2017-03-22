@@ -74,11 +74,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#000000"
-            android:text="To browse resumes and post new jobs, please register with us. Press login if you are already registered."
+            android:text="To browse resumes and post new jobs, please register with us. Press login if you are already registered. \n\nनये रेज़्यूमे देखने के लिए और नये जॉब्स डालने के लिए हमारे साथ रिजिस्टर करें |  लॉगिन बटन पे क्लिक करें अगर आप रिजिस्टर हो चुके हैं"
             android:typeface="serif"
             android:textSize="17sp"/>
 
-
+        <TextView
+            android:id="@+id/hi_employer_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColor="#000000"
+            android:text=""
+            android:typeface="serif"
+            android:textSize="17sp"/>
 
     </LinearLayout>
 
@@ -87,7 +95,7 @@
         android:layout_weight="8"
         android:gravity="bottom"
 
-        android:background="@drawable/employeess"
+
         android:layout_height="0dp" android:orientation="vertical">
 
 

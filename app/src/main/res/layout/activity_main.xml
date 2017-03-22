@@ -1,0 +1,258 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+    <LinearLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:background="@color/app_white"
+        >
+
+        <include layout="@layout/header"></include>
+        <com.iseva.app.source.customcomponent.CustomLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical"
+
+            android:padding="10dp"
+            >
+
+            <!--<ScrollView
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="From"
+                        android:textSize="12sp"/>
+                    <com.iseva.app.source.customcomponent.EditTextRegular
+                        android:id="@+id/Get_City_From"
+                        android:layout_width="match_parent"
+                        android:background="@drawable/bg_et_box"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:inputType="textPhonetic"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:textSize="12sp"
+                        android:focusable="false"
+                        android:cursorVisible="false"
+                        android:focusableInTouchMode="false"
+
+                        >
+
+                    </com.iseva.app.source.customcomponent.EditTextRegular>
+
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/one_way_arrow"
+                        android:layout_marginTop="6sp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginLeft="5dp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="To"
+                        android:textSize="12sp"/>
+                    <com.iseva.app.source.customcomponent.EditTextRegular
+                        android:id="@+id/Get_City_To"
+                        android:layout_width="match_parent"
+                        android:background="@drawable/bg_et_box"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPhonetic"
+                        android:ems="10"
+                        android:textSize="12sp"
+                        android:focusable="false"
+                        android:cursorVisible="false"
+                        android:focusableInTouchMode="false"
+                        >
+
+                    </com.iseva.app.source.customcomponent.EditTextRegular>
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:text="Departure Date"/>
+                <com.iseva.app.source.customcomponent.EditTextRegular
+                    android:id="@+id/journey_date"
+                    style="@style/et_default"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:cursorVisible="false"
+                    android:textSize="12sp"
+                    android:ems="10"
+                    />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp">
+
+                <com.iseva.app.source.customcomponent.ButtonBold
+                    android:id="@+id/search_routes_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_background"
+                    android:textColor="#FFFFFF"
+                    android:text="Search Buses"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp">
+
+                <com.iseva.app.source.customcomponent.ButtonBold
+                    android:id="@+id/show_booked_ticket_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_background"
+                    android:textColor="#FFFFFF"
+                    android:text="My Trips"/>
+
+            </LinearLayout>
+
+
+            <!-- </LinearLayout>
+         </ScrollView>-->
+
+        </com.iseva.app.source.customcomponent.CustomLinearLayout >
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/activity_main_login_alert_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#cc000000"
+        android:gravity="center"
+        android:padding="10dp"
+        android:visibility="gone"
+        android:clickable="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/app_white"
+            android:orientation="vertical"
+            android:padding="20dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:text="You are not loged in. For booking ticket please login or signup first."
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="30dp"
+                >
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/activity_main_login_alert_cancel_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@color/app_theme_color"
+                        android:textStyle="bold"
+                        android:padding="10dp"
+                        android:text="Cancel"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/activity_main_login_alert_login_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@color/app_theme_color"
+                        android:textStyle="bold"
+                        android:padding="10dp"
+                        android:text="Login"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/activity_main_login_alert_signup_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:layout_gravity="right"
+                        android:textColor="@color/app_theme_color"
+                        android:textStyle="bold"
+                        android:padding="10dp"
+                        android:text="SignUp"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
+
+

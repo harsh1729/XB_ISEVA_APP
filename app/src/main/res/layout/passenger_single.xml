@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <com.iseva.app.source.customcomponent.TextViewRegular
+            android:id="@+id/label_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Passenger"
+            android:textSize="12sp"
+            android:textColor="#222"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:paddingRight="@dimen/margin_10dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/radioGroup"
+                android:orientation="horizontal"
+                >
+
+                <RadioButton
+                    android:id="@+id/radio_mr"
+                    android:tag="radio_mr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:scaleX="0.85"
+                    android:scaleY="0.85"
+                    android:textSize="15sp"
+                    android:textColor="#222"
+                    android:buttonTint="@color/app_theme_color"
+
+                    android:text="Mr"/>
+                <RadioButton
+                    android:id="@+id/radio_mrs"
+                    android:tag="@string/radio_mrs"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:scaleX="0.85"
+                    android:scaleY="0.85"
+                    android:textSize="15sp"
+                    android:textColor="#222"
+                    android:buttonTint="@color/app_theme_color"
+                    android:layout_marginLeft="20dp"
+                    android:text="Mrs"/>
+
+                <RadioButton
+                    android:id="@+id/radio_ms"
+                    android:tag="@string/radio_ms"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:scaleX="0.85"
+                    android:scaleY="0.85"
+                    android:textSize="15sp"
+                    android:textColor="#222"
+                    android:buttonTint="@color/app_theme_color"
+                    android:layout_marginLeft="20dp"
+                    android:text="Ms"/>
+            </RadioGroup>
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+            <com.iseva.app.source.customcomponent.EditTextRegular
+                android:id="@+id/edittext_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Name"
+                android:backgroundTint="#999"
+                android:textSize="12sp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+            <com.iseva.app.source.customcomponent.EditTextRegular
+                android:id="@+id/edittext_age"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Age"
+                android:inputType="number"
+                android:backgroundTint="#999"
+                android:textSize="12sp"/>
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

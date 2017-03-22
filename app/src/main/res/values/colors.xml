@@ -7,6 +7,7 @@
     <color name="statusBarColor">#0d0d0e</color>
     <color name="app_white">#ffffff</color>
     <color name="app_gray">#bcb8b8</color>
+    <color name="black">#000</color>
     <color name="app_light_gray">#DADADA</color>
 
     <color name="holo_blue_dark">#ff0099cc</color>
@@ -19,5 +20,73 @@
     <color name="app_darkblue">#15879e</color>
     <color name="app_darkgreen">#0bae0b</color><!-- #0bae0b #228B22-->
     <color name="windowBackground">#eeecde</color>
+    <color name="demo">#333333</color>
+
+
+
+
+
+
+
+
+
+    <color name="logingbackround">#ffffe6</color>
+    <color name="login_card_bg">#FFFFFF</color>
+
+    <color name="defalt_white">#ffffffff</color>
+
+    <color name="bg_editbox">#FAFAFA</color>
+    <!-- <color name="border_color">#F5F5F5</color>-->
+    <color name="border_color">#999999</color>-->
+    <color name="txt_editbox">#a3a3a3</color>
+    <color name="text_name">#424242</color>
+    <color name="white">#FFFFFF</color>
+    <color name="app_theme_color">#1BAFCD</color>
+    <color name="bg_button_signup">#349bf3</color>
+    <color name="highlighted_text">#2975b6</color>
+    <color name="accent_material_light_1">@color/app_theme_color</color>
+    <color name="tab_active_text_color">#000</color>
+
+    <color name="seat_icon_text_color">#999</color>
+    <color name="btn_pressed_color">#444</color>
+    <color name="red_color">#f00</color>
+    <!--bus routes screen color start-->
+
+    <color name="routes_screen_light_text_color">#999</color>
+    <color name="routes_screen_extra_light_text_color">#BBB</color>
+    <color name="routes_screen_dark_text_color">#222</color>
+    <color name="routes_screen_selected_text_color">@color/app_theme_color</color>
+    <color name="routes_screen_divider_color">#FAFAFA</color>
+
+
+
+    <drawable name="white_color">#ffffff</drawable>
+
+    <drawable name="listview_on_touch_color">#eee</drawable>
+
+
+    <!--bus routes screen color end-->
+
+
+    <!--filter screen color start-->
+
+    <color name="filter_screen_text">#666</color>
+    <color name="filter_screen_button_border">#333</color>
+    <color name="filter_screen_focused">@color/app_theme_color</color>
+    <color name="filter_screen_lable">#000</color>
+    <color name="filter_screen_divider">#666</color>
+
+    <!--filter screen color end-->
+
+    <color name="list_background">#F3F3F3</color>
+
+
+
+
+
+
+
+
+
 
 </resources>

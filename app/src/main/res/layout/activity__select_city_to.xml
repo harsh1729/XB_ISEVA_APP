@@ -1,0 +1,74 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_white"
+    android:orientation="vertical"
+    >
+    <include layout="@layout/header"></include>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.iseva.app.source.travel.Autocompletetext_costom
+            android:id="@+id/Real_Get_To_City"
+            android:layout_width="match_parent"
+            android:padding="12dp"
+            android:layout_height="wrap_content"
+            android:inputType="textAutoComplete|textAutoCorrect"
+            android:hint="Enter Destination City"
+            android:background="@drawable/select_city_background"
+            android:dropDownAnchor="@+id/header"
+            android:dropDownWidth="match_parent"
+            android:popupBackground="@null"
+
+
+
+            android:textSize="16sp"
+
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="-16dp"
+            android:background="#999">
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+
+            android:orientation="vertical">
+            <com.iseva.app.source.customcomponent.TextViewRegular
+                android:id="@+id/to_city_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:textColor="@color/app_theme_color"
+                android:textSize="14sp"
+                android:textAllCaps="true"
+
+                android:text="Popular Cities"
+                android:paddingLeft="10dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height=".5dp"
+                android:background="#DDDDDD"></LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-16dp"
+            android:id="@+id/header">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -9,4 +9,28 @@
     <dimen name="txt_app_labels_normal">17sp</dimen>
     <dimen name="text_margin">16dp</dimen>
     <dimen name="shadow_width">15dp</dimen>
+
+
+    <dimen name="margin_20dp">20dp</dimen>
+    <dimen name="margin_10dp">10dp</dimen>
+    <dimen name="radius_et_pin_box">5px</dimen>
+    <dimen name="margin_5dp">5dp</dimen>
+    <dimen name="font_18sp">18sp</dimen>
+    <dimen name="font_16sp">16sp</dimen>
+    <dimen name="font_14sp">14sp</dimen>
+    <dimen name="height_5dp">5dp</dimen>
+    <dimen name="margin_3dp">3dp</dimen>
+
+
+    <dimen name="edittext_padding">30dp</dimen>
+    <dimen name="login_bg_padding">5dp</dimen>
+
+    <dimen name="new_tecket_btn_text_size">14dp</dimen>
+
+    <dimen name="seat_icon_text_size">8sp</dimen>
+
+
+    <!--itinerary screen dimentions start-->
+    <dimen name="itinerary_screen_padding_left">10dp</dimen>
+    <dimen name="itinerary_screen_padding_right">10dp</dimen>
 </resources>

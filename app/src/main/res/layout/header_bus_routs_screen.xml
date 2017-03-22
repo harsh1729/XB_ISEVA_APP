@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="left"
+
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <com.iseva.app.source.customcomponent.TextViewBold
+            android:id="@+id/header_from_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/app_white"
+            android:textStyle="bold"
+            android:textSize="15sp"/>
+        <ImageView
+            android:id="@+id/header_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingRight="3dp"
+            android:paddingLeft="3dp"
+            android:src="@drawable/ic_bus_title_arrow_test"/>
+
+        <com.iseva.app.source.customcomponent.TextViewBold
+            android:id="@+id/header_to_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/app_white"
+            android:textStyle="bold"
+            android:textSize="15sp"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <com.iseva.app.source.customcomponent.TextViewRegular
+            android:id="@+id/header_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/app_white"
+            android:textSize="13sp"/>
+    </LinearLayout>
+
+</LinearLayout>

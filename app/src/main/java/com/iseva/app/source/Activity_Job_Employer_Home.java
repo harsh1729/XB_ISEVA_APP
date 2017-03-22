@@ -31,7 +31,7 @@ public class Activity_Job_Employer_Home extends Activity {
     }
 
     private void init(){
-        setFooterAndHeader(R.id.imgBtnFooterPostResume);
+        setFooterAndHeader(R.id.imgBtnFooterPostJob);
         layout = (LinearLayout)findViewById(R.id.linear);
         btnLogin = (Button)findViewById(R.id.btnLogin);
         btnRegister = (Button)findViewById(R.id.btnRegister);
@@ -138,10 +138,10 @@ public class Activity_Job_Employer_Home extends Activity {
         switch (v.getId()) {
 
             case R.id.imgBtnFooterPostResume:
-                nextClass = Activity_Job_Employer_Home.class;
+                nextClass = Activity_Job_Employee_Home.class;
                 break;
             case R.id.imgBtnFooterPostJob:
-                nextClass = Activity_Job_Employee_Home.class;
+                nextClass = Activity_Job_Employer_Home.class;
                 break;
 
             default:

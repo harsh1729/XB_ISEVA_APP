@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 public class Object_BusinessExtraData {
 
-    int id;
+    public int id;
     int masterid;
     String heading;
-    String content;
+    public String content;
     String contact;
     int userid;
-    ArrayList<String> images;
+    public ArrayList<String> images;
 
 
 }

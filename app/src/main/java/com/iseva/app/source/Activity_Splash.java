@@ -18,6 +18,7 @@ import com.android.volley.VolleyError;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.iseva.app.source.travel.Activity_first;
 
 import org.json.JSONObject;
 
@@ -66,14 +67,17 @@ public class Activity_Splash extends AppCompatActivity {
     }
 
     private void navigation() {
-        Object_AppConfig config = new Object_AppConfig(this);
+       /* Object_AppConfig config = new Object_AppConfig(this);
         if (config.getIsCitySelected()) {
             Intent i = new Intent(Activity_Splash.this, Activity_Home.class);
             startActivity(i);
         } else {
             Intent i = new Intent(Activity_Splash.this, Activity_City_Choose.class);
             startActivity(i);
-        }
+        }*/
+
+        Intent i = new Intent(Activity_Splash.this, Activity_first.class);
+        startActivity(i);
 
         // close this activity
         finish();

@@ -34,4 +34,84 @@
      </string>
 
     <string name="agreement_employee">Person should not post any unwanted material on his profile otherwise we hold the right to terminate profile from iSeva without any prior notice.\n\nThis terms of use shall be governed and construed in accordance with the laws in India. Any dispute arising hereunder shall be subject to the exclusive jurisdiction of the courts in Sri Ganganagar(Raj.), India.</string>
+
+
+    <string name="header_text_city_from">Select Origin City</string>
+    <string name="header_text_city_to">Select Destination City</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="SeatNo">SeatNo</string>
+    <string name="IsSelected">IsSelected</string>
+    <string name="Gender">Gender</string>
+    <string name="Deck">Deck</string>
+    <string name="IsAc">IsAc</string>
+    <string name="IsSleeper">IsSleeper</string>
+    <string name="Fare">Fare</string>
+
+
+    <string name="tab_tag">tab_tag</string>
+    <string name="title_activity_loading">Activity_loading</string>
+
+
+    <string name="radio_group_id">radio_group</string>
+    <string name="radio_mr">radio_mr</string>
+    <string name="radio_mrs">radio_mrs</string>
+    <string name="radio_ms">radio_ms</string>
+    <string name="edittext_name">edittext_name</string>
+    <string name="edittext_age">age_edittext</string>
+    <string name="Rs">\u20B9</string>
+
+    <string name="internet_connection_error_title">No Internet Connection !</string>
+    <string name="internet_connection_error_message_try_again">We can not detect any internet connectivity.Please check your internet connection and try again.</string>
+    <string name="internet_connection_error_message">We can not detect any internet connectivity.Please check your internet connection.</string>
+    <string name="validating_error_title">Error! </string>
+
+    <!--filter screen strings start-->
+    <string name="no_filter_selectet">No filter selected</string>
+    <string name="label_bus_type">Bus Type</string>
+    <string name="bus_type_AC">A/C</string>
+    <string name="bus_type_sleeper">Sleeper</string>
+    <string name="bus_type_Multi_Axle">Multi Axle</string>
+    <string name="label_bus_brand">Bus Brand</string>
+    <string name="bus_brand_volvo">Volvo</string>
+    <string name="bus_brand_mercedes">Mercedes</string>
+    <string name="bus_brand_scania">Scania</string>
+    <string name="label_price">Price</string>
+    <string name="tag_id">tag_id</string>
+    <string name="tag_name">tag_name</string>
+
+    <!--filter screen string end-->
+
+    <!--itinerary screen strings start-->
+    <string name="timer_string">mins left to make payment &amp; confirm booking</string>
+    <string name="travellers">Travellers</string>
+    <string name="seat">SeatNo.</string>
+    <string name="boarding_point">Boarding Point</string>
+    <string name="boarding_time">Boarding Time</string>
+    <string name="cancelation_policy">Cancellation Policy</string>
+    <string name="itinerary_header_text">Review Itinerary</string>
+    <string name="ticket_confirmation">Ticket Confirmation</string>
+
+    <string name="max_uses_count">max_uses_count</string>
+    <string name="discount_percentage">discount_percentage</string>
+    <string name="discount_amount">discount_amount</string>
+    <string name="promocode_id">promocode_id</string>
+    <string name="coupan_code">coupan_code</string>
+
+    <!--itinerary screen strings end-->
+
+
+    <!-- show booked ticket activity start -->
+
+
+    <string name="activity_show_booked_ticket_tag_id">activity_show_booked_ticket_tag_id</string>
+    <string name="activity_show_booked_ticket_tag_pnr_no">activity_show_booked_ticket_tag_pnr_no</string>
+    <string name="activity_show_booked_ticket_tag_ticket_no">activity_show_booked_ticket_tag_ticket_no</string>
+    <string name="activity_show_booked_ticket_tag_iscancelable">activity_show_booked_ticket_tag_iscancelable</string>
+    <string name="activity_show_booked_ticket_tag_payment_id">activity_show_booked_ticket_tag_iscancelable</string>
+    <string name="activity_show_booked_ticket_tag_total_fare">activity_show_booked_ticket_tag_total_fare</string>
+    <string name="activity_show_booked_ticket_tag_extra_charge">activity_show_booked_ticket_tag_extra_charge</string>
+
 </resources>

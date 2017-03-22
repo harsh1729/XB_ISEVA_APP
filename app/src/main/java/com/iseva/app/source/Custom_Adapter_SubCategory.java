@@ -86,7 +86,7 @@ public class Custom_Adapter_SubCategory extends BaseAdapter {
           }else{
               if(catid==125){
                   //hardcoded for more jobs section
-                  Intent i = new Intent(mContext,Activity_Job_Employer_Home.class);
+                  Intent i = new Intent(mContext,Activity_Job_Employee_Home.class);
                   ((Activity)mContext).startActivity(i);
               }else {
                   Intent i = new Intent(mContext, Activity_ServiceProvider.class);

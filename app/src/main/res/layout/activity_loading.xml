@@ -1,0 +1,38 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:background="@color/app_white"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <LinearLayout
+        android:id="@+id/activity_loading_loader_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+        <com.iseva.app.source.customcomponent.TextViewBold
+            android:id="@+id/Loading_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BUSES SEARCHING"
+            android:textStyle="bold"
+            android:layout_marginBottom="20dp"
+            android:textColor="@color/app_theme_color"
+            android:textSize="18sp"/>
+
+        <!-- <com.github.silvestrpredko.dotprogressbar.DotProgressBar
+             android:id="@+id/dot_progress_bar"
+             android:layout_width="wrap_content"
+             android:layout_height="20dp"
+             custom:amount="5"
+
+             custom:duration="@android:integer/config_shortAnimTime"
+             custom:endColor="@color/light_blue_700"
+             custom:startColor="@color/app_theme_color"
+             custom:animationDirection="right"/>-->
+    </LinearLayout>
+
+
+</LinearLayout>

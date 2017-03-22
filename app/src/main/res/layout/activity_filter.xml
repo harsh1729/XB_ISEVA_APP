@@ -1,0 +1,288 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:rsb="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/app_white">
+
+    <include layout="@layout/header"></include>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+        <LinearLayout
+            android:id="@+id/all_filters_name"
+            android:layout_width="wrap_content"
+            android:layout_height="55dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+            <com.iseva.app.source.customcomponent.TextViewRegular
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no_filter_selectet"
+                android:textColor="@color/filter_screen_text"/>
+        </LinearLayout>
+        </HorizontalScrollView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/filter_screen_divider">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+                <com.iseva.app.source.customcomponent.TextViewRegular
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_bus_type"
+                    android:textColor="@color/filter_screen_lable"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+                <com.iseva.app.source.customcomponent.TextViewRegular
+                    android:id="@+id/Bustype_Ac"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:background="@drawable/filter_layout_button"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center"
+                    android:textColor="@color/filter_screen_text"
+                    android:text="@string/bus_type_AC"/>
+                <com.iseva.app.source.customcomponent.TextViewRegular
+                    android:id="@+id/Bustype_Sleeper"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:background="@drawable/filter_layout_button"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center"
+                    android:textColor="@color/filter_screen_text"
+                    android:text="@string/bus_type_sleeper"/>
+                <com.iseva.app.source.customcomponent.TextViewRegular
+                    android:id="@+id/Bustype_MultiAxle"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:background="@drawable/filter_layout_button"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@color/filter_screen_text"
+                    android:text="@string/bus_type_Multi_Axle"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/filter_screen_divider"
+            android:orientation="horizontal">
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+                <com.iseva.app.source.customcomponent.TextViewRegular
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_bus_brand"
+                    android:textColor="@color/filter_screen_lable"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+                <com.iseva.app.source.customcomponent.TextViewRegular
+                    android:id="@+id/Busbrand_Volvo"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:background="@drawable/filter_layout_button"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center"
+                    android:textColor="@color/filter_screen_text"
+                    android:text="@string/bus_brand_volvo"/>
+                <com.iseva.app.source.customcomponent.TextViewRegular
+                    android:id="@+id/Busbrand_Mercesdes"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:background="@drawable/filter_layout_button"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center"
+                    android:textColor="@color/filter_screen_text"
+                    android:text="@string/bus_brand_mercedes"/>
+                <com.iseva.app.source.customcomponent.TextViewRegular
+                    android:id="@+id/Busbrand_Scania"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:background="@drawable/filter_layout_button"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@color/filter_screen_text"
+                    android:text="@string/bus_brand_scania"/>
+
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/filter_screen_divider">
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+                <com.iseva.app.source.customcomponent.TextViewRegular
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_price"
+                    android:textColor="@color/filter_screen_lable"/>
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp">
+                <org.florescu.android.rangeseekbar.RangeSeekBar
+                    android:id="@+id/seekbar1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    rsb:absoluteMaxValue="150"
+                    rsb:absoluteMinValue="20"
+                    rsb:defaultColor="#999"
+                    rsb:activeColor="@color/app_theme_color"
+                    rsb:alwaysActive="true"
+                    rsb:showLabels="false"
+                    rsb:barHeight="5dp"
+                    rsb:valuesAboveThumbs="false"
+                    rsb:singleThumb="false"
+                    rsb:thumbNormal="@drawable/seek_thumb_normal_manual"
+                    rsb:thumbPressed="@drawable/seek_thumb_pressed_manual"
+                    rsb:thumbDisabled="@drawable/seek_thumb_normal_manual"
+                   />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+                    <TextView
+                        android:id="@+id/min_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/Rs">
+
+                    </TextView>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right">
+                    <TextView
+                        android:id="@+id/max_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/Rs"/>
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/filter_screen_divider">
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+        <com.iseva.app.source.customcomponent.ButtonBold
+            android:id="@+id/filter_apply_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_background"
+            android:textColor="#FFFFFF"
+            android:text="Apply"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+</LinearLayout>

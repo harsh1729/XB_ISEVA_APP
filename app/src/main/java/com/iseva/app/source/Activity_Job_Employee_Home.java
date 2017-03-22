@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -34,12 +32,12 @@ public class Activity_Job_Employee_Home extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_jobs);
+        setContentView(R.layout.activity_job_employee_home);
         init();
     }
 
    private void init(){
-       setFooterAndHeader(R.id.imgBtnFooterPostJob);
+       setFooterAndHeader(R.id.imgBtnFooterPostResume);
        txtDes = (TextView)findViewById(R.id.txtDes);
        linear = (LinearLayout)findViewById(R.id.linearProfile);
        //linearBtn = (LinearLayout)findViewById(R.id.linear);
@@ -209,10 +207,10 @@ public class Activity_Job_Employee_Home extends Activity {
         switch (v.getId()) {
 
             case R.id.imgBtnFooterPostResume:
-                nextClass = Activity_Job_Employer_Home.class;
+                nextClass = Activity_Job_Employee_Home.class;
                 break;
             case R.id.imgBtnFooterPostJob:
-                nextClass = Activity_Job_Employee_Home.class;
+                nextClass = Activity_Job_Employer_Home.class;
                 break;
 
             default:

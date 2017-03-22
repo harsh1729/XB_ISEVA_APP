@@ -40,6 +40,11 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
+import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.BaseSliderView;
+import com.daimajia.slider.library.SliderTypes.TextSliderView;
+import com.daimajia.slider.library.Tricks.ViewPagerEx;
+import com.iseva.app.source.travel.MainActivity;
 import com.jude.rollviewpager.hintview.ColorPointHintView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -57,8 +62,11 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static android.R.attr.name;
+import static android.R.attr.x;
+
 public class Activity_Home extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener{
     static boolean pushNotification = false;
     private ProgressDialog pd;
     private View view;
@@ -75,6 +83,12 @@ public class Activity_Home extends AppCompatActivity
             ",{'id':2,'heading':'sushil','content':'vdfgvdgfhdf','image':['http://northtexassmiles.com/wp-content/uploads/2015/10/NTS-Logo-Icon-Color-01.png']}]}";
 
     View mainContent;
+
+    HashMap<String,String> Hash_Offers_images ;
+    SliderLayout sliderLayout;
+    private ArrayList<String> listImageUrls;
+    private int slider_position = 0;
+
     NavigationView navigationView;
     private float lastTranslate = 0.0f;
     private com.jude.rollviewpager.RollPagerView mRollPagerView;
@@ -113,7 +127,7 @@ public class Activity_Home extends AppCompatActivity
             e.printStackTrace();
             ;
         }*/
-        getAddver();
+
 
      final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -413,33 +427,7 @@ public class Activity_Home extends AppCompatActivity
     }
 
 
-    private void setAdapterAddver(ArrayList<Object_BusinessExtraData> offers) {
-        Log.i("SUSHIL", "sushil list offers size is " + offers.size());
-        if (offers.size() != 0) {
-            CardView cv = (CardView) findViewById(R.id.card_viewHome);
-            cv.setVisibility(View.VISIBLE);
-            LinearLayout.LayoutParams lpCard = (LinearLayout.LayoutParams) cv.getLayoutParams();
-            int width = Globals.getScreenSize(this).x;
-            //height = height/3;
-            lpCard.height = (int) (width*0.60);
-           // cv.setLayoutParams(lpCard);
-            Custom_Adapter_Home_Addver adapter = new Custom_Adapter_Home_Addver(this, false, offers);
-            mRollPagerView = (com.jude.rollviewpager.RollPagerView)findViewById(R.id.viewPager);
-            mRollPagerView.setHintView(new ColorPointHintView(this, Color.WHITE, Color.BLACK));
-            mRollPagerView.setAdapter(adapter);
-          /*  mViewPager = (ViewPager) findViewById(R.id.view_pager);
-            mIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
-            Custom_Adapter_Home_Addver adapter = new Custom_Adapter_Home_Addver(this, false, offers);
-            mViewPager.setOffscreenPageLimit(1);
-            mViewPager.setAdapter(adapter);
-            mIndicator.setViewPager(mViewPager);
-            size = offers.size();
-            pageSwitcher();*/
-        } else {
-            CardView cv = (CardView) findViewById(R.id.card_viewHome);
-            cv.setVisibility(View.GONE);
-        }
-    }
+
 
     private void addHeader() {
         //Log.i("SUSHIL", "onresume call........;" + Globals.isHeader);
@@ -790,7 +778,9 @@ public class Activity_Home extends AppCompatActivity
             }
 
             scrollView.addView(layout);
+
         }
+
 
         /*sc.post(new Runnable() {
 
@@ -952,18 +942,7 @@ public class Activity_Home extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
 
-            Globals.showAlertDialog("Alert", "Do you really want to exit ?",
-                    this, "Cancel", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-
-                        }
-                    }, "Exit", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-
-                            Dialogback();
-                            //super.onBackPressed();
-                        }
-                    }, false);
+           this.finish();
         }
 
     }
@@ -1278,45 +1257,13 @@ public class Activity_Home extends AppCompatActivity
         }
     }
 
-    public void pageSwitcher() {
-        timer = new Timer(); // At this line a new Thread will be created
-        timer.scheduleAtFixedRate(new RemindTask(), 0, 2000); // delay
-        // in
-        // milliseconds
-    }
 
-    // this is an inner class...
-    class RemindTask extends TimerTask {
 
-        @Override
-        public void run() {
 
-            // As the TimerTask run on a seprate thread from UI thread we have
-            // to call runOnUiThread to do work on UI thread.
-            runOnUiThread(new Runnable() {
-                public void run() {
 
-                    /*if (page > 4) { // In my case the number of pages are 5
-                        timer.cancel();
-                        // Showing a toast for just testing purpose
-                        Toast.makeText(getApplicationContext(), "Timer stoped",
-                                Toast.LENGTH_LONG).show();
-                    } else {*/
 
-                    // }
-                    if (pageIndex <= size) {
-                        mViewPager.setCurrentItem(pageIndex);
-                        pageIndex++;
-                    } else {
-                        mViewPager.setCurrentItem(0);
-                        pageIndex = 1;
-                    }
 
-                }
-            });
 
-        }
-    }
 
     private void insertCategoryDatabase(JSONObject obj) {
         if (obj == null) {
@@ -1365,142 +1312,8 @@ public class Activity_Home extends AppCompatActivity
         }
     }
 
-    private void getAddver() {
-        Custom_ConnectionDetector cd = new Custom_ConnectionDetector(this);
-        if (!cd.isConnectingToInternet()) {
-            Globals.showAlert("ERROR", Globals.INTERNET_ERROR, this);
-        } else {
-
-            try {
-                // pd = Globals.showLoadingDialog(pd, this, false, "");
-
-                HashMap<String, String> map = new HashMap<>();
-                map.put("imei", Globals.getdeviceId(this));
-
-                Custom_VolleyObjectRequest jsonObjectRQST = new Custom_VolleyObjectRequest(
-                        Request.Method.POST,
-                        Custom_URLs_Params.getURL_OffersRandom(),
-                        map, new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.i("SUSHIL", "json Response recieved !!" + response);
-                        // Globals.hideLoadingDialog(pd);
-                        adverParcer(response);
-
-                    }
 
 
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError err) {
-                        Log.i("SUSHIL", "ERROR VolleyError");
-                        //Globals.hideLoadingDialog(pd);
-                    }
-                });
-
-                Custom_VolleyAppController.getInstance().addToRequestQueue(
-                        jsonObjectRQST);
-            } catch (Exception e) {
-                e.printStackTrace();
-                // Globals.hideLoadingDialog(pd);
-            }
-        }
-    }
-
-
-    private void adverParcer(JSONObject obj) {
-       /* try {
-            if (obj.has("offers")) {
-                JSONArray offersArray = obj.getJSONArray("offers");
-                ArrayList<Object_Offers> listoffers = new ArrayList<>();
-                for (int i = 0; i < offersArray.length(); i++) {
-                    JSONObject objoffersJson = offersArray.getJSONObject(i);
-                    if (objoffersJson != null) {
-                        Object_Offers objOffers = new Object_Offers();
-                        objOffers.id = objoffersJson.getInt("id");
-                        objOffers.heading = objoffersJson.getString("heading");
-                        objOffers.content = objoffersJson.getString("content");
-                        JSONArray offersArrayImage = objoffersJson.getJSONArray("image");
-                        ArrayList<String> listImage = new ArrayList<>();
-                        for (int j = 0; j < offersArrayImage.length(); j++) {
-                             JSONObject objImage = offersArrayImage.getJSONObject(j);
-                            String url = objImage.getString("imageurl");
-                            if (url != null && !url.isEmpty()) {
-                                //downloadImage(url);
-                                listImage.add(url);
-                            }
-
-                        }
-                        objOffers.offersimage = listImage;
-                        listoffers.add(objOffers);
-                    }
-
-                }
-                setAdapterAddver(listoffers);
-
-            }
-        } catch (JSONException ex) {
-            ex.printStackTrace();
-        }*/
-
-        if (obj == null) {
-            return;
-        } else {
-            try {
-                if (obj.has("success")) {
-                    if (obj.getInt("success") == 1) {
-                        JSONArray array = obj.getJSONArray("advertisement");
-                        if (array != null) {
-                            if (array.length() != 0) {
-                                ArrayList<Object_BusinessExtraData> list = new ArrayList<>();
-                                for (int i = 0; i < array.length(); i++) {
-                                    JSONObject object = array.getJSONObject(i);
-                                    if (object != null) {
-                                        Object_BusinessExtraData objOffers = new Object_BusinessExtraData();
-                                        if (object.has("id")) {
-                                            objOffers.id = object.getInt("id");
-                                        }
-                                        /*if (object.has("heading")) {
-
-                                            objOffers.heading = object.getString("heading");
-
-                                        }*/
-                                        if (object.has("content")) {
-                                            objOffers.content = object.getString("content");
-                                        }
-                                        if (object.has("image")) {
-                                            ArrayList<String> listImage = new ArrayList<>();
-                                            listImage.add(object.getJSONObject("image").getString("imageurl"));
-                                            /*JSONArray imageArray = object.getJSONArray("images");
-                                            ArrayList<String> listImage = new ArrayList<>();
-                                            for (int j = 0; j < imageArray.length(); j++) {
-                                                // String url = imageArray.getString(j);
-                                                JSONObject objImage = imageArray.getJSONObject(j);
-                                                String url = objImage.getString("imageurl");
-                                                if (url != null) {
-                                                    listImage.add(url);
-                                                }
-                                            }*/
-                                            objOffers.images = listImage;
-                                        }
-                                        list.add(objOffers);
-                                    }
-                                }
-                                setAdapterAddver(list);
-                            } else {
-                                CardView cv = (CardView) findViewById(R.id.card_viewHome);
-                                cv.setVisibility(View.GONE);
-                            }
-                        }
-                    }
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
 
 
     private void downloadIma(String url) {

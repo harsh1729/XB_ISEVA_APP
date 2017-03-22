@@ -1,0 +1,49 @@
+<LinearLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:id="@+id/list_view_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+        <ListView
+            android:id="@+id/list_all_routes_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@color/routes_screen_divider_color"
+            android:dividerHeight="5dp">
+
+        </ListView>
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/routes_loader_price"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+        <ProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/progressBar" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/message_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="gone">
+        <com.iseva.app.source.customcomponent.TextViewBold
+            android:id="@+id/response"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:textStyle="bold"/>
+
+
+
+    </LinearLayout>
+
+</LinearLayout>
