@@ -295,7 +295,7 @@ public class Activity_review_itinerary extends Activity {
 
         header_iv = (ImageView)findViewById(R.id.header_back_button);
         header_tv = (TextView)findViewById(R.id.header_text);
-        header_tv.setPadding(15,0,0,0);
+        header_tv.setPadding(getResources().getDimensionPixelSize(R.dimen.padding_margin_15),0,0,0);
         header_tv.setText(R.string.itinerary_header_text);
 
         timer_tv = (TextView)findViewById(R.id.itinerary_timer_tv);
@@ -944,8 +944,16 @@ public class Activity_review_itinerary extends Activity {
 
                                     @Override
                                     public void onClick(View view) {
+
+                                        TextView title_tv = new TextView(Activity_review_itinerary.this);
+                                        title_tv.setPadding(0,getResources().getDimensionPixelSize(R.dimen.padding_margin_10),0,0);
+                                        title_tv.setTextColor(ContextCompat.getColor(Activity_review_itinerary.this,R.color.black));
+                                        title_tv.setTextSize(getResources().getDimension(R.dimen.text_size_mediam));
+                                        title_tv.setGravity(Gravity.CENTER);
+                                        title_tv.setText("Alert");
+
                                         AlertDialog.Builder builder = new AlertDialog.Builder(Activity_review_itinerary.this);
-                                        builder.setTitle("Alert")
+                                        builder.setCustomTitle(title_tv)
                                                 .setMessage("You are sure to remove promocode")
                                                 .setCancelable(false)
 
@@ -1107,7 +1115,7 @@ public class Activity_review_itinerary extends Activity {
                 LinearLayout divider = new LinearLayout(Activity_review_itinerary.this);
                 LinearLayout single_layout = new LinearLayout(Activity_review_itinerary.this);
                 single_layout.setOrientation(LinearLayout.HORIZONTAL);
-                single_layout.setPadding(15, 15, 15, 15);
+                single_layout.setPadding(getResources().getDimensionPixelSize(R.dimen.padding_margin_15), getResources().getDimensionPixelSize(R.dimen.padding_margin_15), getResources().getDimensionPixelSize(R.dimen.padding_margin_15), getResources().getDimensionPixelSize(R.dimen.padding_margin_15));
 
 
                 LinearLayout.LayoutParams divider_param = new LinearLayout.LayoutParams(
@@ -1166,16 +1174,15 @@ public class Activity_review_itinerary extends Activity {
     public void activity_dismiss()
     {
         TextView title_tv = new TextView(this);
-        title_tv.setPadding(0,10,0,0);
+        title_tv.setPadding(0,getResources().getDimensionPixelSize(R.dimen.padding_margin_10),0,0);
         title_tv.setTextColor(ContextCompat.getColor(Activity_review_itinerary.this,R.color.black));
-        title_tv.setTextSize(18);
-        title_tv.setTypeface(null, Typeface.BOLD);
+        title_tv.setTextSize(getResources().getDimension(R.dimen.text_size_mediam));
         title_tv.setGravity(Gravity.CENTER);
         title_tv.setText("Alert");
 
         AlertDialog.Builder builder = new AlertDialog.Builder(Activity_review_itinerary.this);
         builder.setCustomTitle(title_tv)
-                .setMessage("You are not unable to book this ticket till next 10 minutes.")
+                .setMessage("You will not be able to book this ticket till next 10 minutes.")
                 .setCancelable(false)
 
                 .setNegativeButton("cancel",new DialogInterface.OnClickListener() {
@@ -1218,16 +1225,15 @@ public class Activity_review_itinerary extends Activity {
         else
         {
             TextView title_tv = new TextView(this);
-            title_tv.setPadding(0,10,0,0);
+            title_tv.setPadding(0,getResources().getDimensionPixelSize(R.dimen.padding_margin_10),0,0);
             title_tv.setTextColor(ContextCompat.getColor(Activity_review_itinerary.this,R.color.black));
-            title_tv.setTextSize(18);
-            title_tv.setTypeface(null, Typeface.BOLD);
+            title_tv.setTextSize(getResources().getDimension(R.dimen.text_size_mediam));
             title_tv.setGravity(Gravity.CENTER);
             title_tv.setText("Alert");
 
             AlertDialog.Builder builder = new AlertDialog.Builder(Activity_review_itinerary.this);
             builder.setCustomTitle(title_tv)
-                    .setMessage("You are not unable to book this ticket till next 10 minutes.")
+                    .setMessage("You will not be able to book this ticket till next 10 minutes.")
                     .setCancelable(false)
 
                     .setNegativeButton("cancel",new DialogInterface.OnClickListener() {
@@ -1541,7 +1547,7 @@ public class Activity_review_itinerary extends Activity {
                             {
                                 TextView tv = new TextView(Activity_review_itinerary.this);
                                 tv.setText("No Offers");
-                                tv.setPadding(5,0,0,10);
+                                tv.setPadding(getResources().getDimensionPixelSize(R.dimen.padding_margin_5),0,0,getResources().getDimensionPixelSize(R.dimen.padding_margin_10));
                                 tv.setTextColor(ContextCompat.getColor(Activity_review_itinerary.this,R.color.black));
                                 offer_main_layout.addView(tv);
                                 offer_main_layout.setGravity(Gravity.CENTER);
@@ -1674,10 +1680,9 @@ public class Activity_review_itinerary extends Activity {
     public void showAlertDialog(String title,String message,String buttonlabel)
     {
         TextView title_tv = new TextView(this);
-        title_tv.setPadding(0,10,0,0);
+        title_tv.setPadding(0,getResources().getDimensionPixelSize(R.dimen.padding_margin_10),0,0);
         title_tv.setTextColor(ContextCompat.getColor(Activity_review_itinerary.this,R.color.black));
-        title_tv.setTextSize(18);
-        title_tv.setTypeface(null, Typeface.BOLD);
+        title_tv.setTextSize(getResources().getDimension(R.dimen.text_size_mediam));
         title_tv.setGravity(Gravity.CENTER);
         title_tv.setText(title);
 

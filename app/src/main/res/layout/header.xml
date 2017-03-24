@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:text="Home"
             android:textColor="@color/app_white"
-            android:textSize="22dp"
+            android:textSize="@dimen/text_size_extra_large"
             android:textStyle="bold"
            />
 
@@ -51,8 +51,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
 
-            android:paddingRight="20dp"
-            android:paddingLeft="10dp"
+            android:paddingRight="@dimen/padding_margin_20"
+            android:paddingLeft="@dimen/padding_margin_10"
             android:textColor="@drawable/bus_routes_reset_btn_text_color"
             android:gravity="center_vertical"
             android:text="sda"

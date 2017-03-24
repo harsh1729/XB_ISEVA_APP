@@ -1,5 +1,6 @@
 package com.iseva.app.source;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -8,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -172,10 +174,14 @@ public class Activity_Splash extends AppCompatActivity {
      }
     }
 
+
     public void resizeImages() {
         ImageView imgViewLogo = (ImageView) findViewById(R.id.imgLogoXB);
 
-        int screenWidth = Globals.getScreenSize(this).x;
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        Activity_Splash.this.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+
+        int screenWidth = displaymetrics.widthPixels;
         int logoWidth = screenWidth / 2;
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inScaled = false;
@@ -223,5 +229,6 @@ public class Activity_Splash extends AppCompatActivity {
                }
             }
     }
+
 
 }

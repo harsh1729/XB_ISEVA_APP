@@ -22,8 +22,8 @@
             android:layout_height="55dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp">
+            android:paddingLeft="@dimen/padding_margin_10"
+            android:paddingRight="@dimen/padding_margin_10">
             <com.iseva.app.source.customcomponent.TextViewRegular
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -45,10 +45,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp">
+                android:padding="@dimen/padding_margin_10">
                 <com.iseva.app.source.customcomponent.TextViewRegular
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -59,20 +56,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="10dp"
+                android:paddingBottom="@dimen/padding_margin_10"
 
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp">
+                android:paddingLeft="@dimen/padding_margin_10"
+                android:paddingRight="@dimen/padding_margin_10">
 
                 <com.iseva.app.source.customcomponent.TextViewRegular
                     android:id="@+id/Bustype_Ac"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="10dp"
+                    android:paddingBottom="@dimen/padding_margin_10"
+                    android:paddingTop="@dimen/padding_margin_10"
                     android:background="@drawable/filter_layout_button"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="@dimen/padding_margin_10"
                     android:gravity="center"
                     android:textColor="@color/filter_screen_text"
                     android:text="@string/bus_type_AC"/>
@@ -80,11 +77,11 @@
                     android:id="@+id/Bustype_Sleeper"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="10dp"
+                    android:paddingBottom="@dimen/padding_margin_10"
+                    android:paddingTop="@dimen/padding_margin_10"
                     android:background="@drawable/filter_layout_button"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="@dimen/padding_margin_10"
                     android:gravity="center"
                     android:textColor="@color/filter_screen_text"
                     android:text="@string/bus_type_sleeper"/>
@@ -92,8 +89,8 @@
                     android:id="@+id/Bustype_MultiAxle"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="10dp"
+                    android:paddingBottom="@dimen/padding_margin_10"
+                    android:paddingTop="@dimen/padding_margin_10"
                     android:background="@drawable/filter_layout_button"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -118,10 +115,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp">
+                android:padding="@dimen/padding_margin_10">
                 <com.iseva.app.source.customcomponent.TextViewRegular
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -132,20 +126,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="10dp"
+                android:paddingBottom="@dimen/padding_margin_10"
 
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp">
+                android:paddingLeft="@dimen/padding_margin_10"
+                android:paddingRight="@dimen/padding_margin_10">
 
                 <com.iseva.app.source.customcomponent.TextViewRegular
                     android:id="@+id/Busbrand_Volvo"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="10dp"
+                    android:paddingBottom="@dimen/padding_margin_10"
+                    android:paddingTop="@dimen/padding_margin_10"
                     android:background="@drawable/filter_layout_button"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="@dimen/padding_margin_10"
                     android:gravity="center"
                     android:textColor="@color/filter_screen_text"
                     android:text="@string/bus_brand_volvo"/>
@@ -153,11 +147,11 @@
                     android:id="@+id/Busbrand_Mercesdes"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="10dp"
+                    android:paddingBottom="@dimen/padding_margin_10"
+                    android:paddingTop="@dimen/padding_margin_10"
                     android:background="@drawable/filter_layout_button"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="@dimen/padding_margin_10"
                     android:gravity="center"
                     android:textColor="@color/filter_screen_text"
                     android:text="@string/bus_brand_mercedes"/>
@@ -165,8 +159,8 @@
                     android:id="@+id/Busbrand_Scania"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="10dp"
+                    android:paddingBottom="@dimen/padding_margin_10"
+                    android:paddingTop="@dimen/padding_margin_10"
                     android:background="@drawable/filter_layout_button"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -190,10 +184,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp">
+               android:padding="@dimen/padding_margin_10">
                 <com.iseva.app.source.customcomponent.TextViewRegular
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -206,10 +197,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="10dp"
+                android:paddingBottom="@dimen/padding_margin_10"
 
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp">
+                android:paddingLeft="@dimen/padding_margin_20"
+                android:paddingRight="@dimen/padding_margin_20">
                 <org.florescu.android.rangeseekbar.RangeSeekBar
                     android:id="@+id/seekbar1"
                     android:layout_width="match_parent"
@@ -232,8 +223,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingRight="20dp"
-                android:paddingLeft="20dp">
+                android:paddingRight="@dimen/padding_margin_20"
+                android:paddingLeft="@dimen/padding_margin_20">
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -274,7 +265,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp">
+        android:padding="@dimen/padding_margin_10">
         <com.iseva.app.source.customcomponent.ButtonBold
             android:id="@+id/filter_apply_button"
             android:layout_width="match_parent"

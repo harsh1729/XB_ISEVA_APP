@@ -15,7 +15,7 @@
             android:background="@color/white"
             android:orientation="vertical"
 
-            android:padding="10dp"
+            android:padding="@dimen/padding_margin_10"
             >
 
             <!--<ScrollView
@@ -31,7 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="@dimen/padding_margin_20">
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -41,19 +41,19 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="From"
-                        android:textSize="12sp"/>
+                        android:textSize="@dimen/text_size_small"/>
                     <com.iseva.app.source.customcomponent.EditTextRegular
                         android:id="@+id/Get_City_From"
                         android:layout_width="match_parent"
                         android:background="@drawable/bg_et_box"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp"
+                        android:paddingTop="@dimen/padding_margin_10"
+                        android:paddingBottom="@dimen/padding_margin_10"
                         android:inputType="textPhonetic"
-                        android:paddingLeft="5dp"
-                        android:paddingRight="5dp"
-                        android:textSize="12sp"
+                        android:paddingLeft="@dimen/padding_margin_5"
+                        android:paddingRight="@dimen/padding_margin_5"
+                        android:textSize="@dimen/text_size_small"
                         android:focusable="false"
                         android:cursorVisible="false"
                         android:focusableInTouchMode="false"
@@ -75,9 +75,9 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:src="@drawable/one_way_arrow"
-                        android:layout_marginTop="6sp"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginLeft="5dp"/>
+                        android:layout_marginTop="@dimen/padding_margin_6"
+                        android:layout_marginRight="@dimen/padding_margin_5"
+                        android:layout_marginLeft="@dimen/padding_margin_5"/>
 
                 </LinearLayout>
 
@@ -90,19 +90,19 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="To"
-                        android:textSize="12sp"/>
+                        android:textSize="@dimen/text_size_small"/>
                     <com.iseva.app.source.customcomponent.EditTextRegular
                         android:id="@+id/Get_City_To"
                         android:layout_width="match_parent"
                         android:background="@drawable/bg_et_box"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp"
-                        android:paddingLeft="5dp"
-                        android:paddingRight="5dp"
+                        android:paddingTop="@dimen/padding_margin_10"
+                        android:paddingBottom="@dimen/padding_margin_10"
+                        android:paddingLeft="@dimen/padding_margin_5"
+                        android:paddingRight="@dimen/padding_margin_5"
                         android:layout_height="wrap_content"
                         android:inputType="textPhonetic"
                         android:ems="10"
-                        android:textSize="12sp"
+                        android:textSize="@dimen/text_size_small"
                         android:focusable="false"
                         android:cursorVisible="false"
                         android:focusableInTouchMode="false"
@@ -119,12 +119,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="@dimen/padding_margin_30"
                 android:orientation="vertical">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/text_size_small"
                     android:text="Departure Date"/>
                 <com.iseva.app.source.customcomponent.EditTextRegular
                     android:id="@+id/journey_date"
@@ -132,7 +132,7 @@
                     android:focusable="false"
                     android:focusableInTouchMode="false"
                     android:cursorVisible="false"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/text_size_small"
                     android:ems="10"
                     />
 
@@ -142,7 +142,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp">
+                android:layout_marginTop="@dimen/padding_margin_40">
 
                 <com.iseva.app.source.customcomponent.ButtonBold
                     android:id="@+id/search_routes_btn"
@@ -157,7 +157,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="@dimen/padding_margin_20">
 
                 <com.iseva.app.source.customcomponent.ButtonBold
                     android:id="@+id/show_booked_ticket_btn"
@@ -181,7 +181,7 @@
         android:layout_height="match_parent"
         android:background="#cc000000"
         android:gravity="center"
-        android:padding="10dp"
+        android:padding="@dimen/padding_margin_10"
         android:visibility="gone"
         android:clickable="true">
         <LinearLayout
@@ -189,7 +189,7 @@
             android:layout_height="wrap_content"
             android:background="@color/app_white"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:padding="@dimen/padding_margin_20">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -197,15 +197,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
-                    android:textSize="16sp"
-                    android:text="You are not loged in. For booking ticket please login or signup first."
+                    android:textSize="@dimen/text_size_normal"
+                    android:text="Please login to see your trips."
                     />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="@dimen/padding_margin_30"
                 >
                 <LinearLayout
                     android:layout_width="0dp"
@@ -215,10 +215,10 @@
                         android:id="@+id/activity_main_login_alert_cancel_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="16sp"
+                        android:textSize="@dimen/text_size_normal"
                         android:textColor="@color/app_theme_color"
                         android:textStyle="bold"
-                        android:padding="10dp"
+                        android:padding="@dimen/padding_margin_10"
                         android:text="Cancel"/>
                 </LinearLayout>
                 <LinearLayout
@@ -228,10 +228,10 @@
                         android:id="@+id/activity_main_login_alert_login_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="16sp"
+                        android:textSize="@dimen/text_size_normal"
                         android:textColor="@color/app_theme_color"
                         android:textStyle="bold"
-                        android:padding="10dp"
+                        android:padding="@dimen/padding_margin_10"
                         android:text="Login"/>
                 </LinearLayout>
                 <LinearLayout
@@ -241,12 +241,12 @@
                         android:id="@+id/activity_main_login_alert_signup_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="16sp"
+                        android:textSize="@dimen/text_size_normal"
                         android:layout_gravity="right"
                         android:textColor="@color/app_theme_color"
                         android:textStyle="bold"
-                        android:padding="10dp"
-                        android:text="SignUp"/>
+                        android:padding="@dimen/padding_margin_10"
+                        android:text="Register"/>
                 </LinearLayout>
 
             </LinearLayout>

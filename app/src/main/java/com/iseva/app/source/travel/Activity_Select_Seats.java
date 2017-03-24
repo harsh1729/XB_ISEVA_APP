@@ -118,7 +118,7 @@ public class Activity_Select_Seats extends AppCompatActivity {
 
         String first = "By booking this ticket you agree to the ";
         String second = "<font color='#1BAFCD'>Cancellation Policy</font>";
-        String third = " of the bus operato.";
+        String third = " of the bus operator.";
 
         if (Build.VERSION.SDK_INT >= 24) {
 
@@ -264,9 +264,17 @@ public class Activity_Select_Seats extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        LinearLayout cl = (LinearLayout)findViewById(R.id.cancellation_layout);
+        if(cl.getVisibility() == View.VISIBLE)
+        {
+            cl.setVisibility(View.GONE);
+        }
+        else
+        {
+            super.onBackPressed();
+            overridePendingTransition(R.anim.anim_none, R.anim.anim_out);
+        }
 
-        super.onBackPressed();
-        overridePendingTransition(R.anim.anim_none, R.anim.anim_out);
 
 
 
@@ -275,10 +283,9 @@ public class Activity_Select_Seats extends AppCompatActivity {
     public void showAlertDialog(String title,String message,String buttonlabel)
     {
         TextView title_tv = new TextView(this);
-        title_tv.setPadding(0,10,0,0);
+        title_tv.setPadding(0,getResources().getDimensionPixelSize(R.dimen.padding_margin_10),0,0);
         title_tv.setTextColor(ContextCompat.getColor(Activity_Select_Seats.this,R.color.black));
-        title_tv.setTextSize(18);
-        title_tv.setTypeface(null, Typeface.BOLD);
+        title_tv.setTextSize(getResources().getDimension(R.dimen.text_size_mediam));
         title_tv.setGravity(Gravity.CENTER);
         title_tv.setText(title);
 
@@ -406,7 +413,7 @@ public class Activity_Select_Seats extends AppCompatActivity {
                 LinearLayout divider = new LinearLayout(Activity_Select_Seats.this);
                 LinearLayout single_layout = new LinearLayout(Activity_Select_Seats.this);
                 single_layout.setOrientation(LinearLayout.HORIZONTAL);
-                single_layout.setPadding(15, 15, 15, 15);
+                single_layout.setPadding(getResources().getDimensionPixelSize(R.dimen.padding_margin_15), getResources().getDimensionPixelSize(R.dimen.padding_margin_15), getResources().getDimensionPixelSize(R.dimen.padding_margin_15), getResources().getDimensionPixelSize(R.dimen.padding_margin_15));
 
 
                 LinearLayout.LayoutParams divider_param = new LinearLayout.LayoutParams(

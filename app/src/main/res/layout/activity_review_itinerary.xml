@@ -18,17 +18,17 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:paddingLeft="30dp"
-            android:paddingRight="10dp"
+            android:paddingTop="@dimen/padding_margin_10"
+            android:paddingBottom="@dimen/padding_margin_10"
+            android:paddingLeft="@dimen/padding_margin_30"
+            android:paddingRight="@dimen/padding_margin_10"
             android:background="#441BAFCD">
             <com.iseva.app.source.customcomponent.TextViewRegular
                 android:id="@+id/itinerary_timer_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:textColor="@color/app_theme_color"
-                android:textSize="12sp"
+                android:textSize="@dimen/text_size_small"
                 android:gravity="center"
                 android:text="9:53"
                 android:textStyle="bold"/>
@@ -37,8 +37,8 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:textColor="#111"
-                android:textSize="13sp"
-                android:paddingLeft="5dp"
+                android:textSize="@dimen/text_size_small"
+                android:paddingLeft="@dimen/padding_margin_5"
                 android:text="@string/timer_string"/>
 
         </LinearLayout>
@@ -60,21 +60,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingLeft="@dimen/itinerary_screen_padding_left"
-                    android:paddingRight="@dimen/itinerary_screen_padding_right">
+                    android:paddingLeft="@dimen/padding_margin_15"
+                    android:paddingRight="@dimen/padding_margin_15">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="15dp"
+                        android:paddingBottom="@dimen/padding_margin_15"
                         android:orientation="vertical"
-                        android:paddingTop="15dp">
+                        android:paddingTop="@dimen/padding_margin_15">
                         <com.iseva.app.source.customcomponent.TextViewBold
                             android:id="@+id/itinerary_travals_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="#333"
-                            android:textSize="15sp"
+                            android:textSize="@dimen/text_size_normal"
                             android:textStyle="bold"
                             android:text="GP Travels"/>
                         <com.iseva.app.source.customcomponent.TextViewRegular
@@ -82,7 +82,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="#999"
-                            android:textSize="10sp"
+                            android:textSize="@dimen/text_size_extra_small"
 
                             android:text="2+2 Seater, Non-AC,Non-Video"/>
 
@@ -101,15 +101,15 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:paddingBottom="15dp"
+                            android:paddingBottom="@dimen/padding_margin_15"
                             android:orientation="vertical"
-                            android:paddingTop="15dp">
+                            android:paddingTop="@dimen/padding_margin_15">
                             <com.iseva.app.source.customcomponent.TextViewBold
                                 android:id="@+id/itinerary_from_city_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="#333"
-                                android:textSize="15sp"
+                                android:textSize="@dimen/text_size_normal"
                                 android:textStyle="bold"
                                 android:text="Bangalore"/>
                             <com.iseva.app.source.customcomponent.TextViewRegular
@@ -117,14 +117,14 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="#333"
-                                android:textSize="15sp"
+                                android:textSize="@dimen/text_size_normal"
                                 android:text="10:27 PM"/>
                             <com.iseva.app.source.customcomponent.TextViewRegular
                                 android:id="@+id/itinerary_dep_date"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="#666"
-                                android:textSize="10sp"
+                                android:textSize="@dimen/text_size_extra_small"
 
                                 android:text="Thu,16 Feb 17"/>
 
@@ -142,7 +142,7 @@
                                 android:id="@+id/itinerary_duration"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="12sp"
+                                android:textSize="@dimen/text_size_small"
                                 android:textColor="#999"
                                 android:layout_marginTop="5dp"
                                 android:text="07 Hrs 45 Mins"/>
@@ -153,16 +153,16 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:paddingBottom="15dp"
+                            android:paddingBottom="@dimen/padding_margin_15"
                             android:orientation="vertical"
-                            android:paddingTop="15dp"
+                            android:paddingTop="@dimen/padding_margin_15"
                             android:gravity="right">
                             <com.iseva.app.source.customcomponent.TextViewBold
                                 android:id="@+id/itinerary_to_city_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="#333"
-                                android:textSize="15sp"
+                                android:textSize="@dimen/text_size_normal"
                                 android:textStyle="bold"
                                 android:text="Channai"/>
                             <com.iseva.app.source.customcomponent.TextViewRegular
@@ -170,7 +170,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="#333"
-                                android:textSize="15sp"
+                                android:textSize="@dimen/text_size_normal"
 
                                 android:text="6:45 AM"/>
                             <com.iseva.app.source.customcomponent.TextViewRegular
@@ -178,7 +178,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="#666"
-                                android:textSize="10sp"
+                                android:textSize="@dimen/text_size_extra_small"
 
                                 android:text="Fri,17 Feb 17"/>
 
@@ -195,21 +195,21 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:paddingTop="7.5dp"
-                        android:paddingBottom="7.5dp">
+                        android:paddingTop="@dimen/padding_margin_7.5"
+                        android:paddingBottom="@dimen/padding_margin_7.5">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:paddingBottom="7.5dp"
-                            android:paddingTop="7.5dp">
+                            android:paddingBottom="@dimen/padding_margin_7.5"
+                            android:paddingTop="@dimen/padding_margin_7.5">
 
                             <com.iseva.app.source.customcomponent.TextViewRegular
                                 android:layout_width="0dp"
                                 android:layout_weight="1"
                                 android:layout_height="wrap_content"
-                                android:textSize="12sp"
+                                android:textSize="@dimen/text_size_small"
                                 android:textColor="#999"
 
                                 android:text="@string/travellers"/>
@@ -219,7 +219,7 @@
                                 android:layout_width="0dp"
                                 android:layout_weight="1"
                                 android:layout_height="wrap_content"
-                                android:textSize="12sp"
+                                android:textSize="@dimen/text_size_small"
                                 android:textColor="#333"
                                 android:gravity="right"
                                 android:text="1"/>
@@ -231,14 +231,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:paddingBottom="7.5dp"
-                            android:paddingTop="7.5dp">
+                            android:paddingBottom="@dimen/padding_margin_7.5"
+                            android:paddingTop="@dimen/padding_margin_7.5">
 
                             <com.iseva.app.source.customcomponent.TextViewRegular
                                 android:layout_width="0dp"
                                 android:layout_weight="1"
                                 android:layout_height="wrap_content"
-                                android:textSize="12sp"
+                                android:textSize="@dimen/text_size_small"
                                 android:textColor="#999"
 
                                 android:text="@string/seat"/>
@@ -248,7 +248,7 @@
                                 android:layout_width="0dp"
                                 android:layout_weight="1"
                                 android:layout_height="wrap_content"
-                                android:textSize="12sp"
+                                android:textSize="@dimen/text_size_small"
                                 android:textColor="#333"
                                 android:gravity="right"
                                 android:text="2"/>
@@ -260,14 +260,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:paddingBottom="7.5dp"
-                            android:paddingTop="7.5dp">
+                            android:paddingBottom="@dimen/padding_margin_7.5"
+                            android:paddingTop="@dimen/padding_margin_7.5">
 
                             <com.iseva.app.source.customcomponent.TextViewRegular
                                 android:layout_width="0dp"
                                 android:layout_weight="1"
                                 android:layout_height="wrap_content"
-                                android:textSize="12sp"
+                                android:textSize="@dimen/text_size_small"
                                 android:textColor="#999"
 
                                 android:text="@string/boarding_point"/>
@@ -277,7 +277,7 @@
                                 android:layout_width="0dp"
                                 android:layout_weight="1"
                                 android:layout_height="wrap_content"
-                                android:textSize="12sp"
+                                android:textSize="@dimen/text_size_small"
                                 android:textColor="#333"
                                 android:gravity="right"
                                 android:text="Kalasipalyam"/>
@@ -289,14 +289,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:paddingBottom="7.5dp"
-                            android:paddingTop="7.5dp">
+                            android:paddingBottom="@dimen/padding_margin_7.5"
+                            android:paddingTop="@dimen/padding_margin_7.5">
 
                             <com.iseva.app.source.customcomponent.TextViewRegular
                                 android:layout_width="0dp"
                                 android:layout_weight="1"
                                 android:layout_height="wrap_content"
-                                android:textSize="12sp"
+                                android:textSize="@dimen/text_size_small"
                                 android:textColor="#999"
 
                                 android:text="@string/boarding_time"/>
@@ -306,7 +306,7 @@
                                 android:layout_width="0dp"
                                 android:layout_weight="1"
                                 android:layout_height="wrap_content"
-                                android:textSize="12sp"
+                                android:textSize="@dimen/text_size_small"
                                 android:textColor="#333"
                                 android:gravity="right"
                                 android:text="10:27 PM"/>
@@ -326,15 +326,15 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="15dp"
-                        android:paddingTop="15dp"
+                        android:paddingBottom="@dimen/padding_margin_15"
+                        android:paddingTop="@dimen/padding_margin_15"
                         android:gravity="center">
 
                         <com.iseva.app.source.customcomponent.TextViewRegular
                             android:id="@+id/itinerary_cancelation_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="12sp"
+                            android:textSize="@dimen/text_size_small"
                             android:textColor="@color/app_theme_color"
                             android:text="@string/cancelation_policy"/>
 
@@ -351,10 +351,10 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingTop="20dp"
-                    android:paddingBottom="20dp"
+                    android:paddingLeft="@dimen/padding_margin_10"
+                    android:paddingRight="@dimen/padding_margin_10"
+                    android:paddingTop="@dimen/padding_margin_20"
+                    android:paddingBottom="@dimen/padding_margin_20"
                     android:orientation="vertical">
                     <LinearLayout
                         android:id="@+id/itinerary_offer_top_layout"
@@ -369,7 +369,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="#333"
-                                android:textSize="15sp"
+                                android:textSize="@dimen/text_size_normal"
                                 android:textStyle="bold"
                                 android:text="Offers"
                                 />
@@ -469,13 +469,13 @@
                             android:id="@+id/itinerary_promocode_tv_layout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:paddingTop="15dp"
+                            android:paddingTop="@dimen/padding_margin_15"
                             android:gravity="center">
                             <com.iseva.app.source.customcomponent.TextViewRegular
                                 android:id="@+id/itinerary_promocode_tv"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="12sp"
+                                android:textSize="@dimen/text_size_small"
                                 android:textColor="@color/app_theme_color"
                                 android:text="Have a promocode?"/>
                         </LinearLayout>
@@ -495,7 +495,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="#333"
-                                android:textSize="15sp"
+                                android:textSize="@dimen/text_size_normal"
                                 android:textStyle="bold"
                                 android:text="Promocode"
                                 />
@@ -509,8 +509,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
-                                android:paddingTop="15dp"
-                                android:paddingBottom="15dp">
+                                android:paddingTop="@dimen/padding_margin_15"
+                                android:paddingBottom="@dimen/padding_margin_15">
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
@@ -525,7 +525,7 @@
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:textColor="#000"
-                                                android:textSize="15sp"
+                                                android:textSize="@dimen/text_size_normal"
                                                 android:text="BUS150"/>
                                         </LinearLayout>
                                         <LinearLayout
@@ -536,8 +536,8 @@
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:text="Remove"
-                                                android:textSize="10sp"
-                                                android:padding="5dp"
+                                                android:textSize="@dimen/text_size_extra_small"
+                                                android:padding="@dimen/padding_margin_5"
                                                 android:clickable="true"
                                                 android:textColor="@drawable/selected_promocode_remove_btn_text_color"
                                                 android:background="@drawable/selected_promocode_remove_btn_bg"/>
@@ -551,7 +551,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:textColor="#999"
-                                            android:textSize="14sp"
+                                            android:textSize="@dimen/text_size_mediam"
 
                                             android:text="Use Promocode BUS150 to get 5% Cashback upto Rs.150 Cashback. For more details please check T Cs."/>
                                  </LinearLayout>
@@ -576,10 +576,10 @@
                  <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingTop="20dp"
-                    android:paddingBottom="20dp"
+                    android:paddingLeft="@dimen/padding_margin_10"
+                    android:paddingRight="@dimen/padding_margin_10"
+                    android:paddingTop="@dimen/padding_margin_20"
+                    android:paddingBottom="@dimen/padding_margin_20"
                     android:orientation="vertical">
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -589,7 +589,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="#000"
-                            android:textSize="15sp"
+                            android:textSize="@dimen/text_size_normal"
                             android:textStyle="bold"
                             android:text="Fare Breakup"
                             />
@@ -598,14 +598,14 @@
                      <LinearLayout
                          android:layout_width="match_parent"
                          android:layout_height="wrap_content"
-                         android:paddingTop="15dp">
+                         android:paddingTop="@dimen/padding_margin_15">
 
                          <com.iseva.app.source.customcomponent.TextViewRegular
                          android:layout_width="0dp"
                          android:layout_weight="1"
                          android:layout_height="wrap_content"
                          android:textColor="#333"
-                         android:textSize="13sp"
+                         android:textSize="@dimen/text_size_mediam"
 
                          android:text="Base Fare"
                          />
@@ -615,7 +615,7 @@
                              android:layout_weight="1"
                              android:layout_height="wrap_content"
                              android:textColor="#333"
-                             android:textSize="13sp"
+                             android:textSize="@dimen/text_size_mediam"
                              android:gravity="right"
                              android:text="\u20B9 350"
                              />
@@ -625,14 +625,14 @@
                          android:id="@+id/itinerary_discount_layout"
                          android:layout_width="match_parent"
                          android:layout_height="wrap_content"
-                         android:paddingTop="15dp"
+                         android:paddingTop="@dimen/padding_margin_15"
                          android:visibility="gone">
                          <com.iseva.app.source.customcomponent.TextViewRegular
                              android:layout_width="0dp"
                              android:layout_weight="1"
                              android:layout_height="wrap_content"
                              android:textColor="#333"
-                             android:textSize="13sp"
+                             android:textSize="@dimen/text_size_mediam"
 
                              android:text="Discount"
                              />
@@ -642,7 +642,7 @@
                              android:layout_weight="1"
                              android:layout_height="wrap_content"
                              android:textColor="#333"
-                             android:textSize="13sp"
+                             android:textSize="@dimen/text_size_mediam"
                              android:gravity="right"
                              android:text="\u20B9 0"
                              />
@@ -652,14 +652,14 @@
                          android:id="@+id/itinerary_sevice_tax_layout"
                          android:layout_width="match_parent"
                          android:layout_height="wrap_content"
-                         android:paddingTop="15dp"
+                         android:paddingTop="@dimen/padding_margin_15"
                          android:visibility="visible">
                          <com.iseva.app.source.customcomponent.TextViewRegular
                              android:layout_width="0dp"
                              android:layout_weight="1"
                              android:layout_height="wrap_content"
                              android:textColor="#333"
-                             android:textSize="13sp"
+                             android:textSize="@dimen/text_size_mediam"
 
                              android:text="Convenience"
                              />
@@ -669,7 +669,7 @@
                              android:layout_weight="1"
                              android:layout_height="wrap_content"
                              android:textColor="#333"
-                             android:textSize="13sp"
+                             android:textSize="@dimen/text_size_mediam"
                              android:gravity="right"
                              android:text="\u20B9 0"
                              />
@@ -687,7 +687,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp">
+        android:padding="@dimen/padding_margin_5">
 
         <com.iseva.app.source.customcomponent.ButtonBold
             android:id="@+id/itinerary_proceed_btn"
@@ -695,7 +695,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/bg_bt_login"
             android:textColor="#FFFFFF"
-            android:textSize="18sp"
+            android:textSize="@dimen/text_size_large"
             android:textAllCaps="false"
             android:text="Proceed to Pay \u20B9 350"
             android:textStyle="bold"/>
@@ -708,8 +708,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#bb333333"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp"
+    android:paddingLeft="@dimen/padding_margin_20"
+    android:paddingRight="@dimen/padding_margin_20"
     android:gravity="center"
     android:orientation="vertical"
     android:visibility="gone">
@@ -719,12 +719,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        android:layout_marginTop="@dimen/margin_10dp"
+        android:layout_marginTop="@dimen/padding_margin_10"
         android:visibility="gone">
         <TextView
             android:id="@+id/itinerary_promocode_error_tv"
             android:layout_width="wrap_content"
-            android:paddingBottom="10dp"
+            android:paddingBottom="@dimen/padding_margin_10"
             android:layout_height="wrap_content"
             android:textColor="@color/app_white"
             android:text="this error scope"
@@ -736,43 +736,43 @@
         android:layout_height="wrap_content"
         android:background="@color/app_white"
         android:orientation="vertical"
-        android:paddingBottom="15dp"
+        android:paddingBottom="@dimen/padding_margin_15"
        >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:background="@drawable/bg_bt_login"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp">
+            android:paddingTop="@dimen/padding_margin_10"
+            android:paddingBottom="@dimen/padding_margin_10">
             <com.iseva.app.source.customcomponent.TextViewBold
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/app_white"
                 android:textStyle="bold"
-                android:textSize="18sp"
+                android:textSize="@dimen/text_size_large"
                 android:text="Promocode"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp">
+            android:layout_marginTop="@dimen/padding_margin_40"
+            android:paddingLeft="@dimen/padding_margin_15"
+            android:paddingRight="@dimen/padding_margin_15">
            <com.iseva.app.source.customcomponent.EditTextRegular
                android:id="@+id/itinerary_promocode_et"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
                android:background="@drawable/bg_et_box"
                android:hint="Enter Your Promocode"
-               android:padding="10dp"/>
+               android:padding="@dimen/padding_margin_10"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp">
+            android:layout_marginTop="@dimen/padding_margin_40"
+            android:paddingLeft="@dimen/padding_margin_15"
+            android:paddingRight="@dimen/padding_margin_15">
             <com.iseva.app.source.customcomponent.ButtonBold
                 android:id="@+id/itinerary_promocode_cancel_btn"
                 android:layout_width="0dp"
@@ -780,7 +780,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_bt_login"
                 android:textColor="#FFFFFF"
-                android:textSize="18sp"
+                android:textSize="@dimen/text_size_large"
                 android:textAllCaps="false"
                 android:text="Cancel"
                 android:textStyle="bold"/>
@@ -797,7 +797,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/btn_background"
                 android:textColor="#FFFFFF"
-                android:textSize="18sp"
+                android:textSize="@dimen/text_size_large"
 
                 android:text="Apply"
                 android:textStyle="bold"/>
@@ -824,7 +824,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                android:padding="10dp">
+                android:padding="@dimen/padding_margin_10">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -835,7 +835,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="15dp"
+                        android:padding="@dimen/padding_margin_15"
                         android:gravity="center">
                         <TextView
                             android:layout_width="wrap_content"
@@ -848,7 +848,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="15dp">
+                        android:padding="@dimen/padding_margin_15">
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -904,13 +904,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="right"
-                        android:padding="20dp">
+                        android:padding="@dimen/padding_margin_20">
 
                         <TextView
                             android:id="@+id/cancel_cancellation_layout"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="5dp"
+                            android:padding="@dimen/padding_margin_5"
                             android:text="OK"
                             android:textColor="@color/app_theme_color"/>
 
@@ -929,7 +929,7 @@
         android:layout_height="match_parent"
         android:background="#cc000000"
         android:gravity="center"
-        android:padding="10dp"
+        android:padding="@dimen/padding_margin_10"
         android:visibility="gone"
         android:clickable="true">
         <LinearLayout
@@ -937,7 +937,7 @@
             android:layout_height="wrap_content"
             android:background="@color/app_white"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:padding="@dimen/padding_margin_20">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -945,7 +945,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/text_size_normal"
                     android:text="You are not loged in. For booking ticket please login or signup first."
                     />
             </LinearLayout>
@@ -953,7 +953,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="@dimen/padding_margin_30"
                 >
                 <LinearLayout
                     android:layout_width="0dp"
@@ -963,10 +963,10 @@
                         android:id="@+id/login_alert_cancel_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="16sp"
+                        android:textSize="@dimen/text_size_normal"
                         android:textColor="@color/app_theme_color"
                         android:textStyle="bold"
-                        android:padding="10dp"
+                        android:padding="@dimen/padding_margin_10"
                         android:text="Cancel"/>
                 </LinearLayout>
                 <LinearLayout
@@ -976,10 +976,10 @@
                         android:id="@+id/login_alert_login_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="16sp"
+                        android:textSize="@dimen/text_size_normal"
                         android:textColor="@color/app_theme_color"
                         android:textStyle="bold"
-                        android:padding="10dp"
+                        android:padding="@dimen/padding_margin_10"
                         android:text="Login"/>
                 </LinearLayout>
                 <LinearLayout
@@ -989,11 +989,11 @@
                         android:id="@+id/login_alert_signup_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="16sp"
+                        android:textSize="@dimen/text_size_normal"
                         android:layout_gravity="right"
                         android:textColor="@color/app_theme_color"
                         android:textStyle="bold"
-                        android:padding="10dp"
+                        android:padding="@dimen/padding_margin_10"
                         android:text="SignUp"/>
                 </LinearLayout>
 

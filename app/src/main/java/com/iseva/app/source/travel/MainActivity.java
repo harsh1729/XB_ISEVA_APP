@@ -149,8 +149,7 @@ public class MainActivity extends Activity{
         TextView title_tv = new TextView(this);
         title_tv.setPadding(0,10,0,0);
         title_tv.setTextColor(ContextCompat.getColor(MainActivity.this,R.color.black));
-        title_tv.setTextSize(18);
-        title_tv.setTypeface(null, Typeface.BOLD);
+        title_tv.setTextSize(getResources().getDimension(R.dimen.text_size_mediam));
         title_tv.setGravity(Gravity.CENTER);
         title_tv.setText(getResources().getString(R.string.internet_connection_error_title));
 
@@ -185,8 +184,8 @@ public class MainActivity extends Activity{
         TextView title_tv = new TextView(this);
         title_tv.setPadding(0,10,0,0);
         title_tv.setTextColor(ContextCompat.getColor(MainActivity.this,R.color.black));
-        title_tv.setTextSize(18);
-        title_tv.setTypeface(null, Typeface.BOLD);
+        title_tv.setTextSize(getResources().getDimension(R.dimen.text_size_mediam));
+
         title_tv.setGravity(Gravity.CENTER);
         title_tv.setText(title);
 
@@ -275,17 +274,17 @@ public class MainActivity extends Activity{
                 if(Get_From_Cities_et.getText().length() == 0)
                 {
 
-                    showAlertDialog(getResources().getString(R.string.validating_error_title),"Please insert origin city !","Ok");
+                    showAlertDialog(getResources().getString(R.string.validating_error_title),"Please select origin city !","Ok");
 
                 }
                 else if(Get_To_Cities_et.getText().length() == 0)
                 {
-                    showAlertDialog(getResources().getString(R.string.validating_error_title),"Please insert destination city !","Ok");
+                    showAlertDialog(getResources().getString(R.string.validating_error_title),"Please select destination city !","Ok");
 
                 }
                 else if(Journey_Date_et.getText().length() == 0)
                 {
-                    showAlertDialog(getResources().getString(R.string.validating_error_title),"Please insert journey date !","Ok");
+                    showAlertDialog(getResources().getString(R.string.validating_error_title),"Please select journey date !","Ok");
 
                 }
                 else
@@ -751,6 +750,8 @@ public class MainActivity extends Activity{
 
     public void activity_dismiss()
     {
+        Search_Buses_Key.From_City_name = null;
+        Search_Buses_Key.To_City_name = null;
         this.finish();
         overridePendingTransition(R.anim.anim_none, R.anim.anim_out);
     }
@@ -759,6 +760,8 @@ public class MainActivity extends Activity{
     @Override
     public void onBackPressed() {
 
+        Search_Buses_Key.From_City_name = null;
+        Search_Buses_Key.To_City_name = null;
         super.onBackPressed();
         overridePendingTransition(R.anim.anim_none, R.anim.anim_out);
 

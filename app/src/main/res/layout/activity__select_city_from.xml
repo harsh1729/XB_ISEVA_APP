@@ -14,7 +14,7 @@
         <com.iseva.app.source.travel.Autocompletetext_costom
             android:id="@+id/Real_Get_From_City"
             android:layout_width="match_parent"
-           android:padding="12dp"
+           android:padding="@dimen/padding_margin_12"
             android:layout_height="wrap_content"
             android:inputType="textAutoComplete|textAutoCorrect"
             android:hint="Enter Origin City"
@@ -29,7 +29,7 @@
 
 
 
-            android:textSize="16sp"
+            android:textSize="@dimen/text_size_normal"
 
            />
     <LinearLayout
@@ -51,14 +51,14 @@
             android:id="@+id/from_city_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
+            android:paddingTop="@dimen/padding_margin_10"
+            android:paddingBottom="@dimen/padding_margin_10"
             android:textColor="@color/app_theme_color"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_size_mediam"
             android:textAllCaps="true"
 
             android:text="Popular Cities"
-            android:paddingLeft="10dp"/>
+            android:paddingLeft="@dimen/padding_margin_10"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height=".5dp"

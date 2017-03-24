@@ -364,10 +364,10 @@ public class Activity_Home extends AppCompatActivity
                                         list.add(objOffers);
                                     }
                                 }
-                                setAdapterAddver(list);
+                               // setAdapterAddver(list);
                             } else {
-                                CardView cv = (CardView) findViewById(R.id.card_viewHome);
-                                cv.setVisibility(View.GONE);
+                               /* CardView cv = (CardView) findViewById(R.id.card_viewHome);
+                                cv.setVisibility(View.GONE);*/
                             }
                         }
                     }

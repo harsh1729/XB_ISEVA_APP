@@ -17,7 +17,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="15dp"
+                android:padding="@dimen/padding_margin_15"
                 android:orientation="vertical">
 
 
@@ -30,7 +30,7 @@
                         android:layout_height="wrap_content"
                         android:text="Boarding Point"
                         android:textColor="@color/app_theme_color"
-                        android:textSize="14sp"/>
+                        android:textSize="@dimen/text_size_mediam"/>
 
                 </LinearLayout>
 
@@ -43,9 +43,9 @@
                         android:id="@+id/boarding_point_spinner"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="10dp"
+                        android:padding="@dimen/padding_margin_10"
                         android:backgroundTint="#999"
-                        android:paddingBottom="10dp"
+                        android:paddingBottom="@dimen/padding_margin_10"
                         android:dropDownWidth="match_parent"
 
                         style="@style/Base.Widget.AppCompat.Spinner.Underlined">
@@ -58,7 +58,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="40dp">
+                    android:layout_marginTop="@dimen/padding_margin_40">
 
                     <com.iseva.app.source.customcomponent.TextViewRegular
                         android:layout_width="wrap_content"
@@ -180,7 +180,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="40dp">
+                    android:layout_marginTop="@dimen/padding_margin_40">
 
                     <com.iseva.app.source.customcomponent.TextViewRegular
                         android:layout_width="wrap_content"
@@ -192,21 +192,21 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp">
+                    android:layout_marginTop="@dimen/padding_margin_20">
 
                     <com.iseva.app.source.customcomponent.TextViewRegular
                         android:layout_width="0dp"
                         android:layout_weight="15"
                         android:layout_height="wrap_content"
                         android:text="Name"
-                        android:textSize="12sp"
+                        android:textSize="@dimen/text_size_small"
                         android:textColor="#BBB"/>
                     <com.iseva.app.source.customcomponent.EditTextRegular
                         android:id="@+id/contact_name"
                         android:layout_width="0dp"
                         android:layout_weight="85"
                         android:inputType="text"
-                        android:textSize="12sp"
+                        android:textSize="@dimen/text_size_small"
                         android:backgroundTint="#BBB"
                         android:layout_height="wrap_content" />
 
@@ -215,21 +215,21 @@
                 <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="@dimen/padding_margin_10">
 
                 <com.iseva.app.source.customcomponent.TextViewRegular
                     android:layout_width="0dp"
                     android:layout_weight="15"
                     android:layout_height="wrap_content"
                     android:text="Mobile"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/text_size_small"
                     android:textColor="#BBB"/>
                 <com.iseva.app.source.customcomponent.EditTextRegular
                     android:id="@+id/contact_mobile"
                     android:layout_width="0dp"
                     android:layout_weight="85"
                     android:inputType="number"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/text_size_small"
                     android:backgroundTint="#BBB"
                     android:layout_height="wrap_content" />
 
@@ -238,20 +238,20 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="@dimen/padding_margin_10">
 
                     <com.iseva.app.source.customcomponent.TextViewRegular
                         android:layout_width="0dp"
                         android:layout_weight="15"
                         android:layout_height="wrap_content"
                         android:text="Email"
-                        android:textSize="12sp"
+                        android:textSize="@dimen/text_size_small"
                         android:textColor="#BBB"/>
                     <com.iseva.app.source.customcomponent.EditTextRegular
                         android:id="@+id/contact_email"
                         android:layout_width="0dp"
                         android:layout_weight="85"
-                        android:textSize="12sp"
+                        android:textSize="@dimen/text_size_small"
                         android:backgroundTint="#BBB"
                         android:layout_height="wrap_content" />
 
@@ -269,7 +269,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp">
+        android:padding="@dimen/padding_margin_20">
         <com.iseva.app.source.customcomponent.ButtonBold
             android:id="@+id/proceed_to_book_btn"
             android:layout_width="match_parent"

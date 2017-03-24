@@ -6,8 +6,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp">
+        android:paddingTop="@dimen/padding_margin_15"
+        android:paddingBottom="@dimen/padding_margin_15">
 
         <LinearLayout
             android:id="@+id/activity_itinerary_offer_check_btn"
@@ -31,21 +31,21 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
+            android:paddingLeft="@dimen/padding_margin_10"
             android:orientation="vertical">
             <com.iseva.app.source.customcomponent.TextViewRegular
                 android:id="@+id/activity_itinerary_offer_tag_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#000"
-                android:textSize="14dp"
+                android:textSize="@dimen/text_size_mediam"
                 android:text="BUS150"/>
             <com.iseva.app.source.customcomponent.TextViewRegular
                 android:id="@+id/activity_itinerary_offer_detail_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#999"
-                android:textSize="10sp"
+                android:textSize="@dimen/text_size_extra_small"
 
                 android:text="Use Promocode BUS150 to get 5% Cashback upto Rs.150 Cashback. For more details please check T Cs."/>
         </LinearLayout>

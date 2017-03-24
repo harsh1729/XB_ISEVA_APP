@@ -30,7 +30,151 @@
     <dimen name="seat_icon_text_size">8sp</dimen>
 
 
+    <!--globle dimention travel module start-->
+        <dimen name="text_size_micro">8sp</dimen>
+        <dimen name="text_size_extra_small">10sp</dimen>
+        <dimen name="text_size_small">12sp</dimen>
+        <dimen name="text_size_mediam">14sp</dimen>
+        <dimen name="text_size_normal">16sp</dimen>
+        <dimen name="text_size_large">18sp</dimen>
+        <dimen name="text_size_extra_large">22sp</dimen>
+
+
+    <dimen name="padding_margin_neg_16">-16dp</dimen>
+        <dimen name="padding_margin_0">0dp</dimen>
+        <dimen name="padding_margin_1">1dp</dimen>
+        <dimen name="padding_margin_3">3dp</dimen>
+        <dimen name="padding_margin_5">5dp</dimen>
+        <dimen name="padding_margin_6">6dp</dimen>
+        <dimen name="padding_margin_7.5">7.5dp</dimen>
+        <dimen name="padding_margin_10">10dp</dimen>
+        <dimen name="padding_margin_12">12dp</dimen>
+        <dimen name="padding_margin_15">15dp</dimen>
+        <dimen name="padding_margin_16">16dp</dimen>
+        <dimen name="padding_margin_20">20dp</dimen>
+        <dimen name="padding_margin_25">25dp</dimen>
+        <dimen name="padding_margin_30">30dp</dimen>
+        <dimen name="padding_margin_35">35dp</dimen>
+        <dimen name="padding_margin_40">40dp</dimen>
+        <dimen name="padding_margin_50">50dp</dimen>
+
+        <dimen name="travel_header">55dp</dimen>
+    <!--globle dimention travel module end-->
+
+
+    <!--Activity main dimentions start-->
+
+    <!--Activity main dimentions end-->
+
+
+    <!--Activity bus_routes dimentions start-->
+
+    <!--Activity bus_routes dimentions end-->
+
+
+    <!--Activity filter dimentions start-->
+
+    <!--Activity filter dimentions end-->
+
+
+    <!--Activity first dimentions start-->
+
+    <!--Activity first dimentions end-->
+
+
+    <!--Activity loading dimentions start-->
+
+    <!--Activity loading dimentions end-->
+
+
+    <!--Activity login dimentions start-->
+
+    <!--Activity login dimentions end-->
+
+
+    <!--Activity passenger_detail dimentions start-->
+
+    <!--Activity passenger_detail dimentions end-->
+
+
+    <!--Activity register dimentions start-->
+
+    <!--Activity register dimentions end-->
+
+
+    <!--Activity review_itinerary dimentions start-->
+
+    <!--Activity review_itinerary dimentions end-->
+
+
+    <!--Activity select_seat dimentions start-->
+
+    <!--Activity select_seat dimentions end-->
+
+
+    <!--Activity selectcityfrom dimentions start-->
+
+    <!--Activity selectcityto dimentions end-->
+
+
+    <!--Activity show_booked_ticket dimentions start-->
+
+    <!--Activity show_booked_ticket dimentions end-->
+
+
+    <!--Activity show_detail_booked_ticket dimentions start-->
+
+    <!--Activity show_detail_booked_ticket dimentions end-->
+
+
+    <!--Activity show_detail_cancel_ticket dimentions start-->
+
+    <!--Activity show_detail_cancel_ticket dimentions end-->
+
+
+    <!--Activity ticket_confirmation dimentions start-->
+
+    <!--Activity ticket_confirmation dimentions end-->
+
+
+    <!--Fragment deck1 dimentions start-->
+
+    <!--Fragment deck1 dimentions end-->
+
+
+    <!--Fragment deck2 dimentions start-->
+
+    <!--Fragment deck2 dimentions end-->
+
+
+    <!--Fragment routes_duration dimentions start-->
+
+    <!--Fragment routes_duration dimentions end-->
+
+
+    <!--Fragment routes_popular dimentions start-->
+
+    <!--Fragment routes_popular dimentions end-->
+
+
+    <!--Fragment routes_price dimentions start-->
+
+    <!--Fragment routes_price dimentions end-->
+
+
+    <!--Fragment routes_time dimentions start-->
+
+    <!--Fragment routes_time dimentions end-->
+
+
+
+
+
+
     <!--itinerary screen dimentions start-->
+
     <dimen name="itinerary_screen_padding_left">10dp</dimen>
     <dimen name="itinerary_screen_padding_right">10dp</dimen>
+
+    <!--itinerary screen dimentions end-->
 </resources>

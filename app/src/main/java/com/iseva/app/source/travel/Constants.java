@@ -39,7 +39,7 @@ public class Constants {
     public static final int Radio_mrs = 2000;
     public static final int Radio_ms = 3000;
 
-    public static final String Send_mail_url = "http://xercesblue.website/upload/testmail.php";
+    public static final String Send_mail_url = "http://xercesblue.website/iservice/testmail.php";
     public static final String Get_offer_global = "http://xercesblue.website/iservice/client_requests/promocodes/get_all_offers";
     public static final String get_offer_with_coupan_no = "http://xercesblue.website/iservice/client_requests/promocodes/get_offer_with_coupan_no";
     public static final String Add_transaction = "http://xercesblue.website/iservice/client_requests/transaction/add_transaction";

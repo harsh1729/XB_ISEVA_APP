@@ -707,8 +707,15 @@ public class Activity_show_detail_booked_ticket extends Activity {
                         updateTicketStatus();
                         refund_fair();
 
+                        TextView title_tv = new TextView(Activity_show_detail_booked_ticket.this);
+                        title_tv.setPadding(0,getResources().getDimensionPixelSize(R.dimen.padding_margin_10),0,0);
+                        title_tv.setTextColor(ContextCompat.getColor(Activity_show_detail_booked_ticket.this,R.color.black));
+                        title_tv.setTextSize(getResources().getDimension(R.dimen.text_size_mediam));
+                        title_tv.setGravity(Gravity.CENTER);
+                        title_tv.setText("Message");
+
                         AlertDialog.Builder builder = new AlertDialog.Builder(Activity_show_detail_booked_ticket.this);
-                        builder.setTitle("Message")
+                        builder.setCustomTitle(title_tv)
                                 .setMessage("Your ticket successfully cancelled")
                                 .setCancelable(false)
                                 .setNegativeButton("Ok",new DialogInterface.OnClickListener() {
@@ -861,10 +868,9 @@ public class Activity_show_detail_booked_ticket extends Activity {
     public void showAlertDialog(String title,String message,String buttonlabel)
     {
         TextView title_tv = new TextView(this);
-        title_tv.setPadding(0,10,0,0);
+        title_tv.setPadding(0,getResources().getDimensionPixelSize(R.dimen.padding_margin_10),0,0);
         title_tv.setTextColor(ContextCompat.getColor(Activity_show_detail_booked_ticket.this,R.color.black));
-        title_tv.setTextSize(18);
-        title_tv.setTypeface(null, Typeface.BOLD);
+        title_tv.setTextSize(getResources().getDimension(R.dimen.text_size_mediam));
         title_tv.setGravity(Gravity.CENTER);
         title_tv.setText(title);
 

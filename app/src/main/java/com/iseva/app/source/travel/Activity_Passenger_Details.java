@@ -132,7 +132,7 @@ public class Activity_Passenger_Details extends Activity {
 
         proceed_to_book_btn = (Button)findViewById(R.id.proceed_to_book_btn);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.WRAP_CONTENT);
-        params.setMargins(10,0,0,0);
+        params.setMargins(getResources().getDimensionPixelSize(R.dimen.padding_margin_10),0,0,0);
 
         header_tv.setLayoutParams(params);
         header_tv.setText("Passenger Details");
@@ -270,12 +270,12 @@ public class Activity_Passenger_Details extends Activity {
             if(radiobtnTag.equals("radio_mr"+(i+1)))
             {
                 gender = "M";
-                Log.e("vikas","Passenger"+(i+1)+" "+"gender"+":"+"M");
+                Log.e("vikas","Passenger "+(i+1)+" "+"gender"+":"+"M");
             }
             else
             {
                 gender = "F";
-                Log.e("vikas","Passenger"+(i+1)+" "+"gender"+":"+"F");
+                Log.e("vikas","Passenger "+(i+1)+" "+"gender"+":"+"F");
             }
 
             EditText p_name = (EditText)v.findViewWithTag("edittext_name"+(i+1));
@@ -283,11 +283,11 @@ public class Activity_Passenger_Details extends Activity {
 
             if(p_name.getText().toString().trim().equals(""))
             {
-                return "Passenger"+(i+1);
+                return "Passenger "+(i+1);
             }
             else if(p_age.getText().toString().trim().equals(""))
             {
-                return "Passenger"+(i+1);
+                return "Passenger "+(i+1);
             }
         }
         return "success";
@@ -628,10 +628,9 @@ public class Activity_Passenger_Details extends Activity {
     {
 
         TextView title_tv = new TextView(this);
-        title_tv.setPadding(0,10,0,0);
+        title_tv.setPadding(0,getResources().getDimensionPixelSize(R.dimen.padding_margin_10),0,0);
         title_tv.setTextColor(ContextCompat.getColor(Activity_Passenger_Details.this,R.color.black));
-        title_tv.setTextSize(18);
-        title_tv.setTypeface(null, Typeface.BOLD);
+        title_tv.setTextSize(getResources().getDimension(R.dimen.text_size_mediam));
         title_tv.setGravity(Gravity.CENTER);
         title_tv.setText(title);
 

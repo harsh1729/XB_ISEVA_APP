@@ -23,7 +23,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/app_white"
-                    android:padding="15dp"
+                    android:padding="@dimen/padding_margin_15"
                     android:orientation="vertical">
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -34,13 +34,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
                             <TextView
-                                android:paddingRight="5dp"
-                                android:paddingBottom="5dp"
+                                android:paddingRight="@dimen/padding_margin_5"
+                                android:paddingBottom="@dimen/padding_margin_5"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/black"
 
-                                android:textSize="12sp"
+                                android:textSize="@dimen/text_size_small"
                                 android:text="CONFIRMED"/>
                         </LinearLayout>
                         <LinearLayout
@@ -52,7 +52,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="#666"
-                                android:textSize="12sp"
+                                android:textSize="@dimen/text_size_small"
                                 android:text="Friday, 23 December,2017"/>
                         </LinearLayout>
 
@@ -67,7 +67,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginTop="10dp">
+                        android:layout_marginTop="@dimen/padding_margin_10">
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_weight="1"
@@ -76,7 +76,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="12sp"
+                                android:textSize="@dimen/text_size_small"
                                 android:text="From"/>
                         </LinearLayout>
                         <LinearLayout
@@ -84,7 +84,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="right">
                             <TextView
-                                android:textSize="12sp"
+                                android:textSize="@dimen/text_size_small"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="To"/>
@@ -105,7 +105,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/black"
-                                android:textSize="18sp"
+                                android:textSize="@dimen/text_size_large"
                                 android:text="Ahmedabad"/>
                         </LinearLayout>
                         <LinearLayout
@@ -117,7 +117,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/black"
-                                android:textSize="18sp"
+                                android:textSize="@dimen/text_size_large"
                                 android:text="Jaipur"/>
                         </LinearLayout>
 
@@ -127,12 +127,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/app_white"
-                    android:padding="15dp"
+                    android:padding="@dimen/padding_margin_15"
                     android:orientation="vertical">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp">
+                        android:layout_marginBottom="@dimen/padding_margin_10">
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_weight="1"
@@ -143,7 +143,7 @@
                                 android:layout_height="wrap_content">
                                 <TextView
                                     android:layout_width="wrap_content"
-                                    android:textSize="12sp"
+                                    android:textSize="@dimen/text_size_small"
                                     android:layout_height="wrap_content"
                                     android:text="BOARDS"/>
                             </LinearLayout>
@@ -155,7 +155,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:textColor="#333"
-                                    android:textSize="16sp"
+                                    android:textSize="@dimen/text_size_normal"
                                     android:text="18:00"/>
                             </LinearLayout>
                         </LinearLayout>
@@ -171,7 +171,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textSize="12sp"
+                                    android:textSize="@dimen/text_size_small"
                                     android:text="BOARDING POINT"/>
                             </LinearLayout>
                             <LinearLayout
@@ -182,7 +182,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:textColor="#333"
-                                    android:textSize="16sp"
+                                    android:textSize="@dimen/text_size_normal"
                                     android:text="Hotal Rajputana"/>
                             </LinearLayout>
                         </LinearLayout>
@@ -196,8 +196,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="@dimen/padding_margin_10"
+                        android:layout_marginTop="@dimen/padding_margin_10"
                         android:orientation="vertical">
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -205,7 +205,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="12sp"
+                                android:textSize="@dimen/text_size_small"
                                 android:text="TRAVEL"/>
                         </LinearLayout>
                         <LinearLayout
@@ -216,7 +216,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="#333"
-                                android:textSize="16sp"
+                                android:textSize="@dimen/text_size_normal"
                                 android:text="Shrinath travel agency"/>
                         </LinearLayout>
                         <LinearLayout
@@ -227,7 +227,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="#333"
-                                android:textSize="16sp"
+                                android:textSize="@dimen/text_size_normal"
                                 android:text="Volvo A/C MultiAxle Sleeper"/>
                         </LinearLayout>
                     </LinearLayout>
@@ -240,8 +240,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="@dimen/padding_margin_10"
+                        android:layout_marginTop="@dimen/padding_margin_10"
                         android:orientation="horizontal">
                         <LinearLayout
                             android:layout_width="0dp"
@@ -254,7 +254,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textSize="12sp"
+                                    android:textSize="@dimen/text_size_small"
                                     android:text="SEAT"/>
                             </LinearLayout>
                             <LinearLayout
@@ -265,7 +265,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:textColor="#333"
-                                    android:textSize="16sp"
+                                    android:textSize="@dimen/text_size_normal"
                                     android:text="L8,L9"/>
                             </LinearLayout>
                         </LinearLayout>
@@ -281,7 +281,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textSize="12sp"
+                                    android:textSize="@dimen/text_size_small"
                                     android:text="PASSENGERS"/>
                             </LinearLayout>
                             <LinearLayout
@@ -292,7 +292,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:textColor="#333"
-                                    android:textSize="16sp"
+                                    android:textSize="@dimen/text_size_normal"
                                     android:text="Vikas Sharma"/>
                             </LinearLayout>
                         </LinearLayout>
@@ -306,8 +306,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="@dimen/padding_margin_10"
+                        android:layout_marginTop="@dimen/padding_margin_10"
                         android:orientation="vertical">
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -315,7 +315,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="12sp"
+                                android:textSize="@dimen/text_size_small"
                                 android:text="BOARDING POINT DETAILS"/>
                         </LinearLayout>
                         <LinearLayout
@@ -326,7 +326,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="#333"
-                                android:textSize="16sp"
+                                android:textSize="@dimen/text_size_normal"
                                 android:text="Opp. R.S. Post Office, Near Railwaystatin.Near Hotel Rajputana.Jaipur "/>
                         </LinearLayout>
                         <LinearLayout
@@ -336,7 +336,7 @@
                                 android:id="@+id/activity_ticket_detail_boarding_landmark_tv"
                                 android:layout_width="wrap_content"
                                 android:textColor="#333"
-                                android:textSize="16sp"
+                                android:textSize="@dimen/text_size_normal"
                                 android:layout_height="wrap_content"
                                 android:text="Bus Stop"/>
                         </LinearLayout>
@@ -348,7 +348,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/black"
-                                android:textSize="16sp"
+                                android:textSize="@dimen/text_size_normal"
                                 android:text="09782908308"/>
                         </LinearLayout>
                     </LinearLayout>
@@ -361,8 +361,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="@dimen/padding_margin_10"
+                        android:layout_marginTop="@dimen/padding_margin_10"
                         android:orientation="vertical">
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -370,7 +370,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="12sp"
+                                android:textSize="@dimen/text_size_small"
                                 android:text="DROPPING POINT DETAILS"/>
                         </LinearLayout>
                         <LinearLayout
@@ -381,7 +381,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="#333"
-                                android:textSize="16sp"
+                                android:textSize="@dimen/text_size_normal"
                                 android:text="Paldi"/>
                         </LinearLayout>
                     </LinearLayout>
@@ -394,8 +394,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="@dimen/padding_margin_10"
+                        android:layout_marginTop="@dimen/padding_margin_10"
                         android:orientation="horizontal">
                         <LinearLayout
                             android:layout_width="0dp"
@@ -408,7 +408,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textSize="12sp"
+                                    android:textSize="@dimen/text_size_small"
                                     android:text="TICKET NUMBER"/>
                             </LinearLayout>
                             <LinearLayout
@@ -418,7 +418,7 @@
                                     android:id="@+id/activity_ticket_detail_ticket_no_tv"
                                     android:layout_width="wrap_content"
                                     android:textColor="#333"
-                                    android:textSize="16sp"
+                                    android:textSize="@dimen/text_size_normal"
                                     android:layout_height="wrap_content"
                                     android:text="9782896857"/>
                             </LinearLayout>
@@ -435,7 +435,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textSize="12sp"
+                                    android:textSize="@dimen/text_size_small"
                                     android:text="TOTAL"/>
                             </LinearLayout>
                             <LinearLayout
@@ -445,7 +445,7 @@
                                     android:id="@+id/activity_ticket_detail_total_fare_tv"
                                     android:layout_width="wrap_content"
                                     android:textColor="#333"
-                                    android:textSize="16sp"
+                                    android:textSize="@dimen/text_size_normal"
                                     android:layout_height="wrap_content"
                                     android:text="1050"/>
                             </LinearLayout>
@@ -462,8 +462,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="@dimen/padding_margin_10"
+                        android:layout_marginTop="@dimen/padding_margin_10"
                         android:orientation="vertical">
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -471,7 +471,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="12sp"
+                                android:textSize="@dimen/text_size_small"
                                 android:text="PNR NUMBER"/>
                         </LinearLayout>
                         <LinearLayout
@@ -481,7 +481,7 @@
                                 android:id="@+id/activity_ticket_detail_pnr_no_tv"
                                 android:layout_width="wrap_content"
                                 android:textColor="#333"
-                                android:textSize="16sp"
+                                android:textSize="@dimen/text_size_normal"
                                 android:layout_height="wrap_content"
                                 android:text="5865894-546857"/>
                         </LinearLayout>
@@ -497,7 +497,7 @@
                         android:id="@+id/activity_ticket_detail_cancel_btn_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp">
+                        android:layout_marginTop="@dimen/padding_margin_20">
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
@@ -524,13 +524,13 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:clickable="true"
-        android:padding="10dp"
+        android:padding="@dimen/padding_margin_10"
         android:background="#aa000000"
         android:visibility="gone">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
+            android:padding="@dimen/padding_margin_10"
             android:background="@color/app_white"
             android:orientation="vertical">
             <LinearLayout
@@ -556,7 +556,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
                         android:textStyle="bold"
-                        android:padding="10dp"
+                        android:padding="@dimen/padding_margin_10"
                         android:text="Total Fare :-"/>
                 </LinearLayout>
                 <LinearLayout
@@ -567,7 +567,7 @@
                         android:id="@+id/activity_show_booked_ticket_cancel_ticket_total_fare_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="10dp"
+                        android:padding="@dimen/padding_margin_10"
                         android:text="450"/>
                 </LinearLayout>
 
@@ -584,7 +584,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
                         android:textStyle="bold"
-                        android:padding="10dp"
+                        android:padding="@dimen/padding_margin_10"
                         android:text="Charge :-"/>
                 </LinearLayout>
                 <LinearLayout
@@ -595,7 +595,7 @@
                         android:id="@+id/activity_show_booked_ticket_cancel_ticket_charge_percentage_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="10dp"
+                        android:padding="@dimen/padding_margin_10"
                         android:text="10%"/>
                 </LinearLayout>
 
@@ -612,7 +612,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
                         android:textStyle="bold"
-                        android:padding="10dp"
+                        android:padding="@dimen/padding_margin_10"
                         android:text="Refund Amount :-"/>
                 </LinearLayout>
                 <LinearLayout
@@ -623,7 +623,7 @@
                         android:id="@+id/activity_show_booked_ticket_cancel_ticket_refund_amount_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="10dp"
+                        android:padding="@dimen/padding_margin_10"
                         android:text="150"/>
                 </LinearLayout>
 
@@ -631,7 +631,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="@dimen/padding_margin_20">
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_weight="7"
@@ -643,7 +643,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/app_theme_color"
                         android:textStyle="bold"
-                        android:padding="10dp"
+                        android:padding="@dimen/padding_margin_10"
                         android:text="Cancel"/>
                 </LinearLayout>
                 <LinearLayout
@@ -657,7 +657,7 @@
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
                         android:textColor="@color/app_theme_color"
-                        android:padding="10dp"
+                        android:padding="@dimen/padding_margin_10"
                         android:text="Ok"/>
                 </LinearLayout>
 

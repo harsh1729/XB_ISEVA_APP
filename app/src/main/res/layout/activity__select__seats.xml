@@ -50,15 +50,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="BOOKED"
-                android:textSize="@dimen/seat_icon_text_size"
+                android:textSize="@dimen/text_size_micro"
                 android:textColor="@color/seat_icon_text_color"
                 android:gravity="center"
-                android:layout_marginTop="3dp"/>
+                android:layout_marginTop="@dimen/padding_margin_3"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:padding="1dp"
+            android:padding="@dimen/padding_margin_1"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical">
@@ -70,15 +70,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="BOOKED BY LADIES"
-                android:textSize="@dimen/seat_icon_text_size"
+                android:textSize="@dimen/text_size_micro"
                 android:gravity="center"
                 android:textColor="@color/seat_icon_text_color"
-                android:layout_marginTop="3dp"/>
+                android:layout_marginTop="@dimen/padding_margin_3"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:padding="1dp"
+            android:padding="@dimen/padding_margin_1"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
@@ -92,16 +92,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="AVAILABLE"
-                android:textSize="@dimen/seat_icon_text_size"
+                android:textSize="@dimen/text_size_micro"
                 android:textColor="@color/seat_icon_text_color"
                 android:gravity="center"
-                android:layout_marginTop="3dp"/>
+                android:layout_marginTop="@dimen/padding_margin_3"/>
 
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:padding="1dp"
+            android:padding="@dimen/padding_margin_1"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical">
@@ -113,15 +113,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="RESERVED FOR LADIES"
-                android:textSize="@dimen/seat_icon_text_size"
+                android:textSize="@dimen/text_size_micro"
                 android:textColor="@color/seat_icon_text_color"
                 android:gravity="center"
-                android:layout_marginTop="3dp"/>
+                android:layout_marginTop="@dimen/padding_margin_3"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:padding="1dp"
+            android:padding="@dimen/padding_margin_1"
             android:layout_height="wrap_content"
             android:gravity="center"
 
@@ -136,8 +136,8 @@
                 android:gravity="center"
                 android:text="SELECTED"
                 android:textColor="@color/seat_icon_text_color"
-                android:textSize="@dimen/seat_icon_text_size"
-                android:layout_marginTop="3dp"/>
+                android:textSize="@dimen/text_size_micro"
+                android:layout_marginTop="@dimen/padding_margin_3"/>
         </LinearLayout>
 
 
@@ -159,7 +159,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="10dp"
+        android:paddingTop="@dimen/padding_margin_10"
+        android:paddingBottom="@dimen/padding_margin_10"
         android:orientation="vertical"
         >
 
@@ -199,10 +200,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp">
+        android:paddingBottom="@dimen/padding_margin_10"
+        android:paddingTop="@dimen/padding_margin_10"
+        android:paddingLeft="@dimen/padding_margin_5"
+        android:paddingRight="@dimen/padding_margin_5">
 
         <TextView
             android:layout_width="0dp"
@@ -222,18 +223,18 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:background="#999"
-        android:paddingRight="5dp"
-        android:paddingLeft="5dp">
+        android:paddingRight="@dimen/padding_margin_5"
+        android:paddingLeft="@dimen/padding_margin_5">
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp">
+        android:paddingBottom="@dimen/padding_margin_10"
+        android:paddingTop="@dimen/padding_margin_10"
+        android:paddingLeft="@dimen/padding_margin_5"
+        android:paddingRight="@dimen/padding_margin_5">
 
         <TextView
             android:layout_width="0dp"
@@ -253,9 +254,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:paddingBottom="@dimen/margin_10dp"
+        android:paddingLeft="@dimen/padding_margin_5"
+        android:paddingRight="@dimen/padding_margin_5"
+        android:paddingBottom="@dimen/padding_margin_5"
         >
 
         <com.iseva.app.source.customcomponent.ButtonBold
@@ -271,14 +272,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp"
+        android:padding="@dimen/padding_margin_5"
         android:visibility="visible">
         <TextView
             android:id="@+id/cancellation_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#000"
-            android:textSize="10sp"
+            android:textSize="@dimen/text_size_extra_small"
             />
     </LinearLayout>
 
@@ -293,9 +294,9 @@
         android:background="#cc000000"
         android:gravity="center"
         android:visibility="gone">
-    <ScrollView
+   <!-- <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent">-->
 
 
             <LinearLayout
@@ -303,7 +304,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                android:padding="10dp">
+                android:padding="@dimen/padding_margin_10">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -314,7 +315,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="15dp"
+                        android:padding="@dimen/padding_margin_15"
                         android:gravity="center">
                         <TextView
                             android:layout_width="wrap_content"
@@ -327,7 +328,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="15dp">
+                        android:padding="@dimen/padding_margin_15">
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -383,13 +384,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="right"
-                        android:padding="20dp">
+                        android:padding="@dimen/padding_margin_20">
 
                         <TextView
                             android:id="@+id/cancel_cancellation_layout"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="5dp"
+                            android:padding="@dimen/padding_margin_5"
                             android:text="OK"
                             android:textColor="#2975b6"/>
 
@@ -399,7 +400,7 @@
 
 
 
-    </ScrollView>
+    <!--</ScrollView>-->
 
 </LinearLayout>
 

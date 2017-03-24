@@ -20,7 +20,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="@dimen/padding_margin_40"
         android:orientation="vertical">
 
     <!-- <ImageView
@@ -33,7 +33,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="@dimen/padding_margin_30"
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical">
@@ -44,11 +44,11 @@
      <EditText
          style="@style/et_login"
          android:id="@+id/activity_login_et_email"
-         android:layout_marginLeft="@dimen/margin_20dp"
-         android:layout_marginRight="@dimen/margin_20dp"
+         android:layout_marginLeft="@dimen/padding_margin_20"
+         android:layout_marginRight="@dimen/padding_margin_20"
 
          android:background="@drawable/bg_et_box"
-         android:layout_marginTop="@dimen/margin_20dp"
+         android:layout_marginTop="@dimen/padding_margin_20"
          android:drawableLeft="@drawable/icon_username"
          android:hint="Email"
          android:imeOptions="actionDone"
@@ -58,7 +58,7 @@
         style="@style/et_login"
         android:id="@+id/activity_login_et_password"
         android:background="@drawable/bg_et_box"
-        android:layout_marginTop="@dimen/margin_20dp"
+        android:layout_marginTop="@dimen/padding_margin_20"
         android:drawableLeft="@drawable/icon_password"
         android:hint="********"
         android:imeOptions="actionDone"
@@ -68,7 +68,7 @@
     <Button
         style="@style/btn_style_full_width"
         android:id="@+id/activity_login_bt_login"
-        android:layout_marginTop="@dimen/margin_20dp"
+        android:layout_marginTop="@dimen/padding_margin_20"
         android:onClick="loginauth"
         android:text="login" />
 
@@ -76,7 +76,7 @@
         android:id="@+id/activity_login_bt_signup"
         style="@style/btn_style_full_width"
         android:onClick="go_signup_activity"
-        android:layout_marginTop="@dimen/margin_20dp"
+        android:layout_marginTop="@dimen/padding_margin_20"
         android:text="Register" />
 
   <!--  <LinearLayout

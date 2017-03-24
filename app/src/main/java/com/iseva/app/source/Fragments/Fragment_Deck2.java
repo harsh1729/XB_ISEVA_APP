@@ -14,7 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.iseva.app.source.R;
@@ -22,6 +24,7 @@ import com.iseva.app.source.Realm_objets.Seat_details;
 import com.iseva.app.source.Realm_objets.Selected_Seats;
 import com.iseva.app.source.travel.Activity_Select_Seats;
 import com.iseva.app.source.travel.Constants;
+import com.iseva.app.source.travel.MainActivity;
 import com.iseva.app.source.travel.Search_Buses_Key;
 import com.iseva.app.source.travel.Seat_Single;
 
@@ -41,15 +44,20 @@ public class Fragment_Deck2 extends Fragment {
     int Total_screen_width;
     double Seat_height_percentage = 88.47;
     double Seat_width_percentage = 12;
-    int fix_margin_left = 15;
-    int fix_margin_right =15;
+
+    double fix_left_per = 5.50;
+    double fix_right_per = 5.50;
+
+    int fix_margin_left = 0;
+    int fix_margin_right =0;
     int max_col = 0;
     int Seat_height;
     int Seat_width;
     int all_col;
     int margin;
     int extra_height = 5;
-    int margin_top_seat = 10;
+    double margin_top_seat_per = 4.50;
+    int margin_top_seat = 0;
     int fixtopmargin = 30;
 
     ArrayList<Integer> colm_numbers;
@@ -103,10 +111,17 @@ public class Fragment_Deck2 extends Fragment {
 
 
         layout = (FrameLayout)view.findViewById(R.id.layout_deck2);
+
         Total_screen_width = displaymetrics.widthPixels;
+
+        fix_margin_left = (int)(Total_screen_width * fix_left_per)/100;
+        fix_margin_right = (int)(Total_screen_width * fix_right_per)/100;
+
+        margin_top_seat = (int)(Total_screen_width * margin_top_seat_per)/100;
+
         Seat_width = (int)(Total_screen_width * Seat_width_percentage)/100;
         Seat_height = (int)(Seat_width * Seat_height_percentage)/100;
-        margin = (int)(Total_screen_width-((Seat_width *max_col)+(fix_margin_left+fix_margin_right+30)))/(max_col-1);
+        margin = (int)(Total_screen_width-((Seat_width *max_col)+(fix_margin_left+fix_margin_right)))/(max_col-1);
 
 
 
@@ -416,8 +431,15 @@ public class Fragment_Deck2 extends Fragment {
 
     public void showAlertDialog(String title,String message,String buttonlabel)
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(title)
+        TextView title_tv = new TextView(getContext());
+        title_tv.setPadding(0,10,0,0);
+        title_tv.setTextColor(ContextCompat.getColor(getContext(),R.color.black));
+        title_tv.setTextSize(getResources().getDimension(R.dimen.text_size_mediam));
+        title_tv.setGravity(Gravity.CENTER);
+        title_tv.setText(title);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setCustomTitle(title_tv)
                 .setMessage(message)
                 .setCancelable(false)
                 .setNegativeButton(buttonlabel,new DialogInterface.OnClickListener() {
@@ -428,7 +450,10 @@ public class Fragment_Deck2 extends Fragment {
         AlertDialog alert = builder.create();
         alert.show();
 
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         Button b = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
-        b.setTextColor(ContextCompat.getColor(getActivity(), R.color.app_theme_color));
+        b.setLayoutParams(lp);
+        b.setBackgroundResource(R.drawable.btn_background);
+        b.setTextColor(ContextCompat.getColor(getContext(), R.color.app_white));
     }
 }

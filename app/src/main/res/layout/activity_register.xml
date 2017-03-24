@@ -33,7 +33,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginBottom="30dp"
+                android:layout_marginBottom="@dimen/padding_margin_30"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -41,11 +41,11 @@
                 <EditText
                     style="@style/et_login"
                     android:id="@+id/activity_register_et_username"
-                    android:layout_marginLeft="@dimen/margin_20dp"
-                    android:layout_marginRight="@dimen/margin_20dp"
+                    android:layout_marginLeft="@dimen/padding_margin_20"
+                    android:layout_marginRight="@dimen/padding_margin_20"
 
                     android:background="@drawable/bg_et_box"
-                    android:layout_marginTop="@dimen/margin_20dp"
+                    android:layout_marginTop="@dimen/padding_margin_20"
                     android:drawableLeft="@drawable/icon_username"
                     android:hint="Full Name"
                     android:imeOptions="actionDone"
@@ -56,11 +56,11 @@
                 <EditText
                     style="@style/et_login"
                     android:id="@+id/activity_register_et_email"
-                    android:layout_marginLeft="@dimen/margin_20dp"
-                    android:layout_marginRight="@dimen/margin_20dp"
+                    android:layout_marginLeft="@dimen/padding_margin_20"
+                    android:layout_marginRight="@dimen/padding_margin_20"
 
                     android:background="@drawable/bg_et_box"
-                    android:layout_marginTop="@dimen/margin_20dp"
+                    android:layout_marginTop="@dimen/padding_margin_20"
                     android:drawableLeft="@drawable/icon_email"
                     android:hint="Email Address"
                     android:imeOptions="actionDone"
@@ -70,11 +70,11 @@
                 <EditText
                     style="@style/et_login"
                     android:id="@+id/activity_register_et_phone"
-                    android:layout_marginLeft="@dimen/margin_20dp"
-                    android:layout_marginRight="@dimen/margin_20dp"
+                    android:layout_marginLeft="@dimen/padding_margin_20"
+                    android:layout_marginRight="@dimen/padding_margin_20"
 
                     android:background="@drawable/bg_et_box"
-                    android:layout_marginTop="@dimen/margin_20dp"
+                    android:layout_marginTop="@dimen/padding_margin_20"
                     android:drawableLeft="@drawable/ic_call"
                     android:hint="Phone Number"
                     android:imeOptions="actionDone"
@@ -85,7 +85,7 @@
                         style="@style/et_login"
                         android:id="@+id/activity_register_et_password"
                         android:background="@drawable/bg_et_box"
-                        android:layout_marginTop="@dimen/margin_20dp"
+                        android:layout_marginTop="@dimen/padding_margin_20"
                         android:drawableLeft="@drawable/icon_password"
                         android:hint="********"
                         android:imeOptions="actionDone"
@@ -95,7 +95,7 @@
                         style="@style/et_login"
                         android:id="@+id/activity_register_et_password_confirm"
                         android:background="@drawable/bg_et_box"
-                        android:layout_marginTop="@dimen/margin_20dp"
+                        android:layout_marginTop="@dimen/padding_margin_20"
                         android:drawableLeft="@drawable/icon_password"
                         android:hint="********"
                         android:imeOptions="actionDone"
@@ -107,7 +107,7 @@
                         android:id="@+id/activity_register_bt_signup"
                         style="@style/btn_style_full_width"
                         android:onClick="register"
-                        android:layout_marginTop="40dp"
+                        android:layout_marginTop="@dimen/padding_margin_40"
                         android:text="Register" />
 
 
