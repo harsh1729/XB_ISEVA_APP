@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -17,9 +16,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,7 +30,6 @@ import com.iseva.app.source.Realm_objets.Pickup_Place_Detail;
 import com.iseva.app.source.Realm_objets.Schedule_Details;
 import com.iseva.app.source.Realm_objets.Seat_details;
 import com.iseva.app.source.Realm_objets.Selected_Seats;
-
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -52,8 +48,6 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 
 
-
-
 public class Activity_Select_Seats extends AppCompatActivity {
 
     Realm My_realm;
@@ -65,6 +59,8 @@ public class Activity_Select_Seats extends AppCompatActivity {
     TextView Total_Fare_tv;
     TextView Total_Seats_tv;
     TextView cancel_cancellation_policy_layout;
+
+
 
     int schedule_id;
     int count;
@@ -102,6 +98,7 @@ public class Activity_Select_Seats extends AppCompatActivity {
         My_realm = Realm.getInstance(getApplicationContext());
         Intent i = getIntent();
         schedule_id = Integer.parseInt(i.getStringExtra("schedule_id"));
+
 
         Total_Fare_tv = (TextView)findViewById(R.id.Total_Fare);
         Total_Seats_tv = (TextView)findViewById(R.id.Selected_Seats);
@@ -232,7 +229,7 @@ public class Activity_Select_Seats extends AppCompatActivity {
 
                 if(All_row.size() == 0)
                 {
-                    showAlertDialog(getResources().getString(R.string.validating_error_title),"Select atleast one seat !","ok");
+                    Global.showAlertDialog(Activity_Select_Seats.this,getResources().getString(R.string.validating_error_title),"Select atleast one seat !","ok");
                 }
                 else
                 {
@@ -280,7 +277,7 @@ public class Activity_Select_Seats extends AppCompatActivity {
 
     }
 
-    public void showAlertDialog(String title,String message,String buttonlabel)
+   /* public void showAlertDialog(String title,String message,String buttonlabel)
     {
         TextView title_tv = new TextView(this);
         title_tv.setPadding(0,getResources().getDimensionPixelSize(R.dimen.padding_margin_10),0,0);
@@ -306,7 +303,7 @@ public class Activity_Select_Seats extends AppCompatActivity {
         b.setLayoutParams(lp);
         b.setBackgroundResource(R.drawable.btn_background);
         b.setTextColor(ContextCompat.getColor(Activity_Select_Seats.this, R.color.app_white));
-    }
+    }*/
 
 
     public void update_seat_fare()
@@ -316,10 +313,10 @@ public class Activity_Select_Seats extends AppCompatActivity {
 
         My_realm.beginTransaction();
         RealmResults<Selected_Seats> All_row = My_realm.where(Selected_Seats.class).findAll();
-
+        My_realm.commitTransaction();
         for(int i=0;i<All_row.size();i++)
         {
-            Total_Fare = Total_Fare + All_row.get(i).getFare();
+            Total_Fare = Total_Fare + All_row.get(i).getFare_after_offer();
             if(i == 0)
             {
                 Total_Seat = Total_Seat+All_row.get(i).getSeatNo();
@@ -331,9 +328,9 @@ public class Activity_Select_Seats extends AppCompatActivity {
 
         }
 
-        My_realm.commitTransaction();
 
-        Total_Fare_tv.setText(""+Total_Fare);
+
+        Total_Fare_tv.setText("\u20B9 "+Total_Fare);
         Total_Seats_tv.setText(Total_Seat);
 
     }
@@ -500,12 +497,12 @@ public class Activity_Select_Seats extends AppCompatActivity {
                 }
                 else
                 {
-                    showAlertDialog(getResources().getString(R.string.validating_error_title),((SoapObject)soapresult_schedule_detail.getProperty("Response")).getPrimitivePropertyAsString("Message"),"Ok");
+                    Global.showAlertDialog(Activity_Select_Seats.this,getResources().getString(R.string.validating_error_title),((SoapObject)soapresult_schedule_detail.getProperty("Response")).getPrimitivePropertyAsString("Message"),"Ok");
                 }
             }
             else
             {
-                showAlertDialog(getResources().getString(R.string.validating_error_title),"Some error accured please try again !","Ok");
+                Global.showAlertDialog(Activity_Select_Seats.this,getResources().getString(R.string.validating_error_title),"Some error accured please try again !","Ok");
             }
 
 
@@ -684,8 +681,38 @@ public class Activity_Select_Seats extends AppCompatActivity {
                                 Boolean HasSleeper = Boolean.parseBoolean(((SoapObject)soapresult_schedule_detail.getProperty("Route")).getProperty("HasSleeper").toString());
                                 String BusLabel = ((SoapObject)soapresult_schedule_detail.getProperty("Route")).getProperty("BusLabel").toString();
                                 String BusTypeName = ((SoapObject)soapresult_schedule_detail.getProperty("Route")).getProperty("BusTypeName").toString();
-                                float CommPCT = Float.parseFloat(((SoapObject)soapresult_schedule_detail.getProperty("Route")).getProperty("CommPCT").toString()) ;
+                                float CommPCT = (int)Float.parseFloat(((SoapObject)soapresult_schedule_detail.getProperty("Route")).getProperty("CommPCT").toString()) ;
                                 float CommAmount = Float.parseFloat(((SoapObject)soapresult_schedule_detail.getProperty("Route")).getProperty("CommAmount").toString());
+
+
+
+
+                                float offer_per;
+                                float after_offer_fare;
+
+
+
+                                if(MainActivity.save_per <= CommPCT)
+                                {
+                                    offer_per = CommPCT - MainActivity.save_per;
+                                }
+                                else
+                                {
+                                    offer_per = CommPCT;
+                                }
+
+                                int temp_fare_offer = (int)(Fare *(100-offer_per))/100;
+                                if(MainActivity.save_per <= CommPCT && MainActivity.save_per != 0) {
+                                    temp_fare_offer = temp_fare_offer + 1;
+                                }
+                                after_offer_fare = (float)temp_fare_offer;
+
+                                Log.e("vikas after_fare=",""+after_offer_fare);
+                                Log.e("vikas percentage=",""+offer_per);
+                                Log.e("vikas total per=",""+MainActivity.save_per);
+
+
+
 
                                 thread_realm.beginTransaction();
                                 Schedule_Details schedule_details = thread_realm.createObject(Schedule_Details.class);
@@ -700,6 +727,7 @@ public class Activity_Select_Seats extends AppCompatActivity {
                                 schedule_details.setDepTime(DepTime);
                                 schedule_details.setArrTime(ArrTime);
                                 schedule_details.setFare(Fare);
+                                schedule_details.setFare_after_offer(after_offer_fare);
                                 schedule_details.setSeaterFareNAC(SeaterFareNAC);
                                 schedule_details.setSeaterFareAC(SeaterFareAC);
                                 schedule_details.setSleeperFareNAC(SleeperFareNAC);
@@ -744,6 +772,17 @@ public class Activity_Select_Seats extends AppCompatActivity {
                                     float ChildFare = Float.parseFloat(((SoapObject)((SoapObject)((SoapObject)soapresult_schedule_detail.getProperty("Layout")).getProperty("SeatDetails")).getProperty(i)).getProperty("ChildFare").toString());
                                     float InfantFare = Float.parseFloat(((SoapObject)((SoapObject)((SoapObject)soapresult_schedule_detail.getProperty("Layout")).getProperty("SeatDetails")).getProperty(i)).getProperty("InfantFare").toString());
 
+                                    float after_offer_seat_fare;
+                                    Log.e("vikas seat_o_fare",""+Fare_local);
+                                    Log.e("vikas seat comm",""+CommPCT);
+                                    Log.e("vikas seat o_commi",""+offer_per);
+                                    int temp_seat_fare_offer = (int)(Fare_local *(100-offer_per))/100;
+                                    if(MainActivity.save_per <= CommPCT && MainActivity.save_per != 0) {
+                                        temp_seat_fare_offer = temp_seat_fare_offer + 1;
+                                    }
+                                    after_offer_seat_fare = (float)temp_seat_fare_offer;
+
+
                                     thread_realm.beginTransaction();
                                     Seat_details seat_details = thread_realm.createObject(Seat_details.class);
                                     seat_details.setRow(Row);
@@ -758,6 +797,7 @@ public class Activity_Select_Seats extends AppCompatActivity {
                                     seat_details.setIsAvailable(IsAvailable);
                                     seat_details.setIsAisle(IsAisle);
                                     seat_details.setFare(Fare_local);
+                                    seat_details.setFare_after_offer(after_offer_seat_fare);
                                     seat_details.setChildFare(ChildFare);
                                     seat_details.setInfantFare(InfantFare);
                                     thread_realm.commitTransaction();

@@ -27,7 +27,7 @@ public class EditTextBold extends EditText {
 
     public void setfont()
     {
-        Typeface tf = Typeface.createFromAsset(getContext().getAssets(), "fonts/RobotoCondensed-Bold.ttf");
+        Typeface tf = Typeface.createFromAsset(getContext().getAssets(), "fonts/roboto.bold.ttf.ttf");
         setTypeface(tf);
     }
 }

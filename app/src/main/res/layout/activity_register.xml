@@ -38,7 +38,7 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <EditText
+                <com.iseva.app.source.customcomponent.EditTextRegular
                     style="@style/et_login"
                     android:id="@+id/activity_register_et_username"
                     android:layout_marginLeft="@dimen/padding_margin_20"
@@ -53,7 +53,7 @@
                     android:textColor="@android:color/black" />
 
 
-                <EditText
+                <com.iseva.app.source.customcomponent.EditTextRegular
                     style="@style/et_login"
                     android:id="@+id/activity_register_et_email"
                     android:layout_marginLeft="@dimen/padding_margin_20"
@@ -67,7 +67,7 @@
                     android:inputType="textEmailAddress"
                     android:textColor="@android:color/black" />
 
-                <EditText
+                <com.iseva.app.source.customcomponent.EditTextRegular
                     style="@style/et_login"
                     android:id="@+id/activity_register_et_phone"
                     android:layout_marginLeft="@dimen/padding_margin_20"
@@ -81,7 +81,7 @@
                     android:inputType="number"
                     android:textColor="@android:color/black" />
 
-                    <EditText
+                    <com.iseva.app.source.customcomponent.EditTextRegular
                         style="@style/et_login"
                         android:id="@+id/activity_register_et_password"
                         android:background="@drawable/bg_et_box"
@@ -91,7 +91,7 @@
                         android:imeOptions="actionDone"
                         android:inputType="textPassword"
                         android:textColor="@android:color/black" />
-                    <EditText
+                    <com.iseva.app.source.customcomponent.EditTextRegular
                         style="@style/et_login"
                         android:id="@+id/activity_register_et_password_confirm"
                         android:background="@drawable/bg_et_box"
@@ -103,7 +103,7 @@
                         android:textColor="@android:color/black" />
 
 
-                    <Button
+                    <com.iseva.app.source.customcomponent.ButtonBold
                         android:id="@+id/activity_register_bt_signup"
                         style="@style/btn_style_full_width"
                         android:onClick="register"

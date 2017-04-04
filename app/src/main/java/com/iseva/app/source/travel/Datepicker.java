@@ -93,7 +93,7 @@ public class Datepicker extends DialogFragment implements DatePickerDialog.OnDat
         String day_of_weak = days[day_of_weak_int-1];
 
 
-        String final_date = day+"-"+months[month_int-1]+"-"+year+","+day_of_weak;
+        String final_date = day+"-"+months[month_int-1]+"-"+year+", "+day_of_weak;
 
 
         return final_date;

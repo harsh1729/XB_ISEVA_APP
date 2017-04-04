@@ -27,7 +27,7 @@ public class ButtonBold extends Button {
 
     public void setfont()
     {
-        Typeface tf = Typeface.createFromAsset(getContext().getAssets(), "fonts/RobotoCondensed-Bold.ttf");
+        Typeface tf = Typeface.createFromAsset(getContext().getAssets(), "fonts/roboto.bold.ttf");
         setTypeface(tf);
     }
 }

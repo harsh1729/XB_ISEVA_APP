@@ -6,7 +6,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -230,7 +229,7 @@ public class Activity_show_detail_cancel_ticket extends Activity {
         TextView title_tv = new TextView(this);
         title_tv.setPadding(0,getResources().getDimensionPixelSize(R.dimen.padding_margin_10),0,0);
         title_tv.setTextColor(ContextCompat.getColor(Activity_show_detail_cancel_ticket.this,R.color.black));
-        title_tv.setTextSize(getResources().getDimension(R.dimen.text_size_mediam));
+        title_tv.setTextSize(getResources().getDimension(R.dimen.text_size_extra_small));
         title_tv.setGravity(Gravity.CENTER);
         title_tv.setText(title);
 

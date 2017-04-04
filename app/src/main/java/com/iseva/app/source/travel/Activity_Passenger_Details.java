@@ -1,24 +1,19 @@
 package com.iseva.app.source.travel;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -32,11 +27,9 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-
 import com.iseva.app.source.R;
 import com.iseva.app.source.Realm_objets.Pickup_Place_Detail;
 import com.iseva.app.source.Realm_objets.Selected_Seats;
-
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -89,6 +82,8 @@ public class Activity_Passenger_Details extends Activity {
     String Contact_email_text;
     String Contact_mobile_text;
     String Contact_name_text;
+
+    float Total_offer_fare = 0;
 
     JSONArray passenger_list;
 
@@ -146,7 +141,25 @@ public class Activity_Passenger_Details extends Activity {
         if(session_manager.isLoggedIn())
         {
             contact_name.setText(session_manager.getname());
+            contact_mobile.setText(session_manager.getphone());
+            contact_email.setText(session_manager.getusername());
         }
+
+
+
+        float Total_Fare = 0;
+
+
+        My_realm.beginTransaction();
+        RealmResults<Selected_Seats> All_row = My_realm.where(Selected_Seats.class).findAll();
+        My_realm.commitTransaction();
+
+        for(int n=0;n<All_row.size();n++)
+        {
+            Total_Fare = Total_Fare + All_row.get(n).getFare_after_offer();
+        }
+
+        Total_offer_fare  = Total_Fare;
 
     }
 
@@ -180,30 +193,30 @@ public class Activity_Passenger_Details extends Activity {
                     }
                     else
                     {
-                        showAlertDialog(getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
+                        Global.showAlertDialog(Activity_Passenger_Details.this,getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
                     }
 
                     //showAlertDialog("Alert","this is success","ok");
                 }
                 else if(validate_result.equals("boarding_point"))
                 {
-                    showAlertDialog(getResources().getString(R.string.validating_error_title),"Please select a boarding point !","Ok");
+                    Global.showAlertDialog(Activity_Passenger_Details.this,getResources().getString(R.string.validating_error_title),"Please select a boarding point !","Ok");
                 }
                 else if(validate_result.contains("Passenger"))
                 {
-                    showAlertDialog(getResources().getString(R.string.validating_error_title),"Complete "+validate_result+" information","Ok");
+                    Global.showAlertDialog(Activity_Passenger_Details.this,getResources().getString(R.string.validating_error_title),"Complete "+validate_result+" information","Ok");
                 }
                 else if(validate_result.equals("name"))
                 {
-                    showAlertDialog(getResources().getString(R.string.validating_error_title),"Please insert contact name !","Ok");
+                    Global.showAlertDialog(Activity_Passenger_Details.this,getResources().getString(R.string.validating_error_title),"Please insert contact name !","Ok");
                 }
                 else if(validate_result.equals("phone"))
                 {
-                    showAlertDialog(getResources().getString(R.string.validating_error_title),"Please insert a 10 disit mobile no !","Ok");
+                    Global.showAlertDialog(Activity_Passenger_Details.this,getResources().getString(R.string.validating_error_title),"Please insert a 10 disit mobile no !","Ok");
                 }
                 else if(validate_result.equals("email"))
                 {
-                    showAlertDialog(getResources().getString(R.string.validating_error_title),"Please insert valid email id !","Ok");
+                    Global.showAlertDialog(Activity_Passenger_Details.this,getResources().getString(R.string.validating_error_title),"Please insert valid email id !","Ok");
                 }
 
             }
@@ -443,7 +456,8 @@ public class Activity_Passenger_Details extends Activity {
                         message = soapresult_detail.toString();
                         Log.e("vikas",message);
                         String holdkey = soapresult_detail.getPrimitiveProperty("HoldKey").toString();
-                        String totalfare = soapresult_detail.getPrimitiveProperty("TotalFare").toString();
+                       // String totalfare = soapresult_detail.getPrimitiveProperty("TotalFare").toString();
+                        String totalfare = Float.toString(Total_offer_fare);
                         String boarding_point_name = pickup_place_detail_list.get(spinner_position - 1).getPickupName();
                         String boarding_point_address = pickup_place_detail_list.get(spinner_position-1).getAddress();
                         String boarding_point_phone = pickup_place_detail_list.get(spinner_position-1).getPhone();
@@ -473,7 +487,7 @@ public class Activity_Passenger_Details extends Activity {
                 }
                 else
                 {
-                    showAlertDialog(getResources().getString(R.string.validating_error_title),((SoapObject)soapresult_detail.getProperty("Response")).getPrimitivePropertyAsString("Message"),"Ok");
+                    Global.showAlertDialog(Activity_Passenger_Details.this,getResources().getString(R.string.validating_error_title),((SoapObject)soapresult_detail.getProperty("Response")).getPrimitivePropertyAsString("Message"),"Ok");
                 }
 
 
@@ -481,7 +495,7 @@ public class Activity_Passenger_Details extends Activity {
             }
             else
             {
-                showAlertDialog(getResources().getString(R.string.validating_error_title),"Some error accured please try again !","Ok");
+                Global.showAlertDialog(Activity_Passenger_Details.this,getResources().getString(R.string.validating_error_title),"Some error accured please try again !","Ok");
             }
 
             progress.dismiss();
@@ -624,7 +638,7 @@ public class Activity_Passenger_Details extends Activity {
 
 
 
-    public void showAlertDialog(String title,String message,String buttonlabel)
+    /*public void showAlertDialog(String title,String message,String buttonlabel)
     {
 
         TextView title_tv = new TextView(this);
@@ -652,7 +666,7 @@ public class Activity_Passenger_Details extends Activity {
         b.setBackgroundResource(R.drawable.btn_background);
         b.setTextColor(ContextCompat.getColor(Activity_Passenger_Details.this, R.color.app_white));
     }
-
+*/
     public void activity_dismiss()
     {
         this.finish();
@@ -705,7 +719,7 @@ public class Activity_Passenger_Details extends Activity {
 
                     @Override
                     public boolean onTouch(View view, MotionEvent motionEvent) {
-                        showAlertDialog(getResources().getString(R.string.validating_error_title),"Seat reserved for ladies","Ok");
+                        Global.showAlertDialog(Activity_Passenger_Details.this,getResources().getString(R.string.validating_error_title),"Seat reserved for ladies","Ok");
                         return false;
 
                     }
@@ -732,7 +746,7 @@ public class Activity_Passenger_Details extends Activity {
             {
                 if(session_manager.isLoggedIn())
                 {
-                    name_edittext.setText(session_manager.getname());
+                   // name_edittext.setText(session_manager.getname());
                 }
             }
 

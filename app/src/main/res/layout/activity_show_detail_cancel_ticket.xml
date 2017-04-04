@@ -33,7 +33,7 @@
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
-                            <TextView
+                            <com.iseva.app.source.customcomponent.TextViewRegular
                                 android:paddingRight="@dimen/padding_margin_5"
                                 android:paddingBottom="@dimen/padding_margin_5"
                                 android:layout_width="wrap_content"
@@ -47,7 +47,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center">
-                            <TextView
+                            <com.iseva.app.source.customcomponent.TextViewRegular
                                 android:id="@+id/activity_ticket_cancelled_date_tv"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
                             android:layout_weight="1"
                             android:layout_height="wrap_content"
                             android:layout_gravity="left">
-                            <TextView
+                            <com.iseva.app.source.customcomponent.TextViewRegular
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="@dimen/text_size_small"
@@ -83,7 +83,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="right">
-                            <TextView
+                            <com.iseva.app.source.customcomponent.TextViewRegular
                                 android:textSize="@dimen/text_size_small"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -100,7 +100,7 @@
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:layout_height="wrap_content">
-                            <TextView
+                            <com.iseva.app.source.customcomponent.TextViewRegular
                                 android:id="@+id/activity_ticket_cancelled_from_city_tv"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -112,7 +112,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             >
-                            <TextView
+                            <com.iseva.app.source.customcomponent.TextViewRegular
                                 android:id="@+id/activity_ticket_cancelled_to_city_tv"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -149,7 +149,7 @@
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content">
-                                <TextView
+                                <com.iseva.app.source.customcomponent.TextViewRegular
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:textSize="@dimen/text_size_small"
@@ -158,7 +158,7 @@
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content">
-                                <TextView
+                                <com.iseva.app.source.customcomponent.TextViewRegular
                                     android:id="@+id/activity_ticket_cancelled_ticket_no_tv"
                                     android:layout_width="wrap_content"
                                     android:textColor="#333"
@@ -187,7 +187,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
-                            <TextView
+                            <com.iseva.app.source.customcomponent.TextViewRegular
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="@dimen/text_size_small"
@@ -196,7 +196,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
-                            <TextView
+                            <com.iseva.app.source.customcomponent.TextViewRegular
                                 android:id="@+id/activity_ticket_cancelled_pnr_no_tv"
                                 android:layout_width="wrap_content"
                                 android:textColor="#333"

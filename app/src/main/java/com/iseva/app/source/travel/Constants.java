@@ -57,6 +57,8 @@ public class Constants {
     public static final String enable_promocode = "http://xercesblue.website/iservice/client_requests/promocodes/enable_coupan";
     public static final String refund_amount = "http://xercesblue.website/iservice/client_requests/transaction/cancel_ticket_refund";
     public static final String get_extra_charge ="http://xercesblue.website/iservice/client_requests/promocodes/get_extra_charge";
+    public static final String get_commition_extra_charge = "http://xercesblue.website/iservice/client_requests/promocodes/get_commition_extra_charge";
+    public static final String send_message_url = "http://xercesblue.website/iservice/client_requests/transaction/send_message";
 
     public static final int state_main_cities = 0;
     public static final int state_all_cities = 1;

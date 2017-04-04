@@ -7,17 +7,13 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -25,8 +21,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.iseva.app.source.R;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.SoapFault;
 import org.ksoap2.serialization.PropertyInfo;
@@ -34,16 +39,13 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpResponseException;
 import org.ksoap2.transport.HttpTransportSE;
-import org.w3c.dom.Text;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-
-import static java.security.AccessController.getContext;
+import java.util.Map;
 
 
 public class MainActivity extends Activity{
@@ -67,18 +69,80 @@ public class MainActivity extends Activity{
 
     public  ArrayList<HashMap<String, String>> All_Cities_Map;
     public  ArrayList<HashMap<String,String>> Main_Cities;
+    private int volley_timeout = 15000;
 
+    public static int save_per = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if(isNetworkConnected())
+        {
+            get_commition();
+        }
+
         initialize();
         setclicklistener();
     }
 
+    public void get_commition()
+    {
+        StringRequest promocodeapplyrequest = new StringRequest(Request.Method.POST,
+                Constants.get_commition_extra_charge, new Response.Listener<String>() {
 
+            @Override
+            public void onResponse(String s) {
+
+                Log.e("vikas",s);
+                JSONObject response = null;
+                try
+                {
+                    response = new JSONObject(s);
+
+
+                    if(response != null)
+                    {
+                        save_per = Integer.parseInt(response.getString("commition"));
+
+                    }
+
+                } catch (JSONException e) {
+
+
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+
+
+            }
+        }) {
+            @Override
+            public Map<String, String> getParams(){
+                Map<String, String> params = new HashMap<String, String>();
+
+
+
+
+
+
+                return params;
+
+            }
+        };
+
+        promocodeapplyrequest.setRetryPolicy(new DefaultRetryPolicy(
+                volley_timeout,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
+        requestQueue.add(promocodeapplyrequest);
+    }
 
     public void initialize()
     {
@@ -149,7 +213,7 @@ public class MainActivity extends Activity{
         TextView title_tv = new TextView(this);
         title_tv.setPadding(0,10,0,0);
         title_tv.setTextColor(ContextCompat.getColor(MainActivity.this,R.color.black));
-        title_tv.setTextSize(getResources().getDimension(R.dimen.text_size_mediam));
+        title_tv.setTextSize(getResources().getDimension(R.dimen.text_size_extra_small));
         title_tv.setGravity(Gravity.CENTER);
         title_tv.setText(getResources().getString(R.string.internet_connection_error_title));
 
@@ -178,13 +242,13 @@ public class MainActivity extends Activity{
 
     }
 
-    public void showAlertDialog(String title,String message,String buttonlabel)
+   /* public void showAlertDialog(String title,String message,String buttonlabel)
     {
 
         TextView title_tv = new TextView(this);
         title_tv.setPadding(0,10,0,0);
         title_tv.setTextColor(ContextCompat.getColor(MainActivity.this,R.color.black));
-        title_tv.setTextSize(getResources().getDimension(R.dimen.text_size_mediam));
+        title_tv.setTextSize(getResources().getDimension(R.dimen.text_size_small));
 
         title_tv.setGravity(Gravity.CENTER);
         title_tv.setText(title);
@@ -209,7 +273,7 @@ public class MainActivity extends Activity{
         b.setLayoutParams(lp);
         b.setBackgroundResource(R.drawable.btn_background);
         b.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.app_white));
-    }
+    }*/
 
     public void setclicklistener()
     {
@@ -274,17 +338,17 @@ public class MainActivity extends Activity{
                 if(Get_From_Cities_et.getText().length() == 0)
                 {
 
-                    showAlertDialog(getResources().getString(R.string.validating_error_title),"Please select origin city !","Ok");
+                    Global.showAlertDialog(MainActivity.this,getResources().getString(R.string.validating_error_title),"Please select origin city !","Ok");
 
                 }
                 else if(Get_To_Cities_et.getText().length() == 0)
                 {
-                    showAlertDialog(getResources().getString(R.string.validating_error_title),"Please select destination city !","Ok");
+                    Global.showAlertDialog(MainActivity.this,getResources().getString(R.string.validating_error_title),"Please select destination city !","Ok");
 
                 }
                 else if(Journey_Date_et.getText().length() == 0)
                 {
-                    showAlertDialog(getResources().getString(R.string.validating_error_title),"Please select journey date !","Ok");
+                    Global.showAlertDialog(MainActivity.this,getResources().getString(R.string.validating_error_title),"Please select journey date !","Ok");
 
                 }
                 else
@@ -296,7 +360,7 @@ public class MainActivity extends Activity{
                         startActivity(i);
                     }
                     else {
-                        callAlertBox();
+                        Global.showAlertDialog(MainActivity.this,getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
                     }
 
                 }
@@ -336,7 +400,7 @@ public class MainActivity extends Activity{
                 }
                 else
                 {
-                    showAlertDialog(getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
+                    Global.showAlertDialog(MainActivity.this,getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
                 }
 
             }
@@ -423,7 +487,7 @@ public class MainActivity extends Activity{
         String day_of_weak = days[day_of_weak_int-1];
 
 
-        String final_date = day+"-"+months[month_int-1]+"-"+year+","+day_of_weak;
+        String final_date = day+"-"+months[month_int-1]+"-"+year+", "+day_of_weak;
 
 
         return final_date;
@@ -460,12 +524,12 @@ public class MainActivity extends Activity{
                 }
                 else
                 {
-                    showAlertDialog(getResources().getString(R.string.validating_error_title),((SoapObject)loginAuth_result.getProperty("Response")).getPrimitivePropertyAsString("Message"),"Ok");
+                    Global.showAlertDialog(MainActivity.this,getResources().getString(R.string.validating_error_title),((SoapObject)loginAuth_result.getProperty("Response")).getPrimitivePropertyAsString("Message"),"Ok");
                 }
             }
             else
             {
-                showAlertDialog(getResources().getString(R.string.validating_error_title),"Some error accured please try again !","Ok");
+                Global.showAlertDialog(MainActivity.this,getResources().getString(R.string.validating_error_title),"Some error accured please try again !","Ok");
             }
 
 

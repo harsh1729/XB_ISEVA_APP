@@ -25,16 +25,32 @@
             android:textStyle="bold"
             android:layout_gravity="left"/>
 
-        <com.iseva.app.source.customcomponent.TextViewBold
-            android:id="@+id/fare"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size_mediam"
-            android:gravity="right"
-            android:textColor="@color/routes_screen_dark_text_color"
-            android:textStyle="bold"
-            android:text="@string/Rs"
-            android:layout_gravity="right"/>
+            android:orientation="vertical">
+            <com.iseva.app.source.customcomponent.TextViewBold
+                android:id="@+id/fare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_mediam"
+                android:gravity="right"
+                android:textColor="@color/routes_screen_light_text_color"
+                android:textStyle="bold"
+                android:text="@string/Rs"
+                android:layout_gravity="right"/>
+            <com.iseva.app.source.customcomponent.TextViewBold
+                android:id="@+id/offer_fare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_mediam"
+                android:gravity="right"
+                android:textColor="@color/routes_screen_dark_text_color"
+                android:textStyle="bold"
+                android:text="@string/Rs"
+                android:layout_gravity="right"/>
+        </LinearLayout>
+
 
     </LinearLayout>
     <LinearLayout

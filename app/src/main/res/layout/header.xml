@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:text="Home"
             android:textColor="@color/app_white"
-            android:textSize="@dimen/text_size_extra_large"
+            android:textSize="@dimen/text_size_large"
             android:textStyle="bold"
            />
 

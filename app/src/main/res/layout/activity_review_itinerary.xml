@@ -109,7 +109,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="#333"
-                                android:textSize="@dimen/text_size_normal"
+                                android:textSize="@dimen/text_size_mediam"
                                 android:textStyle="bold"
                                 android:text="Bangalore"/>
                             <com.iseva.app.source.customcomponent.TextViewRegular
@@ -117,7 +117,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="#333"
-                                android:textSize="@dimen/text_size_normal"
+                                android:textSize="@dimen/text_size_mediam"
                                 android:text="10:27 PM"/>
                             <com.iseva.app.source.customcomponent.TextViewRegular
                                 android:id="@+id/itinerary_dep_date"
@@ -162,7 +162,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="#333"
-                                android:textSize="@dimen/text_size_normal"
+                                android:textSize="@dimen/text_size_mediam"
                                 android:textStyle="bold"
                                 android:text="Channai"/>
                             <com.iseva.app.source.customcomponent.TextViewRegular
@@ -170,7 +170,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="#333"
-                                android:textSize="@dimen/text_size_normal"
+                                android:textSize="@dimen/text_size_mediam"
 
                                 android:text="6:45 AM"/>
                             <com.iseva.app.source.customcomponent.TextViewRegular
@@ -721,7 +721,7 @@
 
         android:layout_marginTop="@dimen/padding_margin_10"
         android:visibility="gone">
-        <TextView
+        <com.iseva.app.source.customcomponent.TextViewRegular
             android:id="@+id/itinerary_promocode_error_tv"
             android:layout_width="wrap_content"
             android:paddingBottom="@dimen/padding_margin_10"
@@ -812,18 +812,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#cc000000"
-        android:gravity="center"
+        android:clickable="true"
         android:visibility="gone">
-      <!--  <ScrollView
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">-->
+            android:layout_height="match_parent">
 
 
             <LinearLayout
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
+                android:layout_gravity="center"
                 android:padding="@dimen/padding_margin_10">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -837,12 +837,12 @@
                         android:layout_height="wrap_content"
                         android:padding="@dimen/padding_margin_15"
                         android:gravity="center">
-                        <TextView
+                        <com.iseva.app.source.customcomponent.TextViewBold
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Cancellation Policy"
                             android:textColor="#000"
-                            android:textStyle="bold"/>
+                           />
                     </LinearLayout>
 
                     <LinearLayout
@@ -856,18 +856,18 @@
                             android:layout_height="wrap_content"
 
                             android:orientation="vertical">
-                            <TextView
+                            <com.iseva.app.source.customcomponent.TextViewBold
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Hours before"
                                 android:textColor="#000"
-                                android:textStyle="bold"/>
-                            <TextView
+                                />
+                            <com.iseva.app.source.customcomponent.TextViewBold
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Departure"
                                 android:textColor="#000"
-                                android:textStyle="bold"/>
+                                />
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="0dp"
@@ -876,18 +876,18 @@
 
 
                             android:orientation="vertical">
-                            <TextView
+                            <com.iseva.app.source.customcomponent.TextViewBold
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="#000"
-                                android:textStyle="bold"
+
                                 android:text="Refund"
                                 />
-                            <TextView
+                            <com.iseva.app.source.customcomponent.TextViewBold
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="#000"
-                                android:textStyle="bold"
+
                                 android:text="Percentage"/>
                         </LinearLayout>
 
@@ -906,7 +906,7 @@
                         android:gravity="right"
                         android:padding="@dimen/padding_margin_20">
 
-                        <TextView
+                        <com.iseva.app.source.customcomponent.TextViewRegular
                             android:id="@+id/cancel_cancellation_layout"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -920,7 +920,7 @@
 
 
 
-       <!-- </ScrollView>-->
+        </ScrollView>
 
     </LinearLayout>
     <LinearLayout
@@ -941,12 +941,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <TextView
+                <com.iseva.app.source.customcomponent.TextViewRegular
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_normal"
-                    android:text="You are not loged in. For booking ticket please login or signup first."
+                    android:text="You are not logged in. For booking ticket please login or Register first."
                     />
             </LinearLayout>
             <LinearLayout
@@ -959,42 +959,42 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content">
-                    <TextView
+                    <com.iseva.app.source.customcomponent.TextViewBold
                         android:id="@+id/login_alert_cancel_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/text_size_normal"
                         android:textColor="@color/app_theme_color"
-                        android:textStyle="bold"
+
                         android:padding="@dimen/padding_margin_10"
                         android:text="Cancel"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
-                    <TextView
+                    <com.iseva.app.source.customcomponent.TextViewBold
                         android:id="@+id/login_alert_login_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/text_size_normal"
                         android:textColor="@color/app_theme_color"
-                        android:textStyle="bold"
+
                         android:padding="@dimen/padding_margin_10"
                         android:text="Login"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
-                    <TextView
+                    <com.iseva.app.source.customcomponent.TextViewBold
                         android:id="@+id/login_alert_signup_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/text_size_normal"
                         android:layout_gravity="right"
                         android:textColor="@color/app_theme_color"
-                        android:textStyle="bold"
+
                         android:padding="@dimen/padding_margin_10"
-                        android:text="SignUp"/>
+                        android:text="Register"/>
                 </LinearLayout>
 
             </LinearLayout>

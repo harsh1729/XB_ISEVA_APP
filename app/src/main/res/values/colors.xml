@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <color name="common_signin_btn_light_text_focused">#FF737373</color>
+
     <color name="colorPrimary">#1bafcd</color>
     <color name="colorPrimaryDark">#10839b</color>
     <color name="colorAccent">#1bafcd</color>
@@ -52,8 +55,8 @@
     <color name="red_color">#f00</color>
     <!--bus routes screen color start-->
 
-    <color name="routes_screen_light_text_color">#999</color>
-    <color name="routes_screen_extra_light_text_color">#BBB</color>
+    <color name="routes_screen_light_text_color">#777</color>
+    <color name="routes_screen_extra_light_text_color">#999</color>
     <color name="routes_screen_dark_text_color">#222</color>
     <color name="routes_screen_selected_text_color">@color/app_theme_color</color>
     <color name="routes_screen_divider_color">#FAFAFA</color>

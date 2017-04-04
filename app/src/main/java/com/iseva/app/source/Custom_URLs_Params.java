@@ -1,14 +1,14 @@
 package com.iseva.app.source;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import android.content.Context;
 import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Custom_URLs_Params {
     public static String getURL_GcmRegister() {
@@ -300,7 +300,7 @@ public class Custom_URLs_Params {
     }
 
     public static HashMap<String, String> getParams_SaveCate(Context con,String name,String contact,String address,String servi,
-                                                             int imageid,int cityid,HashMap<Integer,Integer>images,String email) {
+                                                             int imageid,int cityid,HashMap<Integer,Integer>images,String email,double latitude,double longitude) {
 
         ArrayList<Integer> list = new ArrayList<>();
         for (Map.Entry<Integer,Integer> entry : images.entrySet()) {
@@ -320,6 +320,8 @@ public class Custom_URLs_Params {
         map.put("cityid",cityid+"");
         map.put("ismerchant",1+"");
         map.put("services",servi);
+        map.put("latitude",""+latitude);
+        map.put("longitude",""+longitude);
         map.put("images",list.toString());
 
 

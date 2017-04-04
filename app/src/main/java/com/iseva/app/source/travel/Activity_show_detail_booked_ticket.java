@@ -6,7 +6,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -119,7 +118,7 @@ public class Activity_show_detail_booked_ticket extends Activity {
         }
         else
         {
-            showAlertDialog(getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
+            Global.showAlertDialog(Activity_show_detail_booked_ticket.this,getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
         }
 
     }
@@ -225,12 +224,12 @@ public class Activity_show_detail_booked_ticket extends Activity {
                 }
                 else
                 {
-                    showAlertDialog(getResources().getString(R.string.validating_error_title),((SoapObject)soapresult_iscancelable.getProperty("Response")).getPrimitivePropertyAsString("Message"),"Ok");
+                    Global.showAlertDialog(Activity_show_detail_booked_ticket.this,getResources().getString(R.string.validating_error_title),((SoapObject)soapresult_iscancelable.getProperty("Response")).getPrimitivePropertyAsString("Message"),"Ok");
                     Toast.makeText(Activity_show_detail_booked_ticket.this, ((SoapObject) soapresult_iscancelable.getProperty("Response")).getPrimitiveProperty("Message").toString(), Toast.LENGTH_LONG).show();
                 }
 
             } else {
-                showAlertDialog(getResources().getString(R.string.validating_error_title),"Some error accured please try again !","Ok");
+                Global.showAlertDialog(Activity_show_detail_booked_ticket.this,getResources().getString(R.string.validating_error_title),"Some error accured please try again !","Ok");
                 Toast.makeText(Activity_show_detail_booked_ticket.this, "Server Error !", Toast.LENGTH_LONG).show();
             }
 
@@ -409,11 +408,11 @@ public class Activity_show_detail_booked_ticket extends Activity {
                 else
                 {
                     Log.e("vikas", soapresult_ticket_detail.toString());
-                    showAlertDialog(getResources().getString(R.string.validating_error_title),((SoapObject)soapresult_ticket_detail.getProperty("Response")).getPrimitivePropertyAsString("Message"),"Ok");
+                    Global.showAlertDialog(Activity_show_detail_booked_ticket.this,getResources().getString(R.string.validating_error_title),((SoapObject)soapresult_ticket_detail.getProperty("Response")).getPrimitivePropertyAsString("Message"),"Ok");
                 }
 
             } else {
-                showAlertDialog(getResources().getString(R.string.validating_error_title),"Some error accured please try again !","Ok");
+                Global.showAlertDialog(Activity_show_detail_booked_ticket.this,getResources().getString(R.string.validating_error_title),"Some error accured please try again !","Ok");
             }
 
 
@@ -576,7 +575,7 @@ public class Activity_show_detail_booked_ticket extends Activity {
                 }
                 else
                 {
-                    showAlertDialog(getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
+                    Global.showAlertDialog(Activity_show_detail_booked_ticket.this,getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
                 }
 
             }
@@ -595,7 +594,7 @@ public class Activity_show_detail_booked_ticket extends Activity {
                 }
                 else
                 {
-                    showAlertDialog(getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
+                    Global.showAlertDialog(Activity_show_detail_booked_ticket.this,getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
                 }
 
             }
@@ -865,7 +864,7 @@ public class Activity_show_detail_booked_ticket extends Activity {
 
     }
 
-    public void showAlertDialog(String title,String message,String buttonlabel)
+   /* public void showAlertDialog(String title,String message,String buttonlabel)
     {
         TextView title_tv = new TextView(this);
         title_tv.setPadding(0,getResources().getDimensionPixelSize(R.dimen.padding_margin_10),0,0);
@@ -892,5 +891,5 @@ public class Activity_show_detail_booked_ticket extends Activity {
         b.setLayoutParams(lp);
         b.setBackgroundResource(R.drawable.btn_background);
         b.setTextColor(ContextCompat.getColor(Activity_show_detail_booked_ticket.this, R.color.app_white));
-    }
+    }*/
 }

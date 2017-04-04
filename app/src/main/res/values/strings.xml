@@ -49,6 +49,7 @@
     <string name="IsAc">IsAc</string>
     <string name="IsSleeper">IsSleeper</string>
     <string name="Fare">Fare</string>
+    <string name="Offer_Fare">Offer_Fare</string>
 
 
     <string name="tab_tag">tab_tag</string>
@@ -67,6 +68,12 @@
     <string name="internet_connection_error_message_try_again">We can not detect any internet connectivity.Please check your internet connection and try again.</string>
     <string name="internet_connection_error_message">We can not detect any internet connectivity.Please check your internet connection.</string>
     <string name="validating_error_title">Error</string>
+
+
+    <!-- bus routes screen -->
+
+    <string name="schedule_id">schedule_id</string>
+
 
     <!--filter screen strings start-->
     <string name="no_filter_selectet">No filter selected</string>

@@ -24,6 +24,7 @@ public class Schedule_Details extends RealmObject {
     private String ArrTime;
     private String BusTypeName;
     private float Fare;
+    private float Fare_after_offer;
     private float SeaterFareNAC;
     private float SeaterFareAC;
     private float SleeperFareNAC;
@@ -90,6 +91,10 @@ public class Schedule_Details extends RealmObject {
     {
         return this.Fare;
     }
+    public float getFare_after_offer()
+    {
+        return this.Fare_after_offer;
+    }
     public float getSeaterFareNAC()
     {
         return this.SeaterFareNAC;
@@ -141,6 +146,8 @@ public class Schedule_Details extends RealmObject {
     {
         return this.BusTypeName;
     }
+
+
 
 
     public void setRouteScheduleId(int routeScheduleId)
@@ -195,6 +202,10 @@ public class Schedule_Details extends RealmObject {
     public void setFare(float fare)
     {
         this.Fare = fare;
+    }
+    public void setFare_after_offer(float fare_after_offer)
+    {
+        this.Fare_after_offer = fare_after_offer;
     }
     public void setSeaterFareNAC(float seaterFareNAC)
     {

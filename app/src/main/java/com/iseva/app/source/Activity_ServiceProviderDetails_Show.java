@@ -1,17 +1,13 @@
 package com.iseva.app.source;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Bundle;
-import android.app.Activity;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.CardView;
-import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,14 +22,10 @@ import android.widget.TextView;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
-
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -269,7 +261,26 @@ public class Activity_ServiceProviderDetails_Show extends FragmentActivity {
                             cvImage.setVisibility(View.GONE);
                         }
                     }
-
+                    if(obj.has("latitude") && obj.has("longitude"))
+                    {
+                        final double latitude = Double.parseDouble(obj.getString("latitude"));
+                        final double longitude = Double.parseDouble(obj.getString("longitude"));
+                        if(latitude !=0 && longitude !=0)
+                        {
+                            LinearLayout location_layout = (LinearLayout)findViewById(R.id.layout_location);
+                            ImageView location_map = (ImageView)findViewById(R.id.image_location_map);
+                            location_layout.setVisibility(View.VISIBLE);
+                            location_map.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent i = new Intent(Activity_ServiceProviderDetails_Show.this,Activity_location_show.class);
+                                    i.putExtra("destination_latitude",""+latitude);
+                                    i.putExtra("destination_longitude",""+longitude);
+                                    startActivity(i);
+                                }
+                            });
+                        }
+                    }
                     if (obj.has("contactdetails")) {
                         LinearLayout linear = (LinearLayout) findViewById(R.id.linearAddress);
                         if (obj.getString("contactdetails").isEmpty()) {

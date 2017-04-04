@@ -1,20 +1,12 @@
 package com.iseva.app.source.travel;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -171,41 +163,41 @@ public class Activity_register extends Activity {
         Boolean Flag = true;
         if(register_name_et_text.length() == 0)
         {
-            showAlertDialog(getResources().getString(R.string.validating_error_title),"Please enter name","Ok");
+            Global.showAlertDialog(Activity_register.this,getResources().getString(R.string.validating_error_title),"Please enter name","Ok");
             Flag = false;
             return Flag;
         }
         else if(register_email_et_text.trim().length() == 0 || !validatemail(register_email_et_text))
         {
-            showAlertDialog(getResources().getString(R.string.validating_error_title),"Please enter valid email","Ok");
+            Global.showAlertDialog(Activity_register.this,getResources().getString(R.string.validating_error_title),"Please enter valid email","Ok");
 
             Flag = false;
             return Flag;
         }
         else if(register_phone_et_text.trim().length() == 0)
         {
-            showAlertDialog(getResources().getString(R.string.validating_error_title),"Please enter phone number","Ok");
+            Global.showAlertDialog(Activity_register.this,getResources().getString(R.string.validating_error_title),"Please enter phone number","Ok");
 
             Flag = false;
             return Flag;
         }
         else if(register_password_et_text.trim().length() == 0)
         {
-            showAlertDialog(getResources().getString(R.string.validating_error_title),"Please enter password","Ok");
+            Global.showAlertDialog(Activity_register.this,getResources().getString(R.string.validating_error_title),"Please enter password","Ok");
 
             Flag = false;
             return Flag;
         }
         else if(register_password_confirm_et_text.trim().length() == 0)
         {
-            showAlertDialog(getResources().getString(R.string.validating_error_title),"Please enter confirm password","Ok");
+            Global.showAlertDialog(Activity_register.this,getResources().getString(R.string.validating_error_title),"Please enter confirm password","Ok");
 
             Flag = false;
             return Flag;
         }
         else if(register_password_et_text.trim().equals(register_password_confirm_et_text.trim()) == false )
         {
-            showAlertDialog(getResources().getString(R.string.validating_error_title),"Password and password confirm should be same !","Ok");
+            Global.showAlertDialog(Activity_register.this,getResources().getString(R.string.validating_error_title),"Password and password confirm should be same !","Ok");
 
             Flag = false;
             return Flag;
@@ -243,7 +235,7 @@ public class Activity_register extends Activity {
 
     }
 
-    public void showAlertDialog(String title,String message,String buttonlabel)
+   /* public void showAlertDialog(String title,String message,String buttonlabel)
     {
         TextView title_tv = new TextView(this);
         title_tv.setPadding(0,getResources().getDimensionPixelSize(R.dimen.padding_margin_10),0,0);
@@ -270,7 +262,7 @@ public class Activity_register extends Activity {
         b.setBackgroundResource(R.drawable.btn_background);
         b.setTextColor(ContextCompat.getColor(Activity_register.this, R.color.app_white));
     }
-
+*/
     public static boolean validatemail(String emailStr) {
         Pattern VALID_EMAIL_ADDRESS_REGEX =
                 Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);

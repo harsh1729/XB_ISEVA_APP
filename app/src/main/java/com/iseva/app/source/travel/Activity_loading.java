@@ -1,28 +1,19 @@
 package com.iseva.app.source.travel;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 
 import com.iseva.app.source.R;
 import com.iseva.app.source.Realm_objets.Bus_routes_detail;
-
+import com.zl.reik.dilatingdotsprogressbar.DilatingDotsProgressBar;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.SoapFault;
@@ -36,14 +27,9 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import io.realm.Realm;
-
-import static android.R.attr.format;
 
 public class Activity_loading extends Activity {
 
@@ -54,19 +40,32 @@ public class Activity_loading extends Activity {
 
     LinearLayout loader_layout;
 
-    private Realm My_realm;
+
+
     int count ;
+    DilatingDotsProgressBar mDilatingDotsProgressBar;
+    private int volley_timeout = 15000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
-        My_realm = Realm.getInstance(getApplicationContext());
+
 
 
         loading_text = (TextView)findViewById(R.id.Loading_text);
         loader_layout = (LinearLayout)findViewById(R.id.activity_loading_loader_layout);
         loading_text.setText(getIntent().getStringExtra("Loading_text"));
+        mDilatingDotsProgressBar = (DilatingDotsProgressBar) findViewById(R.id.progress);
+
+// show progress bar and start animating
+        mDilatingDotsProgressBar.showNow();
+        mDilatingDotsProgressBar.setNumberOfDots(6);
+        mDilatingDotsProgressBar.setGrowthSpeed(600);
+        mDilatingDotsProgressBar.setDotScaleMultpiplier(2);
+
+
+
 
         if(isNetworkConnected())
         {
@@ -75,10 +74,14 @@ public class Activity_loading extends Activity {
         }
         else
         {
-            showAlertDialog(getResources().getString(R.string.validating_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
+            Global.showAlertDialog(Activity_loading.this,getResources().getString(R.string.validating_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
         }
 
+
+
+
     }
+
 
 
     private class SearchRoutes extends AsyncTask<Void,Void,Void>
@@ -182,10 +185,12 @@ public class Activity_loading extends Activity {
             {
                 if(((SoapObject)search_bus_result.getProperty(0)).getPrimitiveProperty("IsSuccess").toString().equals("true"))
                 {
+
                     Intent i = new Intent(Activity_loading.this,Activity_Bus_Routes.class);
                     i.putExtra("response",""+response);
                     startActivity(i);
                     overridePendingTransition(R.anim.anim_in, R.anim.anim_none);
+
                     activity_dismiss();
                 }
                 else
@@ -194,6 +199,7 @@ public class Activity_loading extends Activity {
                     i.putExtra("response",""+response);
                     startActivity(i);
                     overridePendingTransition(R.anim.anim_in, R.anim.anim_none);
+
                     activity_dismiss();
                     /*loader_layout.setVisibility(View.GONE);
                     showAlertDialog(getResources().getString(R.string.validating_error_title),((SoapObject)search_bus_result.getProperty("Response")).getPrimitivePropertyAsString("Message"),"Ok");*/
@@ -206,7 +212,7 @@ public class Activity_loading extends Activity {
             else
             {
                 loader_layout.setVisibility(View.GONE);
-                showAlertDialog(getResources().getString(R.string.validating_error_title),"Some error accured please try again !","Ok");
+                Global.showAlertDialog(Activity_loading.this,getResources().getString(R.string.validating_error_title),"Some error accured please try again !","Ok");
 
 
             }
@@ -352,14 +358,31 @@ public class Activity_loading extends Activity {
                             String time_arrival = gettime(arrval);
                             String duration = getduration(dep,arr);
 
-                            Log.e("vikas arrival=",arrval);
-                            Log.e("vikas Departure = ",Departure);
-                            Log.e("vikas dep date = ",""+dep);
-                            Log.e("vikas arr date=",""+arr);
-                            Log.e("vikas duration =",duration);
 
 
+                            float offer_per;
+                            float after_offer_fare;
 
+                            float commition_per = (int)Float.parseFloat(((SoapObject) ((SoapObject) search_bus_result.getProperty("Route")).getProperty(i)).getProperty("CommPCT").toString());
+                            float fare = Float.parseFloat(((SoapObject) ((SoapObject) search_bus_result.getProperty("Route")).getProperty(i)).getProperty("Fare").toString());
+
+                            if(MainActivity.save_per <= commition_per)
+                            {
+                                offer_per = commition_per - MainActivity.save_per;
+                            }
+                            else
+                            {
+                                offer_per = commition_per;
+                            }
+                            int temp_fare_offer = (int)(fare *(100-offer_per))/100;
+                            if(MainActivity.save_per <= commition_per && MainActivity.save_per != 0) {
+                                temp_fare_offer = temp_fare_offer + 1;
+                            }
+                            after_offer_fare = (float)temp_fare_offer;
+
+                            Log.e("vikas after_fare_load=",""+after_offer_fare);
+                            Log.e("vikas percentage_loadi=",""+offer_per);
+                            Log.e("vikas total per loadi=",""+MainActivity.save_per);
 
                             thread_realm.beginTransaction();
                             Bus_routes_detail bus_rout = thread_realm.createObject(Bus_routes_detail.class);
@@ -369,12 +392,21 @@ public class Activity_loading extends Activity {
                             bus_rout.setDeparturetime(time_departure);
                             bus_rout.setRouteScheduleId(Integer.parseInt(((SoapObject) ((SoapObject) search_bus_result.getProperty("Route")).getProperty(i)).getProperty("RouteScheduleId").toString()));
                             bus_rout.setCompanyId(Integer.parseInt(((SoapObject) ((SoapObject) search_bus_result.getProperty("Route")).getProperty(i)).getProperty("CompanyId").toString()));
-                            bus_rout.setCompanyName(((SoapObject) ((SoapObject) search_bus_result.getProperty("Route")).getProperty(i)).getProperty("CompanyName").toString());
+                            if(((SoapObject) ((SoapObject) search_bus_result.getProperty("Route")).getProperty(i)).getProperty("CompanyName").toString().contains("anyType"))
+                            {
+                                bus_rout.setCompanyName("");
+                            }
+                            else
+                            {
+                                bus_rout.setCompanyName(((SoapObject) ((SoapObject) search_bus_result.getProperty("Route")).getProperty(i)).getProperty("CompanyName").toString());
+                            }
+
                             // bus_rout.setDepartureTime((DateTimePatternGenerator)((SoapObject)((SoapObject)result.getProperty("Route")).getProperty(i)).getProperty("DepartureTime"));
                             bus_rout.setDepTime(((SoapObject) ((SoapObject) search_bus_result.getProperty("Route")).getProperty(i)).getProperty("DepTime").toString());
                             //  bus_rout.setArrivalTime((DateTimePatternGenerator)((SoapObject)((SoapObject)result.getProperty("Route")).getProperty(i)).getProperty("ArrivalTime"));
                             bus_rout.setArrTime(((SoapObject) ((SoapObject) search_bus_result.getProperty("Route")).getProperty(i)).getProperty("ArrTime").toString());
                             bus_rout.setFare(Float.parseFloat(((SoapObject) ((SoapObject) search_bus_result.getProperty("Route")).getProperty(i)).getProperty("Fare").toString()));
+                            bus_rout.setFare_after_offer(after_offer_fare);
                             bus_rout.setSeaterFareNAC(Float.parseFloat(((SoapObject) ((SoapObject) search_bus_result.getProperty("Route")).getProperty(i)).getProperty("SeaterFareNAC").toString()));
                             bus_rout.setSeaterFareAC(Float.parseFloat(((SoapObject) ((SoapObject) search_bus_result.getProperty("Route")).getProperty(i)).getProperty("SeaterFareAC").toString()));
                             bus_rout.setSleeperFareNAC(Float.parseFloat(((SoapObject) ((SoapObject) search_bus_result.getProperty("Route")).getProperty(i)).getProperty("SleeperFareNAC").toString()));
@@ -384,11 +416,27 @@ public class Activity_loading extends Activity {
                             bus_rout.setHasSeater(Boolean.parseBoolean(((SoapObject) ((SoapObject) search_bus_result.getProperty("Route")).getProperty(i)).getProperty("HasSeater").toString()));
                             bus_rout.setHasSleeper(Boolean.parseBoolean(((SoapObject) ((SoapObject) search_bus_result.getProperty("Route")).getProperty(i)).getProperty("HasSleeper").toString()));
                             bus_rout.setIsVolvo(Boolean.parseBoolean(((SoapObject) ((SoapObject) search_bus_result.getProperty("Route")).getProperty(i)).getProperty("IsVolvo").toString()));
-                            bus_rout.setBusLabel(((SoapObject) ((SoapObject) search_bus_result.getProperty("Route")).getProperty(i)).getProperty("BusLabel").toString());
+                            if(((SoapObject) ((SoapObject) search_bus_result.getProperty("Route")).getProperty(i)).getProperty("BusLabel").toString().contains("anyType"))
+                            {
+                                bus_rout.setBusLabel("");
+                            }
+                            else
+                            {
+                                bus_rout.setBusLabel(((SoapObject) ((SoapObject) search_bus_result.getProperty("Route")).getProperty(i)).getProperty("BusLabel").toString());
+                            }
+
                             bus_rout.setCommPCT(Float.parseFloat(((SoapObject) ((SoapObject) search_bus_result.getProperty("Route")).getProperty(i)).getProperty("CommPCT").toString()));
                             bus_rout.setCommAmount(Float.parseFloat(((SoapObject) ((SoapObject) search_bus_result.getProperty("Route")).getProperty(i)).getProperty("CommAmount").toString()));
                             bus_rout.setAvailableSeats(Integer.parseInt(((SoapObject) ((SoapObject) search_bus_result.getProperty("Route")).getProperty(i)).getProperty("AvailableSeats").toString()));
-                            bus_rout.setBusTypeName(((SoapObject) ((SoapObject) search_bus_result.getProperty("Route")).getProperty(i)).getProperty("BusTypeName").toString());
+                            if(((SoapObject) ((SoapObject) search_bus_result.getProperty("Route")).getProperty(i)).getProperty("BusTypeName").toString().contains("anyType"))
+                            {
+                                bus_rout.setBusTypeName("");
+                            }
+                            else
+                            {
+                                bus_rout.setBusTypeName(((SoapObject) ((SoapObject) search_bus_result.getProperty("Route")).getProperty(i)).getProperty("BusTypeName").toString());
+                            }
+
                             bus_rout.setBusNumber(((SoapObject) ((SoapObject) search_bus_result.getProperty("Route")).getProperty(i)).getProperty("BusNumber").toString());
                             thread_realm.commitTransaction();
                         }
@@ -444,7 +492,7 @@ public class Activity_loading extends Activity {
 
     }
 
-    public void showAlertDialog(String title,String message,String buttonlabel)
+   /* public void showAlertDialog(String title,String message,String buttonlabel)
     {
         TextView title_tv = new TextView(this);
         title_tv.setPadding(0,getResources().getDimensionPixelSize(R.dimen.padding_margin_10),0,0);
@@ -472,6 +520,6 @@ public class Activity_loading extends Activity {
         b.setLayoutParams(lp);
         b.setBackgroundResource(R.drawable.btn_background);
         b.setTextColor(ContextCompat.getColor(Activity_loading.this, R.color.app_white));
-    }
+    }*/
 
 }

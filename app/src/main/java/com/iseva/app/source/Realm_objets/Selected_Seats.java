@@ -14,6 +14,7 @@ public class Selected_Seats extends RealmObject {
     private   Boolean IsAc;
     private    Boolean IsSleeper;
     private    float Fare;
+    private     float Fare_after_offer;
 
     public String getSeatNo()
     {
@@ -40,6 +41,10 @@ public class Selected_Seats extends RealmObject {
     public float getFare()
     {
         return this.Fare;
+    }
+    public float getFare_after_offer()
+    {
+        return this.Fare_after_offer;
     }
 
 
@@ -68,6 +73,10 @@ public class Selected_Seats extends RealmObject {
     public void setFare(float fare)
     {
         this.Fare = fare;
+    }
+    public void setFare_after_offer(float fare_after_offer)
+    {
+        this.Fare_after_offer = fare_after_offer;
     }
 
 }

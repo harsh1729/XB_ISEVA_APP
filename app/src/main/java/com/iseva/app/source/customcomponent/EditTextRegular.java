@@ -27,7 +27,7 @@ public class EditTextRegular extends EditText {
 
     public void setfont()
     {
-        Typeface tf = Typeface.createFromAsset(getContext().getAssets(), "fonts/RobotoCondensed-Regular.ttf");
+        Typeface tf = Typeface.createFromAsset(getContext().getAssets(), "fonts/roboto.regular.ttf");
         setTypeface(tf);
     }
 }

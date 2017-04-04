@@ -17,32 +17,25 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-
 import com.iseva.app.source.R;
 import com.iseva.app.source.Realm_objets.Seat_details;
 import com.iseva.app.source.Realm_objets.Selected_Seats;
 import com.iseva.app.source.travel.Activity_Select_Seats;
 import com.iseva.app.source.travel.Constants;
-import com.iseva.app.source.travel.MainActivity;
-import com.iseva.app.source.travel.Search_Buses_Key;
-import com.iseva.app.source.travel.Seat_Single;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
-
-import static android.media.CamcorderProfile.get;
 
 public class Fragment_Deck1 extends Fragment {
 
     Realm My_realm;
 
     int Total_screen_width;
-    double Seat_height_percentage = 88.47;
-    double Seat_width_percentage = 12;
+    double Seat_height_percentage = 110;
+    double Seat_width_percentage = 11;
     double fix_left_per = 5.50;
     double fix_right_per = 5.50;
 
@@ -53,11 +46,11 @@ public class Fragment_Deck1 extends Fragment {
     int Seat_width;
     int all_col;
     int margin;
-    int extra_height = 5;
+
     double margin_top_seat_per = 4.50;
     int margin_top_seat = 0;
     int fixtopmargin = 70;
-    int extramargin_top =20;
+    int extramargin_top =0;
 
     ArrayList<Integer> colm_numbers;
 
@@ -127,6 +120,8 @@ public class Fragment_Deck1 extends Fragment {
 
         fixtopmargin = Seat_height + fix_margin_left;
 
+
+
         FrameLayout.LayoutParams lp  = new FrameLayout.LayoutParams(Seat_height,Seat_height);
         lp.leftMargin = ((Seat_width+margin)*(max_col-1)+fix_margin_left);
 
@@ -152,18 +147,20 @@ public class Fragment_Deck1 extends Fragment {
 
                     if(height == 2 && width == 1)
                     {
-                        params = new FrameLayout.LayoutParams(Seat_width,Seat_height*height);
-                        params.topMargin = ((margin_top_seat+Seat_height+extra_height)*(row))+fixtopmargin;
+                        int realseatheight = (Seat_height*height*85)/100;
+                        extramargin_top = ((Seat_height*2)+margin_top_seat - realseatheight)/2;
+                        params = new FrameLayout.LayoutParams(Seat_width,realseatheight);
+                        params.topMargin = ((margin_top_seat+Seat_height)*(row))+fixtopmargin+extramargin_top;
                     }
                     else if(height == 1 && width == 2)
                     {
                         params = new FrameLayout.LayoutParams(Seat_width*width,Seat_height*height);
-                        params.topMargin = ((margin_top_seat+Seat_height+extra_height)*(row))+fixtopmargin;
+                        params.topMargin = ((margin_top_seat+Seat_height)*(row))+fixtopmargin;
                     }
                     else
                     {
-                        params = new FrameLayout.LayoutParams(Seat_width,(Seat_height*height)+extra_height);
-                        params.topMargin = ((margin_top_seat+Seat_height+extra_height)*(row))+fixtopmargin;
+                        params = new FrameLayout.LayoutParams(Seat_width,(Seat_height*height));
+                        params.topMargin = ((margin_top_seat+Seat_height)*(row))+fixtopmargin;
                     }
 
                     params.leftMargin = ((Seat_width+margin)*(col)+fix_margin_left);
@@ -179,7 +176,9 @@ public class Fragment_Deck1 extends Fragment {
                     Seat_view.setTag(R.string.Deck,all_seats.get(i).getDeck());
                     Seat_view.setTag(R.string.Gender,all_seats.get(i).getGender());
                     Seat_view.setTag(R.string.Fare,all_seats.get(i).getFare());
+                    Seat_view.setTag(R.string.Offer_Fare,all_seats.get(i).getFare_after_offer());
                     Seat_view.setTag(R.string.IsAc,all_seats.get(i).getIsAc());
+
                     Seat_view.setTag(R.string.IsSleeper,all_seats.get(i).getIsSleeper());
 
 
@@ -238,6 +237,7 @@ public class Fragment_Deck1 extends Fragment {
                                         selected_seats.setDeck(Integer.parseInt(v.getTag(R.string.Deck).toString()));
                                         selected_seats.setGender(v.getTag(R.string.Gender).toString());
                                         selected_seats.setFare(Float.parseFloat(v.getTag(R.string.Fare).toString()));
+                                        selected_seats.setFare_after_offer(Float.parseFloat(v.getTag(R.string.Offer_Fare).toString()));
                                         selected_seats.setIsAc(Boolean.parseBoolean(v.getTag(R.string.IsAc).toString()));
                                         selected_seats.setIsSleeper(Boolean.parseBoolean(v.getTag(R.string.IsSleeper).toString()));
                                         My_realm.commitTransaction();
@@ -357,6 +357,7 @@ public class Fragment_Deck1 extends Fragment {
                                         selected_seats.setDeck(Integer.parseInt(v.getTag(R.string.Deck).toString()));
                                         selected_seats.setGender(v.getTag(R.string.Gender).toString());
                                         selected_seats.setFare(Float.parseFloat(v.getTag(R.string.Fare).toString()));
+                                        selected_seats.setFare_after_offer(Float.parseFloat(v.getTag(R.string.Offer_Fare).toString()));
                                         selected_seats.setIsAc(Boolean.parseBoolean(v.getTag(R.string.IsAc).toString()));
                                         selected_seats.setIsSleeper(Boolean.parseBoolean(v.getTag(R.string.IsSleeper).toString()));
                                         My_realm.commitTransaction();

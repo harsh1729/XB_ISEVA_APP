@@ -1,8 +1,6 @@
 package com.iseva.app.source.Fragments;
 
 
-import android.app.ActivityOptions;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,22 +9,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-
+import com.iseva.app.source.Adapter.Listview_adapter;
 import com.iseva.app.source.R;
 import com.iseva.app.source.Realm_objets.Bus_routes_detail;
 import com.iseva.app.source.Realm_objets.Filter;
 import com.iseva.app.source.travel.Activity_Bus_Routes;
-import com.iseva.app.source.travel.Activity_Select_Seats;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmQuery;
@@ -39,7 +33,7 @@ import io.realm.RealmResults;
 public class Fragment_Routes_Populer extends Fragment {
 
     LinearLayout routes_loader;
-    List<HashMap<String, String>> routes_hashmap;
+    ArrayList<HashMap<String, String>> routes_hashmap;
     int all_routes_count = 0;
     ListView all_routes_list;
     LinearLayout listview_layout;
@@ -87,7 +81,8 @@ public class Fragment_Routes_Populer extends Fragment {
 
             if(all_routes_count > 0)
             {
-                SimpleAdapter adapter = new SimpleAdapter(getActivity(),routes_hashmap,R.layout.routes_single_row,from,to);
+               // SimpleAdapter adapter = new SimpleAdapter(getActivity(),routes_hashmap,R.layout.routes_single_row,from,to);
+                Listview_adapter adapter = new Listview_adapter(getActivity(),routes_hashmap);
                 all_routes_list.setAdapter(adapter);
                 listview_layout.setVisibility(View.VISIBLE);
                 routes_loader.setVisibility(View.GONE);
@@ -134,9 +129,10 @@ public class Fragment_Routes_Populer extends Fragment {
                 single_map.put("company_id",Integer.toString(rout.get(i).getCompanyId()));
                 single_map.put("company_name",rout.get(i).getCompanyName());
                 single_map.put("fare",getResources().getString(R.string.Rs)+" "+ Float.toString(rout.get(i).getFare()));
+                single_map.put("fare_offer",getResources().getString(R.string.Rs)+" "+Float.toString(rout.get(i).getFare_after_offer()));
                 single_map.put("bus_label",rout.get(i).getBusLabel());
                 single_map.put("time",rout.get(i).getDeparturetime()+"-"+rout.get(i).getArrivaltime());
-                single_map.put("Availabel_Seats",rout.get(i).getAvailableSeats()+" "+"Seats");
+                single_map.put("Availabel_Seats",""+rout.get(i).getAvailableSeats());
                 single_map.put("duration",rout.get(i).getDuration());
 
 
@@ -158,7 +154,7 @@ public class Fragment_Routes_Populer extends Fragment {
 
 
 
-        all_routes_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+       /* all_routes_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 
@@ -174,7 +170,7 @@ public class Fragment_Routes_Populer extends Fragment {
 
 
             }
-        });
+        });*/
     }
 
     public void makequery()

@@ -20,6 +20,7 @@ public class Seat_details extends RealmObject {
     private    Boolean IsSleeper;
     private   Boolean IsAvailable;
     private    float Fare;
+    private    float Fare_after_offer;
     private    float ChildFare;
     private  float InfantFare;
 
@@ -76,6 +77,10 @@ public class Seat_details extends RealmObject {
     public float getFare()
     {
         return this.Fare;
+    }
+    public float getFare_after_offer()
+    {
+        return this.Fare_after_offer;
     }
     public float getChildFare()
     {
@@ -135,6 +140,11 @@ public class Seat_details extends RealmObject {
     public void setFare(float fare)
     {
         this.Fare = fare;
+    }
+    public void setFare_after_offer(float fare_after_offer)
+    {
+        this.Fare_after_offer = fare_after_offer;
+
     }
     public void setChildFare(float childFare)
     {

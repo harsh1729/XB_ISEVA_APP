@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -39,9 +38,7 @@ import com.android.volley.toolbox.Volley;
 import com.iseva.app.source.R;
 import com.iseva.app.source.Realm_objets.Schedule_Details;
 import com.iseva.app.source.Realm_objets.Selected_Seats;
-import com.payUMoney.sdk.PayUmoneySdkInitilizer;
 import com.payUMoney.sdk.SdkConstants;
-
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -56,8 +53,6 @@ import org.ksoap2.transport.HttpTransportSE;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -66,8 +61,11 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 
 import static android.content.ContentValues.TAG;
-
-import static com.payUMoney.sdk.PayUmoneySdkInitilizer.*;
+import static com.payUMoney.sdk.PayUmoneySdkInitilizer.PAYU_SDK_PAYMENT_REQUEST_CODE;
+import static com.payUMoney.sdk.PayUmoneySdkInitilizer.PaymentParam;
+import static com.payUMoney.sdk.PayUmoneySdkInitilizer.RESULT_BACK;
+import static com.payUMoney.sdk.PayUmoneySdkInitilizer.RESULT_FAILED;
+import static com.payUMoney.sdk.PayUmoneySdkInitilizer.startPaymentActivityForResult;
 import static java.lang.Integer.parseInt;
 
 
@@ -415,7 +413,7 @@ public class Activity_review_itinerary extends Activity {
                 else
                 {
 
-                    showAlertDialog(getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
+                    Global.showAlertDialog(Activity_review_itinerary.this,getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
 
                 }
 
@@ -466,7 +464,7 @@ public class Activity_review_itinerary extends Activity {
                 }
                 else
                 {
-                    showAlertDialog(getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
+                    Global.showAlertDialog(Activity_review_itinerary.this,getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
                 }
 
             }
@@ -668,7 +666,7 @@ public class Activity_review_itinerary extends Activity {
 
             } else if (resultCode == RESULT_FAILED) {
                 Log.i("app_activity", "failure");
-                showAlertDialog(getResources().getString(R.string.validating_error_title),"Payment not success","ok");
+                Global.showAlertDialog(Activity_review_itinerary.this,getResources().getString(R.string.validating_error_title),"Payment not success","ok");
                 if (data != null) {
                     if (data.getStringExtra(SdkConstants.RESULT).equals("cancel")) {
 
@@ -948,7 +946,7 @@ public class Activity_review_itinerary extends Activity {
                                         TextView title_tv = new TextView(Activity_review_itinerary.this);
                                         title_tv.setPadding(0,getResources().getDimensionPixelSize(R.dimen.padding_margin_10),0,0);
                                         title_tv.setTextColor(ContextCompat.getColor(Activity_review_itinerary.this,R.color.black));
-                                        title_tv.setTextSize(getResources().getDimension(R.dimen.text_size_mediam));
+                                        title_tv.setTextSize(getResources().getDimension(R.dimen.text_size_extra_small));
                                         title_tv.setGravity(Gravity.CENTER);
                                         title_tv.setText("Alert");
 
@@ -1176,7 +1174,7 @@ public class Activity_review_itinerary extends Activity {
         TextView title_tv = new TextView(this);
         title_tv.setPadding(0,getResources().getDimensionPixelSize(R.dimen.padding_margin_10),0,0);
         title_tv.setTextColor(ContextCompat.getColor(Activity_review_itinerary.this,R.color.black));
-        title_tv.setTextSize(getResources().getDimension(R.dimen.text_size_mediam));
+        title_tv.setTextSize(getResources().getDimension(R.dimen.text_size_extra_small));
         title_tv.setGravity(Gravity.CENTER);
         title_tv.setText("Alert");
 
@@ -1227,7 +1225,7 @@ public class Activity_review_itinerary extends Activity {
             TextView title_tv = new TextView(this);
             title_tv.setPadding(0,getResources().getDimensionPixelSize(R.dimen.padding_margin_10),0,0);
             title_tv.setTextColor(ContextCompat.getColor(Activity_review_itinerary.this,R.color.black));
-            title_tv.setTextSize(getResources().getDimension(R.dimen.text_size_mediam));
+            title_tv.setTextSize(getResources().getDimension(R.dimen.text_size_extra_small));
             title_tv.setGravity(Gravity.CENTER);
             title_tv.setText("Alert");
 
@@ -1340,11 +1338,11 @@ public class Activity_review_itinerary extends Activity {
                 }
                 else
                 {
-                    showAlertDialog(getResources().getString(R.string.validating_error_title),((SoapObject)soapresult_detail.getProperty("Response")).getPrimitivePropertyAsString("Message"),"Ok");
+                    Global.showAlertDialog(Activity_review_itinerary.this,getResources().getString(R.string.validating_error_title),((SoapObject)soapresult_detail.getProperty("Response")).getPrimitivePropertyAsString("Message"),"Ok");
                 }
 
             } else {
-                showAlertDialog(getResources().getString(R.string.validating_error_title),"Some error accured please try again !","Ok");
+                Global.showAlertDialog(Activity_review_itinerary.this,getResources().getString(R.string.validating_error_title),"Some error accured please try again !","Ok");
             }
 
 
@@ -1545,6 +1543,8 @@ public class Activity_review_itinerary extends Activity {
                             }
                             else
                             {
+                                LinearLayout.LayoutParams lp_tv = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                                lp_tv.setMargins(0,10,0,10);
                                 TextView tv = new TextView(Activity_review_itinerary.this);
                                 tv.setText("No Offers");
                                 tv.setPadding(getResources().getDimensionPixelSize(R.dimen.padding_margin_5),0,0,getResources().getDimensionPixelSize(R.dimen.padding_margin_10));
@@ -1595,6 +1595,94 @@ public class Activity_review_itinerary extends Activity {
        /* RequestQueue requestQueue = Volley.newRequestQueue(this);*/
         requestQueue_globel.add(offerrequest);
     }
+
+
+
+
+    public void sendmessage(final String order_no,final String ticket_no,final String pnr_no, final String from_city_name, final String to_city_name,
+                         final String journey_date, final String reporting_time, final String departure_time, final String status, final String passanger_detail, final String boarding_address,
+                         final String bus_type, final String company_name, final String boarding_contact_no, final String totalFare, final String cancellation_data)
+    {
+        Log.e("vikas","call volley");
+        StringRequest send_message = new StringRequest(Request.Method.POST,
+                Constants.send_message_url, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String s) {
+
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+
+                Toast.makeText(getApplicationContext(),"Something accured wrong",Toast.LENGTH_LONG).show();
+            }
+        }) {
+            @Override
+            public Map<String, String> getParams(){
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("order_no",order_no);
+                params.put("pnr_no",pnr_no);
+                params.put("from_city",from_city_name);
+                params.put("to_city",to_city_name);
+                params.put("date_of_journey",journey_date);
+                params.put("reporing_time",reporting_time);
+                params.put("departure_time",departure_time);
+                params.put("status",status);
+                params.put("boarding_address",boarding_address);
+                params.put("bus_type",bus_type);
+                params.put("company_name",company_name);
+                params.put("contact_no",boarding_contact_no);
+                params.put("total_fare",totalFare);
+                params.put("to_mail",contact_email.toString().trim());
+                params.put("contact_name",contact_name);
+                params.put("ticket_no",ticket_no);
+                try {
+                    JSONArray ps = new JSONArray(passanger_detail);
+                    JSONArray cd = new JSONArray(cancellation_data);
+
+                    for(int i=0;i<ps.length();i++)
+                    {
+                        params.put("p_name"+i,ps.getJSONObject(i).getString("Name"));
+                        params.put("p_seat"+i,ps.getJSONObject(i).getString("SeatNo"));
+                    }
+                    params.put("p_length",""+ps.length());
+
+                    for (int j=0;j<cd.length();j++)
+                    {
+                        params.put("cd_condition"+j,cd.getJSONObject(j).getString("condition"));
+                        params.put("cd_percentage"+j,cd.getJSONObject(j).getString("percentage"));
+                    }
+                    params.put("cd_length",""+cd.length());
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+
+
+
+
+                return params;
+
+            }
+        };
+
+        //Adding the string request to the queue
+        /*RequestQueue requestQueue = Volley.newRequestQueue(this);*/
+        send_message.setRetryPolicy(new DefaultRetryPolicy(
+                volley_timeout,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        requestQueue_globel.add(send_message);
+    }
+
+
+
+
 
 
     public void sendmail(final String order_no,final String pnr_no, final String from_city_name, final String to_city_name,
@@ -1677,7 +1765,7 @@ public class Activity_review_itinerary extends Activity {
         requestQueue_globel.add(send_mail);
     }
 
-    public void showAlertDialog(String title,String message,String buttonlabel)
+    /*public void showAlertDialog(String title,String message,String buttonlabel)
     {
         TextView title_tv = new TextView(this);
         title_tv.setPadding(0,getResources().getDimensionPixelSize(R.dimen.padding_margin_10),0,0);
@@ -1703,7 +1791,7 @@ public class Activity_review_itinerary extends Activity {
         b.setLayoutParams(lp);
         b.setBackgroundResource(R.drawable.btn_background);
         b.setTextColor(ContextCompat.getColor(Activity_review_itinerary.this, R.color.app_white));
-    }
+    }*/
 
     public String change_date_form(String date)
     {

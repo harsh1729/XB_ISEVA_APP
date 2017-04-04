@@ -1,21 +1,13 @@
 package com.iseva.app.source.travel;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -79,11 +71,11 @@ public class Activity_login extends Activity {
 
         if(login_email_et_text.length() == 0 || !validatemail(login_email_et_text))
         {
-            showAlertDialog(getResources().getString(R.string.validating_error_title),"Insert valid email !","Ok");
+            Global.showAlertDialog(Activity_login.this,getResources().getString(R.string.validating_error_title),"Insert valid email !","Ok");
         }
         else if(login_password_et_text.length() == 0)
         {
-            showAlertDialog(getResources().getString(R.string.validating_error_title),"Password can not be empty","Ok");
+            Global.showAlertDialog(Activity_login.this,getResources().getString(R.string.validating_error_title),"Password can not be empty","Ok");
         }
         else
         {
@@ -204,7 +196,7 @@ public class Activity_login extends Activity {
 
     }
 
-    public void showAlertDialog(String title,String message,String buttonlabel)
+   /* public void showAlertDialog(String title,String message,String buttonlabel)
     {
         TextView title_tv = new TextView(this);
         title_tv.setPadding(0,getResources().getDimensionPixelSize(R.dimen.padding_margin_10),0,0);
@@ -231,5 +223,5 @@ public class Activity_login extends Activity {
         b.setLayoutParams(lp);
         b.setBackgroundResource(R.drawable.btn_background);
         b.setTextColor(ContextCompat.getColor(Activity_login.this, R.color.app_white));
-    }
+    }*/
 }

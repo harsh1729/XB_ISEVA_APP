@@ -2,6 +2,7 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/tools"
     android:background="@color/app_white"
     android:orientation="vertical"
     android:gravity="center">
@@ -32,6 +33,18 @@
              custom:endColor="@color/light_blue_700"
              custom:startColor="@color/app_theme_color"
              custom:animationDirection="right"/>-->
+
+            <com.zl.reik.dilatingdotsprogressbar.DilatingDotsProgressBar
+                android:id="@+id/progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:radius="5dp"
+                android:color="#1BAFCD"
+                app:dd_numDots="6"
+                app:dd_scaleMultiplier="1.8"
+                app:dd_animationDuration="10000"
+                app:dd_horizontalSpacing="4dp"
+            />
     </LinearLayout>
 
 

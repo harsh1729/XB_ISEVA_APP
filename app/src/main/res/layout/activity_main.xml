@@ -37,7 +37,7 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-                    <TextView
+                    <com.iseva.app.source.customcomponent.TextViewRegular
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="From"
@@ -53,7 +53,7 @@
                         android:inputType="textPhonetic"
                         android:paddingLeft="@dimen/padding_margin_5"
                         android:paddingRight="@dimen/padding_margin_5"
-                        android:textSize="@dimen/text_size_small"
+                        android:textSize="@dimen/text_size_mediam"
                         android:focusable="false"
                         android:cursorVisible="false"
                         android:focusableInTouchMode="false"
@@ -86,7 +86,7 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-                    <TextView
+                    <com.iseva.app.source.customcomponent.TextViewRegular
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="To"
@@ -102,7 +102,7 @@
                         android:layout_height="wrap_content"
                         android:inputType="textPhonetic"
                         android:ems="10"
-                        android:textSize="@dimen/text_size_small"
+                        android:textSize="@dimen/text_size_mediam"
                         android:focusable="false"
                         android:cursorVisible="false"
                         android:focusableInTouchMode="false"
@@ -121,7 +121,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/padding_margin_30"
                 android:orientation="vertical">
-                <TextView
+                <com.iseva.app.source.customcomponent.TextViewRegular
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_size_small"
@@ -132,7 +132,7 @@
                     android:focusable="false"
                     android:focusableInTouchMode="false"
                     android:cursorVisible="false"
-                    android:textSize="@dimen/text_size_small"
+                    android:textSize="@dimen/text_size_mediam"
                     android:ems="10"
                     />
 
@@ -193,7 +193,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <TextView
+                <com.iseva.app.source.customcomponent.TextViewRegular
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
@@ -211,40 +211,40 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content">
-                    <TextView
+                    <com.iseva.app.source.customcomponent.TextViewBold
                         android:id="@+id/activity_main_login_alert_cancel_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/text_size_normal"
                         android:textColor="@color/app_theme_color"
-                        android:textStyle="bold"
+
                         android:padding="@dimen/padding_margin_10"
                         android:text="Cancel"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
-                    <TextView
+                    <com.iseva.app.source.customcomponent.TextViewBold
                         android:id="@+id/activity_main_login_alert_login_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/text_size_normal"
                         android:textColor="@color/app_theme_color"
-                        android:textStyle="bold"
+
                         android:padding="@dimen/padding_margin_10"
                         android:text="Login"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
-                    <TextView
+                    <com.iseva.app.source.customcomponent.TextViewBold
                         android:id="@+id/activity_main_login_alert_signup_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/text_size_normal"
                         android:layout_gravity="right"
                         android:textColor="@color/app_theme_color"
-                        android:textStyle="bold"
+
                         android:padding="@dimen/padding_margin_10"
                         android:text="Register"/>
                 </LinearLayout>

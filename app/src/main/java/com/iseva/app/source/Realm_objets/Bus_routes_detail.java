@@ -24,6 +24,8 @@ public class Bus_routes_detail extends RealmObject{
 
 
     private float Fare ;
+    private float Fare_after_offer;
+
     private float SeaterFareNAC ;
     private float SeaterFareAC ;
     private float SleeperFareNAC ;
@@ -82,6 +84,10 @@ public class Bus_routes_detail extends RealmObject{
     public float getFare()
     {
         return Fare;
+    }
+    public float getFare_after_offer()
+    {
+        return Fare_after_offer;
     }
     public float getSeaterFareNAC()
     {
@@ -174,6 +180,10 @@ public class Bus_routes_detail extends RealmObject{
     public void setFare(float fare)
     {
         this.Fare = fare;
+    }
+    public void setFare_after_offer(float fare_after_offer)
+    {
+        this.Fare_after_offer = fare_after_offer;
     }
     public void setSeaterFareNAC(float seaterFareNAC)
     {

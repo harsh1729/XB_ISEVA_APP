@@ -16,17 +16,12 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 
 import com.iseva.app.source.R;
 import com.iseva.app.source.Realm_objets.Seat_details;
 import com.iseva.app.source.Realm_objets.Selected_Seats;
 import com.iseva.app.source.travel.Activity_Select_Seats;
 import com.iseva.app.source.travel.Constants;
-import com.iseva.app.source.travel.MainActivity;
-import com.iseva.app.source.travel.Search_Buses_Key;
-import com.iseva.app.source.travel.Seat_Single;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,8 +37,8 @@ public class Fragment_Deck2 extends Fragment {
     Realm My_realm;
 
     int Total_screen_width;
-    double Seat_height_percentage = 88.47;
-    double Seat_width_percentage = 12;
+    double Seat_height_percentage = 100;
+    double Seat_width_percentage = 11;
 
     double fix_left_per = 5.50;
     double fix_right_per = 5.50;
@@ -131,8 +126,7 @@ public class Fragment_Deck2 extends Fragment {
 
             for (int j= 0;j<colm_numbers.size();j++)
             {
-                Log.e("vikas colm upper =",""+colm_numbers.get(j));
-                Log.e("vikas index upper = ",""+j);
+
                 if(all_seats.get(i).getCol() == colm_numbers.get(j))
                 {
                     int row = all_seats.get(i).getRow();
@@ -143,7 +137,8 @@ public class Fragment_Deck2 extends Fragment {
 
                     if(height == 2 && width == 1)
                     {
-                        params = new FrameLayout.LayoutParams(Seat_width,Seat_height*height);
+                        int realseatheight = (Seat_height*height*92)/100;
+                        params = new FrameLayout.LayoutParams(Seat_width,realseatheight);
                         params.topMargin = ((margin_top_seat+Seat_height+extra_height)*(row))+fixtopmargin;
                     }
                     else if(height == 1 && width == 2)
@@ -170,6 +165,7 @@ public class Fragment_Deck2 extends Fragment {
                     Seat_view.setTag(R.string.Deck,all_seats.get(i).getDeck());
                     Seat_view.setTag(R.string.Gender,all_seats.get(i).getGender());
                     Seat_view.setTag(R.string.Fare,all_seats.get(i).getFare());
+                    Seat_view.setTag(R.string.Offer_Fare,all_seats.get(i).getFare_after_offer());
                     Seat_view.setTag(R.string.IsAc,all_seats.get(i).getIsAc());
                     Seat_view.setTag(R.string.IsSleeper,all_seats.get(i).getIsSleeper());
 
@@ -229,6 +225,7 @@ public class Fragment_Deck2 extends Fragment {
                                         selected_seats.setDeck(Integer.parseInt(v.getTag(R.string.Deck).toString()));
                                         selected_seats.setGender(v.getTag(R.string.Gender).toString());
                                         selected_seats.setFare(Float.parseFloat(v.getTag(R.string.Fare).toString()));
+                                        selected_seats.setFare_after_offer(Float.parseFloat(v.getTag(R.string.Offer_Fare).toString()));
                                         selected_seats.setIsAc(Boolean.parseBoolean(v.getTag(R.string.IsAc).toString()));
                                         selected_seats.setIsSleeper(Boolean.parseBoolean(v.getTag(R.string.IsSleeper).toString()));
                                         My_realm.commitTransaction();
@@ -348,6 +345,7 @@ public class Fragment_Deck2 extends Fragment {
                                         selected_seats.setDeck(Integer.parseInt(v.getTag(R.string.Deck).toString()));
                                         selected_seats.setGender(v.getTag(R.string.Gender).toString());
                                         selected_seats.setFare(Float.parseFloat(v.getTag(R.string.Fare).toString()));
+                                        selected_seats.setFare_after_offer(Float.parseFloat(v.getTag(R.string.Offer_Fare).toString()));
                                         selected_seats.setIsAc(Boolean.parseBoolean(v.getTag(R.string.IsAc).toString()));
                                         selected_seats.setIsSleeper(Boolean.parseBoolean(v.getTag(R.string.IsSleeper).toString()));
                                         My_realm.commitTransaction();

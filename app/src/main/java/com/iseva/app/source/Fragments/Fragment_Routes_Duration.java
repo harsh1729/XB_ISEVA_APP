@@ -1,31 +1,26 @@
 package com.iseva.app.source.Fragments;
 
 
-import android.app.ActivityOptions;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-
+import com.iseva.app.source.Adapter.Listview_adapter;
 import com.iseva.app.source.R;
 import com.iseva.app.source.Realm_objets.Bus_routes_detail;
 import com.iseva.app.source.Realm_objets.Filter;
 import com.iseva.app.source.travel.Activity_Bus_Routes;
-import com.iseva.app.source.travel.Activity_Select_Seats;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmQuery;
@@ -39,7 +34,7 @@ import io.realm.Sort;
 public class Fragment_Routes_Duration extends Fragment {
 
     LinearLayout routes_loader_duration;
-    List<HashMap<String, String>> routes_hashmap;
+    ArrayList<HashMap<String, String>> routes_hashmap;
     int all_routes_count= 0;
 
     ListView all_routes_list;
@@ -48,8 +43,8 @@ public class Fragment_Routes_Duration extends Fragment {
 
     Realm My_realm;
     TextView tv;
-    String[] from = new String[] {"company_name","fare","bus_label","time","Availabel_Seats","duration"};
-    int[] to = new int[] {R.id.company_name,R.id.fare,R.id.bus_label,R.id.time_view,R.id.available_seat,R.id.duration};
+  /*  String[] from = new String[] {"company_name","fare","bus_label","time","Availabel_Seats","duration"};
+    int[] to = new int[] {R.id.company_name,R.id.fare,R.id.bus_label,R.id.time_view,R.id.available_seat,R.id.duration};*/
     RealmResults<Bus_routes_detail> rout;
 
     @Override
@@ -86,11 +81,15 @@ public class Fragment_Routes_Duration extends Fragment {
 
             if(all_routes_count > 0)
             {
-                SimpleAdapter adapter = new SimpleAdapter(getActivity(),routes_hashmap,R.layout.routes_single_row,from,to);
+               // SimpleAdapter adapter = new SimpleAdapter(getActivity(),routes_hashmap,R.layout.routes_single_row,from,to);
+                Log.e("vikas","before adapter call");
+                Listview_adapter adapter = new Listview_adapter(getActivity(),routes_hashmap);
                 all_routes_list.setAdapter(adapter);
                 listview_layout.setVisibility(View.VISIBLE);
                 routes_loader_duration.setVisibility(View.GONE);
                 message_layout.setVisibility(View.GONE);
+
+
             }
             else
             {
@@ -131,9 +130,10 @@ public class Fragment_Routes_Duration extends Fragment {
                 single_map.put("company_id",Integer.toString(rout.get(i).getCompanyId()));
                 single_map.put("company_name",rout.get(i).getCompanyName());
                 single_map.put("fare",getResources().getString(R.string.Rs)+" "+Float.toString(rout.get(i).getFare()));
+                single_map.put("fare_offer",getResources().getString(R.string.Rs)+" "+Float.toString(rout.get(i).getFare_after_offer()));
                 single_map.put("bus_label",rout.get(i).getBusLabel());
                 single_map.put("time",rout.get(i).getDeparturetime()+"-"+rout.get(i).getArrivaltime());
-                single_map.put("Availabel_Seats",rout.get(i).getAvailableSeats()+" "+"Seats");
+                single_map.put("Availabel_Seats",""+rout.get(i).getAvailableSeats());
                 single_map.put("duration",rout.get(i).getDuration());
 
                 routes_hashmap.add(single_map);
@@ -151,7 +151,7 @@ public class Fragment_Routes_Duration extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        all_routes_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        /*all_routes_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 
@@ -164,9 +164,8 @@ public class Fragment_Routes_Duration extends Fragment {
                 startActivity(i,bundle);
                 // overridePendingTransition(R.animator.anim_in, R.animator.anim_none);
             }
-        });
+        });*/
     }
-
 
     public void makequery()
     {

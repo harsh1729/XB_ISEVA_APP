@@ -72,6 +72,13 @@ public class Activity_Category_Choose extends Activity {
     private int servercity = 0;
     String type = "";
 
+    public static double latitute;
+    public static double longitude;
+
+    private ImageView location_choose_iv;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,12 +115,27 @@ public class Activity_Category_Choose extends Activity {
         TextView txtHeader = (TextView) findViewById(R.id.txtHeader);
         txtHeader.setText("Register Details");
         ImageView imgBack = (ImageView) findViewById(R.id.imgBack);
+        location_choose_iv = (ImageView)findViewById(R.id.image_location_choose);
+
+
+
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Activity_Category_Choose.this.finish();
             }
         });
+
+        location_choose_iv.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                Intent i  = new Intent(Activity_Category_Choose.this,Activity_location_choose.class);
+                startActivity(i);
+            }
+        });
+
+
 
 
 
@@ -943,7 +965,7 @@ public class Activity_Category_Choose extends Activity {
                 Custom_VolleyObjectRequest jsonObjectRQST = new Custom_VolleyObjectRequest(
                         Request.Method.POST,
                         Custom_URLs_Params.getURL_OnsubmitCate(),
-                        Custom_URLs_Params.getParams_SaveCate(this, name, contact, addre,servi,imageId,selectedCityID,imageid,editText.getText().toString()),
+                        Custom_URLs_Params.getParams_SaveCate(this, name, contact, addre,servi,imageId,selectedCityID,imageid,editText.getText().toString(),latitute,longitude),
                         new Listener<JSONObject>() {
 
                             @Override

@@ -31,34 +31,34 @@
 
 
     <!--globle dimention travel module start-->
-        <dimen name="text_size_micro">8sp</dimen>
-        <dimen name="text_size_extra_small">10sp</dimen>
-        <dimen name="text_size_small">12sp</dimen>
-        <dimen name="text_size_mediam">14sp</dimen>
-        <dimen name="text_size_normal">16sp</dimen>
-        <dimen name="text_size_large">18sp</dimen>
-        <dimen name="text_size_extra_large">22sp</dimen>
+    <dimen name="text_size_micro">8sp</dimen>
+    <dimen name="text_size_extra_small">10sp</dimen>
+    <dimen name="text_size_small">12sp</dimen>
+    <dimen name="text_size_mediam">14sp</dimen>
+    <dimen name="text_size_normal">16sp</dimen>
+    <dimen name="text_size_large">18sp</dimen>
+    <dimen name="text_size_extra_large">22sp</dimen>
 
 
     <dimen name="padding_margin_neg_16">-16dp</dimen>
-        <dimen name="padding_margin_0">0dp</dimen>
-        <dimen name="padding_margin_1">1dp</dimen>
-        <dimen name="padding_margin_3">3dp</dimen>
-        <dimen name="padding_margin_5">5dp</dimen>
-        <dimen name="padding_margin_6">6dp</dimen>
-        <dimen name="padding_margin_7.5">7.5dp</dimen>
-        <dimen name="padding_margin_10">10dp</dimen>
-        <dimen name="padding_margin_12">12dp</dimen>
-        <dimen name="padding_margin_15">15dp</dimen>
-        <dimen name="padding_margin_16">16dp</dimen>
-        <dimen name="padding_margin_20">20dp</dimen>
-        <dimen name="padding_margin_25">25dp</dimen>
-        <dimen name="padding_margin_30">30dp</dimen>
-        <dimen name="padding_margin_35">35dp</dimen>
-        <dimen name="padding_margin_40">40dp</dimen>
-        <dimen name="padding_margin_50">50dp</dimen>
+    <dimen name="padding_margin_0">0dp</dimen>
+    <dimen name="padding_margin_1">1dp</dimen>
+    <dimen name="padding_margin_3">3dp</dimen>
+    <dimen name="padding_margin_5">5dp</dimen>
+    <dimen name="padding_margin_6">6dp</dimen>
+    <dimen name="padding_margin_7.5">7.5dp</dimen>
+    <dimen name="padding_margin_10">10dp</dimen>
+    <dimen name="padding_margin_12">12dp</dimen>
+    <dimen name="padding_margin_15">15dp</dimen>
+    <dimen name="padding_margin_16">16dp</dimen>
+    <dimen name="padding_margin_20">20dp</dimen>
+    <dimen name="padding_margin_25">25dp</dimen>
+    <dimen name="padding_margin_30">30dp</dimen>
+    <dimen name="padding_margin_35">35dp</dimen>
+    <dimen name="padding_margin_40">40dp</dimen>
+    <dimen name="padding_margin_50">50dp</dimen>
 
-        <dimen name="travel_header">55dp</dimen>
+    <dimen name="travel_header">55dp</dimen>
     <!--globle dimention travel module end-->
 
 
@@ -165,10 +165,6 @@
     <!--Fragment routes_time dimentions start-->
 
     <!--Fragment routes_time dimentions end-->
-
-
-
-
 
 
     <!--itinerary screen dimentions start-->

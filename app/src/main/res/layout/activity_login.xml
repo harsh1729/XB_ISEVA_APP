@@ -41,7 +41,7 @@
 
 
 
-     <EditText
+     <com.iseva.app.source.customcomponent.EditTextRegular
          style="@style/et_login"
          android:id="@+id/activity_login_et_email"
          android:layout_marginLeft="@dimen/padding_margin_20"
@@ -54,7 +54,7 @@
          android:imeOptions="actionDone"
          android:inputType="textEmailAddress"
          android:textColor="@android:color/black" />
-    <EditText
+    <com.iseva.app.source.customcomponent.EditTextRegular
         style="@style/et_login"
         android:id="@+id/activity_login_et_password"
         android:background="@drawable/bg_et_box"
@@ -65,14 +65,14 @@
         android:inputType="textPassword"
         android:textColor="@android:color/black" />
 
-    <Button
+    <com.iseva.app.source.customcomponent.ButtonBold
         style="@style/btn_style_full_width"
         android:id="@+id/activity_login_bt_login"
         android:layout_marginTop="@dimen/padding_margin_20"
         android:onClick="loginauth"
         android:text="login" />
 
-    <Button
+    <com.iseva.app.source.customcomponent.ButtonBold
         android:id="@+id/activity_login_bt_signup"
         style="@style/btn_style_full_width"
         android:onClick="go_signup_activity"
