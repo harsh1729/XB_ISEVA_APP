@@ -10,6 +10,8 @@
 
     <item android:id="@+id/action_about" android:title="Developed n Maintained by"
         android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/action_privacy_policy_home" android:title="@string/action_privacy_policy"
+        android:orderInCategory="100" app:showAsAction="never" />
     <item
         android:id="@+id/action_search"
         android:icon="@android:drawable/ic_search_category_default"

@@ -10,9 +10,13 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,6 +32,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.BaseSliderView;
+import com.daimajia.slider.library.SliderTypes.TextSliderView;
+import com.daimajia.slider.library.Tricks.ViewPagerEx;
+import com.iseva.app.source.Activity_AdverImageView;
 import com.iseva.app.source.R;
 
 import org.json.JSONException;
@@ -48,7 +57,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class MainActivity extends Activity{
+public class MainActivity extends Activity implements NavigationView.OnNavigationItemSelectedListener,BaseSliderView.OnSliderClickListener,ViewPagerEx.OnPageChangeListener{
 
     ImageView iv_header;
     TextView tv_header;
@@ -72,6 +81,10 @@ public class MainActivity extends Activity{
     private int volley_timeout = 15000;
 
     public static int save_per = 10;
+
+    ArrayList<String> promo_image;
+    SliderLayout sliderLayout_main;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -146,6 +159,14 @@ public class MainActivity extends Activity{
 
     public void initialize()
     {
+
+
+
+
+
+
+
+
         iv_header = (ImageView)findViewById(R.id.header_back_button);
         tv_header = (TextView)findViewById(R.id.header_text);
         tv_header.setText("Travel");
@@ -170,6 +191,59 @@ public class MainActivity extends Activity{
         Journey_Date_et.setText(change_date_form(today_date));
         Search_Buses_Key.Selected_date = today_date;
         //Toast.makeText(this,today_date,Toast.LENGTH_LONG).show();
+
+
+
+        CardView slider_layout = (CardView)findViewById(R.id.slider_layout_main) ;
+        sliderLayout_main = (SliderLayout)findViewById(R.id.slider_main);
+
+        promo_image = new ArrayList<>();
+        Intent i = getIntent();
+        promo_image = i.getStringArrayListExtra("promo_image");
+        if(promo_image.size() > 0)
+        {
+            slider_layout.setVisibility(View.VISIBLE);
+            for(int k =0;k<promo_image.size();k++)
+            {
+                Log.e("vikas promourl",promo_image.get(k));
+                TextSliderView textSliderView = new TextSliderView(MainActivity.this);
+                textSliderView
+
+                        .image(promo_image.get(k))
+                        .setScaleType(BaseSliderView.ScaleType.Fit)
+                        .setOnSliderClickListener(this);
+                textSliderView.bundle(new Bundle());
+                textSliderView.getBundle()
+                        .putString("extra",""+k);
+                sliderLayout_main.addSlider(textSliderView);
+
+            }
+
+            sliderLayout_main.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+            sliderLayout_main.setCustomAnimation(null);
+
+
+            sliderLayout_main.setDuration(4000);
+            sliderLayout_main.addOnPageChangeListener(this);
+            if(promo_image.size() > 1)
+            {
+                sliderLayout_main.startAutoCycle();
+
+            }
+            else
+            {
+                sliderLayout_main.stopAutoCycle();
+            }
+
+        }
+        else
+        {
+            slider_layout.setVisibility(View.GONE);
+        }
+
+
+
+
 
         if(isNetworkConnected())
         {
@@ -499,6 +573,66 @@ public class MainActivity extends Activity{
         return cm.getActiveNetworkInfo() != null;
     }
 
+    /**
+     * Called when an item in the navigation menu is selected.
+     *
+     * @param item The selected item
+     * @return true to display the item as the selected item
+     */
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        return false;
+    }
+
+    @Override
+    public void onSliderClick(BaseSliderView slider) {
+        int position = Integer.parseInt(slider.getBundle().get("extra").toString());
+        Intent i = new Intent(MainActivity.this,Activity_AdverImageView.class);
+        i.putExtra("id",position);
+        i.putStringArrayListExtra("imageList", promo_image);
+        startActivity(i);
+    }
+
+    /**
+     * This method will be invoked when the current page is scrolled, either as part
+     * of a programmatically initiated smooth scroll or a user initiated touch scroll.
+     *
+     * @param position             Position index of the first page currently being displayed.
+     *                             Page position+1 will be visible if positionOffset is nonzero.
+     * @param positionOffset       Value from [0, 1) indicating the offset from the page at position.
+     * @param positionOffsetPixels Value in pixels indicating the offset from position.
+     */
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    /**
+     * This method will be invoked when a new page becomes selected. Animation is not
+     * necessarily complete.
+     *
+     * @param position Position index of the new selected page.
+     */
+    @Override
+    public void onPageSelected(int position) {
+
+    }
+
+    /**
+     * Called when the scroll state changes. Useful for discovering when the user
+     * begins dragging, when the pager is automatically settling to the current page,
+     * or when it is fully stopped/idle.
+     *
+     * @param state The new scroll state.
+     * @see ViewPagerEx#SCROLL_STATE_IDLE
+     * @see ViewPagerEx#SCROLL_STATE_DRAGGING
+     * @see ViewPagerEx#SCROLL_STATE_SETTLING
+     */
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
 // request classes
 
     private class LoginAuth extends AsyncTask<Void, Void, Void>    {
@@ -594,7 +728,8 @@ public class MainActivity extends Activity{
 
             PropertyInfo logincode = new PropertyInfo();
             logincode.setName("LoginCode");
-            logincode.setValue("9542");
+           logincode.setValue("9542");
+            //logincode.setValue("7304");
             logincode.setType(Integer.class);
             request.addProperty(logincode);
 

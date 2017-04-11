@@ -715,7 +715,7 @@ public class Activity_show_detail_booked_ticket extends Activity {
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(Activity_show_detail_booked_ticket.this);
                         builder.setCustomTitle(title_tv)
-                                .setMessage("Your ticket successfully cancelled")
+                                .setMessage("Your ticket successfully cancelled. Your refund amount will credit in your account in two days.")
                                 .setCancelable(false)
                                 .setNegativeButton("Ok",new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {

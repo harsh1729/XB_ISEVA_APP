@@ -372,7 +372,7 @@ public class Activity_loading extends Activity {
                             }
                             else
                             {
-                                offer_per = commition_per;
+                                offer_per = 0;
                             }
                             int temp_fare_offer = (int)(fare *(100-offer_per))/100;
                             if(MainActivity.save_per <= commition_per && MainActivity.save_per != 0) {

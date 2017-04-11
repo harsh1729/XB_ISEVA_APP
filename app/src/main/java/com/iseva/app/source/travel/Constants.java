@@ -59,6 +59,7 @@ public class Constants {
     public static final String get_extra_charge ="http://xercesblue.website/iservice/client_requests/promocodes/get_extra_charge";
     public static final String get_commition_extra_charge = "http://xercesblue.website/iservice/client_requests/promocodes/get_commition_extra_charge";
     public static final String send_message_url = "http://xercesblue.website/iservice/client_requests/transaction/send_message";
+    public static final String get_promo_images = "http://xercesblue.website/iservice/client_requests/promocodes/get_promo_images";
 
     public static final int state_main_cities = 0;
     public static final int state_all_cities = 1;

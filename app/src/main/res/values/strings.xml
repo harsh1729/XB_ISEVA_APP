@@ -9,6 +9,7 @@
     <string name="action_settings">Settings</string>
     <string name="action_city">Choose City</string>
     <string name="action_contact">Contact Us</string>
+    <string name="action_privacy_policy">Privacy Policy</string>
     <string name="title_activity_activity__login__merchant">Sign in</string>
 
     <!-- Strings related to login -->

@@ -8,6 +8,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -27,6 +28,8 @@ public class Activity_SelectCityTo extends Activity{
     public ArrayList<HashMap<String, String>> All_Cities_Map;
     public  ArrayList<HashMap<String,String>> Main_Cities;
 
+    private int current_city_state = Constants.state_main_cities;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +46,7 @@ public class Activity_SelectCityTo extends Activity{
         header_tv.setText(R.string.header_text_city_to);
         header_iv = (ImageView)findViewById(R.id.header_back_button);
 
-        add_adapter(0);
+        add_adapter();
 
 
         Real_Get_To_City.addTextChangedListener(new TextWatcher() {
@@ -53,12 +56,19 @@ public class Activity_SelectCityTo extends Activity{
                 if(Real_Get_To_City.getText().length() == 0)
                 {
 
-                    add_adapter(0);
-                    city_category.setText("Populur Cities");
+                    if (current_city_state != Constants.state_main_cities){
+                        current_city_state = Constants.state_main_cities;
+                        add_adapter();
+                    }
+
+                    city_category.setText("Popular Cities");
                 }
-                else if(Real_Get_To_City.getText().length() == 1)
+                else if(!(s.toString().contains("cityid") && s.toString().contains("cityname")))
                 {
-                    add_adapter(1);
+                    if (current_city_state != Constants.state_all_cities){
+                        current_city_state = Constants.state_all_cities;
+                        add_adapter();
+                    }
                     city_category.setText("All Cities");
                 }
 
@@ -107,28 +117,16 @@ public class Activity_SelectCityTo extends Activity{
     }
 
 
-    public void add_adapter(int type)
+    public void add_adapter()
     {
         String[] from = new String[] {"cityname"};
         int[] to = new int[] {R.id.text1};
 
-        AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
 
-
-                HashMap<String, String> hm = (HashMap<String, String>) arg0.getAdapter().getItem(position);
-                AutoCompleteTextView et = (AutoCompleteTextView)findViewById(R.id.Real_Get_To_City);
-                et.setText(hm.get(""));
-                Search_Buses_Key.TO_City_id = hm.get("cityid");
-                Search_Buses_Key.To_City_name = hm.get("cityname");
-                activity_dismiss();
-            }
-        };
 
         SimpleAdapter adapter1 = null;
 
-        if(type == 0)
+        if(current_city_state == Constants.state_main_cities)
         {
             adapter1 = new SimpleAdapter(Activity_SelectCityTo.this,Main_Cities,R.layout.show_city_single_row,from,to);
         }
@@ -137,11 +135,21 @@ public class Activity_SelectCityTo extends Activity{
             adapter1 = new SimpleAdapter(Activity_SelectCityTo.this,All_Cities_Map,R.layout.show_city_single_row,from,to);
         }
 
-        adapter1.notifyDataSetChanged();
-        Real_Get_To_City.setOnItemClickListener(itemClickListener);
 
         Real_Get_To_City.setAdapter(adapter1);
-        Real_Get_To_City.setThreshold(0);
+        Real_Get_To_City.setThreshold(1);
+        adapter1.notifyDataSetChanged();
+        Real_Get_To_City.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                HashMap<String, String> hm = (HashMap<String, String>) adapterView.getAdapter().getItem(i);
+                EditText et = (EditText)findViewById(R.id.Real_Get_To_City);
+                et.setText(hm.get(""));
+                Search_Buses_Key.TO_City_id = hm.get("cityid");
+                Search_Buses_Key.To_City_name = hm.get("cityname");
+                activity_dismiss();
+            }
+        });
     }
 
     public void activity_dismiss()

@@ -90,6 +90,11 @@ public class Listview_adapter extends BaseAdapter{
             holder.fare_tv.setPaintFlags(holder.fare_tv.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
             holder.offer_fare_tv.setText(routes_hashmap.get(i).get("fare_offer"));
+
+        }
+        else
+        {
+            holder.offer_fare_tv.setVisibility(View.GONE);
         }
         int availabel_seat= Integer.parseInt(routes_hashmap.get(i).get("Availabel_Seats"));
         if(availabel_seat <= 5)

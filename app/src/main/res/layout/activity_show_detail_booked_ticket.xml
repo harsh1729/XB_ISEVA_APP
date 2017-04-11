@@ -53,7 +53,7 @@
                                 android:layout_height="wrap_content"
                                 android:textColor="#666"
                                 android:textSize="@dimen/text_size_small"
-                                android:text="Friday, 23 December,2017"/>
+                                android:text=""/>
                         </LinearLayout>
 
                     </LinearLayout>
@@ -106,7 +106,7 @@
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/text_size_large"
-                                android:text="Ahmedabad"/>
+                                android:text=""/>
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -118,7 +118,7 @@
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/text_size_large"
-                                android:text="Jaipur"/>
+                                android:text=""/>
                         </LinearLayout>
 
                     </LinearLayout>
@@ -156,7 +156,7 @@
                                     android:layout_height="wrap_content"
                                     android:textColor="#333"
                                     android:textSize="@dimen/text_size_normal"
-                                    android:text="18:00"/>
+                                    android:text=""/>
                             </LinearLayout>
                         </LinearLayout>
                         <LinearLayout
@@ -183,7 +183,7 @@
                                     android:layout_height="wrap_content"
                                     android:textColor="#333"
                                     android:textSize="@dimen/text_size_normal"
-                                    android:text="Hotal Rajputana"/>
+                                    android:text=""/>
                             </LinearLayout>
                         </LinearLayout>
 
@@ -217,7 +217,7 @@
                                 android:layout_height="wrap_content"
                                 android:textColor="#333"
                                 android:textSize="@dimen/text_size_normal"
-                                android:text="Shrinath travel agency"/>
+                                android:text=""/>
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -228,7 +228,7 @@
                                 android:layout_height="wrap_content"
                                 android:textColor="#333"
                                 android:textSize="@dimen/text_size_normal"
-                                android:text="Volvo A/C MultiAxle Sleeper"/>
+                                android:text=""/>
                         </LinearLayout>
                     </LinearLayout>
                     <LinearLayout
@@ -266,7 +266,7 @@
                                     android:layout_height="wrap_content"
                                     android:textColor="#333"
                                     android:textSize="@dimen/text_size_normal"
-                                    android:text="L8,L9"/>
+                                    android:text=""/>
                             </LinearLayout>
                         </LinearLayout>
                         <LinearLayout
@@ -282,7 +282,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:textSize="@dimen/text_size_small"
-                                    android:text="PASSENGERS"/>
+                                    android:text="PASSENGER"/>
                             </LinearLayout>
                             <LinearLayout
                                 android:layout_width="wrap_content"
@@ -293,7 +293,7 @@
                                     android:layout_height="wrap_content"
                                     android:textColor="#333"
                                     android:textSize="@dimen/text_size_normal"
-                                    android:text="Vikas Sharma"/>
+                                    android:text=""/>
                             </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
@@ -327,7 +327,7 @@
                                 android:layout_height="wrap_content"
                                 android:textColor="#333"
                                 android:textSize="@dimen/text_size_normal"
-                                android:text="Opp. R.S. Post Office, Near Railwaystatin.Near Hotel Rajputana.Jaipur "/>
+                                android:text=""/>
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -338,7 +338,7 @@
                                 android:textColor="#333"
                                 android:textSize="@dimen/text_size_normal"
                                 android:layout_height="wrap_content"
-                                android:text="Bus Stop"/>
+                                android:text=""/>
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -349,7 +349,7 @@
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/text_size_normal"
-                                android:text="09782908308"/>
+                                android:text=""/>
                         </LinearLayout>
                     </LinearLayout>
                     <LinearLayout
@@ -382,7 +382,7 @@
                                 android:layout_height="wrap_content"
                                 android:textColor="#333"
                                 android:textSize="@dimen/text_size_normal"
-                                android:text="Paldi"/>
+                                android:text=""/>
                         </LinearLayout>
                     </LinearLayout>
                     <LinearLayout
@@ -420,7 +420,7 @@
                                     android:textColor="#333"
                                     android:textSize="@dimen/text_size_normal"
                                     android:layout_height="wrap_content"
-                                    android:text="9782896857"/>
+                                    android:text=""/>
                             </LinearLayout>
                         </LinearLayout>
                         <LinearLayout
@@ -447,7 +447,7 @@
                                     android:textColor="#333"
                                     android:textSize="@dimen/text_size_normal"
                                     android:layout_height="wrap_content"
-                                    android:text="1050"/>
+                                    android:text=""/>
                             </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
@@ -483,7 +483,7 @@
                                 android:textColor="#333"
                                 android:textSize="@dimen/text_size_normal"
                                 android:layout_height="wrap_content"
-                                android:text="5865894-546857"/>
+                                android:text=""/>
                         </LinearLayout>
                     </LinearLayout>
                     <LinearLayout
@@ -497,6 +497,7 @@
                         android:id="@+id/activity_ticket_detail_cancel_btn_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:visibility="gone"
                         android:layout_marginTop="@dimen/padding_margin_20">
                         <LinearLayout
                             android:layout_width="match_parent"

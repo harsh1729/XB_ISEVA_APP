@@ -338,7 +338,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity android:name=".Activity_location_choose" />
-        <activity android:name=".Activity_location_show"></activity>
+        <activity android:name=".Activity_location_show" />
+        <activity android:name=".Activity_privacy_policy"></activity>
     </application>
 
 </manifest>

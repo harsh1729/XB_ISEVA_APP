@@ -55,7 +55,7 @@ public class Activity_SelectCityFrom extends Activity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                 Log.e("vikas  charsequ-",s+" start-"+ start+ " before-"+before+"  count-"+count );
-                if(count == 0)//Real_Get_From_City.getText().length()
+                if(Real_Get_From_City.getText().length() == 0)//Real_Get_From_City.getText().length()
                 {
 
                     if (current_city_state != Constants.state_main_cities){

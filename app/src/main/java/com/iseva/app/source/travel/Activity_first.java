@@ -2,41 +2,36 @@ package com.iseva.app.source.travel;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
@@ -44,46 +39,30 @@ import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.iseva.app.source.Activity_About_Developer;
 import com.iseva.app.source.Activity_About_Us;
 import com.iseva.app.source.Activity_AdverImageView;
-import com.iseva.app.source.Activity_BusinessExtraShow;
 import com.iseva.app.source.Activity_BusinessExtra_Type;
-import com.iseva.app.source.Activity_Buy_Zone;
-import com.iseva.app.source.Activity_Category_Choose;
 import com.iseva.app.source.Activity_City_Choose;
 import com.iseva.app.source.Activity_Home;
 import com.iseva.app.source.Activity_Login_Merchant;
-import com.iseva.app.source.Activity_ServiceProvider;
 import com.iseva.app.source.Activity_Settings;
-import com.iseva.app.source.Activity_SubCategory;
+import com.iseva.app.source.Activity_privacy_policy;
 import com.iseva.app.source.Custom_ConnectionDetector;
 import com.iseva.app.source.Custom_GetMobile_Number;
-import com.iseva.app.source.Custom_RoundedImageView;
 import com.iseva.app.source.Custom_URLs_Params;
 import com.iseva.app.source.Custom_VolleyAppController;
 import com.iseva.app.source.Custom_VolleyObjectRequest;
-import com.iseva.app.source.DBHandler_Access;
 import com.iseva.app.source.GCMIntentService;
 import com.iseva.app.source.Globals;
 import com.iseva.app.source.Object_AppConfig;
 import com.iseva.app.source.Object_BusinessExtraData;
-import com.iseva.app.source.Object_Category;
-import com.iseva.app.source.PageIndicator;
 import com.iseva.app.source.R;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Timer;
-
-import static android.R.attr.id;
+import java.util.Map;
 
 public class Activity_first extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,BaseSliderView.OnSliderClickListener,ViewPagerEx.OnPageChangeListener{
     static boolean pushNotification = false;
@@ -112,6 +91,9 @@ public class Activity_first extends AppCompatActivity implements NavigationView.
 
     LinearLayout bus_ticket_btn;
     LinearLayout my_city_btn;
+    private int volley_timeout = 15000;
+
+    private ArrayList<String> promo_images = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +103,7 @@ public class Activity_first extends AppCompatActivity implements NavigationView.
         setSupportActionBar(toolbar);
         Custom_GetMobile_Number.app_launched(this) ;
 
+        get_promo_image();
         bus_ticket_btn = (LinearLayout)findViewById(R.id.activity_first_bus_ticket_btn);
         my_city_btn = (LinearLayout)findViewById(R.id.activity_first_my_city_btn);
 
@@ -238,9 +221,74 @@ public class Activity_first extends AppCompatActivity implements NavigationView.
         getAddver();
     }
 
+    public void get_promo_image()
+    {
+        StringRequest promocodeapplyrequest = new StringRequest(Request.Method.POST,
+                Constants.get_promo_images, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String s) {
+
+                Log.e("vikas",s);
+                JSONArray response = null;
+                try
+                {
+                    response = new JSONArray(s);
+
+
+                    if(response != null)
+                    {
+                        for (int j =0;j<response.length();j++)
+                        {
+                            promo_images.add(response.get(j).toString());
+                        }
+
+                    }
+
+                } catch (JSONException e) {
+
+
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+
+
+            }
+        }) {
+            @Override
+            public Map<String, String> getParams(){
+                Map<String, String> params = new HashMap<String, String>();
+
+
+
+
+
+
+                return params;
+
+            }
+        };
+
+        promocodeapplyrequest.setRetryPolicy(new DefaultRetryPolicy(
+                volley_timeout,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        RequestQueue requestQueue = Volley.newRequestQueue(Activity_first.this);
+        requestQueue.add(promocodeapplyrequest);
+    }
+
+
     private void booking_ticket()
     {
         Intent i = new Intent(Activity_first.this,MainActivity.class);
+
+        i.putExtra("promo_image",promo_images);
+
+
         startActivity(i);
         overridePendingTransition(R.anim.anim_in, R.anim.anim_none);
     }
@@ -623,6 +671,11 @@ public class Activity_first extends AppCompatActivity implements NavigationView.
             naviAboutDev();
             return  true;
         }
+        else if(id == R.id.action_privacy_policy)
+        {
+            naviprivacypolicyDev();
+            return  true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -632,6 +685,11 @@ public class Activity_first extends AppCompatActivity implements NavigationView.
         startActivity(i);
     }
 
+    private void naviprivacypolicyDev()
+    {
+        Intent i = new Intent(this,Activity_privacy_policy.class);
+        startActivity(i);
+    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override

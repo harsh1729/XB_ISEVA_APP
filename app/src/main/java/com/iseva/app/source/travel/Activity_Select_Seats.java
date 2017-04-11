@@ -698,7 +698,7 @@ public class Activity_Select_Seats extends AppCompatActivity {
                                 }
                                 else
                                 {
-                                    offer_per = CommPCT;
+                                    offer_per =0;
                                 }
 
                                 int temp_fare_offer = (int)(Fare *(100-offer_per))/100;
