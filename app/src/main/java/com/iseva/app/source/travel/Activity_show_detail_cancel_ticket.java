@@ -10,7 +10,7 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -226,11 +226,20 @@ public class Activity_show_detail_cancel_ticket extends Activity {
 
     public void showAlertDialog(String title,String message,String buttonlabel)
     {
-        TextView title_tv = new TextView(this);
+       /* TextView title_tv = new TextView(this);
         title_tv.setPadding(0,getResources().getDimensionPixelSize(R.dimen.padding_margin_10),0,0);
         title_tv.setTextColor(ContextCompat.getColor(Activity_show_detail_cancel_ticket.this,R.color.black));
-        title_tv.setTextSize(getResources().getDimension(R.dimen.text_size_extra_small));
+        title_tv.setTextSize(16);
         title_tv.setGravity(Gravity.CENTER);
+        title_tv.setText(title);*/
+
+        LayoutInflater inflater = (LayoutInflater)Activity_show_detail_cancel_ticket.this.getSystemService
+                (Context.LAYOUT_INFLATER_SERVICE);
+
+        View v =  inflater.inflate(R.layout.textview,null);
+
+
+        TextView title_tv = (TextView)v.findViewById(R.id.alert_title);
         title_tv.setText(title);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(Activity_show_detail_cancel_ticket.this);

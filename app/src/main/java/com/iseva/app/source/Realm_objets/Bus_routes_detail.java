@@ -87,7 +87,7 @@ public class Bus_routes_detail extends RealmObject{
     }
     public float getFare_after_offer()
     {
-        return Fare_after_offer;
+        return this.Fare_after_offer;
     }
     public float getSeaterFareNAC()
     {

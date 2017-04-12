@@ -686,19 +686,7 @@ public class Activity_review_itinerary extends Activity {
             }
         }
     }
-    private void showDialogMessage(String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(TAG);
-        builder.setMessage(message);
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        builder.show();
 
-    }
 
     public void add_transaction_server()
     {
@@ -950,13 +938,20 @@ public class Activity_review_itinerary extends Activity {
                                     @Override
                                     public void onClick(View view) {
 
-                                        TextView title_tv = new TextView(Activity_review_itinerary.this);
+                                       /* TextView title_tv = new TextView(Activity_review_itinerary.this);
                                         title_tv.setPadding(0,getResources().getDimensionPixelSize(R.dimen.padding_margin_10),0,0);
                                         title_tv.setTextColor(ContextCompat.getColor(Activity_review_itinerary.this,R.color.black));
-                                        title_tv.setTextSize(getResources().getDimension(R.dimen.text_size_extra_small));
+                                        title_tv.setTextSize(16);
                                         title_tv.setGravity(Gravity.CENTER);
-                                        title_tv.setText("Alert");
+                                        title_tv.setText("Alert");*/
+                                        LayoutInflater inflater = (LayoutInflater)Activity_review_itinerary.this.getSystemService
+                                                (Context.LAYOUT_INFLATER_SERVICE);
 
+                                        View v =  inflater.inflate(R.layout.textview,null);
+
+
+                                        TextView title_tv = (TextView)v.findViewById(R.id.alert_title);
+                                        title_tv.setText("Alert");
                                         AlertDialog.Builder builder = new AlertDialog.Builder(Activity_review_itinerary.this);
                                         builder.setCustomTitle(title_tv)
                                                 .setMessage("You are sure to remove promocode")
@@ -1188,11 +1183,20 @@ public class Activity_review_itinerary extends Activity {
 
     public void activity_dismiss()
     {
-        TextView title_tv = new TextView(this);
+       /* TextView title_tv = new TextView(this);
         title_tv.setPadding(0,getResources().getDimensionPixelSize(R.dimen.padding_margin_10),0,0);
         title_tv.setTextColor(ContextCompat.getColor(Activity_review_itinerary.this,R.color.black));
-        title_tv.setTextSize(getResources().getDimension(R.dimen.text_size_extra_small));
+        title_tv.setTextSize(16);
         title_tv.setGravity(Gravity.CENTER);
+        title_tv.setText("Alert");*/
+
+        LayoutInflater inflater = (LayoutInflater)Activity_review_itinerary.this.getSystemService
+                (Context.LAYOUT_INFLATER_SERVICE);
+
+        View v =  inflater.inflate(R.layout.textview,null);
+
+
+        TextView title_tv = (TextView)v.findViewById(R.id.alert_title);
         title_tv.setText("Alert");
 
         AlertDialog.Builder builder = new AlertDialog.Builder(Activity_review_itinerary.this);
@@ -1239,11 +1243,20 @@ public class Activity_review_itinerary extends Activity {
         }
         else
         {
-            TextView title_tv = new TextView(this);
+           /* TextView title_tv = new TextView(this);
             title_tv.setPadding(0,getResources().getDimensionPixelSize(R.dimen.padding_margin_10),0,0);
             title_tv.setTextColor(ContextCompat.getColor(Activity_review_itinerary.this,R.color.black));
-            title_tv.setTextSize(getResources().getDimension(R.dimen.text_size_extra_small));
+            title_tv.setTextSize(16);
             title_tv.setGravity(Gravity.CENTER);
+            title_tv.setText("Alert");
+*/
+            LayoutInflater inflater = (LayoutInflater)Activity_review_itinerary.this.getSystemService
+                    (Context.LAYOUT_INFLATER_SERVICE);
+
+            View v =  inflater.inflate(R.layout.textview,null);
+
+
+            TextView title_tv = (TextView)v.findViewById(R.id.alert_title);
             title_tv.setText("Alert");
 
             AlertDialog.Builder builder = new AlertDialog.Builder(Activity_review_itinerary.this);

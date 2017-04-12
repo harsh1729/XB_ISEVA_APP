@@ -40,7 +40,7 @@ public class Activity_loading extends Activity {
 
     LinearLayout loader_layout;
 
-
+    private Realm My_realm;
 
     int count ;
     DilatingDotsProgressBar mDilatingDotsProgressBar;
@@ -51,7 +51,7 @@ public class Activity_loading extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
 
-
+        My_realm = Realm.getInstance(getApplicationContext());
 
         loading_text = (TextView)findViewById(R.id.Loading_text);
         loader_layout = (LinearLayout)findViewById(R.id.activity_loading_loader_layout);

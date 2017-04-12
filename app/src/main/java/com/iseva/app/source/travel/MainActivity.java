@@ -15,7 +15,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.util.Log;
-import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -284,12 +284,20 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
 
     public void callAlertBox()
     {
-        TextView title_tv = new TextView(this);
+        LayoutInflater inflater = (LayoutInflater)MainActivity.this.getSystemService
+                (Context.LAYOUT_INFLATER_SERVICE);
+
+        View v =  inflater.inflate(R.layout.textview,null);
+
+
+        TextView title_tv = (TextView)v.findViewById(R.id.alert_title);
+        title_tv.setText(getResources().getString(R.string.internet_connection_error_title));
+       /* TextView title_tv = new TextView(this);
         title_tv.setPadding(0,10,0,0);
         title_tv.setTextColor(ContextCompat.getColor(MainActivity.this,R.color.black));
-        title_tv.setTextSize(getResources().getDimension(R.dimen.text_size_extra_small));
+        title_tv.setTextSize(16);
         title_tv.setGravity(Gravity.CENTER);
-        title_tv.setText(getResources().getString(R.string.internet_connection_error_title));
+        title_tv.setText(getResources().getString(R.string.internet_connection_error_title));*/
 
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setCustomTitle(title_tv)

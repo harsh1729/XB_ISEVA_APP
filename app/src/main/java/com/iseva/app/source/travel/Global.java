@@ -4,7 +4,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v4.content.ContextCompat;
-import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -22,13 +23,23 @@ public class Global {
 
     public static void showAlertDialog(Context context, String title, String message, String btn_txt)
     {
-        TextView title_tv = new TextView(context);
+        LayoutInflater inflater = (LayoutInflater)context.getSystemService
+                (Context.LAYOUT_INFLATER_SERVICE);
+
+        View v =  inflater.inflate(R.layout.textview,null);
+
+
+        TextView title_tv = (TextView)v.findViewById(R.id.alert_title);
+        title_tv.setText(title);
+       /* TextView title_tv = new TextView(context);
+
         title_tv.setPadding(0,10,0,0);
         title_tv.setTextColor(ContextCompat.getColor(context,R.color.black));
-        title_tv.setTextSize(context.getResources().getDimension(R.dimen.text_size_extra_small));
+        title_tv.setTextSize(16);
+
 
         title_tv.setGravity(Gravity.CENTER);
-        title_tv.setText(title);
+        title_tv.setText(title);*/
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setCustomTitle(title_tv)
