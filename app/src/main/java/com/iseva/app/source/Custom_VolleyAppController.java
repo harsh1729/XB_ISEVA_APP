@@ -1,31 +1,67 @@
 package com.iseva.app.source;
-import android.app.ActivityManager;
+
 import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDex;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
-import com.squareup.picasso.Cache;
-import com.squareup.picasso.Downloader;
-import com.squareup.picasso.LruCache;
-import com.squareup.picasso.OkHttpDownloader;
-import com.squareup.picasso.Picasso;
 
+import org.acra.ACRA;
+import org.acra.ReportField;
+import org.acra.ReportingInteractionMode;
+import org.acra.annotation.ReportsCrashes;
+import org.acra.sender.HttpSender;
+
+@ReportsCrashes(
+		formUri = "https://iseva.cloudant.com/acra-isevalog/_design/acra-storage/_update/report",
+		reportType = HttpSender.Type.JSON,
+		httpMethod = HttpSender.Method.POST,
+		formUriBasicAuthLogin = "allyrentookeneriestancen",
+		formUriBasicAuthPassword = "3291fc2fa445d4098b953edf02d16071ec1891b5",
+
+		customReportContent = {
+				ReportField.APP_VERSION_CODE,
+				ReportField.APP_VERSION_NAME,
+				ReportField.ANDROID_VERSION,
+				ReportField.PACKAGE_NAME,
+				ReportField.REPORT_ID,
+				ReportField.BUILD,
+				ReportField.STACK_TRACE
+		},
+		mode = ReportingInteractionMode.TOAST,
+		resToastText = R.string.toast_crash
+)
 
 public class Custom_VolleyAppController extends Application {
 
 	 private RequestQueue requestQueue;
 	 
 	 private static Custom_VolleyAppController appControllerContext;
-	 
+
+
+	@Override
+	protected void attachBaseContext(Context base) {
+		super.attachBaseContext(base);
+		MultiDex.install(this);
+	}
+
 	 @Override
 	 public void onCreate() 
 	 { 
 	  super.onCreate();
 	  System.out.println("AppController onCreate Called!");
 	  appControllerContext = this;
+
+		 try {
+			 ACRA.init(this);
+		 }
+		 catch (Exception e)
+		 {
+			 e.printStackTrace();
+		 }
 
 		/* Picasso.Builder builder = new Picasso.Builder(this);
 		 builder.downloader(new OkHttpDownloader(this,Integer.MAX_VALUE));

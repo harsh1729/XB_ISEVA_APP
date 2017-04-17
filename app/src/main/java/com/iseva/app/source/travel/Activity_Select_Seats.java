@@ -86,6 +86,7 @@ public class Activity_Select_Seats extends AppCompatActivity {
 
 
     LinearLayout progress_layout;
+    LinearLayout instruction_layout;
 
 
 
@@ -103,6 +104,7 @@ public class Activity_Select_Seats extends AppCompatActivity {
         Total_Fare_tv = (TextView)findViewById(R.id.Total_Fare);
         Total_Seats_tv = (TextView)findViewById(R.id.Selected_Seats);
         progress_layout = (LinearLayout)findViewById(R.id.select_seat_dynamic_data_layout);
+        instruction_layout = (LinearLayout)findViewById(R.id.seat_instruction_layout);
         progressBar = (ProgressBar)findViewById(R.id.activity_seat_progress_bar);
         loader_layout = (LinearLayout)findViewById(R.id.select_seat_loader_layout);
         cancel_cancellation_policy_layout = (TextView)findViewById(R.id.cancel_cancellation_layout);
@@ -143,7 +145,21 @@ public class Activity_Select_Seats extends AppCompatActivity {
            callalertbox();
         }
 
+        progress_layout.post(new Runnable(){
+            public void run() {
+                int seat_layout_height = progress_layout.getHeight();
+                Log.e("vikas seatlaououth =", "" + seat_layout_height);
+                if(seat_layout_height <= 180)
+                {
+                    instruction_layout.setVisibility(View.GONE);
+                }
+            }
+        });
+
     }
+
+
+
 
     public void callalertbox()
     {
@@ -251,6 +267,7 @@ public class Activity_Select_Seats extends AppCompatActivity {
 
             }
         });
+
     }
 
     public void activity_dismiss()

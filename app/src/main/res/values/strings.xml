@@ -39,7 +39,10 @@
 
     <string name="header_text_city_from">Select Origin City</string>
     <string name="header_text_city_to">Select Destination City</string>
-
+    
+    
+    <string name="toast_crash">crash</string>
+    
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

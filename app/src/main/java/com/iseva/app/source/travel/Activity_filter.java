@@ -6,23 +6,18 @@ import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-
 import com.iseva.app.source.R;
 import com.iseva.app.source.Realm_objets.Bus_routes_detail;
 import com.iseva.app.source.Realm_objets.Filter;
-import com.iseva.app.source.Realm_objets.Selected_Seats;
-
 
 import org.florescu.android.rangeseekbar.RangeSeekBar;
 
 import io.realm.Realm;
-import io.realm.RealmResults;
 
 import static com.iseva.app.source.travel.Activity_Bus_Routes.Busbrand_Mercesdes_flag;
 import static com.iseva.app.source.travel.Activity_Bus_Routes.Busbrand_Scania_flag;
@@ -76,7 +71,7 @@ public class Activity_filter extends Activity{
         header_text_layout = (LinearLayout)findViewById(R.id.layout_header_text);
         header_text_layout.setGravity(Gravity.CENTER_VERTICAL);
 
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
         lp.setMargins(0,0,10,0);
         header_tv_second.setLayoutParams(lp);
@@ -431,11 +426,11 @@ public class Activity_filter extends Activity{
                 && !Bustype_MultiAxle_flag && !Bustype_ac_flag && !price_range_flag)
         {
             TextView textView = new TextView(Activity_filter.this);
-            LinearLayout.LayoutParams lv = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams lv = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             textView.setLayoutParams(lv);
             textView.setText(R.string.no_filter_selectet);
             textView.setTextColor(ContextCompat.getColor(Activity_filter.this,R.color.filter_screen_text));
-            textView.setPadding(0,20,0,20);
+
             all_filter_name.addView(textView);
         }
         else
@@ -475,8 +470,8 @@ public class Activity_filter extends Activity{
     public void addTextviewTofilter_all_name(String filter_name,String filter_id)
     {
         TextView textView = new TextView(Activity_filter.this);
-        LinearLayout.LayoutParams lv = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        lv.setMargins(0,20,10,20);
+        LinearLayout.LayoutParams lv = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
         textView.setLayoutParams(lv);
         textView.setText(filter_name);
         textView.setTextColor(ContextCompat.getColor(Activity_filter.this,R.color.filter_screen_text));

@@ -1,4 +1,4 @@
-package com.iseva.app.source.travel;
+package com.iseva.app.source;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -36,25 +36,8 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
-import com.iseva.app.source.Activity_About_Developer;
-import com.iseva.app.source.Activity_About_Us;
-import com.iseva.app.source.Activity_AdverImageView;
-import com.iseva.app.source.Activity_BusinessExtra_Type;
-import com.iseva.app.source.Activity_City_Choose;
-import com.iseva.app.source.Activity_Home;
-import com.iseva.app.source.Activity_Login_Merchant;
-import com.iseva.app.source.Activity_Settings;
-import com.iseva.app.source.Activity_privacy_policy;
-import com.iseva.app.source.Custom_ConnectionDetector;
-import com.iseva.app.source.Custom_GetMobile_Number;
-import com.iseva.app.source.Custom_URLs_Params;
-import com.iseva.app.source.Custom_VolleyAppController;
-import com.iseva.app.source.Custom_VolleyObjectRequest;
-import com.iseva.app.source.GCMIntentService;
-import com.iseva.app.source.Globals;
-import com.iseva.app.source.Object_AppConfig;
-import com.iseva.app.source.Object_BusinessExtraData;
-import com.iseva.app.source.R;
+import com.iseva.app.source.travel.Constants;
+import com.iseva.app.source.travel.MainActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -99,7 +82,7 @@ public class Activity_first extends AppCompatActivity implements NavigationView.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_first);
         setSupportActionBar(toolbar);
         Custom_GetMobile_Number.app_launched(this) ;
 
@@ -572,6 +555,7 @@ public class Activity_first extends AppCompatActivity implements NavigationView.
 
 
 
+
     private void sendNumberOnServer(){
         Custom_ConnectionDetector cd = new Custom_ConnectionDetector(this);
         if(cd.isConnectingToInternet()) {
@@ -725,7 +709,7 @@ public class Activity_first extends AppCompatActivity implements NavigationView.
 
         }
         else if (id == R.id.nav_logout) {
-            logout();
+
 
         } else if (id == R.id.nav_Login) {
             Custom_ConnectionDetector connection = new Custom_ConnectionDetector(Activity_first.this);
@@ -738,7 +722,7 @@ public class Activity_first extends AppCompatActivity implements NavigationView.
             navigationSettings();
 
         } else if (id == R.id.nav_logout_isUser) {
-            logout();
+
         } else if (id == R.id.nav_settings_IsUser) {
             navigationSettings();
 
@@ -791,29 +775,7 @@ public class Activity_first extends AppCompatActivity implements NavigationView.
 
 
 
-    private void logout() {
 
-        //  navigationView.add*/
-        NavigationView navigationViewNew = (NavigationView) findViewById(R.id.nav_view);
-        //View view = getLayoutInflater().inflate(R.layout.nav_header_activity__home, null);
-        //view.setVisibility(View.GONE);
-
-        /*View headerLayout =
-                navigationViewNew.inflateHeaderView(R.layout.nav_header_activity__home);*/
-        //headerLayout.setVisibility(View.GONE);
-        navigationViewNew.removeHeaderView(view);
-        // headerLayout.findViewById(R.id.navigationLayout).setVisibility(View.GONE);
-
-
-        navigationViewNew.getMenu().setGroupVisible(R.id.LoginGroup, false);
-        navigationViewNew.getMenu().setGroupVisible(R.id.LogoutGroup, true);
-        navigationViewNew.getMenu().setGroupVisible(R.id.isUserLogin, false);
-
-        Object_AppConfig objConfig = new Object_AppConfig(this);
-        //objConfig.setboolnavHeader(false);
-        Globals.isHeader = false;
-        objConfig.setboolIslogin(false);
-    }
 
 
 

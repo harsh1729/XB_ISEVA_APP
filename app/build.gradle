@@ -9,8 +9,8 @@ android {
         applicationId "com.iseva.app"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 7
-        versionName "2.0"
+        versionCode 9
+        versionName "2.2"
     }
     buildTypes {
         release {
@@ -30,10 +30,12 @@ android {
 }
 repositories {
     maven { url 'https://oss.sonatype.org/content/repositories/ksoap2-android-releases/' }
+
 }
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
+    compile 'ch.acra:acra:4.6.2'
     /*compile files('libs/universal-image-loader-1.8.5-with-sources.jar')*/
     /*compile 'com.mcxiaoke.volley:library-aar:1.0.0'*/
     //compile 'org.apache.httpcomponents:httpmime:4.5.1'
@@ -48,7 +50,6 @@ dependencies {
     compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
     compile 'com.google.android.gms:play-services:8.4.0'
     compile 'com.google.android.gms:play-services-gcm:8.1.0'
-
     compile 'com.squareup.okhttp:okhttp:2.4.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.android.support:recyclerview-v7:25.0.0'
@@ -60,5 +61,9 @@ dependencies {
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
     compile 'com.github.justzak:dilatingdotsprogressbar:1.0.1'
     compile 'org.florescu.android.rangeseekbar:rangeseekbar-library:0.3.0'
+    compile 'com.android.support:multidex:1.0.1'
     compile project(':payUMoneysdk')
+
+
+
 }

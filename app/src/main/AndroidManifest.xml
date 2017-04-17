@@ -5,7 +5,7 @@
     <!-- To auto-complete the email text field in the login form with the user's emails -->
 
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
 
     <permission
         android:name="com.app.iseva.permission.C2D_MESSAGE"
@@ -334,12 +334,24 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".travel.Activity_first"
+            android:name=".Activity_first"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
-        <activity android:name=".Activity_location_choose" />
-        <activity android:name=".Activity_location_show" />
-        <activity android:name=".Activity_privacy_policy"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.search" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable_config" />
+
+        </activity>
+        <activity android:name=".Activity_location_choose"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activity_location_show"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activity_privacy_policy"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
