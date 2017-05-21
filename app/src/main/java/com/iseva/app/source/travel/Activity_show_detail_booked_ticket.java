@@ -225,12 +225,12 @@ public class Activity_show_detail_booked_ticket extends Activity {
                 else
                 {
                     Global.showAlertDialog(Activity_show_detail_booked_ticket.this,getResources().getString(R.string.validating_error_title),((SoapObject)soapresult_iscancelable.getProperty("Response")).getPrimitivePropertyAsString("Message"),"Ok");
-                    Toast.makeText(Activity_show_detail_booked_ticket.this, ((SoapObject) soapresult_iscancelable.getProperty("Response")).getPrimitiveProperty("Message").toString(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(Activity_show_detail_booked_ticket.this, ((SoapObject) soapresult_iscancelable.getProperty("Response")).getPrimitiveProperty("Message").toString(), Toast.LENGTH_LONG).show();
                 }
 
             } else {
                 Global.showAlertDialog(Activity_show_detail_booked_ticket.this,getResources().getString(R.string.validating_error_title),"Some error accured please try again !","Ok");
-                Toast.makeText(Activity_show_detail_booked_ticket.this, "Server Error !", Toast.LENGTH_LONG).show();
+                //Toast.makeText(Activity_show_detail_booked_ticket.this, "Server Error !", Toast.LENGTH_LONG).show();
             }
 
 
@@ -287,7 +287,11 @@ public class Activity_show_detail_booked_ticket extends Activity {
             ticket_no.setValue(ticket_no_txt);
             userkey.setType(String.class);
             request.addProperty(ticket_no);
-            Log.e("vikas request print",request.toString());
+            if (Global.build_type == 0)
+            {
+                Log.e("vikas request print",request.toString());
+            }
+
 
 
 
@@ -340,8 +344,11 @@ public class Activity_show_detail_booked_ticket extends Activity {
                 if (Is_success.equals("true")) {
                     //Toast.makeText(Activity_review_itinerary.this,soapresult_detail.toString(),Toast.LENGTH_LONG).show();
                     try {
+                        if(Global.build_type == 0)
+                        {
+                            Log.e("vikas", soapresult_ticket_detail.toString());
+                        }
 
-                        Log.e("vikas", soapresult_ticket_detail.toString());
                         String booking_date = change_date_form(soapresult_ticket_detail.getPrimitivePropertyAsString("JourneyDate"));
                         String from_city = soapresult_ticket_detail.getPrimitivePropertyAsString("FromCityName");
                         from_city = from_city.substring(0,1).toUpperCase() + from_city.substring(1);
@@ -407,7 +414,11 @@ public class Activity_show_detail_booked_ticket extends Activity {
                 }
                 else
                 {
-                    Log.e("vikas", soapresult_ticket_detail.toString());
+                    if (Global.build_type == 0)
+                    {
+                        Log.e("vikas", soapresult_ticket_detail.toString());
+                    }
+
                     Global.showAlertDialog(Activity_show_detail_booked_ticket.this,getResources().getString(R.string.validating_error_title),((SoapObject)soapresult_ticket_detail.getProperty("Response")).getPrimitivePropertyAsString("Message"),"Ok");
                 }
 
@@ -474,7 +485,11 @@ public class Activity_show_detail_booked_ticket extends Activity {
             pnr_no.setValue(pnr_no_txt);
             userkey.setType(String.class);
             request.addProperty(pnr_no);
-            Log.e("vikas request print",request.toString());
+            if (Global.build_type == 0)
+            {
+                Log.e("vikas request print",request.toString());
+            }
+
 
 
 
@@ -700,8 +715,11 @@ public class Activity_show_detail_booked_ticket extends Activity {
                 if (Is_success.equals("true")) {
                     //Toast.makeText(Activity_review_itinerary.this,soapresult_detail.toString(),Toast.LENGTH_LONG).show();
                     try {
+                        if (Global.build_type == 0)
+                        {
+                            Log.e("vikas",soapresult_cancel_ticket.toString());
+                        }
 
-                        Log.e("vikas",soapresult_cancel_ticket.toString());
                         ticket_detail_cancel_btn_layout.setVisibility(View.GONE);
                         updateTicketStatus();
                         refund_fair();
@@ -816,7 +834,11 @@ public class Activity_show_detail_booked_ticket extends Activity {
             ticket_no.setValue(ticket_no_txt);
             userkey.setType(String.class);
             request.addProperty(ticket_no);
-            Log.e("vikas request print",request.toString());
+            if (Global.build_type == 0)
+            {
+                Log.e("vikas request print",request.toString());
+            }
+
 
 
 

@@ -170,8 +170,11 @@ public class Activity_review_itinerary extends Activity {
 
             @Override
             public void onResponse(String s) {
+                if(Global.build_type == 0)
+                {
+                    Log.e("vikas",s);
+                }
 
-                Log.e("vikas",s);
                 JSONObject response = null;
                 try
                 {
@@ -657,7 +660,11 @@ public class Activity_review_itinerary extends Activity {
             if (resultCode == RESULT_OK) {
 
                 countDownTimer.cancel();
-                Log.e("vikas", "Success - Payment ID : " + data.getStringExtra(SdkConstants.PAYMENT_ID));
+                if(Global.build_type == 0)
+                {
+                    Log.e("vikas", "Success - Payment ID : " + data.getStringExtra(SdkConstants.PAYMENT_ID));
+                }
+
                 send_success_payment_status(data.getStringExtra(SdkConstants.PAYMENT_ID));
                 BookSeat bookSeat = new BookSeat();
                 bookSeat.execute();
@@ -666,11 +673,15 @@ public class Activity_review_itinerary extends Activity {
 
 
             } else if (resultCode == RESULT_CANCELED) {
-                Log.i(TAG, "failure");
+                if(Global.build_type == 0) {
+                    Log.i(TAG, "failure");
+                }
                 //showAlertDialog(getResources().getString(R.string.validating_error_title),"Payment not success","ok");
 
             } else if (resultCode == RESULT_FAILED) {
-                Log.i("app_activity", "failure");
+                if(Global.build_type == 0) {
+                    Log.i("app_activity", "failure");
+                }
                 Global.showAlertDialog(Activity_review_itinerary.this,getResources().getString(R.string.validating_error_title),"Payment not success","ok");
                 if (data != null) {
                     if (data.getStringExtra(SdkConstants.RESULT).equals("cancel")) {
@@ -681,7 +692,9 @@ public class Activity_review_itinerary extends Activity {
                 }
                 //Write your code if there's no result
             } else if (resultCode == RESULT_BACK) {
-                Log.i(TAG, "User returned without login");
+                if(Global.build_type == 0) {
+                    Log.i(TAG, "User returned without login");
+                }
 
             }
         }
@@ -872,7 +885,9 @@ public class Activity_review_itinerary extends Activity {
             @Override
             public void onResponse(String s) {
                 progress.dismiss();
-                Log.e("vikas",s);
+                if(Global.build_type ==0) {
+                    Log.e("vikas", s);
+                }
                 JSONObject response = null;
                 try
                 {
@@ -885,7 +900,11 @@ public class Activity_review_itinerary extends Activity {
                         {
 
                             JSONArray  offers = response.getJSONArray("data");
-                            Log.e("vikas",offers.toString());
+                            if(Global.build_type == 0)
+                            {
+                                Log.e("vikas",offers.toString());
+                            }
+
 
                             if(offers.length() != 0)
                             {
@@ -1309,8 +1328,11 @@ public class Activity_review_itinerary extends Activity {
                 if (Is_success.equals("true")) {
                     //Toast.makeText(Activity_review_itinerary.this,soapresult_detail.toString(),Toast.LENGTH_LONG).show();
                     try {
+                        if(Global.build_type ==0)
+                        {
+                            Log.e("vikas", soapresult_detail.toString());
+                        }
 
-                        Log.e("vikas", soapresult_detail.toString());
 
                         String order_id = soapresult_detail.getPrimitivePropertyAsString("TransactionId");
                         String pnr_no = soapresult_detail.getPrimitivePropertyAsString("PNRNo");
@@ -1352,7 +1374,7 @@ public class Activity_review_itinerary extends Activity {
                 }
 
             } else {
-                Global.showAlertDialog(Activity_review_itinerary.this,getResources().getString(R.string.validating_error_title),"Some error accured please try again !","Ok");
+                Global.showAlertDialog(Activity_review_itinerary.this,getResources().getString(R.string.validating_error_title),getResources().getString(R.string.slow_internet_error),"Ok");
             }
 
 
@@ -1414,7 +1436,11 @@ public class Activity_review_itinerary extends Activity {
             holdkey.setValue(HoldKey);
             userkey.setType(Integer.class);
             request.addProperty(holdkey);
-            Log.e("vikas request print",request.toString());
+            if(Global.build_type == 0)
+            {
+                Log.e("vikas request print",request.toString());
+            }
+
 
 
 
@@ -1493,7 +1519,9 @@ public class Activity_review_itinerary extends Activity {
             @Override
             public void onResponse(String s) {
                 progress.dismiss();
-                Log.e("vikas",s);
+                if(Global.build_type ==0) {
+                    Log.e("vikas", s);
+                }
                 JSONObject response = null;
                 try
                 {
@@ -1507,7 +1535,9 @@ public class Activity_review_itinerary extends Activity {
                             LinearLayout offer_main_layout = (LinearLayout)findViewById(R.id.activity_itinerary_offer_main_layout);
                             offer_main_layout.removeAllViews();
                             JSONArray  offers = response.getJSONArray("data");
-                            Log.e("vikas",offers.toString());
+                            if(Global.build_type == 0) {
+                                Log.e("vikas", offers.toString());
+                            }
 
                             if(offers.length() != 0)
                             {
@@ -1625,7 +1655,9 @@ public class Activity_review_itinerary extends Activity {
                          final String journey_date, final String reporting_time, final String departure_time, final String status, final String passanger_detail, final String boarding_address,
                          final String bus_type, final String company_name, final String boarding_contact_no, final String totalFare, final String cancellation_data)
     {
-        Log.e("vikas","call volley");
+        if(Global.build_type == 0) {
+            Log.e("vikas", "call volley");
+        }
         StringRequest send_message = new StringRequest(Request.Method.POST,
                 Constants.send_message_url, new Response.Listener<String>() {
 
@@ -1711,7 +1743,11 @@ public class Activity_review_itinerary extends Activity {
                          final String journey_date, final String reporting_time, final String departure_time, final String status, final String passanger_detail, final String boarding_address,
                          final String bus_type, final String company_name, final String boarding_contact_no, final String totalFare, final String cancellation_data)
     {
-        Log.e("vikas","call volley");
+        if(Global.build_type == 0)
+        {
+            Log.e("vikas","call volley");
+        }
+
         StringRequest send_mail = new StringRequest(Request.Method.POST,
                 Constants.Send_mail_url, new Response.Listener<String>() {
 

@@ -23,7 +23,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -67,6 +66,7 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
     private  Button search_routes_btn;
     private ProgressDialog progress;
     private SoapObject loginAuth_result;
+    private SoapObject getcity_result;
 
     Session_manager session_manager;
     Button show_booked_ticket;
@@ -91,24 +91,33 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if(isNetworkConnected())
-        {
-            get_commition();
-        }
+        session_manager = new Session_manager(this);
 
-        initialize();
-        setclicklistener();
+            if(isNetworkConnected())
+            {
+                get_commition();
+            }
+
+            initialize();
+            setclicklistener();
+
+
+
     }
 
     public void get_commition()
     {
+
         StringRequest promocodeapplyrequest = new StringRequest(Request.Method.POST,
                 Constants.get_commition_extra_charge, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String s) {
+                if (Global.build_type == 0)
+                {
+                    Log.e("vikas",s);
+                }
 
-                Log.e("vikas",s);
                 JSONObject response = null;
                 try
                 {
@@ -118,6 +127,23 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
                     if(response != null)
                     {
                         save_per = Integer.parseInt(response.getString("commition"));
+                        if(!session_manager.isSetpassword())
+                        {
+                            Log.e("vikas username ifpart=",response.getString("username")+"and"+response.getString("password"));
+                            session_manager.set_password(response.getString("username"),response.getString("password"),response.getString("url"));
+                            Constants.GLOBEL_URL = session_manager.get_url();
+                            LoginAuth loginAuth = new LoginAuth();
+                            loginAuth.execute();
+                        }
+                        else
+                        {
+
+
+                            session_manager.set_password(response.getString("username"),response.getString("password"),response.getString("url"));
+                            Constants.GLOBEL_URL = session_manager.get_url();
+                        }
+
+
 
                     }
 
@@ -160,13 +186,6 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
     public void initialize()
     {
 
-
-
-
-
-
-
-
         iv_header = (ImageView)findViewById(R.id.header_back_button);
         tv_header = (TextView)findViewById(R.id.header_text);
         tv_header.setText("Travel");
@@ -205,7 +224,11 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
             slider_layout.setVisibility(View.VISIBLE);
             for(int k =0;k<promo_image.size();k++)
             {
-                Log.e("vikas promourl",promo_image.get(k));
+                if (Global.build_type == 0)
+                {
+                    Log.e("vikas promourl",promo_image.get(k));
+                }
+
                 TextSliderView textSliderView = new TextSliderView(MainActivity.this);
                 textSliderView
 
@@ -243,20 +266,24 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
 
 
 
-
-
-        if(isNetworkConnected())
+        if(session_manager.isSetpassword())
         {
-            LoginAuth Loginrequest = new LoginAuth();
-            Loginrequest.execute();
+            if(isNetworkConnected())
+            {
+                Constants.GLOBEL_URL  = session_manager.get_url();
+                LoginAuth Loginrequest = new LoginAuth();
+                Loginrequest.execute();
 
-        }
-        else
-        {
-            progress.dismiss();
+            }
+            else
+            {
+                progress.dismiss();
 
-            callAlertBox();
+                callAlertBox();
+            }
         }
+
+
 
 
     }
@@ -271,8 +298,11 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
             progress.setCanceledOnTouchOutside(false);
             progress.setCancelable(false);
             progress.show();
+            get_commition();
+            Constants.GLOBEL_URL = session_manager.get_url();
             LoginAuth Loginrequest = new LoginAuth();
             Loginrequest.execute();
+
             return true;
 
         }
@@ -374,12 +404,28 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
             public void onClick(View view) {
                 if(isNetworkConnected())
                 {
-                    Intent i = new Intent(MainActivity.this,Activity_SelectCityFrom.class);
+                    if(Main_Cities != null && All_Cities_Map != null)
+                    {
+                        Intent i = new Intent(MainActivity.this,Activity_SelectCityFrom.class);
 
-                    i.putExtra("main_cities",Main_Cities);
-                    i.putExtra("all_cities",All_Cities_Map);
-                    startActivity(i);
-                    overridePendingTransition(R.anim.anim_in, R.anim.anim_none);
+                        i.putExtra("main_cities",Main_Cities);
+                        i.putExtra("all_cities",All_Cities_Map);
+                        startActivity(i);
+                        overridePendingTransition(R.anim.anim_in, R.anim.anim_none);
+                    }
+                    else
+                    {
+                        progress = new ProgressDialog(MainActivity.this);
+                        progress.setMessage("Please wait...");
+                        progress.setCanceledOnTouchOutside(false);
+                        progress.setCancelable(false);
+                        progress.show();
+                        get_commition();
+                        Constants.GLOBEL_URL = session_manager.get_url();
+                        LoginAuth Loginrequest = new LoginAuth();
+                        Loginrequest.execute();
+                    }
+
                 }
                 else
                 {
@@ -399,11 +445,27 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
             public void onClick(View view) {
                 if(isNetworkConnected())
                 {
-                    Intent i = new Intent(MainActivity.this,Activity_SelectCityTo.class);
-                    i.putExtra("main_cities",Main_Cities);
-                    i.putExtra("all_cities",All_Cities_Map);
-                    startActivity(i);
-                    overridePendingTransition(R.anim.anim_in, R.anim.anim_none);
+                    if(Main_Cities != null && All_Cities_Map != null)
+                    {
+                        Intent i = new Intent(MainActivity.this,Activity_SelectCityTo.class);
+                        i.putExtra("main_cities",Main_Cities);
+                        i.putExtra("all_cities",All_Cities_Map);
+                        startActivity(i);
+                        overridePendingTransition(R.anim.anim_in, R.anim.anim_none);
+                    }
+                    else
+                    {
+                        progress = new ProgressDialog(MainActivity.this);
+                        progress.setMessage("Please wait...");
+                        progress.setCanceledOnTouchOutside(false);
+                        progress.setCancelable(false);
+                        progress.show();
+                        get_commition();
+                        Constants.GLOBEL_URL = session_manager.get_url();
+                        LoginAuth Loginrequest = new LoginAuth();
+                        Loginrequest.execute();
+                    }
+
                 }
                 else
                 {
@@ -432,6 +494,10 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
                 {
                     Global.showAlertDialog(MainActivity.this,getResources().getString(R.string.validating_error_title),"Please select journey date !","Ok");
 
+                }
+                else if (Search_Buses_Key.From_City_id.equals(Search_Buses_Key.TO_City_id))
+                {
+                    Global.showAlertDialog(MainActivity.this,getResources().getString(R.string.validating_error_title),"Please choose a different destination city.","Ok");
                 }
                 else
                 {
@@ -641,6 +707,12 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
 
     }
 
+
+
+
+
+
+
 // request classes
 
     private class LoginAuth extends AsyncTask<Void, Void, Void>    {
@@ -666,12 +738,14 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
                 }
                 else
                 {
+                    progress.dismiss();
                     Global.showAlertDialog(MainActivity.this,getResources().getString(R.string.validating_error_title),((SoapObject)loginAuth_result.getProperty("Response")).getPrimitivePropertyAsString("Message"),"Ok");
                 }
             }
             else
             {
-                Global.showAlertDialog(MainActivity.this,getResources().getString(R.string.validating_error_title),"Some error accured please try again !","Ok");
+                progress.dismiss();
+                Global.showAlertDialog(MainActivity.this,getResources().getString(R.string.slow_internet_title),getResources().getString(R.string.slow_internet_error),"Ok");
             }
 
 
@@ -716,13 +790,15 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
 
             PropertyInfo loginid = new PropertyInfo();
             loginid.setName("LoginID");
-            loginid.setValue("ISEVA");
+           // loginid.setValue("ISEVA");
+            loginid.setValue(session_manager.get_secrat_username());
             loginid.setType(String.class);
             request.addProperty(loginid);
 
             PropertyInfo password = new PropertyInfo();
             password.setName("Password");
-            password.setValue("vikrant1729");
+           // password.setValue("vikrant1729");
+            password.setValue(session_manager.get_password());
             password.setType(String.class);
             request.addProperty(password);
 
@@ -754,6 +830,7 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
 
             try {
                 httpTransport.call(Constants.GLOBEL_NAMESPACE+Constants.METHOD_AUNTHENTICATION, envelope);
+
             } catch (HttpResponseException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -784,7 +861,7 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
                 }
                 else
                 {
-                    Toast.makeText(MainActivity.this,"requst not send",Toast.LENGTH_LONG).show();
+
                 }
             }
             catch (Exception e)
@@ -808,7 +885,16 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
         {
             super.onPostExecute(result);
 
-            progress.dismiss();
+            if(getcity_result != null)
+            {
+                progress.dismiss();
+            }
+            else
+            {
+                progress.dismiss();
+                Global.showAlertDialog(MainActivity.this,getResources().getString(R.string.slow_internet_title),getResources().getString(R.string.slow_internet_error),"Ok");
+            }
+
 
 
         }
@@ -818,9 +904,9 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
         @Override
         protected Void doInBackground(Void... voids) {
 
-            SoapObject request = new SoapObject(Constants.GLOBEL_NAMESPACE,Constants.METHOD_GETCITYFROM);
+            SoapObject request = new SoapObject(Constants.GLOBEL_NAMESPACE, Constants.METHOD_GETCITYFROM);
 
-            SoapObject sa = new SoapObject(null,"Authentication");
+            SoapObject sa = new SoapObject(null, "Authentication");
 
             PropertyInfo userid = new PropertyInfo();
             userid.setName("UserID");
@@ -844,19 +930,28 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
             userkey.setType(String.class);
             sa.addProperty(userkey);
             request.addSoapObject(sa);
-            Log.e("vikas request print",request.toString());
+            if (Global.build_type == 0) {
+                Log.e("vikas request print", request.toString());
+            }
 
 
             SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
             envelope.implicitTypes = true;
             envelope.dotNet = true;
             envelope.setOutputSoapObject(request);
+            if (Global.build_type == 0)
+            {
+                Log.e("vikas envolop",envelope.toString());
+            }
 
-            Log.e("vikas envolop",envelope.toString());
 
             HttpTransportSE httpTransport = new HttpTransportSE(Constants.GLOBEL_URL);
 
-            Log.e("vikas http print",httpTransport.toString());
+            if (Global.build_type == 0)
+            {
+                Log.e("vikas http print",httpTransport.toString());
+            }
+
 
             try {
                 httpTransport.call(Constants.GLOBEL_NAMESPACE+Constants.METHOD_GETCITYFROM, envelope);
@@ -870,10 +965,10 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
 
                 e.printStackTrace();
             }
-            SoapObject result = null;
+            getcity_result = null;
 
             try {
-                result = (SoapObject)envelope.getResponse();
+                getcity_result = (SoapObject)envelope.getResponse();
 
             } catch (SoapFault e) {
 
@@ -884,29 +979,34 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
 
             try
             {
-                String Is_success =((SoapObject)result.getProperty("Response")).getPrimitiveProperty("IsSuccess").toString();
+                String Is_success = "false";
+                if(getcity_result != null)
+                {
+                    Is_success =((SoapObject)getcity_result.getProperty("Response")).getPrimitiveProperty("IsSuccess").toString();
+                }
+
                 if(Is_success.equals("true"))
                 {
                     ArrayList<HashMap<String, String>>  Temp_all_cities = new ArrayList<HashMap<String, String>>();
                     ArrayList<HashMap<String, String>>  Temp_Main_cities = new ArrayList<HashMap<String, String>>();
 
-                    for(int i=0;i< ((SoapObject)result.getProperty(1)).getPropertyCount();i++)
+                    for(int i=0;i< ((SoapObject)getcity_result.getProperty(1)).getPropertyCount();i++)
                     {
-                        String is_main = ((SoapObject)((SoapObject)result.getProperty("Cities")).getProperty(i)).getProperty("IsPriority").toString();
+                        String is_main = ((SoapObject)((SoapObject)getcity_result.getProperty("Cities")).getProperty(i)).getProperty("IsPriority").toString();
                         if(is_main.equals("true"))
                         {
-                            String cityname = ((SoapObject)((SoapObject)result.getProperty("Cities")).getProperty(i)).getProperty("CityName").toString();
+                            String cityname = ((SoapObject)((SoapObject)getcity_result.getProperty("Cities")).getProperty(i)).getProperty("CityName").toString();
                             String upperstring = cityname.substring(0,1).toUpperCase() + cityname.substring(1);
-                            String cityid = ((SoapObject)((SoapObject)result.getProperty("Cities")).getProperty(i)).getProperty("CityID").toString();
+                            String cityid = ((SoapObject)((SoapObject)getcity_result.getProperty("Cities")).getProperty(i)).getProperty("CityID").toString();
                             HashMap<String, String> map = new HashMap<String, String>();
                             map.put("cityname", upperstring);
                             map.put("cityid",cityid);
                             Temp_Main_cities.add(map);
                         }
 
-                        String cityname = ((SoapObject)((SoapObject)result.getProperty("Cities")).getProperty(i)).getProperty("CityName").toString();
+                        String cityname = ((SoapObject)((SoapObject)getcity_result.getProperty("Cities")).getProperty(i)).getProperty("CityName").toString();
                         String upperstring = cityname.substring(0,1).toUpperCase() + cityname.substring(1);
-                        String cityid = ((SoapObject)((SoapObject)result.getProperty("Cities")).getProperty(i)).getProperty("CityID").toString();
+                        String cityid = ((SoapObject)((SoapObject)getcity_result.getProperty("Cities")).getProperty(i)).getProperty("CityID").toString();
                         HashMap<String, String> map = new HashMap<String, String>();
                         map.put("cityname", upperstring);
                         map.put("cityid",cityid);
@@ -917,12 +1017,18 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
 
                     All_Cities_Map = Temp_all_cities;
                     Main_Cities = Temp_Main_cities;
-                    Log.e("vikas",Is_success);
-                }
-                else
-                {
+                    if (Global.build_type == 0)
+                    {
+                        Log.e("vikas",Is_success);
+                    }
 
-                    Log.e("vikas",Is_success);
+                }
+                else {
+                    if (Global.build_type == 0)
+                    {
+                        Log.e("vikas",Is_success);
+                    }
+
 
                 }
             }

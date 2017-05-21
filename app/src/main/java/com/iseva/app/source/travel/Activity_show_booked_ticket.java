@@ -125,8 +125,11 @@ public class Activity_show_booked_ticket extends Activity {
 
             @Override
             public void onResponse(String s) {
+                if(Global.build_type ==0)
+                {
+                    Log.e("vikas",s);
+                }
 
-                Log.e("vikas",s);
                 JSONObject response = null;
                 try {
                     response = new JSONObject(s);
@@ -134,7 +137,11 @@ public class Activity_show_booked_ticket extends Activity {
                     e.printStackTrace();
                 }
 
-                Log.d(String.valueOf(getApplicationContext()), "Response generated");
+                if(Global.build_type ==0)
+                {
+                    Log.d(String.valueOf(getApplicationContext()), "Response generated");
+                }
+
                 if (response != null)
                 {
 
@@ -153,7 +160,11 @@ public class Activity_show_booked_ticket extends Activity {
                                 main_layout.removeAllViews();
                                 for(int i=0;i<response.getJSONArray("data").length();i++)
                                 {
-                                    Log.e("vikas",""+i);
+                                    if(Global.build_type ==0)
+                                    {
+                                        Log.e("vikas",""+i);
+                                    }
+
                                     LayoutInflater inflater = (LayoutInflater)Activity_show_booked_ticket.this.getSystemService
                                             (Context.LAYOUT_INFLATER_SERVICE);
                                     View v =  inflater.inflate(R.layout.booked_ticket_single_layout,null);

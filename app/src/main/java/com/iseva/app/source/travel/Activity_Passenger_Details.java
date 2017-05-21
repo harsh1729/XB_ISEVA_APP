@@ -276,19 +276,31 @@ public class Activity_Passenger_Details extends Activity {
             String gender = "";
             RadioGroup rg = (RadioGroup)v.findViewWithTag("radio_group"+(i+1));
             int selected_radio_id = rg.getCheckedRadioButtonId();
-            Log.e("vikas","selected_id="+selected_radio_id);
-            Log.e("vikas","rg tag="+rg.getTag());
+            if(Global.build_type == 0)
+            {
+                Log.e("vikas","selected_id="+selected_radio_id);
+                Log.e("vikas","rg tag="+rg.getTag());
+            }
+
             RadioButton radioButton = (RadioButton) findViewById(selected_radio_id);
             String radiobtnTag = radioButton.getTag().toString();
             if(radiobtnTag.equals("radio_mr"+(i+1)))
             {
                 gender = "M";
-                Log.e("vikas","Passenger "+(i+1)+" "+"gender"+":"+"M");
+                if(Global.build_type == 0)
+                {
+                    Log.e("vikas","Passenger "+(i+1)+" "+"gender"+":"+"M");
+                }
+
             }
             else
             {
                 gender = "F";
-                Log.e("vikas","Passenger "+(i+1)+" "+"gender"+":"+"F");
+                if(Global.build_type == 0)
+                {
+                    Log.e("vikas","Passenger "+(i+1)+" "+"gender"+":"+"F");
+                }
+
             }
 
             EditText p_name = (EditText)v.findViewWithTag("edittext_name"+(i+1));
@@ -360,7 +372,11 @@ public class Activity_Passenger_Details extends Activity {
                 catch (Exception e)
                 {
                     e.printStackTrace();
-                    Log.e("vikas","error json"+e);
+                    if(Global.build_type == 0)
+                    {
+                        Log.e("vikas","error json"+e);
+                    }
+
                 }
                 String seatno = Selected_seat_list.get(k).getSeatNo();
                 String fare = Float.toString(Selected_seat_list.get(k).getFare());
@@ -454,7 +470,11 @@ public class Activity_Passenger_Details extends Activity {
                 {
                     try {
                         message = soapresult_detail.toString();
-                        Log.e("vikas",message);
+                        if(Global.build_type == 0)
+                        {
+                            Log.e("vikas",message);
+                        }
+
                         String holdkey = soapresult_detail.getPrimitiveProperty("HoldKey").toString();
                        // String totalfare = soapresult_detail.getPrimitiveProperty("TotalFare").toString();
                         String totalfare = Float.toString(Total_offer_fare);
@@ -495,7 +515,7 @@ public class Activity_Passenger_Details extends Activity {
             }
             else
             {
-                Global.showAlertDialog(Activity_Passenger_Details.this,getResources().getString(R.string.validating_error_title),"Some error accured please try again !","Ok");
+                Global.showAlertDialog(Activity_Passenger_Details.this,getResources().getString(R.string.validating_error_title),getResources().getString(R.string.slow_internet_error),"Ok");
             }
 
             progress.dismiss();
@@ -506,98 +526,103 @@ public class Activity_Passenger_Details extends Activity {
         protected Void doInBackground(Void... voids) {
 
 
-               SoapObject request = new SoapObject(Constants.GLOBEL_NAMESPACE, Constants.METHOD_HoldSeatsForSchedule);
+            SoapObject request = new SoapObject(Constants.GLOBEL_NAMESPACE, Constants.METHOD_HoldSeatsForSchedule);
 
-               SoapObject sa = new SoapObject(null, "Authentication");
-
-
-
-               PropertyInfo userid = new PropertyInfo();
-               userid.setName("UserID");
-               userid.setValue(LoginCridantial.UserId.trim());
-               userid.setType(Integer.class);
-               sa.addProperty(userid);
-
-               PropertyInfo usertype = new PropertyInfo();
-               usertype.setName("UserType");
-               usertype.setValue(LoginCridantial.UserType.trim());
-               usertype.setType(String.class);
-               sa.addProperty(usertype);
-
-               PropertyInfo userkey = new PropertyInfo();
-               userkey.setName("Key");
-               userkey.setValue(LoginCridantial.UserKey.trim());
-               userkey.setType(String.class);
-               sa.addProperty(userkey);
-
-               request.addSoapObject(sa);
-
-               PropertyInfo scheduleid = new PropertyInfo();
-               scheduleid.setName("RouteScheduleId");
-               scheduleid.setValue(Rout_schedule_id);
-               scheduleid.setType(Integer.class);
-               request.addProperty(scheduleid);
+            SoapObject sa = new SoapObject(null, "Authentication");
 
 
-               PropertyInfo journeydate = new PropertyInfo();
-               journeydate.setName("JourneyDate");
-               journeydate.setValue(Search_Buses_Key.Selected_date);
-               journeydate.setType(String.class);
-               request.addProperty(journeydate);
+            PropertyInfo userid = new PropertyInfo();
+            userid.setName("UserID");
+            userid.setValue(LoginCridantial.UserId.trim());
+            userid.setType(Integer.class);
+            sa.addProperty(userid);
 
-               PropertyInfo pickupid = new PropertyInfo();
-               pickupid.setName("PickUpID");
-               pickupid.setValue(pickup_id);
-               pickupid.setType(Integer.class);
-               request.addProperty(pickupid);
+            PropertyInfo usertype = new PropertyInfo();
+            usertype.setName("UserType");
+            usertype.setValue(LoginCridantial.UserType.trim());
+            usertype.setType(String.class);
+            sa.addProperty(usertype);
 
+            PropertyInfo userkey = new PropertyInfo();
+            userkey.setName("Key");
+            userkey.setValue(LoginCridantial.UserKey.trim());
+            userkey.setType(String.class);
+            sa.addProperty(userkey);
 
-               SoapObject contact_information = new SoapObject(null, "ContactInformation");
+            request.addSoapObject(sa);
 
-               PropertyInfo customername = new PropertyInfo();
-               customername.setName("CustomerName");
-               customername.setValue(Contact_name_text);
-               customername.setType(String.class);
-               contact_information.addProperty(customername);
-
-
-               PropertyInfo email =  new PropertyInfo();
-               email.setName("Email");
-               email.setValue(Contact_email_text);
-               email.setType(String.class);
-               contact_information.addProperty(email);
-
-               PropertyInfo Phone =  new PropertyInfo();
-               Phone.setName("Phone");
-               Phone.setValue(Contact_mobile_text);
-               Phone.setType(String.class);
-               contact_information.addProperty(Phone);
+            PropertyInfo scheduleid = new PropertyInfo();
+            scheduleid.setName("RouteScheduleId");
+            scheduleid.setValue(Rout_schedule_id);
+            scheduleid.setType(Integer.class);
+            request.addProperty(scheduleid);
 
 
-               PropertyInfo mobile =  new PropertyInfo();
-               mobile.setName("Mobile");
-               mobile.setValue(Contact_mobile_text);
-               mobile.setType(String.class);
-               contact_information.addProperty(mobile);
+            PropertyInfo journeydate = new PropertyInfo();
+            journeydate.setName("JourneyDate");
+            journeydate.setValue(Search_Buses_Key.Selected_date);
+            journeydate.setType(String.class);
+            request.addProperty(journeydate);
+
+            PropertyInfo pickupid = new PropertyInfo();
+            pickupid.setName("PickUpID");
+            pickupid.setValue(pickup_id);
+            pickupid.setType(Integer.class);
+            request.addProperty(pickupid);
 
 
-               request.addSoapObject(contact_information);
-              request.addSoapObject(passengers_object);
+            SoapObject contact_information = new SoapObject(null, "ContactInformation");
+
+            PropertyInfo customername = new PropertyInfo();
+            customername.setName("CustomerName");
+            customername.setValue(Contact_name_text);
+            customername.setType(String.class);
+            contact_information.addProperty(customername);
 
 
-               Log.e("vikas envolop", request.toString());
+            PropertyInfo email = new PropertyInfo();
+            email.setName("Email");
+            email.setValue(Contact_email_text);
+            email.setType(String.class);
+            contact_information.addProperty(email);
 
-               SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-               envelope.implicitTypes = true;
-               envelope.setAddAdornments(false);
-               envelope.dotNet = true;
+            PropertyInfo Phone = new PropertyInfo();
+            Phone.setName("Phone");
+            Phone.setValue(Contact_mobile_text);
+            Phone.setType(String.class);
+            contact_information.addProperty(Phone);
 
-               envelope.setOutputSoapObject(request);
+
+            PropertyInfo mobile = new PropertyInfo();
+            mobile.setName("Mobile");
+            mobile.setValue(Contact_mobile_text);
+            mobile.setType(String.class);
+            contact_information.addProperty(mobile);
 
 
-            Log.e("vikas envolop",envelope.toString());
+            request.addSoapObject(contact_information);
+            request.addSoapObject(passengers_object);
 
-               HttpTransportSE httpTransport = new HttpTransportSE("http://affapi.mantistechnologies.com/service.asmx?op=HoldSeatsForSchedule");
+            if(Global.build_type == 0)
+            {
+                Log.e("vikas envolop", request.toString());
+            }
+
+
+            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+            envelope.implicitTypes = true;
+            envelope.setAddAdornments(false);
+            envelope.dotNet = true;
+
+            envelope.setOutputSoapObject(request);
+
+            if (Global.build_type == 0)
+            {
+                Log.e("vikas envolop",envelope.toString());
+            }
+
+
+               HttpTransportSE httpTransport = new HttpTransportSE(Constants.GLOBEL_URL);
                httpTransport.debug = true;
 
                try {
@@ -605,7 +630,11 @@ public class Activity_Passenger_Details extends Activity {
                } catch (HttpResponseException e) {
                    // TODO Auto-generated catch block
                    e.printStackTrace();
-                   Log.e("vikas","error http:"+e);
+                   if(Global.build_type == 0)
+                   {
+                       Log.e("vikas","error http:"+e);
+                   }
+
                } catch (IOException e) {
                    // TODO Auto-generated catch block
                    e.printStackTrace();
@@ -638,35 +667,7 @@ public class Activity_Passenger_Details extends Activity {
 
 
 
-    /*public void showAlertDialog(String title,String message,String buttonlabel)
-    {
 
-        TextView title_tv = new TextView(this);
-        title_tv.setPadding(0,getResources().getDimensionPixelSize(R.dimen.padding_margin_10),0,0);
-        title_tv.setTextColor(ContextCompat.getColor(Activity_Passenger_Details.this,R.color.black));
-        title_tv.setTextSize(getResources().getDimension(R.dimen.text_size_mediam));
-        title_tv.setGravity(Gravity.CENTER);
-        title_tv.setText(title);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(Activity_Passenger_Details.this);
-        builder.setCustomTitle(title_tv)
-                .setMessage(message)
-                .setCancelable(false)
-                .setNegativeButton(buttonlabel,new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
-
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        Button b = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
-        b.setLayoutParams(lp);
-        b.setBackgroundResource(R.drawable.btn_background);
-        b.setTextColor(ContextCompat.getColor(Activity_Passenger_Details.this, R.color.app_white));
-    }
-*/
     public void activity_dismiss()
     {
         this.finish();
@@ -738,7 +739,11 @@ public class Activity_Passenger_Details extends Activity {
 
                 @Override
                 public void onClick(View view) {
-                    Log.e("vikas",""+view.getTag());
+                    if(Global.build_type == 0)
+                    {
+                        Log.e("vikas",""+view.getTag());
+                    }
+
                 }
             });
             name_edittext.setTag("edittext_name"+(i+1));
@@ -756,7 +761,11 @@ public class Activity_Passenger_Details extends Activity {
 
                 @Override
                 public void onClick(View view) {
-                    Log.e("vikas",""+view.getTag());
+                    if(Global.build_type == 0)
+                    {
+                        Log.e("vikas",""+view.getTag());
+                    }
+
                 }
             });
 
@@ -776,7 +785,11 @@ public class Activity_Passenger_Details extends Activity {
 
     public void set_boarding_points()
     {
-        Log.e("vikas","boarding call");
+        if(Global.build_type == 0)
+        {
+            Log.e("vikas","boarding call");
+        }
+
         final ArrayList<String> boarding_list = new ArrayList<String>();
         boarding_list.add("Select Boarding Point..");
         for (int i=0;i<pickup_place_detail_list.size();i++)
@@ -784,8 +797,12 @@ public class Activity_Passenger_Details extends Activity {
             String time = getTime(pickup_place_detail_list.get(i).getPkpTime());
             boarding_list.add(time+" "+pickup_place_detail_list.get(i).getPickupName());
 
-            Log.e("vikas",time);
-            Log.e("vikas",pickup_place_detail_list.get(i).getPickupName());
+            if(Global.build_type == 0)
+            {
+                Log.e("vikas",time);
+                Log.e("vikas",pickup_place_detail_list.get(i).getPickupName());
+            }
+
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.spinner_single_row, boarding_list);
 

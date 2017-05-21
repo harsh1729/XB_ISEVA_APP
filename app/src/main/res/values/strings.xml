@@ -73,6 +73,9 @@
     <string name="internet_connection_error_message">We can not detect any internet connectivity.Please check your internet connection.</string>
     <string name="validating_error_title">Error</string>
 
+    <string name="slow_internet_title">Network/Connection error</string>
+    <string name="slow_internet_error">The server is taking too long time to respond OR something is wrong with your internet connection. Please try again later.</string>
+
 
     <!-- bus routes screen -->
 

@@ -621,7 +621,7 @@ public class Activity_Category_Choose extends Activity {
                 options.inJustDecodeBounds = false;*/
                 bm = BitmapFactory.decodeFile(selectedImagePath);
                 ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                bm.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+                   bm.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
                 FileOutputStream fo;
                 try {
                     //destination.createNewFile();

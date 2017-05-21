@@ -93,15 +93,22 @@ public class Activity_register extends Activity {
                 @Override
                 public void onResponse(String s) {
                     progressBar.dismiss();
-                    VolleyLog.d("vikas", "Response: " + s.toString());
+                    if(Global.build_type == 0)
+                    {
+                        VolleyLog.d("vikas", "Response: " + s.toString());
+                    }
+
                     JSONObject response = null;
                     try {
                         response = new JSONObject(s);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                    if(Global.build_type == 0)
+                    {
+                        Log.d(String.valueOf(getApplicationContext()), "Response generated");
+                    }
 
-                    Log.d(String.valueOf(getApplicationContext()), "Response generated");
                     if (response != null)
                     {
 

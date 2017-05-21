@@ -17,7 +17,9 @@ public class Constants {
     public static final String METHOD_GET_ROUTES ="GetDetailedRoutes";
     public static final String METHOD_GET_ROUTES1 = "GetRoutes2";
 
-    public static final String GLOBEL_URL = "http://affapi.mantistechnologies.com/service.asmx";
+    public static String GLOBEL_URL = "";
+   // public static String GLOBEL_URL = "http://affapi.mantistechnologies.com/service.asmx";
+   // public static final String GLOBEL_URL = "http://aff2api.mantistechnologies.com/Service.asmx";
 
     public static final String GLOBEL_NAMESPACE = "http://tempuri.org/";
 

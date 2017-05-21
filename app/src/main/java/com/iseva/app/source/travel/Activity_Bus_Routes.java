@@ -315,8 +315,15 @@ public class Activity_Bus_Routes extends AppCompatActivity {
     {
         String[] months = { "January", "Febrauary", "March", "April","May","June","July","August","September","October","November","December" };
         String final_string = "";
-       String day = date.substring(8,date.length());
-        int month = Integer.parseInt(date.substring(5,7));
+        String day = "";
+        int month = 1;
+        if(date != null)
+        {
+           day = date.substring(8,date.length());
+            month = Integer.parseInt(date.substring(5,7));
+        }
+
+
 
         final_string = day+" "+months[month-1];
 

@@ -105,16 +105,22 @@ public class Activity_show_detail_cancel_ticket extends Activity {
 
             @Override
             public void onResponse(String s) {
+                if (Global.build_type == 0)
+                {
+                    Log.e("vikas",s);
+                }
 
-                Log.e("vikas",s);
                 JSONObject response = null;
                 try {
                     response = new JSONObject(s);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                if (Global.build_type == 0)
+                {
+                    Log.d(String.valueOf(getApplicationContext()), "Response generated");
+                }
 
-                Log.d(String.valueOf(getApplicationContext()), "Response generated");
                 if (response != null)
                 {
 

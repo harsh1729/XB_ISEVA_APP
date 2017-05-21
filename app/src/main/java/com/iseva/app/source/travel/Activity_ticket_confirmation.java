@@ -86,7 +86,11 @@ public class Activity_ticket_confirmation extends Activity {
         ticket_confirmation_total_fare_txt = i.getStringExtra("total_fare");
 
         passengers = i.getStringExtra("passanger");
-        Log.e("vikas passenger =",passengers);
+        if (Global.build_type == 0)
+        {
+            Log.e("vikas passenger =",passengers);
+        }
+
         try {
             JSONArray ps = new JSONArray(passengers);
 

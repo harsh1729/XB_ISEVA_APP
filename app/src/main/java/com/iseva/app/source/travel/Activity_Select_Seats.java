@@ -415,8 +415,11 @@ public class Activity_Select_Seats extends AppCompatActivity {
                 }
             });
             tabsStrip.setVisibility(View.VISIBLE);
+            if(Global.build_type ==0)
+            {
+                Log.e("vikas","deck2 not 0");
+            }
 
-            Log.e("vikas","deck2 not 0");
         }
         loader_layout.setVisibility(View.GONE);
         LinearLayout cancellation_text = (LinearLayout) findViewById(R.id.cancellation_text);
@@ -508,8 +511,12 @@ public class Activity_Select_Seats extends AppCompatActivity {
                     TextView tv = new TextView(Activity_Select_Seats.this);
                     tv.setText(soapresult_schedule_detail.toString());
                     cancellation_text.addView(tv);*/
-                    Log.e("vikas",soapresult_schedule_detail.toString().trim());
-                    Log.e("vikas",Integer.toString(Search_Buses_Key.maxcol));
+                    if(Global.build_type ==0)
+                    {
+                        Log.e("vikas",soapresult_schedule_detail.toString().trim());
+                        Log.e("vikas",Integer.toString(Search_Buses_Key.maxcol));
+                    }
+
                     set_dynamic_data();
                 }
                 else
@@ -577,8 +584,11 @@ public class Activity_Select_Seats extends AppCompatActivity {
 
 
 
+            if(Global.build_type ==0)
+            {
+                Log.e("vikas envolop",request.toString());
+            }
 
-            Log.e("vikas envolop",request.toString());
 
             SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
             envelope.implicitTypes = true;
@@ -587,7 +597,7 @@ public class Activity_Select_Seats extends AppCompatActivity {
 
             envelope.setOutputSoapObject(request);
 
-             HttpTransportSE httpTransport = new HttpTransportSE("http://affapi.mantistechnologies.com/Service.asmx");
+             HttpTransportSE httpTransport = new HttpTransportSE(Constants.GLOBEL_URL);
             httpTransport.debug = true;
 
             try {
@@ -724,9 +734,13 @@ public class Activity_Select_Seats extends AppCompatActivity {
                                 }
                                 after_offer_fare = (float)temp_fare_offer;
 
-                                Log.e("vikas after_fare=",""+after_offer_fare);
-                                Log.e("vikas percentage=",""+offer_per);
-                                Log.e("vikas total per=",""+MainActivity.save_per);
+                                if(Global.build_type ==0)
+                                {
+                                    Log.e("vikas after_fare=",""+after_offer_fare);
+                                    Log.e("vikas percentage=",""+offer_per);
+                                    Log.e("vikas total per=",""+MainActivity.save_per);
+                                }
+
 
 
 
@@ -790,9 +804,13 @@ public class Activity_Select_Seats extends AppCompatActivity {
                                     float InfantFare = Float.parseFloat(((SoapObject)((SoapObject)((SoapObject)soapresult_schedule_detail.getProperty("Layout")).getProperty("SeatDetails")).getProperty(i)).getProperty("InfantFare").toString());
 
                                     float after_offer_seat_fare;
-                                    Log.e("vikas seat_o_fare",""+Fare_local);
-                                    Log.e("vikas seat comm",""+CommPCT);
-                                    Log.e("vikas seat o_commi",""+offer_per);
+                                    if(Global.build_type ==0)
+                                    {
+                                        Log.e("vikas seat_o_fare",""+Fare_local);
+                                        Log.e("vikas seat comm",""+CommPCT);
+                                        Log.e("vikas seat o_commi",""+offer_per);
+                                    }
+
                                     int temp_seat_fare_offer = (int)(Fare_local *(100-offer_per))/100;
                                     if(MainActivity.save_per <= CommPCT && MainActivity.save_per != 0) {
                                         temp_seat_fare_offer = temp_seat_fare_offer + 1;

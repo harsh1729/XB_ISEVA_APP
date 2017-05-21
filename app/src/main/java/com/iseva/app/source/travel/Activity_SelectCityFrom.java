@@ -53,8 +53,11 @@ public class Activity_SelectCityFrom extends Activity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(Global.build_type ==0)
+                {
+                    Log.e("vikas  charsequ-",s+" start-"+ start+ " before-"+before+"  count-"+count );
+                }
 
-                Log.e("vikas  charsequ-",s+" start-"+ start+ " before-"+before+"  count-"+count );
                 if(Real_Get_From_City.getText().length() == 0)//Real_Get_From_City.getText().length()
                 {
 

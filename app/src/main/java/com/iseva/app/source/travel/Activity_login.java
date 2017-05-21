@@ -112,7 +112,11 @@ public class Activity_login extends Activity {
 
                 if (response != null)
                 {
-                    Log.e("vikas",response.toString());
+                    if(Global.build_type == 0)
+                    {
+                        Log.e("vikas",response.toString());
+                    }
+
 
                     try
                     {

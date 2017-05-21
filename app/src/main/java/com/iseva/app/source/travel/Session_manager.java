@@ -35,6 +35,11 @@ public class Session_manager {
 
     public static final String KEY_PHONE = "phone";
 
+    public static final String KEY_PASSWORD = "password";
+    public static final String KEY_USERNAME = "username";
+    public static final String KEY_url = "url";
+    public static final String IS_SET_PASSWORD = "IsSetpassword";
+
     // Constructor
     public Session_manager(Context context){
         this._context = context;
@@ -62,6 +67,39 @@ public class Session_manager {
         editor.commit();
     }
 
+    public void set_password(String username,String password,String url)
+    {
+        editor.putBoolean(IS_SET_PASSWORD,true);
+        editor.putString(KEY_USERNAME,username);
+        editor.putString(KEY_PASSWORD,password);
+        editor.putString(KEY_url,url);
+        editor.commit();
+
+    }
+
+    public void set_url(String url)
+    {
+        editor.putString(KEY_url,url);
+    }
+
+    public boolean isSetpassword(){
+        return pref.getBoolean(IS_SET_PASSWORD, false);
+    }
+
+    public String get_secrat_username()
+    {
+        return pref.getString(KEY_USERNAME,null);
+    }
+
+    public String get_url()
+    {
+        return pref.getString(KEY_url,null);
+    }
+
+    public String get_password()
+    {
+        return pref.getString(KEY_PASSWORD,null);
+    }
     /**
      * Check login method wil check user login status
      * If false it will redirect user to login page

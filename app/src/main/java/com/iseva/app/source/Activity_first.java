@@ -2,8 +2,10 @@ package com.iseva.app.source;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -37,7 +39,9 @@ import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.iseva.app.source.travel.Constants;
+import com.iseva.app.source.travel.Global;
 import com.iseva.app.source.travel.MainActivity;
+import com.iseva.app.source.travel.Session_manager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -63,7 +67,7 @@ public class Activity_first extends AppCompatActivity implements NavigationView.
 
 
 
-
+    ProgressDialog progressDialog;
 
     NavigationView navigationView;
 
@@ -72,9 +76,14 @@ public class Activity_first extends AppCompatActivity implements NavigationView.
     SliderLayout sliderLayout;
     private ArrayList<String> listImageUrls;
 
+    Session_manager session_manager;
+
     LinearLayout bus_ticket_btn;
     LinearLayout my_city_btn;
     private int volley_timeout = 15000;
+    int app_version = 0;
+    int server_version = 0;
+    String force_update="1";
 
     private ArrayList<String> promo_images = new ArrayList<>();
 
@@ -84,9 +93,25 @@ public class Activity_first extends AppCompatActivity implements NavigationView.
         setContentView(R.layout.activity_first);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_first);
         setSupportActionBar(toolbar);
-        Custom_GetMobile_Number.app_launched(this) ;
 
-        get_promo_image();
+        Custom_GetMobile_Number.app_launched(this) ;
+        session_manager = new Session_manager(Activity_first.this);
+        progressDialog = new ProgressDialog(Activity_first.this);
+        progressDialog.setMessage("Please wait...");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.setCancelable(false);
+
+        progressDialog.show();
+        if(isNetworkConnected())
+        {
+            get_version_code();
+            get_promo_image();
+        }
+        else
+        {
+            Global.showAlertDialog(Activity_first.this,getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
+        }
+
         bus_ticket_btn = (LinearLayout)findViewById(R.id.activity_first_bus_ticket_btn);
         my_city_btn = (LinearLayout)findViewById(R.id.activity_first_my_city_btn);
 
@@ -202,6 +227,91 @@ public class Activity_first extends AppCompatActivity implements NavigationView.
         });
 
         getAddver();
+    }
+
+    public void get_version_code()
+    {
+        final StringRequest promocodeapplyrequest = new StringRequest(Request.Method.POST,
+                Constants.get_commition_extra_charge, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String s) {
+                progressDialog.dismiss();
+                Log.e("vikas",s);
+                JSONObject response = null;
+                try
+                {
+                    response = new JSONObject(s);
+
+
+                    if(response != null)
+                    {
+
+                        try
+                        {
+
+                            app_version = BuildConfig.VERSION_CODE;
+
+                            server_version = response.getInt("version_name");
+                            force_update = response.getString("force_update");
+                            session_manager.set_url(response.getString("url"));
+                            if(server_version > app_version)
+                            {
+                                if(force_update.trim().equals("1"))
+                                {
+
+                                }
+                                else
+                                {
+                                    Custom_App_updater.app_launched(Activity_first.this,force_update);
+                                }
+
+                            }
+
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+
+
+
+                    }
+
+                } catch (JSONException e) {
+
+
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+
+
+            }
+        }) {
+            @Override
+            public Map<String, String> getParams(){
+                Map<String, String> params = new HashMap<String, String>();
+
+
+
+
+
+
+                return params;
+
+            }
+        };
+
+        promocodeapplyrequest.setRetryPolicy(new DefaultRetryPolicy(
+                volley_timeout,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        RequestQueue requestQueue = Volley.newRequestQueue(Activity_first.this);
+        requestQueue.add(promocodeapplyrequest);
     }
 
     public void get_promo_image()
@@ -776,7 +886,11 @@ public class Activity_first extends AppCompatActivity implements NavigationView.
 
 
 
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
+        return cm.getActiveNetworkInfo() != null;
+    }
 
 
     private void navigationCityChange() {

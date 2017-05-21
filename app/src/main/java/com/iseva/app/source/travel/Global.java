@@ -21,6 +21,9 @@ import com.iseva.app.source.R;
 
 public class Global {
 
+    // 0 for debug and 1 for release
+    public static int build_type = 1;
+
     public static void showAlertDialog(Context context, String title, String message, String btn_txt)
     {
         LayoutInflater inflater = (LayoutInflater)context.getSystemService

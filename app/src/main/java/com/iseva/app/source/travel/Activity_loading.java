@@ -2,12 +2,18 @@ package com.iseva.app.source.travel;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -212,12 +218,15 @@ public class Activity_loading extends Activity {
             else
             {
                 loader_layout.setVisibility(View.GONE);
-                Global.showAlertDialog(Activity_loading.this,getResources().getString(R.string.validating_error_title),"Some error accured please try again !","Ok");
+               showAlertDialog(getResources().getString(R.string.slow_internet_title),getResources().getString(R.string.slow_internet_error),"Ok");
 
 
             }
+            if(Global.build_type == 0)
+            {
+                Log.e("vikas",search_bus_result.toString());
+            }
 
-            Log.e("vikas",search_bus_result.toString());
 
         }
 
@@ -296,8 +305,11 @@ public class Activity_loading extends Activity {
 
             request.addSoapObject(search_request);
 
+            if(Global.build_type == 0)
+            {
+                Log.e("vikas envolop",request.toString());
+            }
 
-            Log.e("vikas envolop",request.toString());
 
             SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
             envelope.implicitTypes = true;
@@ -306,10 +318,13 @@ public class Activity_loading extends Activity {
 
             envelope.setOutputSoapObject(request);
 
+            if(Global.build_type == 0)
+            {
+                Log.e("vikas envolop",envelope.toString());
+            }
 
-            Log.e("vikas envolop",envelope.toString());
 
-            HttpTransportSE httpTransport = new HttpTransportSE("http://affapi.mantistechnologies.com/service.asmx");
+            HttpTransportSE httpTransport = new HttpTransportSE(Constants.GLOBEL_URL);
             httpTransport.debug = true;
 
             try {
@@ -379,10 +394,13 @@ public class Activity_loading extends Activity {
                                 temp_fare_offer = temp_fare_offer + 1;
                             }
                             after_offer_fare = (float)temp_fare_offer;
+                            if(Global.build_type == 0)
+                            {
+                                Log.e("vikas after_fare_load=",""+after_offer_fare);
+                                Log.e("vikas percentage_loadi=",""+offer_per);
+                                Log.e("vikas total per loadi=",""+MainActivity.save_per);
+                            }
 
-                            Log.e("vikas after_fare_load=",""+after_offer_fare);
-                            Log.e("vikas percentage_loadi=",""+offer_per);
-                            Log.e("vikas total per loadi=",""+MainActivity.save_per);
 
                             thread_realm.beginTransaction();
                             Bus_routes_detail bus_rout = thread_realm.createObject(Bus_routes_detail.class);
@@ -443,7 +461,7 @@ public class Activity_loading extends Activity {
                     }
                     else
                     {
-
+                        Global.showAlertDialog(Activity_loading.this,getResources().getString(R.string.validating_error_title),((SoapObject)search_bus_result.getProperty("Response")).getPrimitivePropertyAsString("Message"),"Ok");
 
                     }
 
@@ -453,7 +471,7 @@ public class Activity_loading extends Activity {
                 }
                 else
                 {
-
+                    Global.showAlertDialog(Activity_loading.this,getResources().getString(R.string.validating_error_title),getResources().getString(R.string.slow_internet_error),"Ok");
                 }
             }
             catch (Exception e)
@@ -492,13 +510,15 @@ public class Activity_loading extends Activity {
 
     }
 
-   /* public void showAlertDialog(String title,String message,String buttonlabel)
+    public void showAlertDialog(String title,String message,String buttonlabel)
     {
-        TextView title_tv = new TextView(this);
-        title_tv.setPadding(0,getResources().getDimensionPixelSize(R.dimen.padding_margin_10),0,0);
-        title_tv.setTextColor(ContextCompat.getColor(Activity_loading.this,R.color.black));
-        title_tv.setTextSize(getResources().getDimension(R.dimen.text_size_mediam));
-        title_tv.setGravity(Gravity.CENTER);
+        LayoutInflater inflater = (LayoutInflater)Activity_loading.this.getSystemService
+                (Context.LAYOUT_INFLATER_SERVICE);
+
+        View v =  inflater.inflate(R.layout.textview,null);
+
+
+        TextView title_tv = (TextView)v.findViewById(R.id.alert_title);
         title_tv.setText(title);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(Activity_loading.this);
@@ -513,13 +533,12 @@ public class Activity_loading extends Activity {
                 });
         AlertDialog alert = builder.create();
         alert.show();
-        TextView titleview = (TextView)alert.findViewById(android.R.id.title);
-        titleview.setGravity(Gravity.CENTER);
+
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         Button b = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
         b.setLayoutParams(lp);
         b.setBackgroundResource(R.drawable.btn_background);
         b.setTextColor(ContextCompat.getColor(Activity_loading.this, R.color.app_white));
-    }*/
+    }
 
 }
