@@ -26,6 +26,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.iseva.app.source.R;
+import com.iseva.app.source.travel.Constants.URL_XB;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -101,11 +102,11 @@ public class Activity_show_detail_cancel_ticket extends Activity {
         progress.show();
 
         StringRequest bookedTicketreq = new StringRequest(Request.Method.POST,
-                Constants.Get_booked_ticket_detail, new Response.Listener<String>() {
+                URL_XB.GET_BOOKED_TICKET_DETAILS, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String s) {
-                if (Global.build_type == 0)
+                if (Global_Travel.build_type == 0)
                 {
                     Log.e("vikas",s);
                 }
@@ -116,7 +117,7 @@ public class Activity_show_detail_cancel_ticket extends Activity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                if (Global.build_type == 0)
+                if (Global_Travel.build_type == 0)
                 {
                     Log.d(String.valueOf(getApplicationContext()), "Response generated");
                 }

@@ -18,6 +18,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.iseva.app.source.R;
+import com.iseva.app.source.travel.Constants.URL_XB;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -88,12 +89,12 @@ public class Activity_register extends Activity {
             progressBar.show();
 
             StringRequest loginreq = new StringRequest(Request.Method.POST,
-                    Constants.Signup_url, new Response.Listener<String>() {
+                    URL_XB.SIGNUP, new Response.Listener<String>() {
 
                 @Override
                 public void onResponse(String s) {
                     progressBar.dismiss();
-                    if(Global.build_type == 0)
+                    if(Global_Travel.build_type == 0)
                     {
                         VolleyLog.d("vikas", "Response: " + s.toString());
                     }
@@ -104,7 +105,7 @@ public class Activity_register extends Activity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    if(Global.build_type == 0)
+                    if(Global_Travel.build_type == 0)
                     {
                         Log.d(String.valueOf(getApplicationContext()), "Response generated");
                     }
@@ -170,41 +171,41 @@ public class Activity_register extends Activity {
         Boolean Flag = true;
         if(register_name_et_text.length() == 0)
         {
-            Global.showAlertDialog(Activity_register.this,getResources().getString(R.string.validating_error_title),"Please enter name","Ok");
+            Global_Travel.showAlertDialog(Activity_register.this,getResources().getString(R.string.validating_error_title),"Please enter name","Ok");
             Flag = false;
             return Flag;
         }
         else if(register_email_et_text.trim().length() == 0 || !validatemail(register_email_et_text))
         {
-            Global.showAlertDialog(Activity_register.this,getResources().getString(R.string.validating_error_title),"Please enter valid email","Ok");
+            Global_Travel.showAlertDialog(Activity_register.this,getResources().getString(R.string.validating_error_title),"Please enter valid email","Ok");
 
             Flag = false;
             return Flag;
         }
         else if(register_phone_et_text.trim().length() == 0)
         {
-            Global.showAlertDialog(Activity_register.this,getResources().getString(R.string.validating_error_title),"Please enter phone number","Ok");
+            Global_Travel.showAlertDialog(Activity_register.this,getResources().getString(R.string.validating_error_title),"Please enter phone number","Ok");
 
             Flag = false;
             return Flag;
         }
         else if(register_password_et_text.trim().length() == 0)
         {
-            Global.showAlertDialog(Activity_register.this,getResources().getString(R.string.validating_error_title),"Please enter password","Ok");
+            Global_Travel.showAlertDialog(Activity_register.this,getResources().getString(R.string.validating_error_title),"Please enter password","Ok");
 
             Flag = false;
             return Flag;
         }
         else if(register_password_confirm_et_text.trim().length() == 0)
         {
-            Global.showAlertDialog(Activity_register.this,getResources().getString(R.string.validating_error_title),"Please enter confirm password","Ok");
+            Global_Travel.showAlertDialog(Activity_register.this,getResources().getString(R.string.validating_error_title),"Please enter confirm password","Ok");
 
             Flag = false;
             return Flag;
         }
         else if(register_password_et_text.trim().equals(register_password_confirm_et_text.trim()) == false )
         {
-            Global.showAlertDialog(Activity_register.this,getResources().getString(R.string.validating_error_title),"Password and password confirm should be same !","Ok");
+            Global_Travel.showAlertDialog(Activity_register.this,getResources().getString(R.string.validating_error_title),"Password and password confirm should be same !","Ok");
 
             Flag = false;
             return Flag;

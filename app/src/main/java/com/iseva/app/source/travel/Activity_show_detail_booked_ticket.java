@@ -28,17 +28,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.iseva.app.source.R;
+import com.iseva.app.source.travel.Constants.URL_XB;
 
 import org.ksoap2.SoapEnvelope;
-import org.ksoap2.SoapFault;
-import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
-import org.ksoap2.transport.HttpResponseException;
-import org.ksoap2.transport.HttpTransportSE;
-import org.xmlpull.v1.XmlPullParserException;
 
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -118,7 +113,7 @@ public class Activity_show_detail_booked_ticket extends Activity {
         }
         else
         {
-            Global.showAlertDialog(Activity_show_detail_booked_ticket.this,getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
+            Global_Travel.showAlertDialog(Activity_show_detail_booked_ticket.this,getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
         }
 
     }
@@ -224,12 +219,12 @@ public class Activity_show_detail_booked_ticket extends Activity {
                 }
                 else
                 {
-                    Global.showAlertDialog(Activity_show_detail_booked_ticket.this,getResources().getString(R.string.validating_error_title),((SoapObject)soapresult_iscancelable.getProperty("Response")).getPrimitivePropertyAsString("Message"),"Ok");
+                    Global_Travel.showAlertDialog(Activity_show_detail_booked_ticket.this,getResources().getString(R.string.validating_error_title),((SoapObject)soapresult_iscancelable.getProperty("Response")).getPrimitivePropertyAsString("Message"),"Ok");
                     //Toast.makeText(Activity_show_detail_booked_ticket.this, ((SoapObject) soapresult_iscancelable.getProperty("Response")).getPrimitiveProperty("Message").toString(), Toast.LENGTH_LONG).show();
                 }
 
             } else {
-                Global.showAlertDialog(Activity_show_detail_booked_ticket.this,getResources().getString(R.string.validating_error_title),"Some error accured please try again !","Ok");
+                Global_Travel.showAlertDialog(Activity_show_detail_booked_ticket.this,getResources().getString(R.string.validating_error_title),"Some error accured please try again !","Ok");
                 //Toast.makeText(Activity_show_detail_booked_ticket.this, "Server Error !", Toast.LENGTH_LONG).show();
             }
 
@@ -248,46 +243,51 @@ public class Activity_show_detail_booked_ticket extends Activity {
         @Override
         protected Void doInBackground(Void... arg0) {
 
-            SoapObject request = new SoapObject(Constants.GLOBEL_NAMESPACE, Constants.METHOD_ISCANCELABLE);
+            //TODO :HARSH impementemnt new API call
+
+            SoapObject request = new SoapObject("","");
 
 
-            SoapObject sa = new SoapObject(null,"Authentication");
-
-            PropertyInfo userid = new PropertyInfo();
-            userid.setName("UserID");
-
-            userid.setValue(LoginCridantial.UserId.trim());
-            userid.setType(Integer.class);
-            sa.addProperty(userid);
-
-            PropertyInfo usertype = new PropertyInfo();
-            usertype.setName("UserType");
-            usertype.setValue(LoginCridantial.UserType.trim());
+//            SoapObject request = new SoapObject(Constants.GLOBEL_NAMESPACE, Constants.METHOD_ISCANCELABLE);
 
 
-            usertype.setType(String.class);
-            sa.addProperty(usertype);
+//            SoapObject sa = new SoapObject(null,"Authentication");
+//
+//            PropertyInfo userid = new PropertyInfo();
+//            userid.setName("UserID");
+//
+//            userid.setValue(LoginCridantial.UserId.trim());
+//            userid.setType(Integer.class);
+//            sa.addProperty(userid);
+//
+//            PropertyInfo usertype = new PropertyInfo();
+//            usertype.setName("UserType");
+//            usertype.setValue(LoginCridantial.UserType.trim());
+//
+//
+//            usertype.setType(String.class);
+//            sa.addProperty(usertype);
+//
+//            PropertyInfo userkey = new PropertyInfo();
+//            userkey.setName("Key");
+//            userkey.setValue(LoginCridantial.UserKey.trim());
 
-            PropertyInfo userkey = new PropertyInfo();
-            userkey.setName("Key");
-            userkey.setValue(LoginCridantial.UserKey.trim());
-
-            userkey.setType(String.class);
-            sa.addProperty(userkey);
-            request.addSoapObject(sa);
-
-            PropertyInfo pnr_no = new PropertyInfo();
-            pnr_no.setName("PNRNo");
-            pnr_no.setValue(pnr_no_txt);
-            userkey.setType(String.class);
-            request.addProperty(pnr_no);
-
-            PropertyInfo ticket_no = new PropertyInfo();
-            ticket_no.setName("TicketNo");
-            ticket_no.setValue(ticket_no_txt);
-            userkey.setType(String.class);
-            request.addProperty(ticket_no);
-            if (Global.build_type == 0)
+//            userkey.setType(String.class);
+//            sa.addProperty(userkey);
+//            request.addSoapObject(sa);
+//
+//            PropertyInfo pnr_no = new PropertyInfo();
+//            pnr_no.setName("PNRNo");
+//            pnr_no.setValue(pnr_no_txt);
+//            userkey.setType(String.class);
+//            request.addProperty(pnr_no);
+//
+//            PropertyInfo ticket_no = new PropertyInfo();
+//            ticket_no.setName("TicketNo");
+//            ticket_no.setValue(ticket_no_txt);
+//            userkey.setType(String.class);
+            //request.addProperty(ticket_no);
+            if (Global_Travel.build_type == 0)
             {
                 Log.e("vikas request print",request.toString());
             }
@@ -302,28 +302,28 @@ public class Activity_show_detail_booked_ticket extends Activity {
             envelope.dotNet = true;
             envelope.setOutputSoapObject(request);
 
-            HttpTransportSE httpTransport = new HttpTransportSE(Constants.GLOBEL_URL);
-            httpTransport.debug =true;
-
-
-            try {
-                httpTransport.call(Constants.GLOBEL_NAMESPACE+Constants.METHOD_ISCANCELABLE, envelope);
-            } catch (HttpResponseException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (XmlPullParserException e) {
-                e.printStackTrace();
-            }
-            soapresult_iscancelable = null;
-
-            try {
-                soapresult_iscancelable  = (SoapObject)envelope.getResponse();
-
-            } catch (SoapFault e) {
-
-                e.printStackTrace();
-            }
+//            HttpTransportSE httpTransport = new HttpTransportSE(Constants.GLOBEL_URL);
+//            httpTransport.debug =true;
+//
+//
+//            try {
+//                httpTransport.call(Constants.GLOBEL_NAMESPACE+Constants.METHOD_ISCANCELABLE, envelope);
+//            } catch (HttpResponseException e) {
+//                e.printStackTrace();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            } catch (XmlPullParserException e) {
+//                e.printStackTrace();
+//            }
+//            soapresult_iscancelable = null;
+//
+//            try {
+//                soapresult_iscancelable  = (SoapObject)envelope.getResponse();
+//
+//            } catch (SoapFault e) {
+//
+//                e.printStackTrace();
+//            }
 
 
 
@@ -344,7 +344,7 @@ public class Activity_show_detail_booked_ticket extends Activity {
                 if (Is_success.equals("true")) {
                     //Toast.makeText(Activity_review_itinerary.this,soapresult_detail.toString(),Toast.LENGTH_LONG).show();
                     try {
-                        if(Global.build_type == 0)
+                        if(Global_Travel.build_type == 0)
                         {
                             Log.e("vikas", soapresult_ticket_detail.toString());
                         }
@@ -414,16 +414,16 @@ public class Activity_show_detail_booked_ticket extends Activity {
                 }
                 else
                 {
-                    if (Global.build_type == 0)
+                    if (Global_Travel.build_type == 0)
                     {
                         Log.e("vikas", soapresult_ticket_detail.toString());
                     }
 
-                    Global.showAlertDialog(Activity_show_detail_booked_ticket.this,getResources().getString(R.string.validating_error_title),((SoapObject)soapresult_ticket_detail.getProperty("Response")).getPrimitivePropertyAsString("Message"),"Ok");
+                    Global_Travel.showAlertDialog(Activity_show_detail_booked_ticket.this,getResources().getString(R.string.validating_error_title),((SoapObject)soapresult_ticket_detail.getProperty("Response")).getPrimitivePropertyAsString("Message"),"Ok");
                 }
 
             } else {
-                Global.showAlertDialog(Activity_show_detail_booked_ticket.this,getResources().getString(R.string.validating_error_title),"Some error accured please try again !","Ok");
+                Global_Travel.showAlertDialog(Activity_show_detail_booked_ticket.this,getResources().getString(R.string.validating_error_title),"Some error accured please try again !","Ok");
             }
 
 
@@ -446,83 +446,87 @@ public class Activity_show_detail_booked_ticket extends Activity {
         @Override
         protected Void doInBackground(Void... arg0) {
 
-            SoapObject request = new SoapObject(Constants.GLOBEL_NAMESPACE, Constants.METHOD_TICKET_DETAIL);
+            //TODO : Impemenet new HARSH
+            SoapObject request = new SoapObject("", "");
+
+
+            //SoapObject request = new SoapObject(Constants.GLOBEL_NAMESPACE, Constants.METHOD_TICKET_DETAIL);
 
 
             SoapObject sa = new SoapObject(null,"Authentication");
 
-            PropertyInfo userid = new PropertyInfo();
-            userid.setName("UserID");
-
-            userid.setValue(LoginCridantial.UserId.trim());
-            userid.setType(Integer.class);
-            sa.addProperty(userid);
-
-            PropertyInfo usertype = new PropertyInfo();
-            usertype.setName("UserType");
-            usertype.setValue(LoginCridantial.UserType.trim());
-
-
-            usertype.setType(String.class);
-            sa.addProperty(usertype);
-
-            PropertyInfo userkey = new PropertyInfo();
-            userkey.setName("Key");
-            userkey.setValue(LoginCridantial.UserKey.trim());
-
-            userkey.setType(String.class);
-            sa.addProperty(userkey);
-            request.addSoapObject(sa);
-
-            PropertyInfo ticket_no = new PropertyInfo();
-            ticket_no.setName("TicketNo");
-            ticket_no.setValue(ticket_no_txt);
-            userkey.setType(String.class);
-            request.addProperty(ticket_no);
-
-            PropertyInfo pnr_no = new PropertyInfo();
-            pnr_no.setName("strPNRNo");
-            pnr_no.setValue(pnr_no_txt);
-            userkey.setType(String.class);
-            request.addProperty(pnr_no);
-            if (Global.build_type == 0)
-            {
-                Log.e("vikas request print",request.toString());
-            }
-
-
+//            PropertyInfo userid = new PropertyInfo();
+//            userid.setName("UserID");
+//
+//            userid.setValue(LoginCridantial.UserId.trim());
+//            userid.setType(Integer.class);
+//            sa.addProperty(userid);
+//
+//            PropertyInfo usertype = new PropertyInfo();
+//            usertype.setName("UserType");
+//            usertype.setValue(LoginCridantial.UserType.trim());
+//
+//
+//            usertype.setType(String.class);
+//            sa.addProperty(usertype);
+//
+//            PropertyInfo userkey = new PropertyInfo();
+//            userkey.setName("Key");
+//            userkey.setValue(LoginCridantial.UserKey.trim());
+//
+//            userkey.setType(String.class);
+//            sa.addProperty(userkey);
+//            request.addSoapObject(sa);
+//
+//            PropertyInfo ticket_no = new PropertyInfo();
+//            ticket_no.setName("TicketNo");
+//            ticket_no.setValue(ticket_no_txt);
+//            userkey.setType(String.class);
+//            request.addProperty(ticket_no);
+//
+//            PropertyInfo pnr_no = new PropertyInfo();
+//            pnr_no.setName("strPNRNo");
+//            pnr_no.setValue(pnr_no_txt);
+//            userkey.setType(String.class);
+//            request.addProperty(pnr_no);
+//            if (Global_Travel.build_type == 0)
+//            {
+//                Log.e("vikas request print",request.toString());
+//            }
 
 
 
 
-            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-            envelope.implicitTypes = true;
-            envelope.dotNet = true;
-            envelope.setOutputSoapObject(request);
 
-            HttpTransportSE httpTransport = new HttpTransportSE(Constants.GLOBEL_URL);
-            httpTransport.debug =true;
-
-
-            try {
-                httpTransport.call(Constants.GLOBEL_NAMESPACE+Constants.METHOD_TICKET_DETAIL, envelope);
-            } catch (HttpResponseException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (XmlPullParserException e) {
-                e.printStackTrace();
-            }
-            soapresult_ticket_detail = null;
-
-            try {
-                soapresult_ticket_detail  = (SoapObject)envelope.getResponse();
-
-            } catch (SoapFault e) {
-
-                e.printStackTrace();
-            }
-
+//
+//            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+//            envelope.implicitTypes = true;
+//            envelope.dotNet = true;
+//            envelope.setOutputSoapObject(request);
+//
+//            HttpTransportSE httpTransport = new HttpTransportSE(Constants.GLOBEL_URL);
+//            httpTransport.debug =true;
+//
+//
+//            try {
+//                httpTransport.call(Constants.GLOBEL_NAMESPACE+Constants.METHOD_TICKET_DETAIL, envelope);
+//            } catch (HttpResponseException e) {
+//                e.printStackTrace();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            } catch (XmlPullParserException e) {
+//                e.printStackTrace();
+//            }
+//            soapresult_ticket_detail = null;
+//
+//            try {
+//                soapresult_ticket_detail  = (SoapObject)envelope.getResponse();
+//
+//            } catch (SoapFault e) {
+//
+//                e.printStackTrace();
+//            }
+//
 
 
             return null;
@@ -590,7 +594,7 @@ public class Activity_show_detail_booked_ticket extends Activity {
                 }
                 else
                 {
-                    Global.showAlertDialog(Activity_show_detail_booked_ticket.this,getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
+                    Global_Travel.showAlertDialog(Activity_show_detail_booked_ticket.this,getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
                 }
 
             }
@@ -609,7 +613,7 @@ public class Activity_show_detail_booked_ticket extends Activity {
                 }
                 else
                 {
-                    Global.showAlertDialog(Activity_show_detail_booked_ticket.this,getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
+                    Global_Travel.showAlertDialog(Activity_show_detail_booked_ticket.this,getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
                 }
 
             }
@@ -628,7 +632,7 @@ public class Activity_show_detail_booked_ticket extends Activity {
     public void updateTicketStatus()
     {
         StringRequest update_ticket_status = new StringRequest(Request.Method.POST,
-                Constants.update_ticket_status, new Response.Listener<String>() {
+                URL_XB.UPDATE_TICKET_STATUS, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String s) {
@@ -668,7 +672,7 @@ public class Activity_show_detail_booked_ticket extends Activity {
     public void refund_fair()
     {
         StringRequest refund_fare = new StringRequest(Request.Method.POST,
-                Constants.refund_amount, new Response.Listener<String>() {
+                URL_XB.REFUND_AMOUNT, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String s) {
@@ -715,7 +719,7 @@ public class Activity_show_detail_booked_ticket extends Activity {
                 if (Is_success.equals("true")) {
                     //Toast.makeText(Activity_review_itinerary.this,soapresult_detail.toString(),Toast.LENGTH_LONG).show();
                     try {
-                        if (Global.build_type == 0)
+                        if (Global_Travel.build_type == 0)
                         {
                             Log.e("vikas",soapresult_cancel_ticket.toString());
                         }
@@ -795,86 +799,89 @@ public class Activity_show_detail_booked_ticket extends Activity {
         @Override
         protected Void doInBackground(Void... arg0) {
 
-            SoapObject request = new SoapObject(Constants.GLOBEL_NAMESPACE, Constants.METHOD_CANCEL_TICKET);
+            //TODO : HARSH impoemnt new API
+            SoapObject request = new SoapObject("", "");
+
+//            SoapObject request = new SoapObject(Constants.GLOBEL_NAMESPACE, Constants.METHOD_CANCEL_TICKET);
 
 
-            SoapObject sa = new SoapObject(null,"Authentication");
-
-            PropertyInfo userid = new PropertyInfo();
-            userid.setName("UserID");
-
-            userid.setValue(LoginCridantial.UserId.trim());
-            userid.setType(Integer.class);
-            sa.addProperty(userid);
-
-            PropertyInfo usertype = new PropertyInfo();
-            usertype.setName("UserType");
-            usertype.setValue(LoginCridantial.UserType.trim());
-
-
-            usertype.setType(String.class);
-            sa.addProperty(usertype);
-
-            PropertyInfo userkey = new PropertyInfo();
-            userkey.setName("Key");
-            userkey.setValue(LoginCridantial.UserKey.trim());
-
-            userkey.setType(String.class);
-            sa.addProperty(userkey);
-            request.addSoapObject(sa);
-
-            PropertyInfo pnr_no = new PropertyInfo();
-            pnr_no.setName("PNRNo");
-            pnr_no.setValue(pnr_no_txt);
-            userkey.setType(String.class);
-            request.addProperty(pnr_no);
-
-            PropertyInfo ticket_no = new PropertyInfo();
-            ticket_no.setName("TicketNo");
-            ticket_no.setValue(ticket_no_txt);
-            userkey.setType(String.class);
-            request.addProperty(ticket_no);
-            if (Global.build_type == 0)
-            {
-                Log.e("vikas request print",request.toString());
-            }
-
-
-
-
-
-
-            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-            envelope.implicitTypes = true;
-            envelope.dotNet = true;
-            envelope.setOutputSoapObject(request);
-
-            HttpTransportSE httpTransport = new HttpTransportSE(Constants.GLOBEL_URL);
-            httpTransport.debug =true;
-
-
-            try {
-                httpTransport.call(Constants.GLOBEL_NAMESPACE+Constants.METHOD_CANCEL_TICKET, envelope);
-            } catch (HttpResponseException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (XmlPullParserException e) {
-                e.printStackTrace();
-            }
-            soapresult_cancel_ticket = null;
-
-            try {
-                soapresult_cancel_ticket  = (SoapObject)envelope.getResponse();
-
-            } catch (SoapFault e) {
-
-                e.printStackTrace();
-            }
-
-
-
-            return null;
+//            SoapObject sa = new SoapObject(null,"Authentication");
+//
+//            PropertyInfo userid = new PropertyInfo();
+//            userid.setName("UserID");
+//
+//            userid.setValue(LoginCridantial.UserId.trim());
+//            userid.setType(Integer.class);
+//            sa.addProperty(userid);
+//
+//            PropertyInfo usertype = new PropertyInfo();
+//            usertype.setName("UserType");
+//            usertype.setValue(LoginCridantial.UserType.trim());
+//
+//
+//            usertype.setType(String.class);
+//            sa.addProperty(usertype);
+//
+//            PropertyInfo userkey = new PropertyInfo();
+//            userkey.setName("Key");
+//            userkey.setValue(LoginCridantial.UserKey.trim());
+//
+//            userkey.setType(String.class);
+//            sa.addProperty(userkey);
+//            request.addSoapObject(sa);
+//
+//            PropertyInfo pnr_no = new PropertyInfo();
+//            pnr_no.setName("PNRNo");
+//            pnr_no.setValue(pnr_no_txt);
+//            userkey.setType(String.class);
+//            request.addProperty(pnr_no);
+//
+//            PropertyInfo ticket_no = new PropertyInfo();
+//            ticket_no.setName("TicketNo");
+//            ticket_no.setValue(ticket_no_txt);
+//            userkey.setType(String.class);
+//            request.addProperty(ticket_no);
+//            if (Global_Travel.build_type == 0)
+//            {
+//                Log.e("vikas request print",request.toString());
+//            }
+//
+//
+//
+//
+//
+//
+//            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+//            envelope.implicitTypes = true;
+//            envelope.dotNet = true;
+//            envelope.setOutputSoapObject(request);
+//
+//            HttpTransportSE httpTransport = new HttpTransportSE(Constants.GLOBEL_URL);
+//            httpTransport.debug =true;
+//
+//
+//            try {
+//                httpTransport.call(Constants.GLOBEL_NAMESPACE+Constants.METHOD_CANCEL_TICKET, envelope);
+//            } catch (HttpResponseException e) {
+//                e.printStackTrace();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            } catch (XmlPullParserException e) {
+//                e.printStackTrace();
+//            }
+//            soapresult_cancel_ticket = null;
+//
+//            try {
+//                soapresult_cancel_ticket  = (SoapObject)envelope.getResponse();
+//
+//            } catch (SoapFault e) {
+//
+//                e.printStackTrace();
+//            }
+//
+//
+//
+           return null;
         }
     }
 

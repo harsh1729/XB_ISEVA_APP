@@ -30,6 +30,7 @@ import android.widget.TextView;
 import com.iseva.app.source.R;
 import com.iseva.app.source.Realm_objets.Pickup_Place_Detail;
 import com.iseva.app.source.Realm_objets.Selected_Seats;
+import com.iseva.app.source.travel.Global_Travel.TRAVEL_DATA;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -38,11 +39,7 @@ import org.ksoap2.SoapFault;
 import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
-import org.ksoap2.transport.HttpResponseException;
-import org.ksoap2.transport.HttpTransportSE;
-import org.xmlpull.v1.XmlPullParserException;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
@@ -193,30 +190,30 @@ public class Activity_Passenger_Details extends Activity {
                     }
                     else
                     {
-                        Global.showAlertDialog(Activity_Passenger_Details.this,getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
+                        Global_Travel.showAlertDialog(Activity_Passenger_Details.this,getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
                     }
 
                     //showAlertDialog("Alert","this is success","ok");
                 }
                 else if(validate_result.equals("boarding_point"))
                 {
-                    Global.showAlertDialog(Activity_Passenger_Details.this,getResources().getString(R.string.validating_error_title),"Please select a boarding point !","Ok");
+                    Global_Travel.showAlertDialog(Activity_Passenger_Details.this,getResources().getString(R.string.validating_error_title),"Please select a boarding point !","Ok");
                 }
                 else if(validate_result.contains("Passenger"))
                 {
-                    Global.showAlertDialog(Activity_Passenger_Details.this,getResources().getString(R.string.validating_error_title),"Complete "+validate_result+" information","Ok");
+                    Global_Travel.showAlertDialog(Activity_Passenger_Details.this,getResources().getString(R.string.validating_error_title),"Complete "+validate_result+" information","Ok");
                 }
                 else if(validate_result.equals("name"))
                 {
-                    Global.showAlertDialog(Activity_Passenger_Details.this,getResources().getString(R.string.validating_error_title),"Please insert contact name !","Ok");
+                    Global_Travel.showAlertDialog(Activity_Passenger_Details.this,getResources().getString(R.string.validating_error_title),"Please insert contact name !","Ok");
                 }
                 else if(validate_result.equals("phone"))
                 {
-                    Global.showAlertDialog(Activity_Passenger_Details.this,getResources().getString(R.string.validating_error_title),"Please insert a 10 disit mobile no !","Ok");
+                    Global_Travel.showAlertDialog(Activity_Passenger_Details.this,getResources().getString(R.string.validating_error_title),"Please insert a 10 disit mobile no !","Ok");
                 }
                 else if(validate_result.equals("email"))
                 {
-                    Global.showAlertDialog(Activity_Passenger_Details.this,getResources().getString(R.string.validating_error_title),"Please insert valid email id !","Ok");
+                    Global_Travel.showAlertDialog(Activity_Passenger_Details.this,getResources().getString(R.string.validating_error_title),"Please insert valid email id !","Ok");
                 }
 
             }
@@ -276,7 +273,7 @@ public class Activity_Passenger_Details extends Activity {
             String gender = "";
             RadioGroup rg = (RadioGroup)v.findViewWithTag("radio_group"+(i+1));
             int selected_radio_id = rg.getCheckedRadioButtonId();
-            if(Global.build_type == 0)
+            if(Global_Travel.build_type == 0)
             {
                 Log.e("vikas","selected_id="+selected_radio_id);
                 Log.e("vikas","rg tag="+rg.getTag());
@@ -287,7 +284,7 @@ public class Activity_Passenger_Details extends Activity {
             if(radiobtnTag.equals("radio_mr"+(i+1)))
             {
                 gender = "M";
-                if(Global.build_type == 0)
+                if(Global_Travel.build_type == 0)
                 {
                     Log.e("vikas","Passenger "+(i+1)+" "+"gender"+":"+"M");
                 }
@@ -296,7 +293,7 @@ public class Activity_Passenger_Details extends Activity {
             else
             {
                 gender = "F";
-                if(Global.build_type == 0)
+                if(Global_Travel.build_type == 0)
                 {
                     Log.e("vikas","Passenger "+(i+1)+" "+"gender"+":"+"F");
                 }
@@ -372,7 +369,7 @@ public class Activity_Passenger_Details extends Activity {
                 catch (Exception e)
                 {
                     e.printStackTrace();
-                    if(Global.build_type == 0)
+                    if(Global_Travel.build_type == 0)
                     {
                         Log.e("vikas","error json"+e);
                     }
@@ -470,7 +467,7 @@ public class Activity_Passenger_Details extends Activity {
                 {
                     try {
                         message = soapresult_detail.toString();
-                        if(Global.build_type == 0)
+                        if(Global_Travel.build_type == 0)
                         {
                             Log.e("vikas",message);
                         }
@@ -507,7 +504,7 @@ public class Activity_Passenger_Details extends Activity {
                 }
                 else
                 {
-                    Global.showAlertDialog(Activity_Passenger_Details.this,getResources().getString(R.string.validating_error_title),((SoapObject)soapresult_detail.getProperty("Response")).getPrimitivePropertyAsString("Message"),"Ok");
+                    Global_Travel.showAlertDialog(Activity_Passenger_Details.this,getResources().getString(R.string.validating_error_title),((SoapObject)soapresult_detail.getProperty("Response")).getPrimitivePropertyAsString("Message"),"Ok");
                 }
 
 
@@ -515,7 +512,7 @@ public class Activity_Passenger_Details extends Activity {
             }
             else
             {
-                Global.showAlertDialog(Activity_Passenger_Details.this,getResources().getString(R.string.validating_error_title),getResources().getString(R.string.slow_internet_error),"Ok");
+                Global_Travel.showAlertDialog(Activity_Passenger_Details.this,getResources().getString(R.string.validating_error_title),getResources().getString(R.string.slow_internet_error),"Ok");
             }
 
             progress.dismiss();
@@ -525,29 +522,32 @@ public class Activity_Passenger_Details extends Activity {
         @Override
         protected Void doInBackground(Void... voids) {
 
+            //TODO : HARSH Implement new API
 
-            SoapObject request = new SoapObject(Constants.GLOBEL_NAMESPACE, Constants.METHOD_HoldSeatsForSchedule);
+            SoapObject request = new SoapObject("", "");
+
+            //SoapObject request = new SoapObject(Constants.GLOBEL_NAMESPACE, Constants.METHOD_HoldSeatsForSchedule);
 
             SoapObject sa = new SoapObject(null, "Authentication");
 
 
-            PropertyInfo userid = new PropertyInfo();
-            userid.setName("UserID");
-            userid.setValue(LoginCridantial.UserId.trim());
-            userid.setType(Integer.class);
-            sa.addProperty(userid);
-
-            PropertyInfo usertype = new PropertyInfo();
-            usertype.setName("UserType");
-            usertype.setValue(LoginCridantial.UserType.trim());
-            usertype.setType(String.class);
-            sa.addProperty(usertype);
-
-            PropertyInfo userkey = new PropertyInfo();
-            userkey.setName("Key");
-            userkey.setValue(LoginCridantial.UserKey.trim());
-            userkey.setType(String.class);
-            sa.addProperty(userkey);
+//            PropertyInfo userid = new PropertyInfo();
+//            userid.setName("UserID");
+//            userid.setValue(LoginCridantial.UserId.trim());
+//            userid.setType(Integer.class);
+//            sa.addProperty(userid);
+//
+//            PropertyInfo usertype = new PropertyInfo();
+//            usertype.setName("UserType");
+//            usertype.setValue(LoginCridantial.UserType.trim());
+//            usertype.setType(String.class);
+//            sa.addProperty(usertype);
+//
+//            PropertyInfo userkey = new PropertyInfo();
+//            userkey.setName("Key");
+//            userkey.setValue(LoginCridantial.UserKey.trim());
+//            userkey.setType(String.class);
+//            sa.addProperty(userkey);
 
             request.addSoapObject(sa);
 
@@ -560,7 +560,7 @@ public class Activity_Passenger_Details extends Activity {
 
             PropertyInfo journeydate = new PropertyInfo();
             journeydate.setName("JourneyDate");
-            journeydate.setValue(Search_Buses_Key.Selected_date);
+            journeydate.setValue(TRAVEL_DATA.SELECTED_DATE);
             journeydate.setType(String.class);
             request.addProperty(journeydate);
 
@@ -603,7 +603,7 @@ public class Activity_Passenger_Details extends Activity {
             request.addSoapObject(contact_information);
             request.addSoapObject(passengers_object);
 
-            if(Global.build_type == 0)
+            if(Global_Travel.build_type == 0)
             {
                 Log.e("vikas envolop", request.toString());
             }
@@ -616,32 +616,32 @@ public class Activity_Passenger_Details extends Activity {
 
             envelope.setOutputSoapObject(request);
 
-            if (Global.build_type == 0)
+            if (Global_Travel.build_type == 0)
             {
                 Log.e("vikas envolop",envelope.toString());
             }
 
 
-               HttpTransportSE httpTransport = new HttpTransportSE(Constants.GLOBEL_URL);
-               httpTransport.debug = true;
+//               HttpTransportSE httpTransport = new HttpTransportSE(Constants.GLOBEL_URL);
+//               httpTransport.debug = true;
 
-               try {
-                   httpTransport.call(Constants.GLOBEL_NAMESPACE + Constants.METHOD_HoldSeatsForSchedule, envelope);
-               } catch (HttpResponseException e) {
-                   // TODO Auto-generated catch block
-                   e.printStackTrace();
-                   if(Global.build_type == 0)
-                   {
-                       Log.e("vikas","error http:"+e);
-                   }
-
-               } catch (IOException e) {
-                   // TODO Auto-generated catch block
-                   e.printStackTrace();
-               } catch (XmlPullParserException e) {
-                   // TODO Auto-generated catch block
-                   e.printStackTrace();
-               } //send request
+//               try {
+//                   httpTransport.call(Constants.GLOBEL_NAMESPACE + Constants.METHOD_HoldSeatsForSchedule, envelope);
+//               } catch (HttpResponseException e) {
+//                   // TODO Auto-generated catch block
+//                   e.printStackTrace();
+//                   if(Global_Travel.build_type == 0)
+//                   {
+//                       Log.e("vikas","error http:"+e);
+//                   }
+//
+//               } catch (IOException e) {
+//                   // TODO Auto-generated catch block
+//                   e.printStackTrace();
+//               } catch (XmlPullParserException e) {
+//                   // TODO Auto-generated catch block
+//                   e.printStackTrace();
+//               } //send request
                // SoapObject result = null;
                soapresult_detail = null;
 
@@ -701,26 +701,26 @@ public class Activity_Passenger_Details extends Activity {
 
 
             RadioButton mr = (RadioButton)v.findViewById(R.id.radio_mr);
-            mr.setId((Constants.Radio_mr+(i+1)));
+            mr.setId((Constants.RADIO_MR +(i+1)));
             mr.setTag("radio_mr"+(i+1));
 
             RadioButton mrs = (RadioButton)v.findViewById(R.id.radio_mrs);
-            mrs.setId(Constants.Radio_mrs+(i+1));
+            mrs.setId(Constants.RADIO_MRS+(i+1));
             mrs.setTag("radio_mrs"+(i+1));
 
             RadioButton ms = (RadioButton)v.findViewById(R.id.radio_ms);
-            ms.setId(Constants.Radio_ms+(i+1));
+            ms.setId(Constants.RADIO_MS+(i+1));
             ms.setTag("radio_ms"+(i+1));
 
             if(Selected_seat_list.get(i).getGender().equals("F"))
             {
-                rg.check(Constants.Radio_mrs+(i+1));
+                rg.check(Constants.RADIO_MRS+(i+1));
                 mr.setClickable(false);
                 mr.setOnTouchListener(new View.OnTouchListener(){
 
                     @Override
                     public boolean onTouch(View view, MotionEvent motionEvent) {
-                        Global.showAlertDialog(Activity_Passenger_Details.this,getResources().getString(R.string.validating_error_title),"Seat reserved for ladies","Ok");
+                        Global_Travel.showAlertDialog(Activity_Passenger_Details.this,getResources().getString(R.string.validating_error_title),"Seat reserved for ladies","Ok");
                         return false;
 
                     }
@@ -729,7 +729,7 @@ public class Activity_Passenger_Details extends Activity {
             }
             else
             {
-                rg.check(Constants.Radio_mr+(i+1));
+                rg.check(Constants.RADIO_MR+(i+1));
             }
 
 
@@ -739,7 +739,7 @@ public class Activity_Passenger_Details extends Activity {
 
                 @Override
                 public void onClick(View view) {
-                    if(Global.build_type == 0)
+                    if(Global_Travel.build_type == 0)
                     {
                         Log.e("vikas",""+view.getTag());
                     }
@@ -761,7 +761,7 @@ public class Activity_Passenger_Details extends Activity {
 
                 @Override
                 public void onClick(View view) {
-                    if(Global.build_type == 0)
+                    if(Global_Travel.build_type == 0)
                     {
                         Log.e("vikas",""+view.getTag());
                     }
@@ -785,7 +785,7 @@ public class Activity_Passenger_Details extends Activity {
 
     public void set_boarding_points()
     {
-        if(Global.build_type == 0)
+        if(Global_Travel.build_type == 0)
         {
             Log.e("vikas","boarding call");
         }
@@ -797,7 +797,7 @@ public class Activity_Passenger_Details extends Activity {
             String time = getTime(pickup_place_detail_list.get(i).getPkpTime());
             boarding_list.add(time+" "+pickup_place_detail_list.get(i).getPickupName());
 
-            if(Global.build_type == 0)
+            if(Global_Travel.build_type == 0)
             {
                 Log.e("vikas",time);
                 Log.e("vikas",pickup_place_detail_list.get(i).getPickupName());

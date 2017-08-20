@@ -19,7 +19,7 @@ import com.iseva.app.source.R;
  * Created by xb_sushil on 4/3/2017.
  */
 
-public class Global {
+public class Global_Travel {
 
     // 0 for debug and 1 for release
     public static int build_type = 1;
@@ -67,8 +67,25 @@ public class Global {
     }
 
 
-    public static void showalertdialogretry()
-    {
+
+
+
+
+    public static class TRAVEL_DATA {
+
+
+        public static String TOKEN_ID = "";
+        public static String FROM_CITY_ID = "";
+        public static String FROM_CITY_NAME = "";
+        public static String TO_CITY_ID ="";
+        public static String TO_CITY_NAME ="";
+        public static String JOURNEY_DATE ="";
+        public static String ROUTE_BUS_ID ="";
+        public static String SELECTED_DATE ="";
+
+        public static int MAX_COL;
+        public static int MAX_ROW;
+
 
     }
 

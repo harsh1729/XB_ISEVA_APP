@@ -30,6 +30,7 @@ import com.iseva.app.source.Realm_objets.Pickup_Place_Detail;
 import com.iseva.app.source.Realm_objets.Schedule_Details;
 import com.iseva.app.source.Realm_objets.Seat_details;
 import com.iseva.app.source.Realm_objets.Selected_Seats;
+import com.iseva.app.source.travel.Global_Travel.TRAVEL_DATA;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -38,11 +39,6 @@ import org.ksoap2.SoapFault;
 import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
-import org.ksoap2.transport.HttpResponseException;
-import org.ksoap2.transport.HttpTransportSE;
-import org.xmlpull.v1.XmlPullParserException;
-
-import java.io.IOException;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -245,7 +241,7 @@ public class Activity_Select_Seats extends AppCompatActivity {
 
                 if(All_row.size() == 0)
                 {
-                    Global.showAlertDialog(Activity_Select_Seats.this,getResources().getString(R.string.validating_error_title),"Select atleast one seat !","ok");
+                    Global_Travel.showAlertDialog(Activity_Select_Seats.this,getResources().getString(R.string.validating_error_title),"Select atleast one seat !","ok");
                 }
                 else
                 {
@@ -415,7 +411,7 @@ public class Activity_Select_Seats extends AppCompatActivity {
                 }
             });
             tabsStrip.setVisibility(View.VISIBLE);
-            if(Global.build_type ==0)
+            if(Global_Travel.build_type ==0)
             {
                 Log.e("vikas","deck2 not 0");
             }
@@ -511,22 +507,22 @@ public class Activity_Select_Seats extends AppCompatActivity {
                     TextView tv = new TextView(Activity_Select_Seats.this);
                     tv.setText(soapresult_schedule_detail.toString());
                     cancellation_text.addView(tv);*/
-                    if(Global.build_type ==0)
+                    if(Global_Travel.build_type ==0)
                     {
                         Log.e("vikas",soapresult_schedule_detail.toString().trim());
-                        Log.e("vikas",Integer.toString(Search_Buses_Key.maxcol));
+                        Log.e("vikas",Integer.toString(TRAVEL_DATA.MAX_COL));
                     }
 
                     set_dynamic_data();
                 }
                 else
                 {
-                    Global.showAlertDialog(Activity_Select_Seats.this,getResources().getString(R.string.validating_error_title),((SoapObject)soapresult_schedule_detail.getProperty("Response")).getPrimitivePropertyAsString("Message"),"Ok");
+                    Global_Travel.showAlertDialog(Activity_Select_Seats.this,getResources().getString(R.string.validating_error_title),((SoapObject)soapresult_schedule_detail.getProperty("Response")).getPrimitivePropertyAsString("Message"),"Ok");
                 }
             }
             else
             {
-                Global.showAlertDialog(Activity_Select_Seats.this,getResources().getString(R.string.validating_error_title),"Some error accured please try again !","Ok");
+                Global_Travel.showAlertDialog(Activity_Select_Seats.this,getResources().getString(R.string.validating_error_title),"Some error accured please try again !","Ok");
             }
 
 
@@ -539,29 +535,32 @@ public class Activity_Select_Seats extends AppCompatActivity {
         protected Void doInBackground(Void... voids) {
 
             Realm thread_realm = Realm.getInstance(getApplicationContext());
-            SoapObject request = new SoapObject(Constants.GLOBEL_NAMESPACE,Constants.METHOD_GetRouteScheduleDetail);
+            SoapObject request = new SoapObject("","");
+
+            //TODO HArsh implement new API
+            //SoapObject request = new SoapObject(Constants.GLOBEL_NAMESPACE,Constants.METHOD_GetRouteScheduleDetail);
 
             SoapObject sa = new SoapObject(null,"Authentication");
 
 
 
-            PropertyInfo userid = new PropertyInfo();
-            userid.setName("UserID");
-            userid.setValue(LoginCridantial.UserId.trim());
-            userid.setType(Integer.class);
-            sa.addProperty(userid);
-
-            PropertyInfo usertype = new PropertyInfo();
-            usertype.setName("UserType");
-            usertype.setValue(LoginCridantial.UserType.trim());
-            usertype.setType(String.class);
-            sa.addProperty(usertype);
-
-            PropertyInfo userkey = new PropertyInfo();
-            userkey.setName("Key");
-            userkey.setValue(LoginCridantial.UserKey.trim());
-            userkey.setType(String.class);
-            sa.addProperty(userkey);
+//            PropertyInfo userid = new PropertyInfo();
+//            userid.setName("UserID");
+//            userid.setValue(LoginCridantial.UserId.trim());
+//            userid.setType(Integer.class);
+//            sa.addProperty(userid);
+//
+//            PropertyInfo usertype = new PropertyInfo();
+//            usertype.setName("UserType");
+//            usertype.setValue(LoginCridantial.UserType.trim());
+//            usertype.setType(String.class);
+//            sa.addProperty(usertype);
+//
+//            PropertyInfo userkey = new PropertyInfo();
+//            userkey.setName("Key");
+//            userkey.setValue(LoginCridantial.UserKey.trim());
+//            userkey.setType(String.class);
+//            sa.addProperty(userkey);
 
             request.addSoapObject(sa);
 
@@ -574,7 +573,7 @@ public class Activity_Select_Seats extends AppCompatActivity {
 
             PropertyInfo journeydate = new PropertyInfo();
             journeydate.setName("JourneyDate");
-            journeydate.setValue(Search_Buses_Key.Selected_date);
+            //journeydate.setValue(Search_Buses_Key.Selected_date);
             journeydate.setType(String.class);
             request.addProperty(journeydate);
 
@@ -584,7 +583,7 @@ public class Activity_Select_Seats extends AppCompatActivity {
 
 
 
-            if(Global.build_type ==0)
+            if(Global_Travel.build_type ==0)
             {
                 Log.e("vikas envolop",request.toString());
             }
@@ -597,21 +596,21 @@ public class Activity_Select_Seats extends AppCompatActivity {
 
             envelope.setOutputSoapObject(request);
 
-             HttpTransportSE httpTransport = new HttpTransportSE(Constants.GLOBEL_URL);
-            httpTransport.debug = true;
-
-            try {
-                httpTransport.call(Constants.GLOBEL_NAMESPACE+Constants.METHOD_GetRouteScheduleDetail, envelope);
-            } catch (HttpResponseException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (XmlPullParserException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } //send request
+//             HttpTransportSE httpTransport = new HttpTransportSE(Constants.GLOBEL_URL);
+//            httpTransport.debug = true;
+//
+//            try {
+//                httpTransport.call(Constants.GLOBEL_NAMESPACE+Constants.METHOD_GetRouteScheduleDetail, envelope);
+//            } catch (HttpResponseException e) {
+//                // TODO Auto-generated catch block
+//                e.printStackTrace();
+//            } catch (IOException e) {
+//                // TODO Auto-generated catch block
+//                e.printStackTrace();
+//            } catch (XmlPullParserException e) {
+//                // TODO Auto-generated catch block
+//                e.printStackTrace();
+//            } //send request
            // SoapObject result = null;
             soapresult_schedule_detail = null;
 
@@ -734,7 +733,7 @@ public class Activity_Select_Seats extends AppCompatActivity {
                                 }
                                 after_offer_fare = (float)temp_fare_offer;
 
-                                if(Global.build_type ==0)
+                                if(Global_Travel.build_type ==0)
                                 {
                                     Log.e("vikas after_fare=",""+after_offer_fare);
                                     Log.e("vikas percentage=",""+offer_per);
@@ -778,8 +777,8 @@ public class Activity_Select_Seats extends AppCompatActivity {
                                 maxrow = Integer.parseInt(((SoapObject)soapresult_schedule_detail.getProperty("Layout")).getProperty("MaxRows").toString());
                                 maxcol = Integer.parseInt(((SoapObject)soapresult_schedule_detail.getProperty("Layout")).getProperty("MaxColumns").toString());
 
-                                Search_Buses_Key.maxcol = maxcol;
-                                Search_Buses_Key.maxrow = maxrow;
+//                                Search_Buses_Key.maxcol = maxcol;
+//                                Search_Buses_Key.maxrow = maxrow;
 
 
                                 for(int i =0;i< ((SoapObject)((SoapObject)soapresult_schedule_detail.getProperty("Layout")).getProperty("SeatDetails")).getPropertyCount();i++)
@@ -804,7 +803,7 @@ public class Activity_Select_Seats extends AppCompatActivity {
                                     float InfantFare = Float.parseFloat(((SoapObject)((SoapObject)((SoapObject)soapresult_schedule_detail.getProperty("Layout")).getProperty("SeatDetails")).getProperty(i)).getProperty("InfantFare").toString());
 
                                     float after_offer_seat_fare;
-                                    if(Global.build_type ==0)
+                                    if(Global_Travel.build_type ==0)
                                     {
                                         Log.e("vikas seat_o_fare",""+Fare_local);
                                         Log.e("vikas seat comm",""+CommPCT);

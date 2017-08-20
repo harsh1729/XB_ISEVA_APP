@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.iseva.app.source.R;
 import com.iseva.app.source.Realm_objets.Bus_routes_detail;
+import com.iseva.app.source.travel.Global_Travel.TRAVEL_DATA;
 import com.zl.reik.dilatingdotsprogressbar.DilatingDotsProgressBar;
 
 import org.ksoap2.SoapEnvelope;
@@ -26,11 +27,7 @@ import org.ksoap2.SoapFault;
 import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
-import org.ksoap2.transport.HttpResponseException;
-import org.ksoap2.transport.HttpTransportSE;
-import org.xmlpull.v1.XmlPullParserException;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -80,7 +77,7 @@ public class Activity_loading extends Activity {
         }
         else
         {
-            Global.showAlertDialog(Activity_loading.this,getResources().getString(R.string.validating_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
+            Global_Travel.showAlertDialog(Activity_loading.this,getResources().getString(R.string.validating_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
         }
 
 
@@ -222,7 +219,7 @@ public class Activity_loading extends Activity {
 
 
             }
-            if(Global.build_type == 0)
+            if(Global_Travel.build_type == 0)
             {
                 Log.e("vikas",search_bus_result.toString());
             }
@@ -236,31 +233,35 @@ public class Activity_loading extends Activity {
 
             Realm thread_realm = Realm.getInstance(getApplicationContext());
 
-            SoapObject request = new SoapObject(Constants.GLOBEL_NAMESPACE,Constants.METHOD_GET_ROUTES1);
-
-            SoapObject sa = new SoapObject(null,"Authentication");
+            //TODO : HARSH Implement new API
+            SoapObject request = new SoapObject("","");
             SoapObject search_request = new SoapObject(null,"SearchRequest");
 
-
-            PropertyInfo userid = new PropertyInfo();
-            userid.setName("UserID");
-            userid.setValue(LoginCridantial.UserId.trim());
-            userid.setType(Integer.class);
-            sa.addProperty(userid);
-
-            PropertyInfo usertype = new PropertyInfo();
-            usertype.setName("UserType");
-            usertype.setValue(LoginCridantial.UserType.trim());
-            usertype.setType(String.class);
-            sa.addProperty(usertype);
-
-            PropertyInfo userkey = new PropertyInfo();
-            userkey.setName("Key");
-            userkey.setValue(LoginCridantial.UserKey.trim());
-            userkey.setType(String.class);
-            sa.addProperty(userkey);
-
-            request.addSoapObject(sa);
+//           SoapObject request = new SoapObject(Constants.GLOBEL_NAMESPACE,Constants.METHOD_GET_ROUTES1);
+//
+//            SoapObject sa = new SoapObject(null,"Authentication");
+//            SoapObject search_request = new SoapObject(null,"SearchRequest");
+//
+//
+//            PropertyInfo userid = new PropertyInfo();
+//            userid.setName("UserID");
+//            userid.setValue(LoginCridantial.UserId.trim());
+//            userid.setType(Integer.class);
+//            sa.addProperty(userid);
+//
+//            PropertyInfo usertype = new PropertyInfo();
+//            usertype.setName("UserType");
+//            usertype.setValue(LoginCridantial.UserType.trim());
+//            usertype.setType(String.class);
+//            sa.addProperty(usertype);
+//
+//            PropertyInfo userkey = new PropertyInfo();
+//            userkey.setName("Key");
+//            userkey.setValue(LoginCridantial.UserKey.trim());
+//            userkey.setType(String.class);
+//            sa.addProperty(userkey);
+//
+//            request.addSoapObject(sa);
 
 
 
@@ -269,7 +270,7 @@ public class Activity_loading extends Activity {
 
             PropertyInfo pro_Fromcity = new PropertyInfo();
             pro_Fromcity.setName("FromCityId");
-            pro_Fromcity.setValue(Search_Buses_Key.From_City_id.trim());
+            pro_Fromcity.setValue(TRAVEL_DATA.FROM_CITY_ID.trim());
             pro_Fromcity.setType(Integer.class);
             search_request.addProperty(pro_Fromcity);
 
@@ -277,14 +278,14 @@ public class Activity_loading extends Activity {
 
             PropertyInfo pro_Tocity = new PropertyInfo();
             pro_Tocity.setName("ToCityId");
-            pro_Tocity.setValue(Search_Buses_Key.TO_City_id.trim());
+            pro_Tocity.setValue(TRAVEL_DATA.TO_CITY_ID.trim());
             pro_Tocity.setType(Integer.class);
             search_request.addProperty(pro_Tocity);
 
 
             PropertyInfo date = new PropertyInfo();
             date.setName("JourneyDate");
-            date.setValue(Search_Buses_Key.Selected_date);
+            date.setValue(TRAVEL_DATA.SELECTED_DATE);
             date.setType(String.class);
             search_request.addProperty(date);
 
@@ -305,7 +306,7 @@ public class Activity_loading extends Activity {
 
             request.addSoapObject(search_request);
 
-            if(Global.build_type == 0)
+            if(Global_Travel.build_type == 0)
             {
                 Log.e("vikas envolop",request.toString());
             }
@@ -318,27 +319,27 @@ public class Activity_loading extends Activity {
 
             envelope.setOutputSoapObject(request);
 
-            if(Global.build_type == 0)
+            if(Global_Travel.build_type == 0)
             {
                 Log.e("vikas envolop",envelope.toString());
             }
 
 
-            HttpTransportSE httpTransport = new HttpTransportSE(Constants.GLOBEL_URL);
-            httpTransport.debug = true;
+            //HttpTransportSE httpTransport = new HttpTransportSE(Constants.GLOBEL_URL);
+            //httpTransport.debug = true;
 
-            try {
-                httpTransport.call(Constants.GLOBEL_NAMESPACE+Constants.METHOD_GET_ROUTES1, envelope);
-            } catch (HttpResponseException e) {
-
-                e.printStackTrace();
-            } catch (IOException e) {
-
-                e.printStackTrace();
-            } catch (XmlPullParserException e) {
-
-                e.printStackTrace();
-            }
+//            try {
+//                httpTransport.call(Constants.GLOBEL_NAMESPACE+Constants.METHOD_GET_ROUTES1, envelope);
+//            } catch (HttpResponseException e) {
+//
+//                e.printStackTrace();
+//            } catch (IOException e) {
+//
+//                e.printStackTrace();
+//            } catch (XmlPullParserException e) {
+//
+//                e.printStackTrace();
+//            }
 
             search_bus_result = null;
 
@@ -394,7 +395,7 @@ public class Activity_loading extends Activity {
                                 temp_fare_offer = temp_fare_offer + 1;
                             }
                             after_offer_fare = (float)temp_fare_offer;
-                            if(Global.build_type == 0)
+                            if(Global_Travel.build_type == 0)
                             {
                                 Log.e("vikas after_fare_load=",""+after_offer_fare);
                                 Log.e("vikas percentage_loadi=",""+offer_per);
@@ -461,7 +462,7 @@ public class Activity_loading extends Activity {
                     }
                     else
                     {
-                        Global.showAlertDialog(Activity_loading.this,getResources().getString(R.string.validating_error_title),((SoapObject)search_bus_result.getProperty("Response")).getPrimitivePropertyAsString("Message"),"Ok");
+                        Global_Travel.showAlertDialog(Activity_loading.this,getResources().getString(R.string.validating_error_title),((SoapObject)search_bus_result.getProperty("Response")).getPrimitivePropertyAsString("Message"),"Ok");
 
                     }
 
@@ -471,7 +472,7 @@ public class Activity_loading extends Activity {
                 }
                 else
                 {
-                    Global.showAlertDialog(Activity_loading.this,getResources().getString(R.string.validating_error_title),getResources().getString(R.string.slow_internet_error),"Ok");
+                    Global_Travel.showAlertDialog(Activity_loading.this,getResources().getString(R.string.validating_error_title),getResources().getString(R.string.slow_internet_error),"Ok");
                 }
             }
             catch (Exception e)

@@ -7,62 +7,97 @@ package com.iseva.app.source.travel;
 public class Constants {
 
 
+    public static final int MAX_SEATS = 5;
 
-    public static final String METHOD_AUNTHENTICATION ="Authenticate";
+    public static final int RADIO_MR = 1000;
+    public static final int RADIO_MRS = 2000;
+    public static final int RADIO_MS = 3000;
 
-    public static final String METHOD_GETCITYFROM ="GetFromCities";
 
-    public static final String METHOD_GETCITYTO ="GetToCities";
 
-    public static final String METHOD_GET_ROUTES ="GetDetailedRoutes";
-    public static final String METHOD_GET_ROUTES1 = "GetRoutes2";
 
-    public static String GLOBEL_URL = "";
-   // public static String GLOBEL_URL = "http://affapi.mantistechnologies.com/service.asmx";
-   // public static final String GLOBEL_URL = "http://aff2api.mantistechnologies.com/Service.asmx";
 
-    public static final String GLOBEL_NAMESPACE = "http://tempuri.org/";
+    public static final int STATE_MAIN_CITIES = 0;
+    public static final int STATE_ALL_CITIES = 1;
 
-    public static final String METHOD_GetRouteScheduleDetail = "GetRouteScheduleDetailsWithComm";
 
-    public static final String METHOD_HoldSeatsForSchedule = "HoldSeatsForSchedule";
+    public class JSON_KEYS {
 
-    public static final String METHOD_BookSeats = "BookSeats";
 
-    public static final String METHOD_ISCANCELABLE ="IsCancellable2";
+        public static final String SUCCESS = "success";
+        public static final String DATA = "data";
+        public static final String CITY_ID = "CityId";
+        public static final String CITY_NAME = "City";
 
-    public static final String METHOD_CANCEL_TICKET = "CancelTicket2";
+    }
 
-    public static final String METHOD_TICKET_DETAIL = "GetBookingInfo";
 
-    public static final int MaxSeats = 5;
+    public static class URL_TY {
 
-    public static final int Radio_mr = 1000;
-    public static final int Radio_mrs = 2000;
-    public static final int Radio_ms = 3000;
 
-    public static final String Send_mail_url = "http://xercesblue.website/iservice/testmail.php";
-    public static final String Get_offer_global = "http://xercesblue.website/iservice/client_requests/promocodes/get_all_offers";
-    public static final String get_offer_with_coupan_no = "http://xercesblue.website/iservice/client_requests/promocodes/get_offer_with_coupan_no";
-    public static final String Add_transaction = "http://xercesblue.website/iservice/client_requests/transaction/add_transaction";
-    public static final String Success_payment = "http://xercesblue.website/iservice/client_requests/transaction/update_success_payment";
-    public static final String Start_booking = "http://xercesblue.website/iservice/client_requests/transaction/update_start_booking_ticket";
-    public static final String Success_booking = "http://xercesblue.website/iservice/client_requests/transaction/update_success_booking";
 
-    public static final String Login_url = "http://xercesblue.website/iservice/client_requests/treval_user/loginauth";
-    public static final String Signup_url = "http://xercesblue.website/iservice/client_requests/treval_user/add_user";
+        public static final String GLOBAL_NAMESPACE = "http://tempuri.org/";
 
-    public static final String Get_booked_ticket = "http://xercesblue.website/iservice/client_requests/transaction/get_booked_ticket";
-    public static final String Get_booked_ticket_detail = "http://xercesblue.website/iservice/client_requests/transaction/get_booked_ticket_detail";
+        public static final String METHOD_AUNTHENTICATION ="Authenticate";
 
-    public static final String update_ticket_status ="http://xercesblue.website/iservice/client_requests/transaction/update_ticket_status";
-    public static final String enable_promocode = "http://xercesblue.website/iservice/client_requests/promocodes/enable_coupan";
-    public static final String refund_amount = "http://xercesblue.website/iservice/client_requests/transaction/cancel_ticket_refund";
-    public static final String get_extra_charge ="http://xercesblue.website/iservice/client_requests/promocodes/get_extra_charge";
-    public static final String get_commition_extra_charge = "http://xercesblue.website/iservice/client_requests/promocodes/get_commition_extra_charge";
-    public static final String send_message_url = "http://xercesblue.website/iservice/client_requests/transaction/send_message";
-    public static final String get_promo_images = "http://xercesblue.website/iservice/client_requests/promocodes/get_promo_images";
+        public static final String METHOD_GETCITYFROM ="GetFromCities";
 
-    public static final int state_main_cities = 0;
-    public static final int state_all_cities = 1;
+        public static final String METHOD_GETCITYTO ="GetToCities";
+
+        public static final String METHOD_GET_ROUTES ="GetDetailedRoutes";
+        public static final String METHOD_GET_ROUTES1 = "GetRoutes2";
+
+        public static final String METHOD_GetRouteScheduleDetail = "GetRouteScheduleDetailsWithComm";
+
+        public static final String METHOD_HoldSeatsForSchedule = "HoldSeatsForSchedule";
+
+        public static final String METHOD_BookSeats = "BookSeats";
+
+        public static final String METHOD_ISCANCELABLE ="IsCancellable2";
+
+        public static final String METHOD_CANCEL_TICKET = "CancelTicket2";
+
+        public static final String METHOD_TICKET_DETAIL = "GetBookingInfo";
+
+        // NEW API
+        public static String BASE_URL = "http://api.iamgds.com/ota/";
+        public static String BASE_TRANSACTION_URL = "http://tranapi.iamgds.com/ota";
+
+        public static final String GET_CITY_LIST = BASE_URL + "CityList";
+
+
+    }
+    public class URL_XB {
+
+
+        public static final String BASE_URL = "http://xercesblue.website/iservice/";
+
+        public static final String CLIENT_REQ_URL = BASE_URL + "client_requests/";
+
+        public static final String SEND_MAIL_URL = BASE_URL + "testmail.php";
+        public static final String GET_OFFER_GLOBAL = CLIENT_REQ_URL + "promocodes/get_all_offers";
+        public static final String GET_OFFER_WITH_COUPON_NO = CLIENT_REQ_URL + "promocodes/get_offer_with_coupan_no";
+        public static final String ADD_TRANSACTION = CLIENT_REQ_URL + "transaction/add_transaction";
+        public static final String SUCCESS_PAYMENT = CLIENT_REQ_URL + "transaction/update_success_payment";
+        public static final String START_BOOKING = CLIENT_REQ_URL + "transaction/update_start_booking_ticket";
+        public static final String SUCCESS_BOOKING = CLIENT_REQ_URL + "transaction/update_success_booking";
+
+        public static final String LOGIN = CLIENT_REQ_URL + "treval_user/loginauth";
+        public static final String SIGNUP = CLIENT_REQ_URL + "treval_user/add_user";
+
+        public static final String GET_BOOKED_TICKET = CLIENT_REQ_URL + "transaction/get_booked_ticket";
+        public static final String GET_BOOKED_TICKET_DETAILS = CLIENT_REQ_URL + "transaction/get_booked_ticket_detail";
+
+        public static final String UPDATE_TICKET_STATUS = CLIENT_REQ_URL + "transaction/update_ticket_status";
+        public static final String ENABLE_PROMOCODE = CLIENT_REQ_URL + "promocodes/enable_coupan";
+        public static final String REFUND_AMOUNT = CLIENT_REQ_URL + "transaction/cancel_ticket_refund";
+        public static final String GET_EXTRA_CHARGE = CLIENT_REQ_URL + "promocodes/get_extra_charge";
+        public static final String GET_COMMITION_EXTRA_CHARGE = CLIENT_REQ_URL + "promocodes/get_commition_extra_charge";
+        public static final String SEND_MESSAGE_URL = CLIENT_REQ_URL + "transaction/send_message";
+        public static final String GET_PROMO_IMAGES = CLIENT_REQ_URL + "promocodes/get_promo_images";
+        public static final String GET_DEFAULT_TRAVEL_DATA = CLIENT_REQ_URL + "promocodes/get_default_travel_data";
+
+
+    }
+
 }

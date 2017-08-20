@@ -22,6 +22,7 @@ import com.iseva.app.source.Fragments.Fragment_Routes_Price;
 import com.iseva.app.source.Fragments.Fragment_Routes_Time;
 import com.iseva.app.source.R;
 import com.iseva.app.source.Realm_objets.Filter;
+import com.iseva.app.source.travel.Global_Travel.TRAVEL_DATA;
 
 
 import io.realm.Realm;
@@ -93,9 +94,9 @@ public class Activity_Bus_Routes extends AppCompatActivity {
         TextView tocity = (TextView)v.findViewById(R.id.header_to_city);
         TextView date = (TextView)v.findViewById(R.id.header_date);
 
-        String header_date = header_format_date(Search_Buses_Key.Selected_date);
-        fromcity.setText(Search_Buses_Key.From_City_name);
-        tocity.setText(Search_Buses_Key.To_City_name);
+        String header_date = header_format_date(TRAVEL_DATA.SELECTED_DATE);
+        fromcity.setText(TRAVEL_DATA.FROM_CITY_NAME);
+        tocity.setText(TRAVEL_DATA.TO_CITY_NAME);
         date.setText(header_date);
 
         layout_header_text.addView(v);

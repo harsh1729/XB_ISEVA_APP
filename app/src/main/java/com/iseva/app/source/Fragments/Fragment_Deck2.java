@@ -198,7 +198,7 @@ public class Fragment_Deck2 extends Fragment {
                                     RealmResults<Selected_Seats> Selected_seat_list = My_realm.where(Selected_Seats.class).findAll();
                                     My_realm.commitTransaction();
 
-                                    if(Selected_seat_list.size() >= Constants.MaxSeats)
+                                    if(Selected_seat_list.size() >= Constants.MAX_SEATS)
                                     {
                                         showAlertDialog("Alert","Maximum 5 Tickets can be booked at one time","Ok");
                                     }
@@ -322,7 +322,7 @@ public class Fragment_Deck2 extends Fragment {
                                     RealmResults<Selected_Seats> Selected_seat_list = My_realm.where(Selected_Seats.class).findAll();
                                     My_realm.commitTransaction();
 
-                                    if(Selected_seat_list.size() >= Constants.MaxSeats)
+                                    if(Selected_seat_list.size() >= Constants.MAX_SEATS)
                                     {
                                         showAlertDialog("Alert","Maximum 5 Tickets can be booked at one time","Ok");
                                     }

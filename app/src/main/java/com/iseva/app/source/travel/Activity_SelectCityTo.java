@@ -14,9 +14,15 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.iseva.app.source.R;
+import com.iseva.app.source.Realm_objets.Realm_City;
+import com.iseva.app.source.travel.Constants.JSON_KEYS;
+import com.iseva.app.source.travel.Global_Travel.TRAVEL_DATA;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class Activity_SelectCityTo extends Activity{
 
@@ -28,7 +34,9 @@ public class Activity_SelectCityTo extends Activity{
     public ArrayList<HashMap<String, String>> All_Cities_Map;
     public  ArrayList<HashMap<String,String>> Main_Cities;
 
-    private int current_city_state = Constants.state_main_cities;
+    private int current_city_state = Constants.STATE_MAIN_CITIES;
+
+    Realm My_realm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +45,25 @@ public class Activity_SelectCityTo extends Activity{
 
         Intent i = getIntent();
 
-        All_Cities_Map = (ArrayList<HashMap<String, String>>)i.getSerializableExtra("all_cities");
+        My_realm = Realm.getInstance(this);
+
+        My_realm.beginTransaction();
+        RealmResults<Realm_City> cities = My_realm.where(Realm_City.class).findAll();
+        My_realm.commitTransaction();
+
+        All_Cities_Map = new ArrayList<HashMap<String, String>>();
+
+        for (Realm_City city:
+                cities) {
+
+            HashMap<String, String> map = new HashMap<String, String>();
+            map.put(JSON_KEYS.CITY_NAME, city.getCityName());
+            map.put(JSON_KEYS.CITY_ID, city.getCityId());
+
+            All_Cities_Map.add(map);
+        }
+
+
         Main_Cities = (ArrayList<HashMap<String, String>>)i.getSerializableExtra("main_cities");
 
         city_category = (TextView)findViewById(R.id.to_city_category);
@@ -56,17 +82,17 @@ public class Activity_SelectCityTo extends Activity{
                 if(Real_Get_To_City.getText().length() == 0)
                 {
 
-                    if (current_city_state != Constants.state_main_cities){
-                        current_city_state = Constants.state_main_cities;
+                    if (current_city_state != Constants.STATE_MAIN_CITIES){
+                        current_city_state = Constants.STATE_MAIN_CITIES;
                         add_adapter();
                     }
 
                     city_category.setText("Popular Cities");
                 }
-                else if(!(s.toString().contains("cityid") && s.toString().contains("cityname")))
+                else if(!(s.toString().contains(JSON_KEYS.CITY_ID) && s.toString().contains(JSON_KEYS.CITY_NAME)))
                 {
-                    if (current_city_state != Constants.state_all_cities){
-                        current_city_state = Constants.state_all_cities;
+                    if (current_city_state != Constants.STATE_ALL_CITIES){
+                        current_city_state = Constants.STATE_ALL_CITIES;
                         add_adapter();
                     }
                     city_category.setText("All Cities");
@@ -119,14 +145,14 @@ public class Activity_SelectCityTo extends Activity{
 
     public void add_adapter()
     {
-        String[] from = new String[] {"cityname"};
+        String[] from = new String[] {JSON_KEYS.CITY_NAME};
         int[] to = new int[] {R.id.text1};
 
 
 
         SimpleAdapter adapter1 = null;
 
-        if(current_city_state == Constants.state_main_cities)
+        if(current_city_state == Constants.STATE_MAIN_CITIES)
         {
             adapter1 = new SimpleAdapter(Activity_SelectCityTo.this,Main_Cities,R.layout.show_city_single_row,from,to);
         }
@@ -145,8 +171,8 @@ public class Activity_SelectCityTo extends Activity{
                 HashMap<String, String> hm = (HashMap<String, String>) adapterView.getAdapter().getItem(i);
                 EditText et = (EditText)findViewById(R.id.Real_Get_To_City);
                 et.setText(hm.get(""));
-                Search_Buses_Key.TO_City_id = hm.get("cityid");
-                Search_Buses_Key.To_City_name = hm.get("cityname");
+                TRAVEL_DATA.TO_CITY_ID = hm.get(JSON_KEYS.CITY_ID);
+                TRAVEL_DATA.TO_CITY_NAME = hm.get(JSON_KEYS.CITY_NAME);
                 activity_dismiss();
             }
         });

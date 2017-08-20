@@ -25,6 +25,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.iseva.app.source.R;
+import com.iseva.app.source.travel.Constants.URL_XB;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -80,7 +81,7 @@ public class Activity_show_booked_ticket extends Activity {
         }
         else
         {
-           Global.showAlertDialog(Activity_show_booked_ticket.this,getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
+           Global_Travel.showAlertDialog(Activity_show_booked_ticket.this,getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
         }
     }
 
@@ -121,11 +122,11 @@ public class Activity_show_booked_ticket extends Activity {
         progress.show();
 
         StringRequest bookedTicketreq = new StringRequest(Request.Method.POST,
-                Constants.Get_booked_ticket, new Response.Listener<String>() {
+                URL_XB.GET_BOOKED_TICKET, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String s) {
-                if(Global.build_type ==0)
+                if(Global_Travel.build_type ==0)
                 {
                     Log.e("vikas",s);
                 }
@@ -137,7 +138,7 @@ public class Activity_show_booked_ticket extends Activity {
                     e.printStackTrace();
                 }
 
-                if(Global.build_type ==0)
+                if(Global_Travel.build_type ==0)
                 {
                     Log.d(String.valueOf(getApplicationContext()), "Response generated");
                 }
@@ -160,7 +161,7 @@ public class Activity_show_booked_ticket extends Activity {
                                 main_layout.removeAllViews();
                                 for(int i=0;i<response.getJSONArray("data").length();i++)
                                 {
-                                    if(Global.build_type ==0)
+                                    if(Global_Travel.build_type ==0)
                                     {
                                         Log.e("vikas",""+i);
                                     }

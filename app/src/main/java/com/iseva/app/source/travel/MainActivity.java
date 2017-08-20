@@ -7,66 +7,75 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
-import android.os.AsyncTask;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
+import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request.Method;
+import com.android.volley.Response.ErrorListener;
+import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderLayout.PresetIndicators;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
+import com.daimajia.slider.library.SliderTypes.BaseSliderView.OnSliderClickListener;
+import com.daimajia.slider.library.SliderTypes.BaseSliderView.ScaleType;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
+import com.daimajia.slider.library.Tricks.ViewPagerEx.OnPageChangeListener;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.GoogleApiClient.Builder;
 import com.iseva.app.source.Activity_AdverImageView;
+import com.iseva.app.source.Custom_VolleyAppController;
+import com.iseva.app.source.Custom_VolleyObjectRequest;
 import com.iseva.app.source.R;
+import com.iseva.app.source.Realm_objets.Realm_City;
+import com.iseva.app.source.travel.Constants.JSON_KEYS;
+import com.iseva.app.source.travel.Constants.URL_XB;
+import com.iseva.app.source.travel.Global_Travel.TRAVEL_DATA;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.ksoap2.SoapEnvelope;
-import org.ksoap2.SoapFault;
-import org.ksoap2.serialization.PropertyInfo;
-import org.ksoap2.serialization.SoapObject;
-import org.ksoap2.serialization.SoapSerializationEnvelope;
-import org.ksoap2.transport.HttpResponseException;
-import org.ksoap2.transport.HttpTransportSE;
-import org.xmlpull.v1.XmlPullParserException;
 
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
 
-public class MainActivity extends Activity implements NavigationView.OnNavigationItemSelectedListener,BaseSliderView.OnSliderClickListener,ViewPagerEx.OnPageChangeListener{
+
+public class MainActivity extends Activity implements OnNavigationItemSelectedListener, OnSliderClickListener, OnPageChangeListener {
 
     ImageView iv_header;
     TextView tv_header;
     private EditText Get_From_Cities_et;
     private EditText Get_To_Cities_et;
     private EditText Journey_Date_et;
-    private  Button search_routes_btn;
+    private Button search_routes_btn;
     private ProgressDialog progress;
-    private SoapObject loginAuth_result;
-    private SoapObject getcity_result;
 
     Session_manager session_manager;
     Button show_booked_ticket;
@@ -76,130 +85,261 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
     TextView activity_main_login_alert_login_btn;
     TextView activity_main_login_alert_signup_btn;
 
-    public  ArrayList<HashMap<String, String>> All_Cities_Map;
-    public  ArrayList<HashMap<String,String>> Main_Cities;
-    private int volley_timeout = 15000;
+    Realm My_realm;
+
+    public ArrayList<HashMap<String, String>> map_main_cities;
+
+    public ArrayList<String> list_main_cities = new ArrayList<>(Arrays.asList("New Delhi","Mumbai","Pune","Bengaluru","Jaipur","Kolkata","Hyderabad","Chennai","Ahmedabad","Visakhapatnam","Surat","Kanpur","Lucknow","Nagpur","Mysuru"));
+
 
     public static int save_per = 10;
 
     ArrayList<String> promo_image;
     SliderLayout sliderLayout_main;
 
+    private GoogleApiClient client;
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         session_manager = new Session_manager(this);
 
-            if(isNetworkConnected())
-            {
-                get_commition();
-            }
+        My_realm = Realm.getInstance(this);
 
-            initialize();
-            setclicklistener();
+        if (isNetworkConnected(true)) {
+            get_default_travel_data();
+        }
 
+        initialize();
+        setclicklistener();
 
-
+        client = new Builder(this).addApi(AppIndex.API).build();
     }
 
-    public void get_commition()
-    {
+    public void get_default_travel_data() {
 
-        StringRequest promocodeapplyrequest = new StringRequest(Request.Method.POST,
-                Constants.get_commition_extra_charge, new Response.Listener<String>() {
+        try {
 
-            @Override
-            public void onResponse(String s) {
-                if (Global.build_type == 0)
-                {
-                    Log.e("vikas",s);
-                }
+            HashMap<String, String> paramsMap = new HashMap<String, String>();
+            paramsMap.put("pass_key", "XBlue-98767689723");
 
-                JSONObject response = null;
-                try
-                {
-                    response = new JSONObject(s);
+            Custom_VolleyObjectRequest jsonObjectRQST = new Custom_VolleyObjectRequest(
+                    Method.POST,
+                    URL_XB.GET_DEFAULT_TRAVEL_DATA,
+                    paramsMap, new Listener<JSONObject>() {
+
+                @Override
+                public void onResponse(JSONObject response) {
+                    Log.i("Gopal", "json Response recieved !!" + response);
+
+                    try {
+                        if (response.getBoolean(JSON_KEYS.SUCCESS)) {
+
+                            JSONObject data = response.getJSONObject("data");
+                            TRAVEL_DATA.TOKEN_ID = response.getString("secret_key").replace("\"", "");
 
 
-                    if(response != null)
-                    {
-                        save_per = Integer.parseInt(response.getString("commition"));
-                        if(!session_manager.isSetpassword())
-                        {
-                            Log.e("vikas username ifpart=",response.getString("username")+"and"+response.getString("password"));
-                            session_manager.set_password(response.getString("username"),response.getString("password"),response.getString("url"));
-                            Constants.GLOBEL_URL = session_manager.get_url();
-                            LoginAuth loginAuth = new LoginAuth();
-                            loginAuth.execute();
+
+                            save_per = Integer.parseInt(data.getString("commition"));
+
+
+                            if (isNetworkConnected(true)) {
+
+                               get_cities();
+                            }
+
+                            Log.i("Gopal", "save_per = " + save_per);
+
+                        } else {
+
+
+                            callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again));
+
                         }
-                        else
-                        {
+                    } catch (JSONException e) {
 
-
-                            session_manager.set_password(response.getString("username"),response.getString("password"),response.getString("url"));
-                            Constants.GLOBEL_URL = session_manager.get_url();
-                        }
-
-
+                        callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again));
+                        e.printStackTrace();
 
                     }
+                }
 
-                } catch (JSONException e) {
 
+            }, new ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError err) {
+                    Log.i("SUSHIL", "ERROR VolleyError");
 
                 }
-            }
-        }, new Response.ErrorListener() {
+            });
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
+            Custom_VolleyAppController.getInstance().addToRequestQueue(
+                    jsonObjectRQST);
+        } catch (Exception ex) {
 
+            ex.printStackTrace();
 
-
-            }
-        }) {
-            @Override
-            public Map<String, String> getParams(){
-                Map<String, String> params = new HashMap<String, String>();
+        }
 
 
-
-
-
-
-                return params;
-
-            }
-        };
-
-        promocodeapplyrequest.setRetryPolicy(new DefaultRetryPolicy(
-                volley_timeout,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
-        requestQueue.add(promocodeapplyrequest);
     }
 
-    public void initialize()
-    {
 
-        iv_header = (ImageView)findViewById(R.id.header_back_button);
-        tv_header = (TextView)findViewById(R.id.header_text);
+    public void get_cities() {
+
+        try {
+
+            HashMap<String, String> paramsMap = new HashMap<String, String>(); // No Patrams required to fetch cities
+
+
+            Custom_VolleyObjectRequest jsonObjectRQST = new Custom_VolleyObjectRequest(
+                    Method.GET,
+                    Constants.URL_TY.GET_CITY_LIST,
+                    paramsMap, new Listener<JSONObject>() {
+
+                @Override
+                public void onResponse(JSONObject response) {
+                    Log.i("Gopal", "json Response recieved !!" + response);
+
+                    if(progress != null) {
+                        progress.dismiss();
+                    }
+
+                    try {
+                        //if (response.getBoolean(JSON_KEYS.SUCCESS)) {
+
+
+                            map_main_cities = new ArrayList<HashMap<String, String>>();
+
+                            ArrayList<HashMap<String, String>> map_Previous_cities = new ArrayList<HashMap<String, String>>();
+
+                            String previousSelected = getPreviousSelectedCities();
+
+
+                            JSONArray data = response.getJSONArray(Constants.JSON_KEYS.DATA);
+
+                        My_realm.executeTransaction(new Realm.Transaction() {
+                            @Override
+                            public void execute(Realm realm) {
+                                RealmResults<Realm_City> result = realm.where(Realm_City.class).findAll();
+                                result.clear();
+                            }
+                        });
+
+                        My_realm.beginTransaction();
+                            for(int i=0;i<data.length();i++){
+
+
+                                String city_id = data.getJSONObject(i).getString(JSON_KEYS.CITY_ID);
+                                String city_name = data.getJSONObject(i).getString(JSON_KEYS.CITY_NAME).replace(" ","");
+
+
+                                Realm_City city = My_realm.createObject(Realm_City.class);
+
+                                city.setCityId(city_id);
+                                city.setCityName(city_name);
+
+
+                                if( previousSelected.contains(city_name)){
+
+                                    HashMap<String, String> map = new HashMap<String, String>();
+                                    map.put(JSON_KEYS.CITY_NAME, city_name);
+                                    map.put(JSON_KEYS.CITY_ID, city_id);
+
+                                    map_Previous_cities.add(map);
+
+                                }else if(list_main_cities.contains(city_name)){
+
+                                    HashMap<String, String> map = new HashMap<String, String>();
+                                    map.put(JSON_KEYS.CITY_NAME, city_name);
+                                    map.put(JSON_KEYS.CITY_ID, city_id);
+
+                                    map_main_cities.add(map);
+                                }
+
+                            }
+                        My_realm.commitTransaction();
+
+
+                            if(map_Previous_cities.isEmpty() == false){
+                                for (HashMap<String, String> map:
+                                        map_Previous_cities) {
+
+                                    map_main_cities.add(0,map);
+                                }
+                            }
+
+
+                        //} else {
+
+
+                            //callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again));
+
+                        //}
+                    } catch (JSONException e) {
+
+                        callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again));
+                        e.printStackTrace();
+
+                    }
+                }
+
+
+            }, new ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError err) {
+                    Log.i("SUSHIL", "ERROR VolleyError");
+
+                    callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again));
+                }
+            })
+            {
+
+
+
+
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<String, String>();
+
+                    headers.put("access-token", TRAVEL_DATA.TOKEN_ID);
+
+                    return headers;
+                }
+
+            };
+
+
+            Custom_VolleyAppController.getInstance().addToRequestQueue(
+                    jsonObjectRQST);
+        } catch (Exception ex) {
+
+            ex.printStackTrace();
+
+        }
+
+
+    }
+
+
+    public void initialize() {
+
+        iv_header = (ImageView) findViewById(R.id.header_back_button);
+        tv_header = (TextView) findViewById(R.id.header_text);
         tv_header.setText("Travel");
-        Get_From_Cities_et=(EditText)findViewById(R.id.Get_City_From);
-        Get_To_Cities_et = (EditText)findViewById(R.id.Get_City_To);
-        Journey_Date_et = (EditText)findViewById(R.id.journey_date);
+        Get_From_Cities_et = (EditText) findViewById(R.id.Get_City_From);
+        Get_To_Cities_et = (EditText) findViewById(R.id.Get_City_To);
+        Journey_Date_et = (EditText) findViewById(R.id.journey_date);
 
-        activity_main_login_alert_layout = (LinearLayout)findViewById(R.id.activity_main_login_alert_layout);
-        activity_main_login_alert_cancel_btn = (TextView)findViewById(R.id.activity_main_login_alert_cancel_btn);
-        activity_main_login_alert_login_btn = (TextView)findViewById(R.id.activity_main_login_alert_login_btn);
-        activity_main_login_alert_signup_btn = (TextView)findViewById(R.id.activity_main_login_alert_signup_btn);
+        activity_main_login_alert_layout = (LinearLayout) findViewById(R.id.activity_main_login_alert_layout);
+        activity_main_login_alert_cancel_btn = (TextView) findViewById(R.id.activity_main_login_alert_cancel_btn);
+        activity_main_login_alert_login_btn = (TextView) findViewById(R.id.activity_main_login_alert_login_btn);
+        activity_main_login_alert_signup_btn = (TextView) findViewById(R.id.activity_main_login_alert_signup_btn);
 
-        search_routes_btn = (Button)findViewById(R.id.search_routes_btn);
-        show_booked_ticket = (Button)findViewById(R.id.show_booked_ticket_btn);
+        search_routes_btn = (Button) findViewById(R.id.search_routes_btn);
+        show_booked_ticket = (Button) findViewById(R.id.show_booked_ticket_btn);
         progress = new ProgressDialog(MainActivity.this);
         progress.setMessage("Please wait...");
         progress.setCanceledOnTouchOutside(false);
@@ -208,189 +348,73 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
         progress.show();
         String today_date = get_today_date();
         Journey_Date_et.setText(change_date_form(today_date));
-        Search_Buses_Key.Selected_date = today_date;
-        //Toast.makeText(this,today_date,Toast.LENGTH_LONG).show();
+        TRAVEL_DATA.SELECTED_DATE = today_date;
 
 
-
-        CardView slider_layout = (CardView)findViewById(R.id.slider_layout_main) ;
-        sliderLayout_main = (SliderLayout)findViewById(R.id.slider_main);
+        CardView slider_layout = (CardView) findViewById(R.id.slider_layout_main);
+        sliderLayout_main = (SliderLayout) findViewById(R.id.slider_main);
 
         promo_image = new ArrayList<>();
         Intent i = getIntent();
         promo_image = i.getStringArrayListExtra("promo_image");
-        if(promo_image.size() > 0)
-        {
+        if (promo_image.size() > 0) {
             slider_layout.setVisibility(View.VISIBLE);
-            for(int k =0;k<promo_image.size();k++)
-            {
-                if (Global.build_type == 0)
-                {
-                    Log.e("vikas promourl",promo_image.get(k));
+            for (int k = 0; k < promo_image.size(); k++) {
+                if (Global_Travel.build_type == 0) {
+                    Log.e("vikas promourl", promo_image.get(k));
                 }
 
                 TextSliderView textSliderView = new TextSliderView(MainActivity.this);
                 textSliderView
 
                         .image(promo_image.get(k))
-                        .setScaleType(BaseSliderView.ScaleType.Fit)
+                        .setScaleType(ScaleType.Fit)
                         .setOnSliderClickListener(this);
                 textSliderView.bundle(new Bundle());
                 textSliderView.getBundle()
-                        .putString("extra",""+k);
+                        .putString("extra", "" + k);
                 sliderLayout_main.addSlider(textSliderView);
 
             }
 
-            sliderLayout_main.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+            sliderLayout_main.setPresetIndicator(PresetIndicators.Center_Bottom);
             sliderLayout_main.setCustomAnimation(null);
 
 
             sliderLayout_main.setDuration(4000);
             sliderLayout_main.addOnPageChangeListener(this);
-            if(promo_image.size() > 1)
-            {
+            if (promo_image.size() > 1) {
                 sliderLayout_main.startAutoCycle();
 
-            }
-            else
-            {
+            } else {
                 sliderLayout_main.stopAutoCycle();
             }
 
-        }
-        else
-        {
+        } else {
             slider_layout.setVisibility(View.GONE);
         }
-
-
-
-        if(session_manager.isSetpassword())
-        {
-            if(isNetworkConnected())
-            {
-                Constants.GLOBEL_URL  = session_manager.get_url();
-                LoginAuth Loginrequest = new LoginAuth();
-                Loginrequest.execute();
-
-            }
-            else
-            {
-                progress.dismiss();
-
-                callAlertBox();
-            }
-        }
-
-
 
 
     }
 
 
-    public Boolean TryAgaintoCallService()
-    {
-        if(isNetworkConnected())
-        {
+    public void tryAgaintoCallService() {
+        if (isNetworkConnected(true)) {
+
             progress = new ProgressDialog(MainActivity.this);
             progress.setMessage("Please wait...");
             progress.setCanceledOnTouchOutside(false);
             progress.setCancelable(false);
             progress.show();
-            get_commition();
-            Constants.GLOBEL_URL = session_manager.get_url();
-            LoginAuth Loginrequest = new LoginAuth();
-            Loginrequest.execute();
+            get_default_travel_data();
 
-            return true;
-
-        }
-        else
-        {
-            return false;
         }
     }
 
-    public void callAlertBox()
-    {
-        LayoutInflater inflater = (LayoutInflater)MainActivity.this.getSystemService
-                (Context.LAYOUT_INFLATER_SERVICE);
 
-        View v =  inflater.inflate(R.layout.textview,null);
+    public void setclicklistener() {
 
-
-        TextView title_tv = (TextView)v.findViewById(R.id.alert_title);
-        title_tv.setText(getResources().getString(R.string.internet_connection_error_title));
-       /* TextView title_tv = new TextView(this);
-        title_tv.setPadding(0,10,0,0);
-        title_tv.setTextColor(ContextCompat.getColor(MainActivity.this,R.color.black));
-        title_tv.setTextSize(16);
-        title_tv.setGravity(Gravity.CENTER);
-        title_tv.setText(getResources().getString(R.string.internet_connection_error_title));*/
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setCustomTitle(title_tv)
-                .setMessage(R.string.internet_connection_error_message_try_again)
-                .setCancelable(false)
-                .setNegativeButton("Retry",new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        if(TryAgaintoCallService())
-                        {
-                            dialog.cancel();
-                        }
-                        else
-                        {
-                            callAlertBox();
-                        }
-
-                    }
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
-
-        Button b = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
-        b.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.app_theme_color));
-
-    }
-
-   /* public void showAlertDialog(String title,String message,String buttonlabel)
-    {
-
-        TextView title_tv = new TextView(this);
-        title_tv.setPadding(0,10,0,0);
-        title_tv.setTextColor(ContextCompat.getColor(MainActivity.this,R.color.black));
-        title_tv.setTextSize(getResources().getDimension(R.dimen.text_size_small));
-
-        title_tv.setGravity(Gravity.CENTER);
-        title_tv.setText(title);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setCustomTitle(title_tv)
-                .setMessage(message)
-                .setCancelable(false)
-                .setNegativeButton(buttonlabel,new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-
-                        dialog.cancel();
-
-                    }
-                });
-
-        AlertDialog alert = builder.create();
-
-        alert.show();
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        Button b = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
-        b.setLayoutParams(lp);
-        b.setBackgroundResource(R.drawable.btn_background);
-        b.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.app_white));
-    }*/
-
-    public void setclicklistener()
-    {
-
-        iv_header.setOnClickListener(new View.OnClickListener(){
+        iv_header.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View view) {
@@ -398,117 +422,74 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
             }
         });
 
-        Get_From_Cities_et.setOnClickListener(new View.OnClickListener(){
+        Get_From_Cities_et.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                if(isNetworkConnected())
-                {
-                    if(Main_Cities != null && All_Cities_Map != null)
-                    {
-                        Intent i = new Intent(MainActivity.this,Activity_SelectCityFrom.class);
+                if (isNetworkConnected(true)) {
+                    if (map_main_cities != null ) {
+                        Intent i = new Intent(MainActivity.this, Activity_SelectCityFrom.class);
 
-                        i.putExtra("main_cities",Main_Cities);
-                        i.putExtra("all_cities",All_Cities_Map);
+                        i.putExtra("main_cities", map_main_cities);
                         startActivity(i);
                         overridePendingTransition(R.anim.anim_in, R.anim.anim_none);
-                    }
-                    else
-                    {
-                        progress = new ProgressDialog(MainActivity.this);
-                        progress.setMessage("Please wait...");
-                        progress.setCanceledOnTouchOutside(false);
-                        progress.setCancelable(false);
-                        progress.show();
-                        get_commition();
-                        Constants.GLOBEL_URL = session_manager.get_url();
-                        LoginAuth Loginrequest = new LoginAuth();
-                        Loginrequest.execute();
+                    } else {
+                        tryAgaintoCallService();
                     }
 
                 }
-                else
-                {
-                    callAlertBox();
-                }
-
-
 
 
             }
         });
 
 
-        Get_To_Cities_et.setOnClickListener(new View.OnClickListener(){
+        Get_To_Cities_et.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                if(isNetworkConnected())
-                {
-                    if(Main_Cities != null && All_Cities_Map != null)
-                    {
-                        Intent i = new Intent(MainActivity.this,Activity_SelectCityTo.class);
-                        i.putExtra("main_cities",Main_Cities);
-                        i.putExtra("all_cities",All_Cities_Map);
+                if (isNetworkConnected(true)) {
+                    if (map_main_cities != null ) {
+                        Intent i = new Intent(MainActivity.this, Activity_SelectCityTo.class);
+                        i.putExtra("main_cities", map_main_cities);
                         startActivity(i);
                         overridePendingTransition(R.anim.anim_in, R.anim.anim_none);
-                    }
-                    else
-                    {
-                        progress = new ProgressDialog(MainActivity.this);
-                        progress.setMessage("Please wait...");
-                        progress.setCanceledOnTouchOutside(false);
-                        progress.setCancelable(false);
-                        progress.show();
-                        get_commition();
-                        Constants.GLOBEL_URL = session_manager.get_url();
-                        LoginAuth Loginrequest = new LoginAuth();
-                        Loginrequest.execute();
+                    } else {
+                        tryAgaintoCallService();
                     }
 
-                }
-                else
-                {
-                    callAlertBox();
                 }
 
             }
         });
 
-        search_routes_btn.setOnClickListener(new View.OnClickListener(){
+        search_routes_btn.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                if(Get_From_Cities_et.getText().length() == 0)
-                {
+                if (Get_From_Cities_et.getText().length() == 0) {
 
-                    Global.showAlertDialog(MainActivity.this,getResources().getString(R.string.validating_error_title),"Please select origin city !","Ok");
+                    Global_Travel.showAlertDialog(MainActivity.this, getResources().getString(R.string.validating_error_title), "Please select origin city !", "Ok");
 
-                }
-                else if(Get_To_Cities_et.getText().length() == 0)
-                {
-                    Global.showAlertDialog(MainActivity.this,getResources().getString(R.string.validating_error_title),"Please select destination city !","Ok");
+                } else if (Get_To_Cities_et.getText().length() == 0) {
+                    Global_Travel.showAlertDialog(MainActivity.this, getResources().getString(R.string.validating_error_title), "Please select destination city !", "Ok");
 
-                }
-                else if(Journey_Date_et.getText().length() == 0)
-                {
-                    Global.showAlertDialog(MainActivity.this,getResources().getString(R.string.validating_error_title),"Please select journey date !","Ok");
+                } else if (Journey_Date_et.getText().length() == 0) {
+                    Global_Travel.showAlertDialog(MainActivity.this, getResources().getString(R.string.validating_error_title), "Please select journey date !", "Ok");
 
-                }
-                else if (Search_Buses_Key.From_City_id.equals(Search_Buses_Key.TO_City_id))
-                {
-                    Global.showAlertDialog(MainActivity.this,getResources().getString(R.string.validating_error_title),"Please choose a different destination city.","Ok");
-                }
-                else
-                {
-                    if(isNetworkConnected())
-                    {
-                        Intent i = new Intent(MainActivity.this,Activity_loading.class);
-                        i.putExtra("Loading_text","SEARCHING BUSES");
+                } else if (TRAVEL_DATA.FROM_CITY_ID.equals(TRAVEL_DATA.TO_CITY_ID)) {
+                    Global_Travel.showAlertDialog(MainActivity.this, getResources().getString(R.string.validating_error_title), "Please choose a different destination city.", "Ok");
+                } else {
+                    if (isNetworkConnected(false)) {
+
+
+                        setSelectedCities(Get_To_Cities_et.getText().toString(), Get_From_Cities_et.getText().toString());
+
+                        Intent i = new Intent(MainActivity.this, Activity_loading.class);
+                        i.putExtra("Loading_text", "SEARCHING BUSES");
                         startActivity(i);
-                    }
-                    else {
-                        Global.showAlertDialog(MainActivity.this,getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
+                    } else {
+                        Global_Travel.showAlertDialog(MainActivity.this, getResources().getString(R.string.internet_connection_error_title), getResources().getString(R.string.internet_connection_error_message), "Ok");
                     }
 
                 }
@@ -516,7 +497,7 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
             }
         });
 
-        Journey_Date_et.setOnClickListener(new View.OnClickListener(){
+        Journey_Date_et.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View view) {
@@ -526,35 +507,29 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
             }
         });
 
-        show_booked_ticket.setOnClickListener(new View.OnClickListener(){
+        show_booked_ticket.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View view) {
 
                 session_manager = new Session_manager(MainActivity.this);
-                if(isNetworkConnected())
-                {
-                    if(session_manager.isLoggedIn())
-                    {
-                        Intent i = new Intent(MainActivity.this,Activity_show_booked_ticket.class);
+                if (isNetworkConnected(false)) {
+                    if (session_manager.isLoggedIn()) {
+                        Intent i = new Intent(MainActivity.this, Activity_show_booked_ticket.class);
                         startActivity(i);
                         overridePendingTransition(R.anim.anim_in, R.anim.anim_none);
-                    }
-                    else
-                    {
+                    } else {
                         activity_main_login_alert_layout.setVisibility(View.VISIBLE);
                     }
 
-                }
-                else
-                {
-                    Global.showAlertDialog(MainActivity.this,getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
+                } else {
+                    Global_Travel.showAlertDialog(MainActivity.this, getResources().getString(R.string.internet_connection_error_title), getResources().getString(R.string.internet_connection_error_message), "Ok");
                 }
 
             }
         });
 
-        activity_main_login_alert_cancel_btn.setOnClickListener(new View.OnClickListener(){
+        activity_main_login_alert_cancel_btn.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View view) {
@@ -562,23 +537,23 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
             }
         });
 
-        activity_main_login_alert_login_btn.setOnClickListener(new View.OnClickListener(){
+        activity_main_login_alert_login_btn.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 activity_main_login_alert_layout.setVisibility(View.GONE);
-                Intent i = new Intent(MainActivity.this,Activity_login.class);
+                Intent i = new Intent(MainActivity.this, Activity_login.class);
                 startActivity(i);
                 overridePendingTransition(R.anim.anim_in, R.anim.anim_none);
             }
         });
 
-        activity_main_login_alert_signup_btn.setOnClickListener(new View.OnClickListener(){
+        activity_main_login_alert_signup_btn.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 activity_main_login_alert_layout.setVisibility(View.GONE);
-                Intent i = new Intent(MainActivity.this,Activity_register.class);
+                Intent i = new Intent(MainActivity.this, Activity_register.class);
                 startActivity(i);
                 overridePendingTransition(R.anim.anim_in, R.anim.anim_none);
             }
@@ -586,28 +561,90 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
     }
 
 
-    public String get_today_date()
-    {
+    private String getPreviousSelectedCities(){
+
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        String selectedCitiesList = sharedPref.getString("selectedCitiesList", "");
+
+        return  selectedCitiesList;
+    }
+
+
+    private void setSelectedCities(String cityTo, String cityFrom){
+
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        String selectedCitiesList = sharedPref.getString("selectedCitiesList", "");
+
+        boolean updateList = false;
+
+        if(selectedCitiesList.contains(cityTo) == false){
+
+            updateList = true;
+            selectedCitiesList = selectedCitiesList + "-"+cityTo;
+        }
+
+        if(selectedCitiesList.contains(cityFrom) == false){
+
+            updateList = true;
+            selectedCitiesList = selectedCitiesList + "-"+cityFrom;
+        }
+
+        if(updateList){
+
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString("selectedCitiesList", selectedCitiesList);
+            editor.commit();
+        }
+
+    }
+
+    public void callAlertBox(String title,String error ) {
+        LayoutInflater inflater = (LayoutInflater) MainActivity.this.getSystemService
+                (Context.LAYOUT_INFLATER_SERVICE);
+
+        View v = inflater.inflate(R.layout.textview, null);
+
+
+        TextView title_tv = (TextView) v.findViewById(R.id.alert_title);
+        title_tv.setText(title);//getResources().getString(R.string.internet_connection_error_title));
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setCustomTitle(title_tv)
+                .setMessage(error)
+                .setCancelable(false)
+                .setNegativeButton("Retry", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        tryAgaintoCallService();
+
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+
+        if(progress != null) {
+            progress.dismiss();
+        }
+
+        Button b = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
+        b.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.app_theme_color));
+
+    }
+
+    public String get_today_date() {
         final Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH)+1;
+        int month = calendar.get(Calendar.MONTH) + 1;
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         String today_date = "";
-        if(month > 9 && day >9)
-        {
-            today_date = year+"-"+month+"-"+day;
-        }
-        else if(month < 10 && day <10)
-        {
-            today_date = year+"-"+"0"+month+"-"+"0"+day;
-        }
-        else if(month > 9 && day < 10)
-        {
-            today_date = year+"-"+month+"-"+"0"+day;
-        }
-        else if(month <10 && day > 9)
-        {
-            today_date = year+"-"+"0"+month+"-"+day;
+        if (month > 9 && day > 9) {
+            today_date = year + "-" + month + "-" + day;
+        } else if (month < 10 && day < 10) {
+            today_date = year + "-" + "0" + month + "-" + "0" + day;
+        } else if (month > 9 && day < 10) {
+            today_date = year + "-" + month + "-" + "0" + day;
+        } else if (month < 10 && day > 9) {
+            today_date = year + "-" + "0" + month + "-" + day;
         }
 
 
@@ -615,36 +652,50 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
     }
 
 
-    public String change_date_form(String date)
-    {
-        String[] days ={"Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"};
-        String[] months={"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"};
+    public String change_date_form(String date) {
+        String[] days = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+        String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 
-        String day = date.substring(8,10);
-        String month = date.substring(5,7);
-        String year = date.substring(0,4);
+        String day = date.substring(8, 10);
+        String month = date.substring(5, 7);
+        String year = date.substring(0, 4);
 
         int day_int = Integer.parseInt(day);
-        int month_int =Integer.parseInt(month);
+        int month_int = Integer.parseInt(month);
         int year_int = Integer.parseInt(year);
 
         Calendar calendar = Calendar.getInstance();
-        calendar.set(year_int,month_int-1,day_int);
+        calendar.set(year_int, month_int - 1, day_int);
 
         int day_of_weak_int = calendar.get(calendar.DAY_OF_WEEK);
-        String day_of_weak = days[day_of_weak_int-1];
+        String day_of_weak = days[day_of_weak_int - 1];
 
 
-        String final_date = day+"-"+months[month_int-1]+"-"+year+", "+day_of_weak;
+        String final_date = day + "-" + months[month_int - 1] + "-" + year + ", " + day_of_weak;
 
 
         return final_date;
     }
 
-    private boolean isNetworkConnected() {
+    private boolean isNetworkConnected(boolean reconnect) {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        return cm.getActiveNetworkInfo() != null;
+        boolean status = cm.getActiveNetworkInfo() != null;
+
+
+        if(status){
+
+           return true;
+        }else{
+
+            if(reconnect){
+
+                callAlertBox(getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message_try_again));
+
+            }
+            return false;
+        }
+
     }
 
     /**
@@ -661,8 +712,8 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
     @Override
     public void onSliderClick(BaseSliderView slider) {
         int position = Integer.parseInt(slider.getBundle().get("extra").toString());
-        Intent i = new Intent(MainActivity.this,Activity_AdverImageView.class);
-        i.putExtra("id",position);
+        Intent i = new Intent(MainActivity.this, Activity_AdverImageView.class);
+        i.putExtra("id", position);
         i.putStringArrayListExtra("imageList", promo_image);
         startActivity(i);
     }
@@ -707,364 +758,65 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
 
     }
 
-
-
-
-
-
-
-// request classes
-
-    private class LoginAuth extends AsyncTask<Void, Void, Void>    {
-
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            if(loginAuth_result != null)
-            {
-                if(((SoapObject)loginAuth_result.getProperty("Response")).getPrimitivePropertyAsString("IsSuccess").equals("true"))
-                {
-                    if(isNetworkConnected())
-                    {
-                        GetCity gc = new GetCity();
-                        gc.execute();
-                    }
-                    else
-                    {
-
-                        callAlertBox();
-                    }
-                }
-                else
-                {
-                    progress.dismiss();
-                    Global.showAlertDialog(MainActivity.this,getResources().getString(R.string.validating_error_title),((SoapObject)loginAuth_result.getProperty("Response")).getPrimitivePropertyAsString("Message"),"Ok");
-                }
-            }
-            else
-            {
-                progress.dismiss();
-                Global.showAlertDialog(MainActivity.this,getResources().getString(R.string.slow_internet_title),getResources().getString(R.string.slow_internet_error),"Ok");
-            }
-
-
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(Void... arg0) {
-
-            SoapObject request = new SoapObject(Constants.GLOBEL_NAMESPACE, Constants.METHOD_AUNTHENTICATION);
-
-
-        /*    PropertyInfo loginid = new PropertyInfo();
-            loginid.setName("LoginID");
-            loginid.setValue("test");
-            loginid.setType(String.class);
-            request.addProperty(loginid);
-
-            PropertyInfo password = new PropertyInfo();
-            password.setName("Password");
-            password.setValue("test456");
-            password.setType(String.class);
-            request.addProperty(password);
-
-            PropertyInfo usertype = new PropertyInfo();
-            usertype.setName("UserType");
-            usertype.setValue("S");
-            usertype.setType(String.class);
-            request.addProperty(usertype);
-
-
-
-            PropertyInfo logincode = new PropertyInfo();
-            logincode.setName("LoginCode");
-            logincode.setValue("9542");
-            logincode.setType(Integer.class);
-            request.addProperty(logincode);*/
-
-            PropertyInfo loginid = new PropertyInfo();
-            loginid.setName("LoginID");
-           // loginid.setValue("ISEVA");
-            loginid.setValue(session_manager.get_secrat_username());
-            loginid.setType(String.class);
-            request.addProperty(loginid);
-
-            PropertyInfo password = new PropertyInfo();
-            password.setName("Password");
-           // password.setValue("vikrant1729");
-            password.setValue(session_manager.get_password());
-            password.setType(String.class);
-            request.addProperty(password);
-
-            PropertyInfo usertype = new PropertyInfo();
-            usertype.setName("UserType");
-            usertype.setValue("S");
-            usertype.setType(String.class);
-            request.addProperty(usertype);
-
-
-
-            PropertyInfo logincode = new PropertyInfo();
-            logincode.setName("LoginCode");
-           logincode.setValue("9542");
-            //logincode.setValue("7304");
-            logincode.setType(Integer.class);
-            request.addProperty(logincode);
-
-
-
-
-            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-            envelope.dotNet = true;
-            envelope.setOutputSoapObject(request);
-
-            HttpTransportSE httpTransport = new HttpTransportSE(Constants.GLOBEL_URL);
-            httpTransport.debug =true;
-
-
-            try {
-                httpTransport.call(Constants.GLOBEL_NAMESPACE+Constants.METHOD_AUNTHENTICATION, envelope);
-
-            } catch (HttpResponseException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (XmlPullParserException e) {
-                e.printStackTrace();
-            }
-            loginAuth_result = null;
-
-            try {
-                loginAuth_result  = (SoapObject)envelope.getResponse();
-
-            } catch (SoapFault e) {
-
-                e.printStackTrace();
-            }
-            try {
-                String Is_success = "false";
-                if(loginAuth_result != null) {
-                    Is_success = ((SoapObject) loginAuth_result.getProperty("Response")).getPrimitiveProperty("IsSuccess").toString();
-                }
-
-                if(Is_success.equals("true")) {
-
-                    LoginCridantial.UserId = loginAuth_result.getPrimitiveProperty("UserID").toString().trim();
-                    LoginCridantial.UserType = loginAuth_result.getPrimitiveProperty("UserType").toString().trim();
-                    LoginCridantial.UserKey = loginAuth_result.getPrimitiveProperty("Key").toString().trim();
-                }
-                else
-                {
-
-                }
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-
-
-
-            return null;
-        }
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("Main Page") // TODO: Define a title for the content shown.
+                // TODO: Make sure this auto-generated URL is correct.
+                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
 
-
-    private class GetCity extends AsyncTask<Void, Void, Void>
-    {
-
-        @Override
-        protected void onPostExecute(Void result)
-        {
-            super.onPostExecute(result);
-
-            if(getcity_result != null)
-            {
-                progress.dismiss();
-            }
-            else
-            {
-                progress.dismiss();
-                Global.showAlertDialog(MainActivity.this,getResources().getString(R.string.slow_internet_title),getResources().getString(R.string.slow_internet_error),"Ok");
-            }
-
-
-
-        }
-
-
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-
-            SoapObject request = new SoapObject(Constants.GLOBEL_NAMESPACE, Constants.METHOD_GETCITYFROM);
-
-            SoapObject sa = new SoapObject(null, "Authentication");
-
-            PropertyInfo userid = new PropertyInfo();
-            userid.setName("UserID");
-
-            userid.setValue(LoginCridantial.UserId.trim());
-            userid.setType(Integer.class);
-            sa.addProperty(userid);
-
-            PropertyInfo usertype = new PropertyInfo();
-            usertype.setName("UserType");
-            usertype.setValue(LoginCridantial.UserType.trim());
-
-
-            usertype.setType(String.class);
-            sa.addProperty(usertype);
-
-            PropertyInfo userkey = new PropertyInfo();
-            userkey.setName("Key");
-            userkey.setValue(LoginCridantial.UserKey.trim());
-
-            userkey.setType(String.class);
-            sa.addProperty(userkey);
-            request.addSoapObject(sa);
-            if (Global.build_type == 0) {
-                Log.e("vikas request print", request.toString());
-            }
-
-
-            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-            envelope.implicitTypes = true;
-            envelope.dotNet = true;
-            envelope.setOutputSoapObject(request);
-            if (Global.build_type == 0)
-            {
-                Log.e("vikas envolop",envelope.toString());
-            }
-
-
-            HttpTransportSE httpTransport = new HttpTransportSE(Constants.GLOBEL_URL);
-
-            if (Global.build_type == 0)
-            {
-                Log.e("vikas http print",httpTransport.toString());
-            }
-
-
-            try {
-                httpTransport.call(Constants.GLOBEL_NAMESPACE+Constants.METHOD_GETCITYFROM, envelope);
-            } catch (HttpResponseException e) {
-
-                e.printStackTrace();
-            } catch (IOException e) {
-
-                e.printStackTrace();
-            } catch (XmlPullParserException e) {
-
-                e.printStackTrace();
-            }
-            getcity_result = null;
-
-            try {
-                getcity_result = (SoapObject)envelope.getResponse();
-
-            } catch (SoapFault e) {
-
-                e.printStackTrace();
-            }
-
-
-
-            try
-            {
-                String Is_success = "false";
-                if(getcity_result != null)
-                {
-                    Is_success =((SoapObject)getcity_result.getProperty("Response")).getPrimitiveProperty("IsSuccess").toString();
-                }
-
-                if(Is_success.equals("true"))
-                {
-                    ArrayList<HashMap<String, String>>  Temp_all_cities = new ArrayList<HashMap<String, String>>();
-                    ArrayList<HashMap<String, String>>  Temp_Main_cities = new ArrayList<HashMap<String, String>>();
-
-                    for(int i=0;i< ((SoapObject)getcity_result.getProperty(1)).getPropertyCount();i++)
-                    {
-                        String is_main = ((SoapObject)((SoapObject)getcity_result.getProperty("Cities")).getProperty(i)).getProperty("IsPriority").toString();
-                        if(is_main.equals("true"))
-                        {
-                            String cityname = ((SoapObject)((SoapObject)getcity_result.getProperty("Cities")).getProperty(i)).getProperty("CityName").toString();
-                            String upperstring = cityname.substring(0,1).toUpperCase() + cityname.substring(1);
-                            String cityid = ((SoapObject)((SoapObject)getcity_result.getProperty("Cities")).getProperty(i)).getProperty("CityID").toString();
-                            HashMap<String, String> map = new HashMap<String, String>();
-                            map.put("cityname", upperstring);
-                            map.put("cityid",cityid);
-                            Temp_Main_cities.add(map);
-                        }
-
-                        String cityname = ((SoapObject)((SoapObject)getcity_result.getProperty("Cities")).getProperty(i)).getProperty("CityName").toString();
-                        String upperstring = cityname.substring(0,1).toUpperCase() + cityname.substring(1);
-                        String cityid = ((SoapObject)((SoapObject)getcity_result.getProperty("Cities")).getProperty(i)).getProperty("CityID").toString();
-                        HashMap<String, String> map = new HashMap<String, String>();
-                        map.put("cityname", upperstring);
-                        map.put("cityid",cityid);
-                        Temp_all_cities.add(map);
-
-
-                    }
-
-                    All_Cities_Map = Temp_all_cities;
-                    Main_Cities = Temp_Main_cities;
-                    if (Global.build_type == 0)
-                    {
-                        Log.e("vikas",Is_success);
-                    }
-
-                }
-                else {
-                    if (Global.build_type == 0)
-                    {
-                        Log.e("vikas",Is_success);
-                    }
-
-
-                }
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-
-
-            return null;
-        }
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        AppIndex.AppIndexApi.start(client, getIndexApiAction());
     }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.end(client, getIndexApiAction());
+        client.disconnect();
+    }
+
 
 
 
     @Override
     protected void onResume() {
         super.onResume();
-        if(Search_Buses_Key.From_City_name != null)
-        {
-            Get_From_Cities_et.setText(Search_Buses_Key.From_City_name);
+
+
+        if (TRAVEL_DATA.FROM_CITY_NAME != null) {
+            Get_From_Cities_et.setText(TRAVEL_DATA.FROM_CITY_NAME);
         }
 
-        if(Search_Buses_Key.To_City_name != null)
-        {
-            Get_To_Cities_et.setText(Search_Buses_Key.To_City_name);
+        if (TRAVEL_DATA.TO_CITY_NAME != null) {
+            Get_To_Cities_et.setText(TRAVEL_DATA.TO_CITY_NAME);
         }
 
 
     }
 
 
-    public void activity_dismiss()
-    {
-        Search_Buses_Key.From_City_name = null;
-        Search_Buses_Key.To_City_name = null;
+    public void activity_dismiss() {
+        TRAVEL_DATA.FROM_CITY_NAME = null;
+        TRAVEL_DATA.TO_CITY_NAME = null;
         this.finish();
         overridePendingTransition(R.anim.anim_none, R.anim.anim_out);
     }
@@ -1073,165 +825,13 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
     @Override
     public void onBackPressed() {
 
-        Search_Buses_Key.From_City_name = null;
-        Search_Buses_Key.To_City_name = null;
+        TRAVEL_DATA.FROM_CITY_NAME = null;
+        TRAVEL_DATA.TO_CITY_NAME = null;
         super.onBackPressed();
         overridePendingTransition(R.anim.anim_none, R.anim.anim_out);
 
 
-
     }
-
-   /* private class GetToCities extends AsyncTask<Void, Void, Void>    {
-
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-
-        Toast.makeText(MainActivity.this,""+cityid,Toast.LENGTH_LONG).show();
-            String[] from = new String[] {"cityname"};
-            int[] to = new int[] {R.id.text1};
-
-            AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
-
-                    *//** Each item in the adapter is a HashMap object.
-     *  So this statement creates the currently clicked hashmap object
-     * *//*
-                    HashMap<String, String> hm = (HashMap<String, String>) arg0.getAdapter().getItem(position);
-                    EditText et = (EditText)findViewById(R.id.Get_City_To);
-                    et.setText(hm.get("cityname"));
-                    // Toast.makeText(MainActivity.this,hm.get("cityid"),Toast.LENGTH_LONG).show();
-                   // LoginCridantial.FromCityId = hm.get("cityid");
-
-                    Search_Buses_Key.TO_City_id = hm.get("cityid");
-
-
-                }
-            };
-
-
-
-            //ArrayAdapter adapter = new ArrayAdapter(MainActivity.this,android.R.layout.simple_list_item_1,all_cities);
-           // SimpleAdapter adapter1 = new SimpleAdapter(MainActivity.this,Tocitymap,R.layout.autotextcomplete,from,to);
-            Get_To_Cities_et.setOnItemClickListener(itemClickListener);
-          //  Get_To_Cities_et.setAdapter(adapter1);
-            Get_To_Cities_et.setThreshold(1);
-
-
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-
-            SoapObject request = new SoapObject(Constants.GLOBEL_NAMESPACE,Constants.METHOD_GETCITYTO);
-
-            SoapObject sa = new SoapObject(null,"Authentication");
-
-            PropertyInfo userid = new PropertyInfo();
-            userid.setName("UserID");
-
-            userid.setValue(LoginCridantial.UserId.trim());
-            userid.setType(Integer.class);
-            sa.addProperty(userid);
-
-            PropertyInfo usertype = new PropertyInfo();
-            usertype.setName("UserType");
-            usertype.setValue(LoginCridantial.UserType.trim());
-            usertype.setType(String.class);
-            sa.addProperty(usertype);
-
-            PropertyInfo userkey = new PropertyInfo();
-            userkey.setName("Key");
-            userkey.setValue(LoginCridantial.UserKey.trim());
-            userkey.setType(String.class);
-            sa.addProperty(userkey);
-
-            request.addSoapObject(sa);
-
-
-
-            PropertyInfo Fromcity = new PropertyInfo();
-            Fromcity.setName("FromCityID");
-            Fromcity.setValue(Search_Buses_Key.From_City_id);
-            Fromcity.setType(Integer.class);
-
-            request.addProperty(Fromcity);
-
-            Log.e("vikas request print",request.toString());
-
-
-            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER12);
-            envelope.implicitTypes = true;
-            envelope.dotNet = true;
-            envelope.setOutputSoapObject(request);
-
-            Log.e("vikas envolop",envelope.toString());
-
-            HttpTransportSE httpTransport = new HttpTransportSE(Constants.GLOBEL_URL);
-
-            Log.e("vikas http print",httpTransport.toString());
-
-            try {
-                httpTransport.call(Constants.GLOBEL_NAMESPACE+Constants.METHOD_GETCITYTO, envelope);
-            } catch (HttpResponseException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (XmlPullParserException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } //send request
-            SoapObject result = null;
-
-            try {
-                result = (SoapObject)envelope.getResponse();
-
-            } catch (SoapFault e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-
-          //  all_cities = new ArrayList<String>();
-           //  response =  result.getProperty(0).toString();
-
-          //  citymap = new ArrayList<HashMap<String, String>>();
-
-
-            cityid = ((SoapObject)result.getProperty(1)).getPropertyCount();
-
-
-            List<HashMap<String, String>>  Tocitymap = new ArrayList<HashMap<String, String>>();
-
-
-
-
-
-            for(int i=0;i< ((SoapObject)result.getProperty(1)).getPropertyCount();i++)
-            {
-
-
-                a = ((SoapObject)((SoapObject)result.getProperty(1)).getProperty(i)).getProperty("CityName").toString();
-                String cityid = ((SoapObject)((SoapObject)result.getProperty(1)).getProperty(i)).getProperty("CityID").toString();
-                HashMap<String, String> map = new HashMap<String, String>();
-                map.put("cityname", a);
-                map.put("cityid",cityid);
-                Tocitymap.add(map);
-
-            }
-
-
-            //response = LoginCridantial.UserId + " " + LoginCridantial.UserType + " " + LoginCridantial.UserKey;
-
-
-            return null;
-        }
-    }*/
-
 
 
 }

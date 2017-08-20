@@ -68,6 +68,8 @@
     <string name="edittext_age">age_edittext</string>
     <string name="Rs">\u20B9</string>
 
+    <string name="server_error_title">Something went wrong</string>
+    <string name="server_error_message_try_again">Error occured at server, Please try again.</string>
     <string name="internet_connection_error_title">No internet connection !</string>
     <string name="internet_connection_error_message_try_again">We can not detect any internet connectivity.Please check your internet connection and try again.</string>
     <string name="internet_connection_error_message">We can not detect any internet connectivity.Please check your internet connection.</string>

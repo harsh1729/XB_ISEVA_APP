@@ -38,8 +38,8 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
-import com.iseva.app.source.travel.Constants;
-import com.iseva.app.source.travel.Global;
+import com.iseva.app.source.travel.Constants.URL_XB;
+import com.iseva.app.source.travel.Global_Travel;
 import com.iseva.app.source.travel.MainActivity;
 import com.iseva.app.source.travel.Session_manager;
 
@@ -109,7 +109,7 @@ public class Activity_first extends AppCompatActivity implements NavigationView.
         }
         else
         {
-            Global.showAlertDialog(Activity_first.this,getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
+            Global_Travel.showAlertDialog(Activity_first.this,getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
         }
 
         bus_ticket_btn = (LinearLayout)findViewById(R.id.activity_first_bus_ticket_btn);
@@ -232,7 +232,7 @@ public class Activity_first extends AppCompatActivity implements NavigationView.
     public void get_version_code()
     {
         final StringRequest promocodeapplyrequest = new StringRequest(Request.Method.POST,
-                Constants.get_commition_extra_charge, new Response.Listener<String>() {
+                URL_XB.GET_COMMITION_EXTRA_CHARGE, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String s) {
@@ -317,7 +317,7 @@ public class Activity_first extends AppCompatActivity implements NavigationView.
     public void get_promo_image()
     {
         StringRequest promocodeapplyrequest = new StringRequest(Request.Method.POST,
-                Constants.get_promo_images, new Response.Listener<String>() {
+                URL_XB.GET_PROMO_IMAGES, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String s) {

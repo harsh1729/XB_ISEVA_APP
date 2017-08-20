@@ -18,6 +18,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.iseva.app.source.R;
+import com.iseva.app.source.travel.Constants.URL_XB;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -71,11 +72,11 @@ public class Activity_login extends Activity {
 
         if(login_email_et_text.length() == 0 || !validatemail(login_email_et_text))
         {
-            Global.showAlertDialog(Activity_login.this,getResources().getString(R.string.validating_error_title),"Insert valid email !","Ok");
+            Global_Travel.showAlertDialog(Activity_login.this,getResources().getString(R.string.validating_error_title),"Insert valid email !","Ok");
         }
         else if(login_password_et_text.length() == 0)
         {
-            Global.showAlertDialog(Activity_login.this,getResources().getString(R.string.validating_error_title),"Password can not be empty","Ok");
+            Global_Travel.showAlertDialog(Activity_login.this,getResources().getString(R.string.validating_error_title),"Password can not be empty","Ok");
         }
         else
         {
@@ -96,7 +97,7 @@ public class Activity_login extends Activity {
         progressBar.show();
 
         StringRequest loginreq = new StringRequest(Request.Method.POST,
-                Constants.Login_url, new Response.Listener<String>() {
+                URL_XB.LOGIN, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String s) {
@@ -112,7 +113,7 @@ public class Activity_login extends Activity {
 
                 if (response != null)
                 {
-                    if(Global.build_type == 0)
+                    if(Global_Travel.build_type == 0)
                     {
                         Log.e("vikas",response.toString());
                     }
