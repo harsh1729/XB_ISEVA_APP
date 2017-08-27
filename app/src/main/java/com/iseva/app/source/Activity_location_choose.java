@@ -24,12 +24,13 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class Activity_location_choose extends FragmentActivity implements LocationListener {
+public class Activity_location_choose extends FragmentActivity implements LocationListener, OnMapReadyCallback {
 
     GoogleMap googleMap;
     private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(
@@ -53,13 +54,6 @@ public class Activity_location_choose extends FragmentActivity implements Locati
         set_on_click_listner();
 
 
-
-
-
-
-
-
-
     }
 
     public void init() {
@@ -68,7 +62,13 @@ public class Activity_location_choose extends FragmentActivity implements Locati
         SupportMapFragment supportMapFragment = (SupportMapFragment)
                 getSupportFragmentManager().findFragmentById(R.id.map);
 
-        googleMap = supportMapFragment.getMap();
+        supportMapFragment.getMapAsync(this);
+
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        this.googleMap = googleMap;
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
         }
@@ -155,6 +155,7 @@ public class Activity_location_choose extends FragmentActivity implements Locati
 
         if (!gps_enabled && !network_enabled) {
             LocationEnable = 0;
+
             AlertDialog.Builder dialog = new AlertDialog.Builder(Activity_location_choose.this);
             dialog.setTitle("Enable Location");
             dialog.setMessage("Please Enable Location to show current location on map.");

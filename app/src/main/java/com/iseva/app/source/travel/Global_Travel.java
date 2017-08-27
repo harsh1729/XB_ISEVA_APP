@@ -81,10 +81,11 @@ public class Global_Travel {
         public static String TO_CITY_NAME ="";
         public static String JOURNEY_DATE ="";
         public static String ROUTE_BUS_ID ="";
-        public static String SELECTED_DATE ="";
 
         public static int MAX_COL;
         public static int MAX_ROW;
+
+        public static int ISEVA_SHARE_PCT = 10;
 
 
     }

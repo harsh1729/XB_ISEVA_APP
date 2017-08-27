@@ -145,7 +145,7 @@ public class Activity_review_itinerary extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review_itinerary);
-        My_realm = Realm.getInstance(getApplicationContext());
+        My_realm = Realm.getDefaultInstance();
      //   Payu.setInstance(this);
 
 
@@ -826,8 +826,8 @@ public class Activity_review_itinerary extends Activity {
             @Override
             public void onResponse(String s) {
 
-                sendmessage(order_id,ticket_no,pnr_no,TRAVEL_DATA.FROM_CITY_NAME,TRAVEL_DATA.TO_CITY_NAME, TRAVEL_DATA.SELECTED_DATE,repoting_time,BoardingTime,status,ps.toString(),Boarding_point_address, schedule_details.get(0).getBusTypeName(), schedule_details.get(0).getCompanyName(),contact_phone,TotalFare,cancellation_data_string);
-                sendmail(order_id,ticket_no,pnr_no,TRAVEL_DATA.FROM_CITY_NAME,TRAVEL_DATA.TO_CITY_NAME, TRAVEL_DATA.SELECTED_DATE,repoting_time,BoardingTime,status,ps.toString(),Boarding_point_address, schedule_details.get(0).getBusTypeName(), schedule_details.get(0).getCompanyName(),Boarding_point_phone,TotalFare,cancellation_data_string);
+                sendmessage(order_id,ticket_no,pnr_no,TRAVEL_DATA.FROM_CITY_NAME,TRAVEL_DATA.TO_CITY_NAME, TRAVEL_DATA.JOURNEY_DATE,repoting_time,BoardingTime,status,ps.toString(),Boarding_point_address, schedule_details.get(0).getBusTypeName(), schedule_details.get(0).getCompanyName(),contact_phone,TotalFare,cancellation_data_string);
+                sendmail(order_id,ticket_no,pnr_no,TRAVEL_DATA.FROM_CITY_NAME,TRAVEL_DATA.TO_CITY_NAME, TRAVEL_DATA.JOURNEY_DATE,repoting_time,BoardingTime,status,ps.toString(),Boarding_point_address, schedule_details.get(0).getBusTypeName(), schedule_details.get(0).getCompanyName(),Boarding_point_phone,TotalFare,cancellation_data_string);
             }
         }, new Response.ErrorListener() {
 

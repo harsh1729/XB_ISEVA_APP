@@ -15,6 +15,9 @@ import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 import org.acra.sender.HttpSender;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+
 @ReportsCrashes(
 		formUri = "https://iseva.cloudant.com/acra-isevalog/_design/acra-storage/_update/report",
 		reportType = HttpSender.Type.JSON,
@@ -94,6 +97,15 @@ public class Custom_VolleyAppController extends Application {
 
 		 mPicasso = new Picasso.Builder(getApplicationContext())
 				 .downloader(downloader).memoryCache(memoryCache).build();*/
+
+
+		 Realm.init(this);
+
+		 RealmConfiguration realmConfiguration = new RealmConfiguration
+				 .Builder()
+				 .deleteRealmIfMigrationNeeded()
+				 .build();
+		 Realm.setDefaultConfiguration(realmConfiguration);
 	 }
 
 	 public static synchronized Custom_VolleyAppController getInstance()

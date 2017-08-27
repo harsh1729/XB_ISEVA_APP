@@ -44,28 +44,28 @@ public class Datepicker extends DialogFragment implements DatePickerDialog.OnDat
         if(i1 > 9 && i2 > 9)
         {
 
-            TRAVEL_DATA.SELECTED_DATE = i+"-"+(i1+1)+"-"+i2;
+            TRAVEL_DATA.JOURNEY_DATE = i+"-"+(i1+1)+"-"+i2;
             date = i+"-"+(i1+1)+"-"+i2;
             et.setText(changeDateForm(date));
         }
         else if(i1 < 10 && i2 < 10)
         {
 
-            TRAVEL_DATA.SELECTED_DATE = ""+i+"-"+"0"+(i1+1)+"-"+"0"+i2;
+            TRAVEL_DATA.JOURNEY_DATE = ""+i+"-"+"0"+(i1+1)+"-"+"0"+i2;
             date = ""+i+"-"+"0"+(i1+1)+"-"+"0"+i2;
             et.setText(changeDateForm(date));
         }
         else if(i1 < 10 && i2 >9)
         {
 
-            TRAVEL_DATA.SELECTED_DATE = i+"-"+"0"+(i1+1)+"-"+i2;
+            TRAVEL_DATA.JOURNEY_DATE = i+"-"+"0"+(i1+1)+"-"+i2;
             date = i+"-"+"0"+(i1+1)+"-"+i2;
             et.setText(changeDateForm(date));
         }
         else if(i1 > 9 && i2 < 10)
         {
 
-            TRAVEL_DATA.SELECTED_DATE = i+"-"+(i1+1)+"-"+"0"+i2;
+            TRAVEL_DATA.JOURNEY_DATE = i+"-"+(i1+1)+"-"+"0"+i2;
             date = i+"-"+(i1+1)+"-"+"0"+i2;
             et.setText(changeDateForm(date));
         }

@@ -74,11 +74,11 @@ public class Activity_Bus_Routes extends AppCompatActivity {
 
 
 
-        My_realm = Realm.getInstance(getApplicationContext());
+        My_realm = Realm.getDefaultInstance();
 
        fisttime_flag = true;
         My_realm.beginTransaction();
-        My_realm.clear(Filter.class);
+        My_realm.delete(Filter.class);
         My_realm.commitTransaction();
 
         layout_header_text = (LinearLayout)findViewById(R.id.layout_header_text);
@@ -94,7 +94,7 @@ public class Activity_Bus_Routes extends AppCompatActivity {
         TextView tocity = (TextView)v.findViewById(R.id.header_to_city);
         TextView date = (TextView)v.findViewById(R.id.header_date);
 
-        String header_date = header_format_date(TRAVEL_DATA.SELECTED_DATE);
+        String header_date = header_format_date(TRAVEL_DATA.JOURNEY_DATE);
         fromcity.setText(TRAVEL_DATA.FROM_CITY_NAME);
         tocity.setText(TRAVEL_DATA.TO_CITY_NAME);
         date.setText(header_date);
@@ -314,7 +314,7 @@ public class Activity_Bus_Routes extends AppCompatActivity {
 
     public String header_format_date(String date)
     {
-        String[] months = { "January", "Febrauary", "March", "April","May","June","July","August","September","October","November","December" };
+        String[] months = { "January", "February", "March", "April","May","June","July","August","September","October","November","December" };
         String final_string = "";
         String day = "";
         int month = 1;

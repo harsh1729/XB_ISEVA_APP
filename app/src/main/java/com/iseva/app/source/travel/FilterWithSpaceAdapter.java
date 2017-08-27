@@ -26,11 +26,14 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
+import com.iseva.app.source.travel.Constants.JSON_KEYS;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -94,7 +97,7 @@ public class FilterWithSpaceAdapter<T> extends BaseAdapter implements
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param context
 	 *            The current context.
 	 * @param textViewResourceId
@@ -107,7 +110,7 @@ public class FilterWithSpaceAdapter<T> extends BaseAdapter implements
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param context
 	 *            The current context.
 	 * @param resource
@@ -118,13 +121,13 @@ public class FilterWithSpaceAdapter<T> extends BaseAdapter implements
 	 *            populated
 	 */
 	public FilterWithSpaceAdapter(Context context, int resource,
-			int textViewResourceId) {
+								  int textViewResourceId) {
 		init(context, resource, textViewResourceId, new ArrayList<T>());
 	}
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param context
 	 *            The current context.
 	 * @param textViewResourceId
@@ -134,13 +137,13 @@ public class FilterWithSpaceAdapter<T> extends BaseAdapter implements
 	 *            The objects to represent in the ListView.
 	 */
 	public FilterWithSpaceAdapter(Context context, int textViewResourceId,
-			T[] objects) {
+								  T[] objects) {
 		init(context, textViewResourceId, 0, Arrays.asList(objects));
 	}
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param context
 	 *            The current context.
 	 * @param resource
@@ -153,13 +156,13 @@ public class FilterWithSpaceAdapter<T> extends BaseAdapter implements
 	 *            The objects to represent in the ListView.
 	 */
 	public FilterWithSpaceAdapter(Context context, int resource,
-			int textViewResourceId, T[] objects) {
+								  int textViewResourceId, T[] objects) {
 		init(context, resource, textViewResourceId, Arrays.asList(objects));
 	}
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param context
 	 *            The current context.
 	 * @param textViewResourceId
@@ -169,13 +172,13 @@ public class FilterWithSpaceAdapter<T> extends BaseAdapter implements
 	 *            The objects to represent in the ListView.
 	 */
 	public FilterWithSpaceAdapter(Context context, int textViewResourceId,
-			List<T> objects) {
+								  List<T> objects) {
 		init(context, textViewResourceId, 0, objects);
 	}
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param context
 	 *            The current context.
 	 * @param resource
@@ -188,13 +191,13 @@ public class FilterWithSpaceAdapter<T> extends BaseAdapter implements
 	 *            The objects to represent in the ListView.
 	 */
 	public FilterWithSpaceAdapter(Context context, int resource,
-			int textViewResourceId, List<T> objects) {
+								  int textViewResourceId, List<T> objects) {
 		init(context, resource, textViewResourceId, objects);
 	}
 
 	/**
 	 * Adds the specified object at the end of the array.
-	 * 
+	 *
 	 * @param object
 	 *            The object to add at the end of the array.
 	 */
@@ -212,7 +215,7 @@ public class FilterWithSpaceAdapter<T> extends BaseAdapter implements
 
 	/**
 	 * Adds the specified Collection at the end of the array.
-	 * 
+	 *
 	 * @param collection
 	 *            The Collection to add at the end of the array.
 	 */
@@ -230,7 +233,7 @@ public class FilterWithSpaceAdapter<T> extends BaseAdapter implements
 
 	/**
 	 * Adds the specified items at the end of the array.
-	 * 
+	 *
 	 * @param items
 	 *            The items to add at the end of the array.
 	 */
@@ -248,7 +251,7 @@ public class FilterWithSpaceAdapter<T> extends BaseAdapter implements
 
 	/**
 	 * Inserts the specified object at the specified index in the array.
-	 * 
+	 *
 	 * @param object
 	 *            The object to insert into the array.
 	 * @param index
@@ -268,7 +271,7 @@ public class FilterWithSpaceAdapter<T> extends BaseAdapter implements
 
 	/**
 	 * Removes the specified object from the array.
-	 * 
+	 *
 	 * @param object
 	 *            The object to remove.
 	 */
@@ -301,7 +304,7 @@ public class FilterWithSpaceAdapter<T> extends BaseAdapter implements
 
 	/**
 	 * Sorts the content of this adapter using the specified comparator.
-	 * 
+	 *
 	 * @param comparator
 	 *            The comparator used to sort the objects contained in this
 	 *            adapter.
@@ -333,10 +336,10 @@ public class FilterWithSpaceAdapter<T> extends BaseAdapter implements
 	 * {@link #notifyDataSetChanged}. If set to false, caller must manually call
 	 * notifyDataSetChanged() to have the changes reflected in the attached
 	 * view.
-	 * 
+	 *
 	 * The default is true, and calling notifyDataSetChanged() resets the flag
 	 * to true.
-	 * 
+	 *
 	 * @param notifyOnChange
 	 *            if true, modifications to the list will automatically call
 	 *            {@link #notifyDataSetChanged}
@@ -346,7 +349,7 @@ public class FilterWithSpaceAdapter<T> extends BaseAdapter implements
 	}
 
 	private void init(Context context, int resource, int textViewResourceId,
-			List<T> objects) {
+					  List<T> objects) {
 		mContext = context;
 		mInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -358,7 +361,7 @@ public class FilterWithSpaceAdapter<T> extends BaseAdapter implements
 	/**
 	 * Returns the context associated with this array adapter. The context is
 	 * used to create views from the resource passed to the constructor.
-	 * 
+	 *
 	 * @return The Context associated with this adapter.
 	 */
 	public Context getContext() {
@@ -381,10 +384,10 @@ public class FilterWithSpaceAdapter<T> extends BaseAdapter implements
 
 	/**
 	 * Returns the position of the specified item in the array.
-	 * 
+	 *
 	 * @param item
 	 *            The item to retrieve the position of.
-	 * 
+	 *
 	 * @return The position of the specified item.
 	 */
 	public int getPosition(T item) {
@@ -406,7 +409,7 @@ public class FilterWithSpaceAdapter<T> extends BaseAdapter implements
 	}
 
 	private View createViewFromResource(int position, View convertView,
-			ViewGroup parent, int resource) {
+										ViewGroup parent, int resource) {
 		View view;
 		TextView text;
 
@@ -435,8 +438,14 @@ public class FilterWithSpaceAdapter<T> extends BaseAdapter implements
 		T item = getItem(position);
 		if (item instanceof CharSequence) {
 			text.setText((CharSequence) item);
-		} else {
-			text.setText(item.toString());
+		} else if (item instanceof HashMap){
+
+			//Edit : Harsh
+
+			HashMap<String, String> mapCity = (HashMap<String, String>)item;
+
+			text.setText(mapCity.get(JSON_KEYS.CITY_NAME));
+			//text.setText(item.toString());
 		}
 
 		return view;
@@ -446,10 +455,10 @@ public class FilterWithSpaceAdapter<T> extends BaseAdapter implements
 	 * <p>
 	 * Sets the layout resource to create the drop down views.
 	 * </p>
-	 * 
+	 *
 	 * @param resource
 	 *            the layout resource defining the drop down views
-	 * @see #getDropDownView(int, View, ViewGroup)
+	 * @see #getDropDownView(int, android.view.View, android.view.ViewGroup)
 	 */
 	public void setDropDownViewResource(int resource) {
 		this.mDropDownResource = resource;
@@ -468,14 +477,14 @@ public class FilterWithSpaceAdapter<T> extends BaseAdapter implements
 	 * Creates a new ArrayAdapter from external resources. The content of the
 	 * array is obtained through
 	 * {@link android.content.res.Resources#getTextArray(int)}.
-	 * 
+	 *
 	 * @param context
 	 *            The application's environment.
 	 * @param textArrayResId
 	 *            The identifier of the array to use as the data source.
 	 * @param textViewResId
 	 *            The identifier of the layout used to create views.
-	 * 
+	 *
 	 * @return An ArrayAdapter<CharSequence>.
 	 */
 	public static FilterWithSpaceAdapter<CharSequence> createFromResource(
@@ -555,7 +564,7 @@ public class FilterWithSpaceAdapter<T> extends BaseAdapter implements
 
 		@Override
 		protected void publishResults(CharSequence constraint,
-				FilterResults results) {
+									  FilterResults results) {
 			// noinspection unchecked
 			mObjects = (List<T>) results.values;
 			if (results.count > 0) {

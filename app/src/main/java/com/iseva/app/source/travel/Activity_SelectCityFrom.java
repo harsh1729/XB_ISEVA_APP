@@ -11,7 +11,6 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.iseva.app.source.R;
@@ -46,7 +45,7 @@ public class Activity_SelectCityFrom extends Activity {
 
         Intent i = getIntent();
 
-        My_realm = Realm.getInstance(this);
+        My_realm = Realm.getDefaultInstance();
 
         My_realm.beginTransaction();
         RealmResults<Realm_City> cities = My_realm.where(Realm_City.class).findAllSorted("cityName");
@@ -159,15 +158,24 @@ public class Activity_SelectCityFrom extends Activity {
 
 
 
-        SimpleAdapter adapter1 = null;
+        //SimpleAdapter adapter1 = null;
+
+        FilterWithSpaceAdapter adapter1 = null;
 
         if(current_city_state == Constants.STATE_MAIN_CITIES)
         {
-             adapter1 = new SimpleAdapter(Activity_SelectCityFrom.this,Main_Cities,R.layout.show_city_single_row,from,to);
+             //adapter1 = new SimpleAdapter(Activity_SelectCityFrom.this,Main_Cities,R.layout.show_city_single_row,from,to);
+
+            adapter1 = new FilterWithSpaceAdapter(Activity_SelectCityFrom.this,
+                    R.layout.show_city_single_row,R.id.text1, Main_Cities);
+
         }
         else
         {
-             adapter1 = new SimpleAdapter(Activity_SelectCityFrom.this,All_Cities_Map,R.layout.show_city_single_row,from,to);
+             //adapter1 = new SimpleAdapter(Activity_SelectCityFrom.this,All_Cities_Map,R.layout.show_city_single_row,from,to);
+
+            adapter1 = new FilterWithSpaceAdapter(Activity_SelectCityFrom.this,
+                    R.layout.show_city_single_row,R.id.text1, All_Cities_Map);
         }
 
 

@@ -8,59 +8,83 @@ import io.realm.RealmObject;
 
 public class Bus_routes_detail extends RealmObject{
 
-    private int RouteScheduleId;
+    private int RouteBusId;
     private  int CompanyId ;
     private String CompanyName ;
 
     private String Duration;
-    private String arrivaltime;
-    private String departuretime;
-   /* private Time ArriveTime;
-    private Time departureTime;*/
 
     private String DepTime ;
 
     private String ArrTime ;
 
 
-    private float Fare ;
-    private float Fare_after_offer;
+    private double Fare ;
+    private double Fare_after_offer;
 
-    private float SeaterFareNAC ;
-    private float SeaterFareAC ;
-    private float SleeperFareNAC ;
-    private float SleeperFareAC ;
+//    private float SeaterFareNAC ;
+//    private float SeaterFareAC ;
+//    private float SleeperFareNAC ;
+//    private float SleeperFareAC ;
     private Boolean HasAC ;
     private Boolean HasNAC ;
     private Boolean HasSeater ;
     private Boolean HasSleeper ;
     private Boolean IsVolvo ;
     private String BusLabel ;
+    private String Axel;
+    private String Make;
+    private String SeaterType;
 
-    private float CommPCT ;
-    private float CommAmount ;
+    private double CommPCT = 0;
+    private double CommAmount = 0.0;
     private int AvailableSeats ;
-    private String BusTypeName;
-    private String BusNumber ;
+    private double DurationVal = 0.0;
+
+    public double getDurationVal() {
+        return DurationVal;
+    }
+
+    public void setDurationVal(double durationVal) {
+        DurationVal = durationVal;
+    }
+    //private String BusTypeName;
+    //private String BusNumber ;
+
+    public String getSeaterType() {
+        return SeaterType;
+    }
+
+    public void setSeaterType(String seaterType) {
+        SeaterType = seaterType;
+    }
+
+    public String getMake() {
+        return Make;
+    }
+
+    public void setMake(String make) {
+        Make = make;
+    }
+
+    public String getAxel() {
+        return Axel;
+    }
+
+    public void setAxel(String axel) {
+        Axel = axel;
+    }
+
+
 
     public String getDuration()
     {
         return Duration;
     }
 
-    public String getArrivaltime()
+    public int getRouteBusId()
     {
-        return arrivaltime;
-    }
-
-    public String getDeparturetime()
-    {
-        return departuretime;
-    }
-
-    public int getRouteScheduleId()
-    {
-        return RouteScheduleId;
+        return RouteBusId;
     }
 
     public int getCompanyId()
@@ -81,30 +105,30 @@ public class Bus_routes_detail extends RealmObject{
     {
         return ArrTime;
     }
-    public float getFare()
+    public double getFare()
     {
         return Fare;
     }
-    public float getFare_after_offer()
+    public double getFare_after_offer()
     {
         return this.Fare_after_offer;
     }
-    public float getSeaterFareNAC()
-    {
-        return SeaterFareNAC;
-    }
-    public float getSeaterFareAC()
-    {
-        return SeaterFareAC;
-    }
-    public float getSleeperFareNAC()
-    {
-        return SleeperFareNAC;
-    }
-    public float getSleeperFareAC()
-    {
-        return SleeperFareAC;
-    }
+//    public float getSeaterFareNAC()
+//    {
+//        return SeaterFareNAC;
+//    }
+//    public float getSeaterFareAC()
+//    {
+//        return SeaterFareAC;
+//    }
+//    public float getSleeperFareNAC()
+//    {
+//        return SleeperFareNAC;
+//    }
+//    public float getSleeperFareAC()
+//    {
+//        return SleeperFareAC;
+//    }
     public Boolean getHasAC()
     {
         return HasAC;
@@ -129,11 +153,11 @@ public class Bus_routes_detail extends RealmObject{
     {
         return BusLabel;
     }
-    public float getCommPCT()
+    public double getCommPCT()
     {
         return CommPCT;
     }
-    public float getCommAmount()
+    public double getCommAmount()
     {
         return CommAmount;
     }
@@ -141,22 +165,22 @@ public class Bus_routes_detail extends RealmObject{
     {
         return AvailableSeats;
     }
-    public String getBusTypeName()
+//    public String getBusTypeName()
+//    {
+//        return BusTypeName;
+//    }
+    //public String getBusNumber()
+//    {
+//        return BusNumber;
+//    }
+
+
+
+
+
+    public void setRouteBusId(int scheduleId)
     {
-        return BusTypeName;
-    }
-    public String getBusNumber()
-    {
-        return BusNumber;
-    }
-
-
-
-
-
-    public void setRouteScheduleId(int scheduleId)
-    {
-        this.RouteScheduleId = scheduleId;
+        this.RouteBusId = scheduleId;
     }
 
     public void setCompanyId(int companyId)
@@ -177,30 +201,30 @@ public class Bus_routes_detail extends RealmObject{
     {
         this.ArrTime = arrTime;
     }
-    public void setFare(float fare)
+    public void setFare(double fare)
     {
         this.Fare = fare;
     }
-    public void setFare_after_offer(float fare_after_offer)
+    public void setFare_after_offer(double fare_after_offer)
     {
         this.Fare_after_offer = fare_after_offer;
     }
-    public void setSeaterFareNAC(float seaterFareNAC)
-    {
-        this.SeaterFareNAC = seaterFareNAC;
-    }
-    public void setSeaterFareAC(float seaterFareAC)
-    {
-        this.SeaterFareAC = seaterFareAC;
-    }
-    public void setSleeperFareNAC(float sleeperFareNAC)
-    {
-        this.SleeperFareNAC = sleeperFareNAC;
-    }
-    public void setSleeperFareAC(float sleeperFareAC)
-    {
-        this.SleeperFareAC = sleeperFareAC;
-    }
+//    public void setSeaterFareNAC(float seaterFareNAC)
+//    {
+//        this.SeaterFareNAC = seaterFareNAC;
+//    }
+//    public void setSeaterFareAC(float seaterFareAC)
+//    {
+//        this.SeaterFareAC = seaterFareAC;
+//    }
+//    public void setSleeperFareNAC(float sleeperFareNAC)
+//    {
+//        this.SleeperFareNAC = sleeperFareNAC;
+//    }
+//    public void setSleeperFareAC(float sleeperFareAC)
+//    {
+//        this.SleeperFareAC = sleeperFareAC;
+//    }
     public void setHasAC(Boolean hasAC)
     {
         this.HasAC = hasAC;
@@ -225,11 +249,11 @@ public class Bus_routes_detail extends RealmObject{
     {
         this.BusLabel = busLabel;
     }
-    public void setCommPCT(float commPCT)
+    public void setCommPCT(double commPCT)
     {
         this.CommPCT = commPCT;
     }
-    public void setCommAmount(float commAmount)
+    public void setCommAmount(double commAmount)
     {
         this.CommAmount = commAmount;
     }
@@ -237,28 +261,19 @@ public class Bus_routes_detail extends RealmObject{
     {
         this.AvailableSeats = availableSeats;
     }
-    public void setBusTypeName(String busTypeName)
-    {
-        this.BusTypeName = busTypeName;
-    }
-    public void setBusNumber(String busNumber)
-    {
-        this.BusNumber = busNumber;
-    }
+//    public void setBusTypeName(String busTypeName)
+//    {
+//        this.BusTypeName = busTypeName;
+//    }
+    //public void setBusNumber(String busNumber)
+//    {
+//        this.BusNumber = busNumber;
+//    }
 
     public void setDuration(String duration)
     {
         this.Duration = duration;
     }
 
-    public void setArrivaltime(String arrivalTime)
-    {
-        this.arrivaltime = arrivalTime;
-    }
-
-    public void setDeparturetime(String departureTime)
-    {
-        this.departuretime = departureTime;
-    }
 
 }

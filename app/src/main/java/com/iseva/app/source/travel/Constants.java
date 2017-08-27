@@ -65,6 +65,9 @@ public class Constants {
 
         public static final String GET_CITY_LIST = BASE_URL + "CityList";
 
+        public static final String SEARCH_BUSES = BASE_URL + "Search";
+
+
 
     }
     public class URL_XB {
@@ -97,6 +100,38 @@ public class Constants {
         public static final String GET_PROMO_IMAGES = CLIENT_REQ_URL + "promocodes/get_promo_images";
         public static final String GET_DEFAULT_TRAVEL_DATA = CLIENT_REQ_URL + "promocodes/get_default_travel_data";
 
+
+    }
+
+    public class BUS_TYPE {
+
+
+        public static final String AC = "AC";
+        public static final String NON_AC = "NON_AC";
+
+
+        public static final String SEATER= "SEATER";
+        public static final String SEATER_SEMI_SLEEPER = "SEATER_SEMI_SLEEPER";
+        public static final String SLEEPER = "SLEEPER";
+        public static final String SEATER_SLEEPER = "SEATER_SLEEPER";
+        public static final String SEMI_SLEEPER = "SEMI_SLEEPER";
+        public static final String SEMI_SLEEPER_SLEEPER = "SEMI_SLEEPER_SLEEPER";
+
+
+
+
+
+
+        public static final String MAKE_MERCEDES = "MERCEDES";
+        public static final String MAKE_NORMAL = "NORMAL";
+        public static final String MAKE_VOLVO = "VOLVO";
+        public static final String MAKE_VOLVO_ISHIFT = "VOLVO_ISHIFT";
+        public static final String MAKE_SCANIA = "SCANIA";
+
+
+
+        public static final String SINGLE_AXLE = "SINGLE_AXLE";
+        public static final String MULTI_AXLE = "SINGLE_AXLE";
 
     }
 

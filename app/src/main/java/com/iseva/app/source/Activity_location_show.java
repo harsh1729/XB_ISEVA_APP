@@ -17,6 +17,7 @@ import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -35,7 +36,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class Activity_location_show extends AppCompatActivity {
+public class Activity_location_show extends AppCompatActivity  implements OnMapReadyCallback {
     GoogleMap googleMap;
 
     Location location; // location
@@ -57,12 +58,6 @@ public class Activity_location_show extends AppCompatActivity {
         checklocationenable();
 
 
-
-
-
-
-
-
     }
 
     public void init() {
@@ -75,12 +70,17 @@ public class Activity_location_show extends AppCompatActivity {
         SupportMapFragment supportMapFragment = (SupportMapFragment)
                 getSupportFragmentManager().findFragmentById(R.id.map);
 
-        googleMap = supportMapFragment.getMap();
-        googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        supportMapFragment.getMapAsync(this);
+
     }
 
 
+    @Override
+    public void onMapReady(GoogleMap map) {
 
+        googleMap = map;
+        googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+    }
 
     public void checklocationenable() {
         LocationManager lm = (LocationManager) Activity_location_show.this.getSystemService(Context.LOCATION_SERVICE);

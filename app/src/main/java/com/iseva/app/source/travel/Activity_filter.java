@@ -62,7 +62,7 @@ public class Activity_filter extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter);
 
-        My_realm = Realm.getInstance(getApplicationContext());
+        My_realm = Realm.getDefaultInstance();
 
 
         header_iv = (ImageView)findViewById(R.id.header_back_button);
@@ -168,7 +168,7 @@ public class Activity_filter extends Activity{
             public void onClick(View view) {
                 Click_On_Apply = true;
                 My_realm.beginTransaction();
-                My_realm.clear(Filter.class);
+                My_realm.delete(Filter.class);
                 My_realm.commitTransaction();
 
                 if(Bustype_ac_flag)
@@ -262,7 +262,7 @@ public class Activity_filter extends Activity{
     public void resetall()
     {
         My_realm.beginTransaction();
-        My_realm.clear(Filter.class);
+        My_realm.delete(Filter.class);
         My_realm.commitTransaction();
 
         Bustype_ac_flag = false;

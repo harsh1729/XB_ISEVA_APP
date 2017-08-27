@@ -40,7 +40,7 @@ import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.iseva.app.source.travel.Constants.URL_XB;
 import com.iseva.app.source.travel.Global_Travel;
-import com.iseva.app.source.travel.MainActivity;
+import com.iseva.app.source.travel.Activity_Main;
 import com.iseva.app.source.travel.Session_manager;
 
 import org.json.JSONArray;
@@ -96,14 +96,15 @@ public class Activity_first extends AppCompatActivity implements NavigationView.
 
         Custom_GetMobile_Number.app_launched(this) ;
         session_manager = new Session_manager(Activity_first.this);
-        progressDialog = new ProgressDialog(Activity_first.this);
-        progressDialog.setMessage("Please wait...");
-        progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.setCancelable(false);
 
-        progressDialog.show();
         if(isNetworkConnected())
         {
+            progressDialog = new ProgressDialog(Activity_first.this);
+            progressDialog.setMessage("Please wait...");
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.setCancelable(false);
+
+            progressDialog.show();
             get_version_code();
             get_promo_image();
         }
@@ -377,7 +378,7 @@ public class Activity_first extends AppCompatActivity implements NavigationView.
 
     private void booking_ticket()
     {
-        Intent i = new Intent(Activity_first.this,MainActivity.class);
+        Intent i = new Intent(Activity_first.this,Activity_Main.class);
 
         i.putExtra("promo_image",promo_images);
 
@@ -388,7 +389,7 @@ public class Activity_first extends AppCompatActivity implements NavigationView.
     private void getAddver() {
         Custom_ConnectionDetector cd = new Custom_ConnectionDetector(this);
         if (!cd.isConnectingToInternet()) {
-            Globals.showAlert("ERROR", Globals.INTERNET_ERROR, this);
+            //Globals.showAlert("ERROR", Globals.INTERNET_ERROR, this);
         } else {
 
             try {

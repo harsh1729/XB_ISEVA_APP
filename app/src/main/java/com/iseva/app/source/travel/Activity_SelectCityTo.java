@@ -5,12 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.iseva.app.source.R;
@@ -45,7 +45,7 @@ public class Activity_SelectCityTo extends Activity{
 
         Intent i = getIntent();
 
-        My_realm = Realm.getInstance(this);
+        My_realm = Realm.getDefaultInstance();
 
         My_realm.beginTransaction();
         RealmResults<Realm_City> cities = My_realm.where(Realm_City.class).findAll();
@@ -79,10 +79,14 @@ public class Activity_SelectCityTo extends Activity{
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                Log.i("HARSH","Inside Text Change");
+
                 if(Real_Get_To_City.getText().length() == 0)
                 {
 
                     if (current_city_state != Constants.STATE_MAIN_CITIES){
+
                         current_city_state = Constants.STATE_MAIN_CITIES;
                         add_adapter();
                     }
@@ -92,9 +96,13 @@ public class Activity_SelectCityTo extends Activity{
                 else if(!(s.toString().contains(JSON_KEYS.CITY_ID) && s.toString().contains(JSON_KEYS.CITY_NAME)))
                 {
                     if (current_city_state != Constants.STATE_ALL_CITIES){
+
                         current_city_state = Constants.STATE_ALL_CITIES;
                         add_adapter();
                     }
+
+
+
                     city_category.setText("All Cities");
                 }
 
@@ -145,20 +153,28 @@ public class Activity_SelectCityTo extends Activity{
 
     public void add_adapter()
     {
-        String[] from = new String[] {JSON_KEYS.CITY_NAME};
-        int[] to = new int[] {R.id.text1};
+        //String[] from = new String[] {JSON_KEYS.CITY_NAME};
+        //int[] to = new int[] {R.id.text1};
 
 
 
-        SimpleAdapter adapter1 = null;
+        //SimpleAdapter adapter1 = null;
+
+        FilterWithSpaceAdapter adapter1 = null;//<HashMap<String, String>>
 
         if(current_city_state == Constants.STATE_MAIN_CITIES)
         {
-            adapter1 = new SimpleAdapter(Activity_SelectCityTo.this,Main_Cities,R.layout.show_city_single_row,from,to);
+            //adapter1 = new SimpleAdapter(Activity_SelectCityTo.this,Main_Cities,R.layout.show_city_single_row,from,to);
+
+            adapter1 = new FilterWithSpaceAdapter(Activity_SelectCityTo.this,
+                    R.layout.show_city_single_row,R.id.text1, Main_Cities);
         }
         else
         {
-            adapter1 = new SimpleAdapter(Activity_SelectCityTo.this,All_Cities_Map,R.layout.show_city_single_row,from,to);
+            adapter1 = new FilterWithSpaceAdapter(Activity_SelectCityTo.this,
+                    R.layout.show_city_single_row,R.id.text1, All_Cities_Map);
+
+            //adapter1 = new SimpleAdapter(Activity_SelectCityTo.this,All_Cities_Map,R.layout.show_city_single_row,from,to);
         }
 
 
@@ -176,6 +192,14 @@ public class Activity_SelectCityTo extends Activity{
                 activity_dismiss();
             }
         });
+
+        if(current_city_state == Constants.STATE_ALL_CITIES){
+
+            Real_Get_To_City.performValidation();
+            Real_Get_To_City.showDropDown();
+        }
+
+
     }
 
     public void activity_dismiss()

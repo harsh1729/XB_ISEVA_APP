@@ -98,7 +98,7 @@ public class Activity_Passenger_Details extends Activity {
 
 
 
-        My_realm = Realm.getInstance(getApplicationContext());
+        My_realm = Realm.getDefaultInstance();
 
         Intent i = getIntent();
         session_manager = new Session_manager(this);
@@ -560,7 +560,7 @@ public class Activity_Passenger_Details extends Activity {
 
             PropertyInfo journeydate = new PropertyInfo();
             journeydate.setName("JourneyDate");
-            journeydate.setValue(TRAVEL_DATA.SELECTED_DATE);
+            journeydate.setValue(TRAVEL_DATA.JOURNEY_DATE);
             journeydate.setType(String.class);
             request.addProperty(journeydate);
 

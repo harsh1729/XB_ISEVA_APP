@@ -1,22 +1,16 @@
 package com.iseva.app.source.travel;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -64,10 +58,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.realm.Realm;
-import io.realm.RealmResults;
 
 
-public class MainActivity extends Activity implements OnNavigationItemSelectedListener, OnSliderClickListener, OnPageChangeListener {
+public class Activity_Main extends Activity_Parent_Travel implements OnNavigationItemSelectedListener, OnSliderClickListener, OnPageChangeListener,Parent_Interface {
 
     ImageView iv_header;
     TextView tv_header;
@@ -75,7 +68,6 @@ public class MainActivity extends Activity implements OnNavigationItemSelectedLi
     private EditText Get_To_Cities_et;
     private EditText Journey_Date_et;
     private Button search_routes_btn;
-    private ProgressDialog progress;
 
     Session_manager session_manager;
     Button show_booked_ticket;
@@ -92,7 +84,7 @@ public class MainActivity extends Activity implements OnNavigationItemSelectedLi
     public ArrayList<String> list_main_cities = new ArrayList<>(Arrays.asList("New Delhi","Mumbai","Pune","Bengaluru","Jaipur","Kolkata","Hyderabad","Chennai","Ahmedabad","Visakhapatnam","Surat","Kanpur","Lucknow","Nagpur","Mysuru"));
 
 
-    public static int save_per = 10;
+
 
     ArrayList<String> promo_image;
     SliderLayout sliderLayout_main;
@@ -106,7 +98,7 @@ public class MainActivity extends Activity implements OnNavigationItemSelectedLi
         setContentView(R.layout.activity_main);
         session_manager = new Session_manager(this);
 
-        My_realm = Realm.getInstance(this);
+        My_realm = Realm.getDefaultInstance();
 
         if (isNetworkConnected(true)) {
             get_default_travel_data();
@@ -125,6 +117,12 @@ public class MainActivity extends Activity implements OnNavigationItemSelectedLi
             HashMap<String, String> paramsMap = new HashMap<String, String>();
             paramsMap.put("pass_key", "XBlue-98767689723");
 
+            progress = new ProgressDialog(Activity_Main.this);
+            progress.setMessage("Please wait...");
+            progress.setCanceledOnTouchOutside(false);
+            progress.setCancelable(false);
+            progress.show();
+
             Custom_VolleyObjectRequest jsonObjectRQST = new Custom_VolleyObjectRequest(
                     Method.POST,
                     URL_XB.GET_DEFAULT_TRAVEL_DATA,
@@ -142,7 +140,7 @@ public class MainActivity extends Activity implements OnNavigationItemSelectedLi
 
 
 
-                            save_per = Integer.parseInt(data.getString("commition"));
+                            TRAVEL_DATA.ISEVA_SHARE_PCT = Integer.parseInt(data.getString("commition"));
 
 
                             if (isNetworkConnected(true)) {
@@ -150,7 +148,6 @@ public class MainActivity extends Activity implements OnNavigationItemSelectedLi
                                get_cities();
                             }
 
-                            Log.i("Gopal", "save_per = " + save_per);
 
                         } else {
 
@@ -180,7 +177,9 @@ public class MainActivity extends Activity implements OnNavigationItemSelectedLi
         } catch (Exception ex) {
 
             ex.printStackTrace();
-
+            if(progress != null) {
+                progress.dismiss();
+            }
         }
 
 
@@ -191,7 +190,7 @@ public class MainActivity extends Activity implements OnNavigationItemSelectedLi
 
         try {
 
-            HashMap<String, String> paramsMap = new HashMap<String, String>(); // No Patrams required to fetch cities
+            HashMap<String, String> paramsMap = new HashMap<String, String>(); // No Params required to fetch cities
 
 
             Custom_VolleyObjectRequest jsonObjectRQST = new Custom_VolleyObjectRequest(
@@ -208,32 +207,28 @@ public class MainActivity extends Activity implements OnNavigationItemSelectedLi
                     }
 
                     try {
-                        //if (response.getBoolean(JSON_KEYS.SUCCESS)) {
 
-
+                        if (response.getBoolean(JSON_KEYS.SUCCESS)) {
                             map_main_cities = new ArrayList<HashMap<String, String>>();
 
                             ArrayList<HashMap<String, String>> map_Previous_cities = new ArrayList<HashMap<String, String>>();
 
-                            String previousSelected = getPreviousSelectedCities();
+                            ArrayList<String> previousSelectedCities = getPreviousSelectedCities();
 
 
                             JSONArray data = response.getJSONArray(Constants.JSON_KEYS.DATA);
 
-                        My_realm.executeTransaction(new Realm.Transaction() {
-                            @Override
-                            public void execute(Realm realm) {
-                                RealmResults<Realm_City> result = realm.where(Realm_City.class).findAll();
-                                result.clear();
-                            }
-                        });
 
-                        My_realm.beginTransaction();
-                            for(int i=0;i<data.length();i++){
+                            My_realm.beginTransaction();
+                            My_realm.delete(Realm_City.class);
+                            My_realm.commitTransaction();
+
+                            My_realm.beginTransaction();
+                            for (int i = 0; i < data.length(); i++) {
 
 
                                 String city_id = data.getJSONObject(i).getString(JSON_KEYS.CITY_ID);
-                                String city_name = data.getJSONObject(i).getString(JSON_KEYS.CITY_NAME).replace(" ","");
+                                String city_name = data.getJSONObject(i).getString(JSON_KEYS.CITY_NAME);//.replace(" ","");
 
 
                                 Realm_City city = My_realm.createObject(Realm_City.class);
@@ -242,7 +237,7 @@ public class MainActivity extends Activity implements OnNavigationItemSelectedLi
                                 city.setCityName(city_name);
 
 
-                                if( previousSelected.contains(city_name)){
+                                if (previousSelectedCities.contains(city_name)) {
 
                                     HashMap<String, String> map = new HashMap<String, String>();
                                     map.put(JSON_KEYS.CITY_NAME, city_name);
@@ -250,7 +245,7 @@ public class MainActivity extends Activity implements OnNavigationItemSelectedLi
 
                                     map_Previous_cities.add(map);
 
-                                }else if(list_main_cities.contains(city_name)){
+                                } else if (list_main_cities.contains(city_name)) {
 
                                     HashMap<String, String> map = new HashMap<String, String>();
                                     map.put(JSON_KEYS.CITY_NAME, city_name);
@@ -260,24 +255,22 @@ public class MainActivity extends Activity implements OnNavigationItemSelectedLi
                                 }
 
                             }
-                        My_realm.commitTransaction();
+                            My_realm.commitTransaction();
 
 
-                            if(map_Previous_cities.isEmpty() == false){
-                                for (HashMap<String, String> map:
+                            if (map_Previous_cities.isEmpty() == false) {
+                                for (HashMap<String, String> map :
                                         map_Previous_cities) {
 
-                                    map_main_cities.add(0,map);
+                                    map_main_cities.add(0, map);
                                 }
                             }
 
+                        }else{
 
-                        //} else {
+                            callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again));
+                        }
 
-
-                            //callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again));
-
-                        //}
                     } catch (JSONException e) {
 
                         callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again));
@@ -324,6 +317,15 @@ public class MainActivity extends Activity implements OnNavigationItemSelectedLi
     }
 
 
+    public void retryServiceCall() {
+
+        if (isNetworkConnected(true)) {
+
+            get_default_travel_data();
+
+        }
+    }
+
     public void initialize() {
 
         iv_header = (ImageView) findViewById(R.id.header_back_button);
@@ -340,15 +342,10 @@ public class MainActivity extends Activity implements OnNavigationItemSelectedLi
 
         search_routes_btn = (Button) findViewById(R.id.search_routes_btn);
         show_booked_ticket = (Button) findViewById(R.id.show_booked_ticket_btn);
-        progress = new ProgressDialog(MainActivity.this);
-        progress.setMessage("Please wait...");
-        progress.setCanceledOnTouchOutside(false);
-        progress.setCancelable(false);
 
-        progress.show();
         String today_date = get_today_date();
         Journey_Date_et.setText(change_date_form(today_date));
-        TRAVEL_DATA.SELECTED_DATE = today_date;
+        TRAVEL_DATA.JOURNEY_DATE = today_date;
 
 
         CardView slider_layout = (CardView) findViewById(R.id.slider_layout_main);
@@ -364,7 +361,7 @@ public class MainActivity extends Activity implements OnNavigationItemSelectedLi
                     Log.e("vikas promourl", promo_image.get(k));
                 }
 
-                TextSliderView textSliderView = new TextSliderView(MainActivity.this);
+                TextSliderView textSliderView = new TextSliderView(Activity_Main.this);
                 textSliderView
 
                         .image(promo_image.get(k))
@@ -398,19 +395,6 @@ public class MainActivity extends Activity implements OnNavigationItemSelectedLi
     }
 
 
-    public void tryAgaintoCallService() {
-        if (isNetworkConnected(true)) {
-
-            progress = new ProgressDialog(MainActivity.this);
-            progress.setMessage("Please wait...");
-            progress.setCanceledOnTouchOutside(false);
-            progress.setCancelable(false);
-            progress.show();
-            get_default_travel_data();
-
-        }
-    }
-
 
     public void setclicklistener() {
 
@@ -428,13 +412,13 @@ public class MainActivity extends Activity implements OnNavigationItemSelectedLi
             public void onClick(View view) {
                 if (isNetworkConnected(true)) {
                     if (map_main_cities != null ) {
-                        Intent i = new Intent(MainActivity.this, Activity_SelectCityFrom.class);
+                        Intent i = new Intent(Activity_Main.this, Activity_SelectCityFrom.class);
 
                         i.putExtra("main_cities", map_main_cities);
                         startActivity(i);
                         overridePendingTransition(R.anim.anim_in, R.anim.anim_none);
                     } else {
-                        tryAgaintoCallService();
+                        retryServiceCall();
                     }
 
                 }
@@ -450,12 +434,12 @@ public class MainActivity extends Activity implements OnNavigationItemSelectedLi
             public void onClick(View view) {
                 if (isNetworkConnected(true)) {
                     if (map_main_cities != null ) {
-                        Intent i = new Intent(MainActivity.this, Activity_SelectCityTo.class);
+                        Intent i = new Intent(Activity_Main.this, Activity_SelectCityTo.class);
                         i.putExtra("main_cities", map_main_cities);
                         startActivity(i);
                         overridePendingTransition(R.anim.anim_in, R.anim.anim_none);
                     } else {
-                        tryAgaintoCallService();
+                        retryServiceCall();
                     }
 
                 }
@@ -469,28 +453,28 @@ public class MainActivity extends Activity implements OnNavigationItemSelectedLi
             public void onClick(View view) {
                 if (Get_From_Cities_et.getText().length() == 0) {
 
-                    Global_Travel.showAlertDialog(MainActivity.this, getResources().getString(R.string.validating_error_title), "Please select origin city !", "Ok");
+                    Global_Travel.showAlertDialog(Activity_Main.this, getResources().getString(R.string.validating_error_title), "Please select origin city !", "Ok");
 
                 } else if (Get_To_Cities_et.getText().length() == 0) {
-                    Global_Travel.showAlertDialog(MainActivity.this, getResources().getString(R.string.validating_error_title), "Please select destination city !", "Ok");
+                    Global_Travel.showAlertDialog(Activity_Main.this, getResources().getString(R.string.validating_error_title), "Please select destination city !", "Ok");
 
                 } else if (Journey_Date_et.getText().length() == 0) {
-                    Global_Travel.showAlertDialog(MainActivity.this, getResources().getString(R.string.validating_error_title), "Please select journey date !", "Ok");
+                    Global_Travel.showAlertDialog(Activity_Main.this, getResources().getString(R.string.validating_error_title), "Please select journey date !", "Ok");
 
                 } else if (TRAVEL_DATA.FROM_CITY_ID.equals(TRAVEL_DATA.TO_CITY_ID)) {
-                    Global_Travel.showAlertDialog(MainActivity.this, getResources().getString(R.string.validating_error_title), "Please choose a different destination city.", "Ok");
+                    Global_Travel.showAlertDialog(Activity_Main.this, getResources().getString(R.string.validating_error_title), "Please choose a different destination city.", "Ok");
                 } else {
-                    if (isNetworkConnected(false)) {
+                    //if (isNetworkConnected(false)) {
 
 
                         setSelectedCities(Get_To_Cities_et.getText().toString(), Get_From_Cities_et.getText().toString());
 
-                        Intent i = new Intent(MainActivity.this, Activity_loading.class);
+                        Intent i = new Intent(Activity_Main.this, Activity_loading.class);
                         i.putExtra("Loading_text", "SEARCHING BUSES");
                         startActivity(i);
-                    } else {
-                        Global_Travel.showAlertDialog(MainActivity.this, getResources().getString(R.string.internet_connection_error_title), getResources().getString(R.string.internet_connection_error_message), "Ok");
-                    }
+                    //} else {
+                        //Global_Travel.showAlertDialog(Activity_Main.this, getResources().getString(R.string.internet_connection_error_title), getResources().getString(R.string.internet_connection_error_message), "Ok");
+                    //}
 
                 }
 
@@ -512,10 +496,10 @@ public class MainActivity extends Activity implements OnNavigationItemSelectedLi
             @Override
             public void onClick(View view) {
 
-                session_manager = new Session_manager(MainActivity.this);
+                session_manager = new Session_manager(Activity_Main.this);
                 if (isNetworkConnected(false)) {
                     if (session_manager.isLoggedIn()) {
-                        Intent i = new Intent(MainActivity.this, Activity_show_booked_ticket.class);
+                        Intent i = new Intent(Activity_Main.this, Activity_show_booked_ticket.class);
                         startActivity(i);
                         overridePendingTransition(R.anim.anim_in, R.anim.anim_none);
                     } else {
@@ -523,7 +507,7 @@ public class MainActivity extends Activity implements OnNavigationItemSelectedLi
                     }
 
                 } else {
-                    Global_Travel.showAlertDialog(MainActivity.this, getResources().getString(R.string.internet_connection_error_title), getResources().getString(R.string.internet_connection_error_message), "Ok");
+                    Global_Travel.showAlertDialog(Activity_Main.this, getResources().getString(R.string.internet_connection_error_title), getResources().getString(R.string.internet_connection_error_message), "Ok");
                 }
 
             }
@@ -542,7 +526,7 @@ public class MainActivity extends Activity implements OnNavigationItemSelectedLi
             @Override
             public void onClick(View view) {
                 activity_main_login_alert_layout.setVisibility(View.GONE);
-                Intent i = new Intent(MainActivity.this, Activity_login.class);
+                Intent i = new Intent(Activity_Main.this, Activity_login.class);
                 startActivity(i);
                 overridePendingTransition(R.anim.anim_in, R.anim.anim_none);
             }
@@ -553,7 +537,7 @@ public class MainActivity extends Activity implements OnNavigationItemSelectedLi
             @Override
             public void onClick(View view) {
                 activity_main_login_alert_layout.setVisibility(View.GONE);
-                Intent i = new Intent(MainActivity.this, Activity_register.class);
+                Intent i = new Intent(Activity_Main.this, Activity_register.class);
                 startActivity(i);
                 overridePendingTransition(R.anim.anim_in, R.anim.anim_none);
             }
@@ -561,10 +545,12 @@ public class MainActivity extends Activity implements OnNavigationItemSelectedLi
     }
 
 
-    private String getPreviousSelectedCities(){
+    private ArrayList<String> getPreviousSelectedCities(){
 
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-        String selectedCitiesList = sharedPref.getString("selectedCitiesList", "");
+        String selectedCities = sharedPref.getString("selectedCitiesList", "");
+
+        ArrayList<String> selectedCitiesList = new ArrayList<String>(Arrays.asList(selectedCities.split("-")));
 
         return  selectedCitiesList;
     }
@@ -598,38 +584,7 @@ public class MainActivity extends Activity implements OnNavigationItemSelectedLi
 
     }
 
-    public void callAlertBox(String title,String error ) {
-        LayoutInflater inflater = (LayoutInflater) MainActivity.this.getSystemService
-                (Context.LAYOUT_INFLATER_SERVICE);
 
-        View v = inflater.inflate(R.layout.textview, null);
-
-
-        TextView title_tv = (TextView) v.findViewById(R.id.alert_title);
-        title_tv.setText(title);//getResources().getString(R.string.internet_connection_error_title));
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setCustomTitle(title_tv)
-                .setMessage(error)
-                .setCancelable(false)
-                .setNegativeButton("Retry", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                        tryAgaintoCallService();
-
-                    }
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
-
-        if(progress != null) {
-            progress.dismiss();
-        }
-
-        Button b = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
-        b.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.app_theme_color));
-
-    }
 
     public String get_today_date() {
         final Calendar calendar = Calendar.getInstance();
@@ -677,26 +632,7 @@ public class MainActivity extends Activity implements OnNavigationItemSelectedLi
         return final_date;
     }
 
-    private boolean isNetworkConnected(boolean reconnect) {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        boolean status = cm.getActiveNetworkInfo() != null;
-
-
-        if(status){
-
-           return true;
-        }else{
-
-            if(reconnect){
-
-                callAlertBox(getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message_try_again));
-
-            }
-            return false;
-        }
-
-    }
 
     /**
      * Called when an item in the navigation menu is selected.
@@ -712,7 +648,7 @@ public class MainActivity extends Activity implements OnNavigationItemSelectedLi
     @Override
     public void onSliderClick(BaseSliderView slider) {
         int position = Integer.parseInt(slider.getBundle().get("extra").toString());
-        Intent i = new Intent(MainActivity.this, Activity_AdverImageView.class);
+        Intent i = new Intent(Activity_Main.this, Activity_AdverImageView.class);
         i.putExtra("id", position);
         i.putStringArrayListExtra("imageList", promo_image);
         startActivity(i);

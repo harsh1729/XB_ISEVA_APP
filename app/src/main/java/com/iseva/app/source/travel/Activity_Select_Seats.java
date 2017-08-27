@@ -92,7 +92,7 @@ public class Activity_Select_Seats extends AppCompatActivity {
         setContentView(R.layout.activity__select__seats);
         selected_seat_activity = this;
 
-        My_realm = Realm.getInstance(getApplicationContext());
+        My_realm = Realm.getDefaultInstance();
         Intent i = getIntent();
         schedule_id = Integer.parseInt(i.getStringExtra("schedule_id"));
 
@@ -534,7 +534,7 @@ public class Activity_Select_Seats extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
 
-            Realm thread_realm = Realm.getInstance(getApplicationContext());
+            Realm thread_realm = Realm.getDefaultInstance();
             SoapObject request = new SoapObject("","");
 
             //TODO HArsh implement new API
@@ -667,10 +667,10 @@ public class Activity_Select_Seats extends AppCompatActivity {
 
 
                     thread_realm.beginTransaction();
-                    thread_realm.clear(Selected_Seats.class);
-                    thread_realm.clear(Schedule_Details.class);
-                    thread_realm.clear(Pickup_Place_Detail.class);
-                    thread_realm.clear(Seat_details.class);
+                    thread_realm.delete(Selected_Seats.class);
+                    thread_realm.delete(Schedule_Details.class);
+                    thread_realm.delete(Pickup_Place_Detail.class);
+                    thread_realm.delete(Seat_details.class);
                     thread_realm.commitTransaction();
 
                     try
@@ -711,33 +711,29 @@ public class Activity_Select_Seats extends AppCompatActivity {
                                 float CommAmount = Float.parseFloat(((SoapObject)soapresult_schedule_detail.getProperty("Route")).getProperty("CommAmount").toString());
 
 
-
-
                                 float offer_per;
                                 float after_offer_fare;
 
 
-
-                                if(MainActivity.save_per <= CommPCT)
+                                if(TRAVEL_DATA.ISEVA_SHARE_PCT <= CommPCT)
                                 {
-                                    offer_per = CommPCT - MainActivity.save_per;
+                                    offer_per = CommPCT - TRAVEL_DATA.ISEVA_SHARE_PCT;
                                 }
                                 else
                                 {
                                     offer_per =0;
                                 }
 
-                                int temp_fare_offer = (int)(Fare *(100-offer_per))/100;
-                                if(MainActivity.save_per <= CommPCT && MainActivity.save_per != 0) {
-                                    temp_fare_offer = temp_fare_offer + 1;
-                                }
-                                after_offer_fare = (float)temp_fare_offer;
+
+                                after_offer_fare = (Fare * (100 - offer_per)) / 100;
+
+                                after_offer_fare = (float) Math.round(after_offer_fare);
 
                                 if(Global_Travel.build_type ==0)
                                 {
-                                    Log.e("vikas after_fare=",""+after_offer_fare);
-                                    Log.e("vikas percentage=",""+offer_per);
-                                    Log.e("vikas total per=",""+MainActivity.save_per);
+                                    Log.e("HARSH","after_fare = "+after_offer_fare);
+                                    Log.e("HARSH"," percentage = "+offer_per);
+                                    Log.e("HARSH ","ISEVA_SHARE_PCT per =" + TRAVEL_DATA.ISEVA_SHARE_PCT);
                                 }
 
 
@@ -810,11 +806,11 @@ public class Activity_Select_Seats extends AppCompatActivity {
                                         Log.e("vikas seat o_commi",""+offer_per);
                                     }
 
-                                    int temp_seat_fare_offer = (int)(Fare_local *(100-offer_per))/100;
-                                    if(MainActivity.save_per <= CommPCT && MainActivity.save_per != 0) {
-                                        temp_seat_fare_offer = temp_seat_fare_offer + 1;
-                                    }
-                                    after_offer_seat_fare = (float)temp_seat_fare_offer;
+
+
+                                    after_offer_seat_fare = (Fare_local *(100-offer_per))/100;
+
+                                    after_offer_seat_fare = (float) Math.round(after_offer_seat_fare);
 
 
                                     thread_realm.beginTransaction();

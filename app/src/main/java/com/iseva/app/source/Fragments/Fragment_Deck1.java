@@ -65,7 +65,8 @@ public class Fragment_Deck1 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
        View view = inflater.inflate(R.layout.fragment__deck1, container, false);
-        My_realm = Realm.getInstance(getActivity());
+        My_realm = Realm.getDefaultInstance();
+
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
 
