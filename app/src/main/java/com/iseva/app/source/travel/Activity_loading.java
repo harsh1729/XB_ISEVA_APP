@@ -113,7 +113,7 @@ public class Activity_loading extends Activity_Parent_Travel implements Parent_I
 
                 @Override
                 public void onResponse(JSONObject response) {
-                    //Log.i("HARSH", "json Response recieved !! -> " + response)
+                    Log.i("HARSH", "json Response recieved !! -> " + response);
                     try {
 
                         if (response.getBoolean(JSON_KEYS.SUCCESS)) {
@@ -138,8 +138,9 @@ public class Activity_loading extends Activity_Parent_Travel implements Parent_I
 
                                 JSONObject objJsonBus = arrJsonBuses.getJSONObject(i);
 
-                                bus_rout.setDepTime(gettime(objJsonBus.optString("DeptTime")));
-                                bus_rout.setArrTime(gettime(objJsonBus.optString("ArrTime")));
+                                bus_rout.setDepTime(getTime12(objJsonBus.optString("DeptTime")));
+                                bus_rout.setArrTime(getTime12(objJsonBus.optString("ArrTime")));
+                                bus_rout.setDepTimeVal(getTime24(objJsonBus.optString("DeptTime")));
 
                                 String durationStr =  objJsonBus.optString("Duration"); //7:30
                                 bus_rout.setDuration( durationStr + " Hours"); //
@@ -363,14 +364,55 @@ public class Activity_loading extends Activity_Parent_Travel implements Parent_I
     }
 
 
+    public double getTime24(String dateTimeStr)
+    {
+        double totalTime = 0.0;
 
-    public String gettime(String timedate)
+        if (dateTimeStr.length() < 16){
+
+            return  totalTime;
+        }
+
+        dateTimeStr = dateTimeStr.substring(11,16);
+
+        double hour = 0;
+        double min = 0;
+        try {
+
+            hour = Double.parseDouble(dateTimeStr.substring(0,2));
+            min = Double.parseDouble(dateTimeStr.substring(3,dateTimeStr.length()));
+
+        }catch (NumberFormatException ex){
+
+            //Ex
+        }
+
+        totalTime = hour + (min * .01);
+        return totalTime;
+
+    }
+
+    public String getTime12(String dateTimeStr)
     {
         String finalstring = "";
-        timedate = timedate.substring(11,16);
+
+        if (dateTimeStr.length() < 16){
+
+            return  finalstring;
+        }
+
+        dateTimeStr = dateTimeStr.substring(11,16);
         String post = "AM";
-        int hour = Integer.parseInt(timedate.substring(0,2));
-        timedate = timedate.substring(2,timedate.length());
+        int hour = 0;
+         try {
+
+             hour = Integer.parseInt(dateTimeStr.substring(0,2));
+         }catch (NumberFormatException ex){
+
+             //Ex
+         }
+
+        String min = dateTimeStr.substring(2,dateTimeStr.length());
         if(hour > 12)
         {
             hour = hour % 12;
@@ -387,13 +429,13 @@ public class Activity_loading extends Activity_Parent_Travel implements Parent_I
         }
         if(hour >9)
         {
-            finalstring = hour + timedate+" "+post;
+            finalstring = hour + min+" "+post;
         }
         else
         {
-            finalstring = "0"+hour + timedate+" "+post;
+            finalstring = "0"+hour + min+" "+post;
         }
-        //finalstring = hour + timedate+" "+post;
+
         return finalstring;
 
     }

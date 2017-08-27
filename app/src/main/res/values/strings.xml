@@ -97,6 +97,8 @@
     <string name="label_price">Price</string>
     <string name="tag_id">tag_id</string>
     <string name="tag_name">tag_name</string>
+    <string name="no_buses_found">Sorry, No Buses Found :(</string>
+
 
     <!--filter screen string end-->
 

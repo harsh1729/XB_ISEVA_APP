@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.iseva.app.source.Adapter.Listview_adapter;
+import com.iseva.app.source.Globals;
 import com.iseva.app.source.R;
 import com.iseva.app.source.Realm_objets.Bus_routes_detail;
 import com.iseva.app.source.travel.Activity_Bus_Routes;
@@ -53,7 +54,7 @@ public class Fragment_Routes_Price extends Fragment_Parent {
 
         all_routes_list = (ListView)view.findViewById(R.id.list_all_routes_price);
         tv = (TextView)view.findViewById(R.id.response);
-        tv.setText("No Buses For These Cities");
+        tv.setText( Globals.getStringFromResources(getActivity(),R.string.no_buses_found));
        /* if(Activity_Bus_Routes.fg_price_visible) {
             Loading l = new Loading();
             l.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -110,6 +111,7 @@ public class Fragment_Routes_Price extends Fragment_Parent {
 
         makequery();
         routes_hashmap = new ArrayList<HashMap<String, String>>();
+        all_routes_count = 0;
         if(!rout.isEmpty())
         {
 
@@ -165,13 +167,13 @@ public class Fragment_Routes_Price extends Fragment_Parent {
         if(((Activity_Bus_Routes) getActivity()).price_flag == 0)
         {
             My_realm.beginTransaction();
-            rout = realmQuery.findAllSorted("Fare", Sort.ASCENDING);
+            rout = realmQuery.findAllSorted("Fare_after_offer", Sort.ASCENDING);
             My_realm.commitTransaction();
         }
         else
         {
             My_realm.beginTransaction();
-            rout = realmQuery.findAllSorted("Fare",Sort.DESCENDING);
+            rout = realmQuery.findAllSorted("Fare_after_offer",Sort.DESCENDING);
             My_realm.commitTransaction();
 
         }

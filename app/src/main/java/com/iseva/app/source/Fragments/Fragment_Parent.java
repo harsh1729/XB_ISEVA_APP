@@ -42,8 +42,8 @@ public class Fragment_Parent extends Fragment {
 
         RealmQuery<Bus_routes_detail> realmQuery =  My_realm.where(Bus_routes_detail.class);
 
-        boolean isBusTypeSetOnce = false;
-        boolean isBusBrandSetOnce = false;
+       //boolean isBusTypeSetOnce = false;
+        //boolean isBusBrandSetOnce = false; // used for OR, not needed now as we need to use AND
 
         for(int i =0;i<all_row.size();i++)
         {
@@ -53,91 +53,49 @@ public class Fragment_Parent extends Fragment {
 
                     if(all_row.get(i).getFilter_name().equals("A/C"))
                     {
-                        if(isBusTypeSetOnce){
 
-                            realmQuery.or().equalTo("HasAC",true);
-                        }else{
-
-                            realmQuery.equalTo("HasAC",true);
-                        }
+                        realmQuery.equalTo("HasAC",true);
 
                     }
                     else if(all_row.get(i).getFilter_name().equals("Sleeper"))
                     {
-                        if(isBusTypeSetOnce){
-
-                            realmQuery.or().equalTo("HasSleeper",true);
-
-                        }else{
-
-                            realmQuery.equalTo("HasSleeper",true);
-                        }
-
-
+                        realmQuery.equalTo("HasSleeper",true);
                     }
                     else
                     {
-                        if(isBusTypeSetOnce){
-
-                            realmQuery.or().contains("Axel","Multi");
-
-                        }else {
-
                             realmQuery.contains("Axel","Multi");
-                        }
-
 
                     }
 
-
-                isBusTypeSetOnce = true;
 
             }
             else if(all_row.get(i).getFilter_tag().equals("Busbrand"))
             {
                     if(all_row.get(i).getFilter_name().equals("Volvo"))
                     {
-                        if (isBusBrandSetOnce){
-
-                            realmQuery.or().contains("Make", BUS_TYPE.MAKE_VOLVO);
-                            realmQuery.or().contains("Make", BUS_TYPE.MAKE_VOLVO_ISHIFT);
-
-                        }else{
 
                             realmQuery.contains("Make", BUS_TYPE.MAKE_VOLVO);
                             realmQuery.or().contains("Make", BUS_TYPE.MAKE_VOLVO_ISHIFT);
-                        }
 
                     }
                     else if(all_row.get(i).getFilter_name().equals("Mercesdes"))
                     {
-                        if (isBusBrandSetOnce){
-
-                            realmQuery.or().contains("Make", BUS_TYPE.MAKE_MERCEDES);
-                        }else{
 
                             realmQuery.contains("Make", BUS_TYPE.MAKE_MERCEDES);
-                        }
 
                     }
                     else {
-                        if (isBusBrandSetOnce){
-
-                            realmQuery.or().contains("Make", BUS_TYPE.MAKE_SCANIA);
-                        }else {
 
                             realmQuery.contains("Make", BUS_TYPE.MAKE_SCANIA);
-                        }
 
 
                     }
 
 
-                isBusBrandSetOnce = true;
             }
             else
             {
-                realmQuery.between("Fare",(double) Activity_Bus_Routes.filter_min_price,(double) Activity_Bus_Routes.filter_max_price);
+                realmQuery.between("Fare_after_offer",(double) Activity_Bus_Routes.filter_min_price,(double) Activity_Bus_Routes.filter_max_price);
             }
 
 

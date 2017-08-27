@@ -40,6 +40,15 @@ public class Bus_routes_detail extends RealmObject{
     private double CommAmount = 0.0;
     private int AvailableSeats ;
     private double DurationVal = 0.0;
+    private double DepTimeVal = 0.0;
+
+    public double getDepTimeVal() {
+        return DepTimeVal;
+    }
+
+    public void setDepTimeVal(double depTimeVal) {
+        DepTimeVal = depTimeVal;
+    }
 
     public double getDurationVal() {
         return DurationVal;

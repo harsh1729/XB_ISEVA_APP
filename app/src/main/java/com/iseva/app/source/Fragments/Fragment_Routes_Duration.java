@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.iseva.app.source.Adapter.Listview_adapter;
+import com.iseva.app.source.Globals;
 import com.iseva.app.source.R;
 import com.iseva.app.source.Realm_objets.Bus_routes_detail;
 import com.iseva.app.source.travel.Activity_Bus_Routes;
@@ -54,7 +55,7 @@ public class Fragment_Routes_Duration extends Fragment_Parent {
 
         all_routes_list = (ListView)view.findViewById(R.id.list_all_routes_duration);
         tv = (TextView)view.findViewById(R.id.response);
-        tv.setText("No Buses For These Cities");
+        tv.setText( Globals.getStringFromResources(getActivity(),R.string.no_buses_found));
 /*
 
         if(Activity_Bus_Routes.fg_duration_visible) {
@@ -115,6 +116,7 @@ public class Fragment_Routes_Duration extends Fragment_Parent {
 
         makequery();
         routes_hashmap = new ArrayList<HashMap<String, String>>();
+        all_routes_count = 0;
         if(!rout.isEmpty())
         {
 
