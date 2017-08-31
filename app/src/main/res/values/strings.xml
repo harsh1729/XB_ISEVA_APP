@@ -81,7 +81,7 @@
 
     <!-- bus routes screen -->
 
-    <string name="schedule_id">schedule_id</string>
+    <string name="bus_id">bus_id</string>
 
 
     <!--filter screen strings start-->

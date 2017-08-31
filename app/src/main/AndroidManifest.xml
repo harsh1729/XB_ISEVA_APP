@@ -355,6 +355,8 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".travel.Activity_Parent_Travel">
         </activity>
+        <activity android:name=".travel.Activity_Parent_AppCompat">
+        </activity>
     </application>
 
 </manifest>

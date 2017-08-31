@@ -337,9 +337,6 @@ public class Activity_loading extends Activity_Parent_Travel implements Parent_I
             })
             {
 
-
-
-
                 @Override
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     HashMap<String, String> headers = new HashMap<String, String>();

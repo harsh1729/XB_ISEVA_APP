@@ -65,7 +65,7 @@ public class Activity_Passenger_Details extends Activity {
 
     SoapObject soapresult_detail;
     String message;
-    int Rout_schedule_id;
+    int bus_id;
 
     String cancellation_data_string;
 
@@ -102,7 +102,7 @@ public class Activity_Passenger_Details extends Activity {
 
         Intent i = getIntent();
         session_manager = new Session_manager(this);
-        Rout_schedule_id = Integer.parseInt(i.getStringExtra("schedule_id"));
+        bus_id = Integer.parseInt(i.getStringExtra("bus_id"));
         cancellation_data_string = i.getStringExtra("cancellation_data");
 
         My_realm.beginTransaction();
@@ -553,7 +553,7 @@ public class Activity_Passenger_Details extends Activity {
 
             PropertyInfo scheduleid = new PropertyInfo();
             scheduleid.setName("RouteScheduleId");
-            scheduleid.setValue(Rout_schedule_id);
+            scheduleid.setValue(bus_id);
             scheduleid.setType(Integer.class);
             request.addProperty(scheduleid);
 

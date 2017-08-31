@@ -109,7 +109,7 @@ public class Listview_adapter extends BaseAdapter{
         holder.time_view_tv.setText(routes_hashmap.get(i).get("time"));
         holder.available_seat_tv.setText(routes_hashmap.get(i).get("Availabel_Seats")+" "+"Seats");
         holder.duration_tv.setText(routes_hashmap.get(i).get("duration"));
-        rowView.setTag(R.string.schedule_id,routes_hashmap.get(i).get("schedule_id"));
+        rowView.setTag(R.string.bus_id,routes_hashmap.get(i).get("bus_id"));
 
 
         rowView.setOnClickListener(new View.OnClickListener() {
@@ -118,7 +118,7 @@ public class Listview_adapter extends BaseAdapter{
                 Intent i = new Intent(context,Activity_Select_Seats.class);
 
 
-                i.putExtra("schedule_id",view.getTag(R.string.schedule_id).toString());
+                i.putExtra("bus_id",view.getTag(R.string.bus_id).toString());
                 Bundle bundle = ActivityOptions.makeCustomAnimation(context, R.anim.anim_in, R.anim.anim_none).toBundle();
                 context.startActivity(i,bundle);
             }

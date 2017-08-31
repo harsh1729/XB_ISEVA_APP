@@ -40,8 +40,6 @@ public class Fragment_Routes_Duration extends Fragment_Parent {
 
 
     TextView tv;
-  /*  String[] from = new String[] {"company_name","fare","bus_label","time","Availabel_Seats","duration"};
-    int[] to = new int[] {R.id.company_name,R.id.fare,R.id.bus_label,R.id.time_view,R.id.available_seat,R.id.duration};*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,13 +54,7 @@ public class Fragment_Routes_Duration extends Fragment_Parent {
         all_routes_list = (ListView)view.findViewById(R.id.list_all_routes_duration);
         tv = (TextView)view.findViewById(R.id.response);
         tv.setText( Globals.getStringFromResources(getActivity(),R.string.no_buses_found));
-/*
 
-        if(Activity_Bus_Routes.fg_duration_visible) {
-            Loading l = new Loading();
-            l.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        }
-*/
 
 
         return view;
@@ -123,7 +115,7 @@ public class Fragment_Routes_Duration extends Fragment_Parent {
             for (int i=0;i <rout.size();i++)
             {
                 HashMap<String, String> single_map = new HashMap<String, String>();
-                single_map.put("schedule_id",Integer.toString(rout.get(i).getRouteBusId()));//getRouteScheduleId
+                single_map.put("bus_id",Integer.toString(rout.get(i).getRouteBusId()));//getRouteScheduleId
                 single_map.put("company_id",Integer.toString(rout.get(i).getCompanyId()));
                 single_map.put("company_name",rout.get(i).getCompanyName());
                 single_map.put("fare",getResources().getString(R.string.Rs)+" "+Double.toString(rout.get(i).getFare()));
@@ -172,20 +164,6 @@ public class Fragment_Routes_Duration extends Fragment_Parent {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        /*all_routes_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-
-                HashMap<String, String> hm = (HashMap<String, String>) parent.getAdapter().getItem(position);
-
-                String scheduleid = hm.get("schedule_id");
-                Intent i = new Intent(getActivity(),Activity_Select_Seats.class);
-                i.putExtra("schedule_id",scheduleid);
-                Bundle bundle = ActivityOptions.makeCustomAnimation(getActivity(), R.anim.anim_in, R.anim.anim_none).toBundle();
-                startActivity(i,bundle);
-                // overridePendingTransition(R.animator.anim_in, R.animator.anim_none);
-            }
-        });*/
     }
 
 
@@ -205,12 +183,6 @@ public class Fragment_Routes_Duration extends Fragment_Parent {
 
             Loading l = new Loading();
             l.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
-
-
-
-
-
 
     }
 }

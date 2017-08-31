@@ -53,12 +53,6 @@ public class Fragment_Routes_Time extends Fragment_Parent {
         tv = (TextView)view.findViewById(R.id.response);
         tv.setText( Globals.getStringFromResources(getActivity(),R.string.no_buses_found));
 
-     /*   if(Activity_Bus_Routes.fg_time_visible)
-        {
-            Loading l = new Loading();
-            l.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        }
-*/
 
         return view;
     }
@@ -117,7 +111,7 @@ public class Fragment_Routes_Time extends Fragment_Parent {
             for (int i=0;i <rout.size();i++)
             {
                 HashMap<String, String> single_map = new HashMap<String, String>();
-                single_map.put("schedule_id",Integer.toString(rout.get(i).getRouteBusId()));
+                single_map.put("bus_id",Integer.toString(rout.get(i).getRouteBusId()));
                 single_map.put("company_id",Integer.toString(rout.get(i).getCompanyId()));
                 single_map.put("company_name",rout.get(i).getCompanyName());
                 single_map.put("fare", getResources().getString(R.string.Rs)+" "+Double.toString(rout.get(i).getFare()));
@@ -134,28 +128,13 @@ public class Fragment_Routes_Time extends Fragment_Parent {
             all_routes_count = rout.size();
         }
 
-
     }
 
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-/*
-        all_routes_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
 
-                HashMap<String, String> hm = (HashMap<String, String>) parent.getAdapter().getItem(position);
-
-                String scheduleid = hm.get("schedule_id");
-                Intent i = new Intent(getActivity(),Activity_Select_Seats.class);
-                i.putExtra("schedule_id",scheduleid);
-                Bundle bundle = ActivityOptions.makeCustomAnimation(getActivity(), R.anim.anim_in, R.anim.anim_none).toBundle();
-                startActivity(i,bundle);
-
-            }
-        });*/
     }
 
 
@@ -191,40 +170,6 @@ public void makequery() {
 
         Loading l = new Loading();
         l.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-/*
-        makequery();
-
-        List<HashMap<String, String>> routes_hashmap = new ArrayList<HashMap<String, String>>();
-        if(!rout.isEmpty())
-        {
-            listview_layout.setVisibility(View.VISIBLE);
-            for (int i=0;i <rout.size();i++)
-            {
-                HashMap<String, String> single_map = new HashMap<String, String>();
-                single_map.put("schedule_id",Integer.toString(rout.get(i).getRouteScheduleId()));
-                single_map.put("company_id",Integer.toString(rout.get(i).getCompanyId()));
-                single_map.put("company_name",rout.get(i).getCompanyName());
-                single_map.put("fare", Float.toString(rout.get(i).getFare()));
-                single_map.put("bus_label",rout.get(i).getBusLabel());
-                single_map.put("time",rout.get(i).getDeparturetime()+"-"+rout.get(i).getArrivaltime());
-                single_map.put("Availabel_Seats",rout.get(i).getAvailableSeats()+" "+"Seats");
-                single_map.put("duration",rout.get(i).getDuration());
-
-                routes_hashmap.add(single_map);
-
-            }
-
-            SimpleAdapter adapter = new SimpleAdapter(getActivity(),routes_hashmap,R.layout.routes_single_row,from,to);
-            all_routes_list.setAdapter(adapter);
-        }
-        else
-        {
-            message_layout.setVisibility(View.VISIBLE);
-        }*/
-
-
-
-
 
     }
 }

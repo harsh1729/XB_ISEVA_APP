@@ -76,7 +76,7 @@ public class Fragment_Routes_Populer extends Fragment_Parent {
 
             if(all_routes_count > 0)
             {
-               // SimpleAdapter adapter = new SimpleAdapter(getActivity(),routes_hashmap,R.layout.routes_single_row,from,to);
+
                 Listview_adapter adapter = new Listview_adapter(getActivity(),routes_hashmap);
                 all_routes_list.setAdapter(adapter);
                 listview_layout.setVisibility(View.VISIBLE);
@@ -121,7 +121,7 @@ public class Fragment_Routes_Populer extends Fragment_Parent {
             for (int i=0;i <rout.size();i++)
             {
                 HashMap<String, String> single_map = new HashMap<String, String>();
-                single_map.put("schedule_id",Integer.toString(rout.get(i).getRouteBusId()));
+                single_map.put("bus_id",Integer.toString(rout.get(i).getRouteBusId()));
                 single_map.put("company_id",Integer.toString(rout.get(i).getCompanyId()));
                 single_map.put("company_name",rout.get(i).getCompanyName());
                 single_map.put("fare",getResources().getString(R.string.Rs)+" "+ Double.toString(rout.get(i).getFare()));
@@ -147,25 +147,6 @@ public class Fragment_Routes_Populer extends Fragment_Parent {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-
-       /* all_routes_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-
-                HashMap<String, String> hm = (HashMap<String, String>) parent.getAdapter().getItem(position);
-
-
-                String scheduleid = hm.get("schedule_id");
-                Intent i = new Intent(getActivity(),Activity_Select_Seats.class);
-                i.putExtra("schedule_id",scheduleid);
-                Bundle bundle = ActivityOptions.makeCustomAnimation(getActivity(), R.anim.anim_in, R.anim.anim_none).toBundle();
-                startActivity(i,bundle);
-
-
-
-            }
-        });*/
     }
 
 
@@ -195,10 +176,6 @@ public class Fragment_Routes_Populer extends Fragment_Parent {
 
         Loading l = new Loading();
         l.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
-
-
-
 
     }
 }

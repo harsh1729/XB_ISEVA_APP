@@ -61,11 +61,13 @@ public class Constants {
 
         // NEW API
         public static String BASE_URL = "http://api.iamgds.com/ota/";
-        public static String BASE_TRANSACTION_URL = "http://tranapi.iamgds.com/ota";
+        public static String BASE_TRANSACTION_URL = "http://tranapi.iamgds.com/ota/";
 
         public static final String GET_CITY_LIST = BASE_URL + "CityList";
 
         public static final String SEARCH_BUSES = BASE_URL + "Search";
+
+        public static final String GET_CHART = BASE_URL + "Chart";
 
 
 
