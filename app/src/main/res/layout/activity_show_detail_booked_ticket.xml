@@ -363,6 +363,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/padding_margin_10"
                         android:layout_marginTop="@dimen/padding_margin_10"
+                        android:visibility="gone"
                         android:orientation="vertical">
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -388,6 +389,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
+                        android:visibility="gone"
                         android:background="#EEE">
                     </LinearLayout>
 
@@ -532,17 +534,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/padding_margin_10"
+
             android:background="@color/app_white"
             android:orientation="vertical">
             <LinearLayout
                 android:layout_width="match_parent"
+                android:gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/margin_10dp"
                 android:layout_height="wrap_content">
                 <com.iseva.app.source.customcomponent.TextViewBold
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
                     android:textStyle="bold"
-                    android:text="Are you sure to cancel ticket ? Before you cancelled ticket read term and conditions which given below."/>
+                    android:text="Are you sure to cancel ticket?"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -550,6 +555,7 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_weight="6"
+
                     android:layout_height="wrap_content">
                     <com.iseva.app.source.customcomponent.TextViewBold
 

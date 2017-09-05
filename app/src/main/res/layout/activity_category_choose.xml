@@ -51,6 +51,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1.0"
                             android:text=" City"
+                            android:textColor="@color/black"
                             android:typeface="serif"
                             android:textSize="@dimen/txt_app_labels_normal" />
 
@@ -79,6 +80,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1.0"
                             android:text="Firmname"
+                            android:textColor="@color/black"
                             android:typeface="serif"
                             android:textSize="@dimen/txt_app_labels_normal" />
 
@@ -111,6 +113,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1.0"
                             android:text="Firmcontact"
+                            android:textColor="@color/black"
                             android:typeface="serif"
                             android:textSize="@dimen/txt_app_labels_normal" />
 
@@ -144,6 +147,7 @@
                             android:layout_weight="1.0"
                             android:textSize="@dimen/txt_app_labels_normal"
                             android:typeface="serif"
+                            android:textColor="@color/black"
                             android:layout_height="wrap_content"
                             android:text="Email" />
 
@@ -175,6 +179,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1.0"
                             android:text="Address"
+                            android:textColor="@color/black"
                             android:typeface="serif"
                             android:textSize="@dimen/txt_app_labels_normal" />
 
@@ -207,6 +212,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1.0"
                             android:text="Profile Image"
+                            android:textColor="@color/black"
                             android:typeface="serif"
                             android:textSize="@dimen/txt_app_labels_normal" />
 
@@ -234,6 +240,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1.0"
                             android:text="Category"
+                            android:textColor="@color/black"
                             android:typeface="serif"
                             android:textSize="@dimen/txt_app_labels_normal" />
 
@@ -263,6 +270,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1.0"
                             android:text="Sub. Category "
+                            android:textColor="@color/black"
                             android:typeface="serif"
                             android:textSize="@dimen/txt_app_labels_normal" />
 
@@ -369,6 +377,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1.0"
                             android:text="My Service"
+                            android:textColor="@color/black"
                             android:typeface="serif"
                             android:textSize="@dimen/txt_app_labels_normal" />
 
@@ -401,6 +410,7 @@
                             android:layout_weight="1.0"
                             android:gravity="center_vertical"
                             android:text="My Location"
+                            android:textColor="@color/black"
                             android:typeface="serif"
                             android:textSize="@dimen/txt_app_labels_normal" />
 

@@ -1,5 +1,7 @@
 package com.iseva.app.source;
 
+import android.*;
+import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -34,6 +36,15 @@ import com.android.volley.Request;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.karumi.dexter.listener.single.PermissionListener;
+import com.squareup.picasso.Picasso;
 
 
 import org.json.JSONArray;
@@ -47,6 +58,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -130,8 +142,19 @@ public class Activity_Category_Choose extends Activity {
 
             @Override
             public void onClick(View view) {
-                Intent i  = new Intent(Activity_Category_Choose.this,Activity_location_choose.class);
-                startActivity(i);
+
+
+                Dexter.withActivity(Activity_Category_Choose.this)
+                        .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                        .withListener(new PermissionListener() {
+                            @Override public void onPermissionGranted(PermissionGrantedResponse response) {
+                                Intent i  = new Intent(Activity_Category_Choose.this,Activity_location_choose.class);
+                                startActivity(i);
+                            }
+                            @Override public void onPermissionDenied(PermissionDeniedResponse response) {/* ... */}
+                            @Override public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {/* ... */}
+                        }).check();
+
             }
         });
 
@@ -141,7 +164,7 @@ public class Activity_Category_Choose extends Activity {
 
 
             Button btn = (Button)findViewById(R.id.btnUserSelect);
-        btn.setOnClickListener(new View.OnClickListener() {
+           btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 LinearLayout linear = (LinearLayout) findViewById(R.id.linearImageUser);
@@ -162,60 +185,83 @@ public class Activity_Category_Choose extends Activity {
 
     }
 
-    private void selectImage(boolean isRemove, final int keyRemove, final LinearLayout linear) {
-        final CharSequence[] items = {"Take Photo", "Choose from Library"};
-        final CharSequence[] itemsRemove = {"Take Photo", "Choose from Library","Remove"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Add Photo!");
+    private void selectImage(final boolean isRemove, final int keyRemove, final LinearLayout linear) {
 
-        if(!isRemove) {
-            builder.setItems(items, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int item) {
-                    if (items[item].equals("Take Photo")) {
-                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(intent, REQUEST_CAMERA);
-                    } else if (items[item].equals("Choose from Library")) {
-                        Intent intent = new Intent(
-                                Intent.ACTION_PICK,
-                                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        intent.setType("image/*");
+        Dexter.withActivity(this)
+                .withPermissions(
+                        android.Manifest.permission.CAMERA,
+                        android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ).withListener(new MultiplePermissionsListener() {
 
-                        startActivityForResult(
-                                Intent.createChooser(intent, "Select File"),
-                                SELECT_FILE);
-                    }
-                }
-            });
-            builder.show();
-        }else{
-            builder.setItems(itemsRemove, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int item) {
-                    if (itemsRemove[item].equals("Take Photo")) {
-                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(intent, REQUEST_CAMERA);
-                    } else if (itemsRemove[item].equals("Choose from Library")) {
-                        Intent intent = new Intent(
-                                Intent.ACTION_PICK,
-                                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        intent.setType("image/*");
-                        startActivityForResult(
-                                Intent.createChooser(intent, "Select File"),
-                                SELECT_FILE);
-                    }else if(itemsRemove[item].equals("Remove")){
-                        linear.removeView(selectedImageView);
-                        Images.remove(keyRemove);
-                        try{
-                            imageid.remove(keyRemove);
-                        }catch (Exception e){
 
+            @Override public void onPermissionsChecked(MultiplePermissionsReport report) {
+
+                final CharSequence[] items = {"Take Photo", "Choose from Library"};
+                final CharSequence[] itemsRemove = {"Take Photo", "Choose from Library","Remove"};
+                AlertDialog.Builder builder = new AlertDialog.Builder(Activity_Category_Choose.this);
+                builder.setTitle("Add Photo!");
+
+                if(!isRemove) {
+                    builder.setItems(items, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int item) {
+                            if (items[item].equals("Take Photo")) {
+                                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                startActivityForResult(intent, REQUEST_CAMERA);
+                            } else if (items[item].equals("Choose from Library")) {
+                                Intent intent = new Intent(
+                                        Intent.ACTION_PICK,
+                                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                intent.setType("image/*");
+
+                                startActivityForResult(
+                                        Intent.createChooser(intent, "Select File"),
+                                        SELECT_FILE);
+                            }
                         }
-                    }
+                    });
+                    builder.show();
+                }else{
+                    builder.setItems(itemsRemove, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int item) {
+                            if (itemsRemove[item].equals("Take Photo")) {
+                                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                startActivityForResult(intent, REQUEST_CAMERA);
+                            } else if (itemsRemove[item].equals("Choose from Library")) {
+                                Intent intent = new Intent(
+                                        Intent.ACTION_PICK,
+                                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                intent.setType("image/*");
+                                startActivityForResult(
+                                        Intent.createChooser(intent, "Select File"),
+                                        SELECT_FILE);
+                            }else if(itemsRemove[item].equals("Remove")){
+                                linear.removeView(selectedImageView);
+                                Images.remove(keyRemove);
+                                try{
+                                    imageid.remove(keyRemove);
+                                }catch (Exception e){
+
+                                }
+                            }
+                        }
+                    });
+                    builder.show();
                 }
-            });
-            builder.show();
-        }
+
+            }
+            @Override public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+
+
+
+
+            }
+
+        }).check();
+
+
     }
 
 
@@ -225,11 +271,14 @@ public class Activity_Category_Choose extends Activity {
             final ImageView img = Custom_Control.getImageView(this, 150, 150, 1);
             img.setTag(imgid);
             if(!islink) {
-                img.setImageBitmap(BitmapFactory.decodeFile(selectedImagePath));
+                //img.setImageBitmap(BitmapFactory.decodeFile(selectedImagePath));
+                Picasso.with(this).load(new File(selectedImagePath)).into(img);
+                //Globals.loadImageIntoImageView(img,selectedImagePath,this,R.drawable.default_offer,R.drawable.default_offer,150,150);
                 Images.put((int) img.getTag(), selectedImagePath);
             }
             else {
-                Globals.loadImageIntoImageView(img, selectedImagePath, this,R.drawable.default_offer,R.drawable.default_offer,150,150);
+                Picasso.with(this).load(new File(selectedImagePath)).into(img);
+               // Globals.loadImageIntoImageView(img, selectedImagePath, this,R.drawable.default_offer,R.drawable.default_offer,150,150);
                 //offersImages.put((int) img.getTag(), String.valueOf(id));
                 imageid.put((int) img.getTag(),id);
             }
@@ -250,7 +299,9 @@ public class Activity_Category_Choose extends Activity {
             linearLayout.addView(img);
         } else {
             if (selectedImageView != null) {
-                selectedImageView.setImageBitmap(BitmapFactory.decodeFile(selectedImagePath));
+                //selectedImageView.setImageBitmap(BitmapFactory.decodeFile(selectedImagePath));
+                //Globals.loadImageIntoImageView(selectedImageView,selectedImagePath,this,R.drawable.default_offer,R.drawable.default_offer,150,150);
+                Picasso.with(this).load(new File(selectedImagePath)).into(selectedImageView);
                 Images.put((int) selectedImageView.getTag(), selectedImagePath);
             }
         }
@@ -509,6 +560,36 @@ public class Activity_Category_Choose extends Activity {
     }
 
     private void selectImage() {
+
+        Dexter.withActivity(this)
+                .withPermissions(
+                        android.Manifest.permission.CAMERA,
+                        android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ).withListener(new MultiplePermissionsListener() {
+
+
+            @Override public void onPermissionsChecked(MultiplePermissionsReport report) {
+
+                initImageSelecter();
+
+            }
+            @Override public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+
+
+
+
+            }
+
+             }).check();
+
+
+
+    }
+
+
+
+    private void initImageSelecter(){
         final CharSequence[] items = {"Take Photo", "Choose from Library"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -570,7 +651,9 @@ public class Activity_Category_Choose extends Activity {
                     setImageViewBitmap(false, destination.getPath(),0);
                 else {
                     imageId = -1;
-                    img.setImageBitmap(BitmapFactory.decodeFile(destination.getPath()));
+                   // img.setImageBitmap(BitmapFactory.decodeFile(destination.getPath()));
+                    Picasso.with(this).load(new File(destination.getPath())).into(img);
+                   // Globals.loadImageIntoImageView(img,destination.getPath(),this,R.drawable.default_offer,R.drawable.default_offer,150,150);
                     path = destination.getAbsolutePath();
 
                 }
@@ -647,7 +730,9 @@ public class Activity_Category_Choose extends Activity {
                     setImageViewBitmap(false, selectedImagePath,0);
                 else {
                     imageId = -1;
-                    img.setImageBitmap(BitmapFactory.decodeFile(selectedImagePath));
+                   // img.setImageBitmap(BitmapFactory.decodeFile(selectedImagePath));
+                    Picasso.with(this).load(new File(selectedImagePath)).into(img);
+                   // Globals.loadImageIntoImageView(img,selectedImagePath,this,R.drawable.default_offer,R.drawable.default_offer,150,150);
                     path = selectedImagePath;
                 }
             }

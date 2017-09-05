@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -27,19 +28,25 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.iseva.app.source.Custom_VolleyAppController;
+import com.iseva.app.source.Custom_VolleyObjectRequest;
+import com.iseva.app.source.Globals;
 import com.iseva.app.source.R;
 import com.iseva.app.source.travel.Constants.URL_XB;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 
-public class Activity_show_detail_booked_ticket extends Activity {
+public class Activity_show_detail_booked_ticket extends Activity_Parent_Travel {
 
     private Session_manager session_manager;
     private TextView header_tv;
@@ -73,11 +80,7 @@ public class Activity_show_detail_booked_ticket extends Activity {
     private TextView cancel_ticket_cancel_btn;
     private TextView cancel_ticket_ok_btn;
 
-    private ProgressDialog progress;
 
-    private SoapObject soapresult_ticket_detail;
-    private SoapObject soapresult_iscancelable;
-    private SoapObject soapresult_cancel_ticket;
 
     private String pnr_no_txt;
     private String ticket_no_txt;
@@ -95,6 +98,9 @@ public class Activity_show_detail_booked_ticket extends Activity {
     public static int cancel_ticket = 0;
 
     RequestQueue requestQueue_globel ;
+
+    private String seatsNo = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,31 +108,34 @@ public class Activity_show_detail_booked_ticket extends Activity {
 
         initialize();
         setclicklistner();
-        if(isNetworkConnected())
+        if(isNetworkConnected(true))
         {
-            TicketDetail td = new TicketDetail();
-            td.execute();
 
-            Iscancelable ic = new Iscancelable();
-            ic.execute();
-            //callserver();
+            getBookTicketDetails();
+
         }
-        else
-        {
-            Global_Travel.showAlertDialog(Activity_show_detail_booked_ticket.this,getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
-        }
+
 
     }
 
     public void initialize()
     {
         Intent i = getIntent();
-        pnr_no_txt = i.getStringExtra("pnr_no");
+       /* pnr_no_txt = i.getStringExtra("pnr_no");
         ticket_no_txt = i.getStringExtra("ticket_no");
         iscancelable = i.getStringExtra("iscancelable");
         payu_payment_id = i.getStringExtra("payu_payment_id");
         total_fare = i.getStringExtra("total_fare");
-        extra_charge = i.getStringExtra("extra_charge");
+        extra_charge = i.getStringExtra("extra_charge");*/
+
+
+        /*{"success":true,"data":{"HoldId":19857554,
+                "TotalFare":193.42,"TicketNo":"5017182280","PNRNo":"103811648-1022157"}}*/
+
+        pnr_no_txt = "103857280-1025528";
+        ticket_no_txt = "5017182299";
+        total_fare = "407.2";
+        iscancelable = "0";
 
         session_manager = new Session_manager(this);
         header_tv = (TextView)findViewById(R.id.header_text);
@@ -172,364 +181,423 @@ public class Activity_show_detail_booked_ticket extends Activity {
     }
 
 
- private class Iscancelable extends AsyncTask<Void, Void, Void> {
 
+    private void getIsCancellable(){
 
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            progress.dismiss();
-            if (soapresult_iscancelable != null) {
-                String Is_success = ((SoapObject) soapresult_iscancelable.getProperty("Response")).getPrimitiveProperty("IsSuccess").toString();
-                if (Is_success.equals("true")) {
-                    //Toast.makeText(Activity_review_itinerary.this,soapresult_detail.toString(),Toast.LENGTH_LONG).show();
+        if(seatsNo != null && !seatsNo.isEmpty()) {
+            String urlIsCancellable = Constants.URL_TY.GET_IS_CANCELLABLE +
+                    "?PNRNo=" + pnr_no_txt + "&TicketNo=" + ticket_no_txt + "&seatNos=" + seatsNo;
+
+            Log.i("SUSHIL", "url  !! -> " + urlIsCancellable);
+            Custom_VolleyObjectRequest jsonObjectRQST = new Custom_VolleyObjectRequest(
+                    Request.Method.GET, urlIsCancellable,
+                    null, new Response.Listener<JSONObject>() {
+
+                @Override
+                public void onResponse(JSONObject response) {
+                    Log.i("HARSH", "json Response recieved !! -> " + response);
                     try {
-
-                        Log.e("vikas", soapresult_iscancelable.toString());
-                        if(soapresult_iscancelable.getPrimitivePropertyAsString("IsCancellable").equals("true"))
-                        {
-                            /*cancel_ticket_total_fare_tv.setText(soapresult_iscancelable.getPrimitivePropertyAsString("TotalFare"));*/
-                            cancel_ticket_total_fare_tv.setText(total_fare);
-                            cancel_charge_percentage = soapresult_iscancelable.getPrimitivePropertyAsString("ChargePct");
-                            cancel_ticket_charge_percentage_tv.setText(cancel_charge_percentage+"%");
-                            Float charge = (Float.parseFloat(total_fare)*Float.parseFloat(cancel_charge_percentage))/100;
-                            Float refund = Float.parseFloat(total_fare)- charge;
-                            cancel_ticket_refund_amount_tv.setText(""+refund);
-                           /* refund_amount = soapresult_iscancelable.getPrimitivePropertyAsString("RefundAmount");*/
-                            refund_amount = Float.toString(refund);
-                            ticket_detail_cancel_btn_layout.setVisibility(View.VISIBLE);
-
-                        }
-                        else
-                        {
-                            ticket_detail_cancel_btn_layout.setVisibility(View.GONE);
-
-                        }
-
-
-
-
-
+                         Globals.hideLoadingDialog(progress);
+                         initTicketCancellableResponse(response);
 
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
-
                 }
-                else
-                {
-                    Global_Travel.showAlertDialog(Activity_show_detail_booked_ticket.this,getResources().getString(R.string.validating_error_title),((SoapObject)soapresult_iscancelable.getProperty("Response")).getPrimitivePropertyAsString("Message"),"Ok");
-                    //Toast.makeText(Activity_show_detail_booked_ticket.this, ((SoapObject) soapresult_iscancelable.getProperty("Response")).getPrimitiveProperty("Message").toString(), Toast.LENGTH_LONG).show();
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError err) {
+                    Log.i("SUSHIL", "ERROR VolleyError");
+                    Globals.hideLoadingDialog(progress);
                 }
+            }){
 
-            } else {
-                Global_Travel.showAlertDialog(Activity_show_detail_booked_ticket.this,getResources().getString(R.string.validating_error_title),"Some error accured please try again !","Ok");
-                //Toast.makeText(Activity_show_detail_booked_ticket.this, "Server Error !", Toast.LENGTH_LONG).show();
-            }
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<String, String>();
 
+                    headers.put("access-token", Global_Travel.TRAVEL_DATA.TOKEN_ID);
 
+                    return headers;
+                }
+            };
+            Custom_VolleyAppController.getInstance().addToRequestQueue(
+                    jsonObjectRQST);
         }
+    }
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
+    private void getBookTicketDetails(){
 
+        if(pnr_no_txt != null && ticket_no_txt != null) {
 
+            progress = Globals.showLoadingDialog(progress,this,false,"");
 
+            String GET_BOOK_DETAILS_URL = Constants.URL_TY.GET_BOOK_DETAILS +
+                    "?PNR=" + pnr_no_txt + "&TicketNo=" + ticket_no_txt;
 
-        }
+            Custom_VolleyObjectRequest jsonObjectRQST = new Custom_VolleyObjectRequest(
+                    Request.Method.GET, GET_BOOK_DETAILS_URL,
+                    null, new Response.Listener<JSONObject>() {
 
-        @Override
-        protected Void doInBackground(Void... arg0) {
+                @Override
+                public void onResponse(JSONObject response) {
+                    Log.i("HARSH", "json Response recieved !! -> " + response);
+                    try {
+                       Globals.hideLoadingDialog(progress);
+                       initBookDetailsData(response);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError err) {
+                    Log.i("SUSHIL", "ERROR VolleyError");
+                    Globals.hideLoadingDialog(progress);
+                }
+            }) {
 
-            //TODO :HARSH impementemnt new API call
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<String, String>();
 
-            SoapObject request = new SoapObject("","");
+                    headers.put("access-token", Global_Travel.TRAVEL_DATA.TOKEN_ID);
 
+                    return headers;
+                }
+            };
 
-//            SoapObject request = new SoapObject(Constants.GLOBEL_NAMESPACE, Constants.METHOD_ISCANCELABLE);
-
-
-//            SoapObject sa = new SoapObject(null,"Authentication");
-//
-//            PropertyInfo userid = new PropertyInfo();
-//            userid.setName("UserID");
-//
-//            userid.setValue(LoginCridantial.UserId.trim());
-//            userid.setType(Integer.class);
-//            sa.addProperty(userid);
-//
-//            PropertyInfo usertype = new PropertyInfo();
-//            usertype.setName("UserType");
-//            usertype.setValue(LoginCridantial.UserType.trim());
-//
-//
-//            usertype.setType(String.class);
-//            sa.addProperty(usertype);
-//
-//            PropertyInfo userkey = new PropertyInfo();
-//            userkey.setName("Key");
-//            userkey.setValue(LoginCridantial.UserKey.trim());
-
-//            userkey.setType(String.class);
-//            sa.addProperty(userkey);
-//            request.addSoapObject(sa);
-//
-//            PropertyInfo pnr_no = new PropertyInfo();
-//            pnr_no.setName("PNRNo");
-//            pnr_no.setValue(pnr_no_txt);
-//            userkey.setType(String.class);
-//            request.addProperty(pnr_no);
-//
-//            PropertyInfo ticket_no = new PropertyInfo();
-//            ticket_no.setName("TicketNo");
-//            ticket_no.setValue(ticket_no_txt);
-//            userkey.setType(String.class);
-            //request.addProperty(ticket_no);
-            if (Global_Travel.build_type == 0)
-            {
-                Log.e("vikas request print",request.toString());
-            }
-
-
-
-
-
-
-            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-            envelope.implicitTypes = true;
-            envelope.dotNet = true;
-            envelope.setOutputSoapObject(request);
-
-//            HttpTransportSE httpTransport = new HttpTransportSE(Constants.GLOBEL_URL);
-//            httpTransport.debug =true;
-//
-//
-//            try {
-//                httpTransport.call(Constants.GLOBEL_NAMESPACE+Constants.METHOD_ISCANCELABLE, envelope);
-//            } catch (HttpResponseException e) {
-//                e.printStackTrace();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            } catch (XmlPullParserException e) {
-//                e.printStackTrace();
-//            }
-//            soapresult_iscancelable = null;
-//
-//            try {
-//                soapresult_iscancelable  = (SoapObject)envelope.getResponse();
-//
-//            } catch (SoapFault e) {
-//
-//                e.printStackTrace();
-//            }
-
-
-
-            return null;
+            Custom_VolleyAppController.getInstance().addToRequestQueue(
+                    jsonObjectRQST);
         }
     }
 
 
-    private class TicketDetail extends AsyncTask<Void, Void, Void> {
+
+    private void cancelBookedTicket(){
 
 
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
+        if(pnr_no_txt != null && ticket_no_txt != null) {
 
-            if (soapresult_ticket_detail != null) {
-                String Is_success = ((SoapObject) soapresult_ticket_detail.getProperty("Response")).getPrimitiveProperty("IsSuccess").toString();
-                if (Is_success.equals("true")) {
-                    //Toast.makeText(Activity_review_itinerary.this,soapresult_detail.toString(),Toast.LENGTH_LONG).show();
+            Map<String,String> paramsMap = new HashMap<>();
+            paramsMap.put("PNR",pnr_no_txt);
+            paramsMap.put("TicketNo",ticket_no_txt);
+            paramsMap.put("SeatNos",seatsNo);
+
+            progress = Globals.showLoadingDialog(progress,this,false,"");
+
+            Custom_VolleyObjectRequest jsonObjectRQST = new Custom_VolleyObjectRequest(
+                    Request.Method.POST, Constants.URL_TY.GET_CANCEL_BOOKED_TICKET,
+                    paramsMap, new Response.Listener<JSONObject>() {
+
+                @Override
+                public void onResponse(JSONObject response) {
+                    Log.i("HARSH", "json Response recieved !! -> " + response);
                     try {
-                        if(Global_Travel.build_type == 0)
-                        {
-                            Log.e("vikas", soapresult_ticket_detail.toString());
-                        }
-
-                        String booking_date = change_date_form(soapresult_ticket_detail.getPrimitivePropertyAsString("JourneyDate"));
-                        String from_city = soapresult_ticket_detail.getPrimitivePropertyAsString("FromCityName");
-                        from_city = from_city.substring(0,1).toUpperCase() + from_city.substring(1);
-
-                        String to_city = soapresult_ticket_detail.getPrimitivePropertyAsString("ToCityName");
-                        to_city = to_city.substring(0,1).toUpperCase() + to_city.substring(1);
-
-                        String boarding_time = gettime (((SoapObject)soapresult_ticket_detail.getProperty("Pickup")).getPrimitivePropertyAsString("PickupTime"));
-
-                        String boarding_name = ((SoapObject)soapresult_ticket_detail.getProperty("Pickup")).getPrimitivePropertyAsString("PickupName");
-                        String company_name = soapresult_ticket_detail.getPrimitivePropertyAsString("OperatorName");
-                        String bus_label = soapresult_ticket_detail.getPrimitivePropertyAsString("BusTypeName");
-                        String seat_no = "";
-                        String passenger_name = ((SoapObject)soapresult_ticket_detail.getProperty("ContactInfo")).getPrimitivePropertyAsString("CustomerName");
-                        String boarding_address = ((SoapObject)soapresult_ticket_detail.getProperty("Pickup")).getPrimitivePropertyAsString("Address");
-                        String landmark =((SoapObject)soapresult_ticket_detail.getProperty("Pickup")).getPrimitivePropertyAsString("Landmark");
-                        String boarding_mobile = ((SoapObject)soapresult_ticket_detail.getProperty("Pickup")).getPrimitivePropertyAsString("Phone");
-                        String dropping_name = soapresult_ticket_detail.getPrimitivePropertyAsString("DropOff");
-                        String ticket_no = soapresult_ticket_detail.getPrimitivePropertyAsString("TicketNo");
-                        String total_fare =soapresult_ticket_detail.getPrimitivePropertyAsString("TotalFare");
-                        String pnr_no = soapresult_ticket_detail.getPrimitivePropertyAsString("PNRNo");
-
-                        for(int i=0;i<((SoapObject)soapresult_ticket_detail.getProperty("Passengers")).getPropertyCount();i++)
-                        {
-                            if(i == 0)
-                            {
-                                seat_no = seat_no+((SoapObject)((SoapObject)soapresult_ticket_detail.getProperty("Passengers")).getProperty(i)).getPrimitivePropertyAsString("SeatNo");
-                            }
-                            else
-                            {
-                                seat_no = seat_no+","+((SoapObject)((SoapObject)soapresult_ticket_detail.getProperty("Passengers")).getProperty(i)).getPrimitivePropertyAsString("SeatNo");
-                            }
-
-                        }
-
-                        ticket_detail_booking_date_tv.setText(booking_date);
-                        ticket_detail_from_city_tv.setText(from_city);
-                        ticket_detail_to_city_tv.setText(to_city);
-                        ticket_detail_boarding_time.setText(boarding_time);
-                        ticket_detail_boarding_point_name_tv.setText(boarding_name);
-                        ticket_detail_company_name_tv.setText(company_name);
-                        ticket_detail_bus_label_tv.setText(bus_label);
-                        ticket_detail_seat_no_tv.setText(seat_no);
-                        ticket_detail_passenger_name_tv.setText(passenger_name);
-                        ticket_detail_boarding_point_address_tv.setText(boarding_address);
-                        ticket_detail_boarding_point_landmark_tv.setText(landmark);
-                        ticket_detail_boarding_point_mobile_tv.setText(boarding_mobile);
-                        ticket_detail_dropping_point_tv.setText(dropping_name);
-                        ticket_detail_ticket_no_tv.setText(ticket_no);
-                        ticket_detail_total_fare.setText(total_fare);
-                        ticket_detail_pnr_no_tv.setText(pnr_no);
-
-
-
-
-
+                        Globals.hideLoadingDialog(progress);
+                        cancelRequestResponse(response);
 
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
-
                 }
-                else
-                {
-                    if (Global_Travel.build_type == 0)
-                    {
-                        Log.e("vikas", soapresult_ticket_detail.toString());
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError err) {
+                    Log.i("SUSHIL", "ERROR VolleyError");
+                    Globals.hideLoadingDialog(progress);
+                }
+            }){
+
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<String, String>();
+
+                    headers.put("access-token", Global_Travel.TRAVEL_DATA.TOKEN_ID);
+
+                    return headers;
+                }
+            };
+
+            Custom_VolleyAppController.getInstance().addToRequestQueue(
+                    jsonObjectRQST);
+        }
+    }
+
+
+
+
+    private void cancelRequestResponse(JSONObject response){
+
+        if(response != null){
+
+            try {
+
+                if(response.has("success")) {
+
+                    boolean isSuccess = response.getBoolean("success");
+
+                    ticket_detail_cancel_btn_layout.setVisibility(View.GONE);
+
+                    if (isSuccess) {
+
+                        updateTicketStatus();
+                        refund_fair();
+
+                       LayoutInflater inflater = (LayoutInflater) Activity_show_detail_booked_ticket.this.getSystemService
+                                (Context.LAYOUT_INFLATER_SERVICE);
+
+                        View v = inflater.inflate(R.layout.textview, null);
+
+
+                        TextView title_tv = (TextView) v.findViewById(R.id.alert_title);
+                        title_tv.setText("Message");
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(Activity_show_detail_booked_ticket.this);
+                        builder.setCustomTitle(title_tv)
+                                .setMessage("Your ticket has been cancelled successfully! \nRefund has been initiated and will be credited back to your account.")
+                                .setCancelable(false)
+                                .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+                        AlertDialog alert = builder.create();
+                        alert.show();
+
+                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        Button b = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
+                        b.setLayoutParams(lp);
+                        b.setBackgroundResource(R.drawable.btn_background);
+                        b.setTextColor(ContextCompat.getColor(Activity_show_detail_booked_ticket.this, R.color.app_white));
+
+
+                    }else{
+                        initErrorToast(response);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    private void initTicketCancellableResponse(JSONObject response){
+         if(response != null){
+             try{
+                 if(response.has("success")) {
+                     boolean isSuccess = response.getBoolean("success");
+
+                     if (isSuccess) {
+
+
+                         JSONObject data = response.getJSONObject("data");
+
+                         if (data != null) {
+
+                             if(data.has("IsCancellable")){
+                                 boolean isCancellable = data.getBoolean("IsCancellable");
+
+                                 if(isCancellable){
+
+
+                                     cancel_ticket_total_fare_tv.setText(total_fare);
+                                     cancel_charge_percentage = data.getString("ChargePct");
+                                     cancel_ticket_charge_percentage_tv.setText(cancel_charge_percentage+"%");
+                                     Float charge = (Float.parseFloat(total_fare)*Float.parseFloat(cancel_charge_percentage))/100;
+                                     Float refund = Float.parseFloat(total_fare)- charge;
+                                     cancel_ticket_refund_amount_tv.setText(""+refund);
+
+                                     refund_amount = Float.toString(refund);
+                                     ticket_detail_cancel_btn_layout.setVisibility(View.VISIBLE);
+                                 }else{
+                                     ticket_detail_cancel_btn_layout.setVisibility(View.GONE);
+                                 }
+                             }
+                         }
+                     }else{
+                         initErrorToast(response);
+                     }
+                 }
+             }catch (Exception e){
+                 e.printStackTrace();
+             }
+
+         }
+    }
+
+
+    private void initBookDetailsData(JSONObject response){
+        if(response == null)
+            return;
+        else{
+            try{
+                if(response.has("success")){
+                    boolean isSuccess = response.getBoolean("success");
+
+                    if(isSuccess){
+                        // data is succesfully retrive
+                        if(response.has("data")) {
+                            JSONObject data = response.getJSONObject("data");
+
+                            if (data != null) {
+
+
+
+                                if (data.has("TicketNo") && data.has("PNRNo")) {   // match pnrno or ticket no
+
+                                    String ticketNo = data.getString("TicketNo");
+                                    String pnrNo = data.getString("PNRNo");
+
+                                    if (ticketNo != null && pnrNo != null) {
+
+                                        if (ticketNo.equals(ticket_no_txt) && pnrNo.equals(pnr_no_txt)) {
+
+
+                                            ticket_detail_pnr_no_tv.setText(pnrNo);
+                                            ticket_detail_ticket_no_tv.setText(ticketNo);
+
+                                            if (data.has("JourneyDate")) {
+                                                String datetime = data.getString("JourneyDate");
+                                                datetime = change_date_form(datetime);
+
+                                                if (datetime != null) {
+                                                    ticket_detail_booking_date_tv.setText(datetime);
+                                                }
+                                            }
+
+                                            if (data.has("FromCityName") && data.has("ToCityName")) {
+
+                                                ticket_detail_from_city_tv.setText(data.getString("FromCityName"));
+                                                ticket_detail_to_city_tv.setText(data.getString("ToCityName"));
+                                            }
+
+
+                                            /*if (data.has("DepartureDateTime")) {
+                                                String datetime = data.getString("DepartureDateTime");
+                                                datetime = change_date_form(datetime);
+                                                if (datetime != null) {
+                                                    ticket_detail_boarding_time.setText(datetime);
+                                                }
+                                            }*/
+
+                                            if (data.has("CompanyName")) {
+                                                String companyName = data.getString("CompanyName");
+                                                ticket_detail_company_name_tv.setText(companyName);
+                                            }
+
+                                            if (data.has("BusTypeName")) {
+                                                ticket_detail_bus_label_tv.setText(data.getString("BusTypeName"));
+                                            }
+
+                                            if (data.has("ContactInfo")) {
+                                                JSONObject contactInfo = data.getJSONObject("ContactInfo");
+
+                                                if (contactInfo.has("CustomerName")) {
+
+                                                    ticket_detail_passenger_name_tv.setText(contactInfo.getString("CustomerName"));
+                                                }
+                                            }
+
+                                            if (data.has("PickupInfo")) {
+
+                                                JSONObject pickUpInfo = data.getJSONObject("PickupInfo");
+
+                                                String bordingTime = pickUpInfo.getString("PickupTime");
+                                                String boardingName = pickUpInfo.getString("PickupName");
+                                                String landmark = pickUpInfo.getString("Landmark");
+                                                String boardingAddress = pickUpInfo.getString("Address");
+                                                String boardingMobile = pickUpInfo.getString("Phone");
+
+
+                                                ticket_detail_boarding_time.setText(bordingTime);
+                                                ticket_detail_boarding_point_name_tv.setText(boardingName);
+                                                ticket_detail_boarding_point_address_tv.setText(boardingAddress);
+                                                ticket_detail_boarding_point_landmark_tv.setText(landmark);
+                                                ticket_detail_boarding_point_mobile_tv.setText(boardingMobile);
+
+                                            }
+
+
+                                            if (data.has("Passengers")) {
+                                                JSONArray passengersList = data.getJSONArray("Passengers");
+                                                seatsNo = "";
+                                                if (passengersList != null && passengersList.length() != 0) {
+
+                                                    for (int i = 0; i < passengersList.length(); i++) {
+
+                                                        JSONObject passenger = passengersList.getJSONObject(i);
+
+                                                        if (passenger != null) {
+
+                                                            if (passenger.has("SeatNo")) {
+
+                                                                seatsNo = seatsNo + passenger.getString("SeatNo") + ",";
+                                                            }
+                                                        }
+                                                    }
+
+                                                    if (!seatsNo.isEmpty()) {
+                                                        seatsNo = seatsNo.substring(0, seatsNo.length() - 1);
+                                                    }
+
+                                                    ticket_detail_seat_no_tv.setText(seatsNo);
+
+
+                                                }
+                                            }
+
+
+                                            if (data.has("TotalFare")) {
+
+                                                ticket_detail_total_fare.setText(data.getString("TotalFare"));
+                                            }
+
+                                            if(data.has("IsCancelled")){   // check if ticket is already cancelled
+                                                boolean isCancelled = data.getBoolean("IsCancelled");
+
+                                                if(!isCancelled){
+                                                    getIsCancellable();
+                                                }
+                                            }
+
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                    }else{
+                        // some error on travelyari server
+                        initErrorToast(response);
                     }
 
-                    Global_Travel.showAlertDialog(Activity_show_detail_booked_ticket.this,getResources().getString(R.string.validating_error_title),((SoapObject)soapresult_ticket_detail.getProperty("Response")).getPrimitivePropertyAsString("Message"),"Ok");
                 }
 
-            } else {
-                Global_Travel.showAlertDialog(Activity_show_detail_booked_ticket.this,getResources().getString(R.string.validating_error_title),"Some error accured please try again !","Ok");
+
+            }catch (Exception e){
+                e.printStackTrace();
             }
-
-
         }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            progress = new ProgressDialog(Activity_show_detail_booked_ticket.this);
-            progress.setMessage("Please wait...");
-            progress.setCanceledOnTouchOutside(false);
-            progress.setCancelable(false);
-
-            progress.show();
+    }
 
 
-        }
+    private void initErrorToast(JSONObject response){
+        if(response != null){
+            try {
+                Globals.hideLoadingDialog(progress);
 
-        @Override
-        protected Void doInBackground(Void... arg0) {
-
-            //TODO : Impemenet new HARSH
-            SoapObject request = new SoapObject("", "");
-
-
-            //SoapObject request = new SoapObject(Constants.GLOBEL_NAMESPACE, Constants.METHOD_TICKET_DETAIL);
-
-
-            SoapObject sa = new SoapObject(null,"Authentication");
-
-//            PropertyInfo userid = new PropertyInfo();
-//            userid.setName("UserID");
-//
-//            userid.setValue(LoginCridantial.UserId.trim());
-//            userid.setType(Integer.class);
-//            sa.addProperty(userid);
-//
-//            PropertyInfo usertype = new PropertyInfo();
-//            usertype.setName("UserType");
-//            usertype.setValue(LoginCridantial.UserType.trim());
-//
-//
-//            usertype.setType(String.class);
-//            sa.addProperty(usertype);
-//
-//            PropertyInfo userkey = new PropertyInfo();
-//            userkey.setName("Key");
-//            userkey.setValue(LoginCridantial.UserKey.trim());
-//
-//            userkey.setType(String.class);
-//            sa.addProperty(userkey);
-//            request.addSoapObject(sa);
-//
-//            PropertyInfo ticket_no = new PropertyInfo();
-//            ticket_no.setName("TicketNo");
-//            ticket_no.setValue(ticket_no_txt);
-//            userkey.setType(String.class);
-//            request.addProperty(ticket_no);
-//
-//            PropertyInfo pnr_no = new PropertyInfo();
-//            pnr_no.setName("strPNRNo");
-//            pnr_no.setValue(pnr_no_txt);
-//            userkey.setType(String.class);
-//            request.addProperty(pnr_no);
-//            if (Global_Travel.build_type == 0)
-//            {
-//                Log.e("vikas request print",request.toString());
-//            }
-
-
-
-
-
-//
-//            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-//            envelope.implicitTypes = true;
-//            envelope.dotNet = true;
-//            envelope.setOutputSoapObject(request);
-//
-//            HttpTransportSE httpTransport = new HttpTransportSE(Constants.GLOBEL_URL);
-//            httpTransport.debug =true;
-//
-//
-//            try {
-//                httpTransport.call(Constants.GLOBEL_NAMESPACE+Constants.METHOD_TICKET_DETAIL, envelope);
-//            } catch (HttpResponseException e) {
-//                e.printStackTrace();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            } catch (XmlPullParserException e) {
-//                e.printStackTrace();
-//            }
-//            soapresult_ticket_detail = null;
-//
-//            try {
-//                soapresult_ticket_detail  = (SoapObject)envelope.getResponse();
-//
-//            } catch (SoapFault e) {
-//
-//                e.printStackTrace();
-//            }
-//
-
-
-            return null;
+                if (response.has("Error")) {
+                    Globals.showShortToast(this, response.getJSONObject("Error").getString("Msg"));
+                }else{
+                    // show app error msg
+                    Globals.showShortToast(this, "Some error occured, Please try again!");
+                }
+                //this.finish();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
     }
 
@@ -606,15 +674,11 @@ public class Activity_show_detail_booked_ticket extends Activity {
             public void onClick(View view) {
                 cancel_ticket = 1;
                 cancel_ticket_main_layout.setVisibility(View.GONE);
-                if(isNetworkConnected())
+                if(isNetworkConnected(true))
                 {
-                    CancelTicket ct = new CancelTicket();
-                    ct.execute();
+                    cancelBookedTicket();
                 }
-                else
-                {
-                    Global_Travel.showAlertDialog(Activity_show_detail_booked_ticket.this,getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
-                }
+
 
             }
         });
@@ -642,7 +706,7 @@ public class Activity_show_detail_booked_ticket extends Activity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                progress.dismiss();
+                Globals.hideLoadingDialog(progress);
 
                 Toast.makeText(getApplicationContext(),"Error is -->> " + error.toString(),Toast.LENGTH_LONG).show();
             }
@@ -682,7 +746,7 @@ public class Activity_show_detail_booked_ticket extends Activity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                progress.dismiss();
+                Globals.hideLoadingDialog(progress);
 
 
             }
@@ -707,183 +771,7 @@ public class Activity_show_detail_booked_ticket extends Activity {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue_globel.add(refund_fare);
     }
-    private class CancelTicket extends AsyncTask<Void, Void, Void> {
 
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            progress.dismiss();
-            if (soapresult_cancel_ticket != null) {
-                String Is_success = ((SoapObject) soapresult_cancel_ticket.getProperty("Response")).getPrimitiveProperty("IsSuccess").toString();
-                if (Is_success.equals("true")) {
-                    //Toast.makeText(Activity_review_itinerary.this,soapresult_detail.toString(),Toast.LENGTH_LONG).show();
-                    try {
-                        if (Global_Travel.build_type == 0)
-                        {
-                            Log.e("vikas",soapresult_cancel_ticket.toString());
-                        }
-
-                        ticket_detail_cancel_btn_layout.setVisibility(View.GONE);
-                        updateTicketStatus();
-                        refund_fair();
-
-                       /* TextView title_tv = new TextView(Activity_show_detail_booked_ticket.this);
-                        title_tv.setPadding(0,getResources().getDimensionPixelSize(R.dimen.padding_margin_10),0,0);
-                        title_tv.setTextColor(ContextCompat.getColor(Activity_show_detail_booked_ticket.this,R.color.black));
-                        title_tv.setTextSize(16);
-                        title_tv.setGravity(Gravity.CENTER);
-                        title_tv.setText("Message");*/
-
-                        LayoutInflater inflater = (LayoutInflater)Activity_show_detail_booked_ticket.this.getSystemService
-                                (Context.LAYOUT_INFLATER_SERVICE);
-
-                        View v =  inflater.inflate(R.layout.textview,null);
-
-
-                        TextView title_tv = (TextView)v.findViewById(R.id.alert_title);
-                        title_tv.setText("Message");
-
-                        AlertDialog.Builder builder = new AlertDialog.Builder(Activity_show_detail_booked_ticket.this);
-                        builder.setCustomTitle(title_tv)
-                                .setMessage("Your ticket successfully cancelled. Your refund amount will credit in your account in two days.")
-                                .setCancelable(false)
-                                .setNegativeButton("Ok",new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.cancel();
-                                    }
-                                });
-                        AlertDialog alert = builder.create();
-                        alert.show();
-
-                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                        Button b = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
-                        b.setLayoutParams(lp);
-                        b.setBackgroundResource(R.drawable.btn_background);
-                        b.setTextColor(ContextCompat.getColor(Activity_show_detail_booked_ticket.this, R.color.app_white));
-
-
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-
-                }
-                else
-                {
-                    Toast.makeText(Activity_show_detail_booked_ticket.this, ((SoapObject) soapresult_cancel_ticket.getProperty("Response")).getPrimitiveProperty("Message").toString(), Toast.LENGTH_LONG).show();
-                }
-
-            } else {
-                Toast.makeText(Activity_show_detail_booked_ticket.this, "Server Error !", Toast.LENGTH_LONG).show();
-            }
-
-
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            progress = new ProgressDialog(Activity_show_detail_booked_ticket.this);
-            progress.setMessage("Please wait...");
-            progress.setCanceledOnTouchOutside(false);
-            progress.setCancelable(false);
-
-            progress.show();
-
-
-        }
-
-        @Override
-        protected Void doInBackground(Void... arg0) {
-
-            //TODO : HARSH impoemnt new API
-            SoapObject request = new SoapObject("", "");
-
-//            SoapObject request = new SoapObject(Constants.GLOBEL_NAMESPACE, Constants.METHOD_CANCEL_TICKET);
-
-
-//            SoapObject sa = new SoapObject(null,"Authentication");
-//
-//            PropertyInfo userid = new PropertyInfo();
-//            userid.setName("UserID");
-//
-//            userid.setValue(LoginCridantial.UserId.trim());
-//            userid.setType(Integer.class);
-//            sa.addProperty(userid);
-//
-//            PropertyInfo usertype = new PropertyInfo();
-//            usertype.setName("UserType");
-//            usertype.setValue(LoginCridantial.UserType.trim());
-//
-//
-//            usertype.setType(String.class);
-//            sa.addProperty(usertype);
-//
-//            PropertyInfo userkey = new PropertyInfo();
-//            userkey.setName("Key");
-//            userkey.setValue(LoginCridantial.UserKey.trim());
-//
-//            userkey.setType(String.class);
-//            sa.addProperty(userkey);
-//            request.addSoapObject(sa);
-//
-//            PropertyInfo pnr_no = new PropertyInfo();
-//            pnr_no.setName("PNRNo");
-//            pnr_no.setValue(pnr_no_txt);
-//            userkey.setType(String.class);
-//            request.addProperty(pnr_no);
-//
-//            PropertyInfo ticket_no = new PropertyInfo();
-//            ticket_no.setName("TicketNo");
-//            ticket_no.setValue(ticket_no_txt);
-//            userkey.setType(String.class);
-//            request.addProperty(ticket_no);
-//            if (Global_Travel.build_type == 0)
-//            {
-//                Log.e("vikas request print",request.toString());
-//            }
-//
-//
-//
-//
-//
-//
-//            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-//            envelope.implicitTypes = true;
-//            envelope.dotNet = true;
-//            envelope.setOutputSoapObject(request);
-//
-//            HttpTransportSE httpTransport = new HttpTransportSE(Constants.GLOBEL_URL);
-//            httpTransport.debug =true;
-//
-//
-//            try {
-//                httpTransport.call(Constants.GLOBEL_NAMESPACE+Constants.METHOD_CANCEL_TICKET, envelope);
-//            } catch (HttpResponseException e) {
-//                e.printStackTrace();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            } catch (XmlPullParserException e) {
-//                e.printStackTrace();
-//            }
-//            soapresult_cancel_ticket = null;
-//
-//            try {
-//                soapresult_cancel_ticket  = (SoapObject)envelope.getResponse();
-//
-//            } catch (SoapFault e) {
-//
-//                e.printStackTrace();
-//            }
-//
-//
-//
-           return null;
-        }
-    }
 
 
     public void activity_dismiss()
@@ -898,36 +786,6 @@ public class Activity_show_detail_booked_ticket extends Activity {
         super.onBackPressed();
         overridePendingTransition(R.anim.anim_none, R.anim.anim_out);
 
-
-
     }
 
-   /* public void showAlertDialog(String title,String message,String buttonlabel)
-    {
-        TextView title_tv = new TextView(this);
-        title_tv.setPadding(0,getResources().getDimensionPixelSize(R.dimen.padding_margin_10),0,0);
-        title_tv.setTextColor(ContextCompat.getColor(Activity_show_detail_booked_ticket.this,R.color.black));
-        title_tv.setTextSize(getResources().getDimension(R.dimen.text_size_mediam));
-        title_tv.setGravity(Gravity.CENTER);
-        title_tv.setText(title);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(Activity_show_detail_booked_ticket.this);
-        builder.setCustomTitle(title_tv)
-                .setMessage(message)
-                .setCancelable(false)
-                .setNegativeButton(buttonlabel,new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                        activity_dismiss();
-                    }
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
-
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        Button b = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
-        b.setLayoutParams(lp);
-        b.setBackgroundResource(R.drawable.btn_background);
-        b.setTextColor(ContextCompat.getColor(Activity_show_detail_booked_ticket.this, R.color.app_white));
-    }*/
 }

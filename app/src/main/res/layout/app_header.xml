@@ -87,4 +87,16 @@
          android:visibility="gone"
          android:textColor="@drawable/selector_black_to_white_txt"/>
 
+
+    <ImageView
+        android:id="@+id/imgShareProfile"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:visibility="gone"
+        android:padding="@dimen/margin_3dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/selector_header_img_click"
+        android:src="@drawable/share_profile"/>
+
 </LinearLayout>

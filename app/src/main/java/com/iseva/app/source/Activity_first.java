@@ -397,7 +397,7 @@ public class Activity_first extends AppCompatActivity implements NavigationView.
 
                 HashMap<String, String> map = new HashMap<>();
                 map.put("imei", Globals.getdeviceId(this));
-
+                Log.i("SUSHIL", "paramsMap !!" + map);
                 Custom_VolleyObjectRequest jsonObjectRQST = new Custom_VolleyObjectRequest(
                         Request.Method.POST,
                         Custom_URLs_Params.getURL_OffersRandom(),

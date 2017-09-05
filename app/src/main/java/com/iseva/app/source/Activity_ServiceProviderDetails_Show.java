@@ -1,11 +1,16 @@
 package com.iseva.app.source;
 
+import android.*;
+import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.CardView;
 import android.text.util.Linkify;
@@ -22,6 +27,12 @@ import android.widget.TextView;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -31,6 +42,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -41,23 +56,15 @@ public class Activity_ServiceProviderDetails_Show extends FragmentActivity {
     private ArrayList<String> listImageUrls;
     private String name = "";
     private String contact = "";
-    String json = "{'profile':{'url':'http://www.clipartlord.com/wp-content/uploads/2014/08/doctor11.png','name':'SUSHIL SOLANKI'},'control':[{'id':1,'typeId':1,'label':'Name',contant:['sushilzcdcvdzvzvzdvfzxdfvdvx" +
-            "'],'sort_order':1},{'id':2,'typeId':1,'label':'Father name',contant:['sushilgfbhfdghgbfgbcvbdfghdd'],'sort_order':2},{'id':3,'typeId':1,'label':'Number',contant:['sushilfghdfghdgfbhgbdfghdgdghsgsdfgdfgdfgdfhsdfhdf'],'sort_order':3},{'id':4,'typeId':4,'label':'Image Profile',contant:['http://www.clipartlord.com/wp-content/uploads/2014/08/doctor11.png','http://www.clipartlord.com/wp-content/uploads/2014/08/doctor11.png','http://www.clipartlord.com/wp-content/uploads/2014/08/doctor11.png'],'sort_order':4}]}";
+    private String contactDetails = "";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_show);
-        //setAdapterAddver();
         inti();
 
-        /*try{
-            JSONObject obj = new JSONObject(json);
-            createCustomViewer(obj);
-        }catch (JSONException ex){
-            ex.printStackTrace();
-        }*/
 
     }
 
@@ -66,6 +73,8 @@ public class Activity_ServiceProviderDetails_Show extends FragmentActivity {
         TextView txtHeader = (TextView) findViewById(R.id.txtHeader);
         txtHeader.setText("Details");
         ImageView imgBack = (ImageView) findViewById(R.id.imgBack);
+        ImageView imgShareProfile = (ImageView) findViewById(R.id.imgShareProfile);
+        imgShareProfile.setVisibility(View.VISIBLE);
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,6 +92,58 @@ public class Activity_ServiceProviderDetails_Show extends FragmentActivity {
                 Globals.call(Activity_ServiceProviderDetails_Show.this,contact);
             }
         });
+
+        imgShareProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               // shareClick();
+                initShareIntent();
+            }
+        });
+    }
+
+
+
+
+
+    private void initShareIntent(){
+
+        Dexter.withActivity(this)
+                .withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .withListener(new PermissionListener() {
+                    @Override public void onPermissionGranted(PermissionGrantedResponse response) {
+
+
+                        File f = new File(Environment.getExternalStorageDirectory()
+                                + File.separator + "iseva_bus.jpg");
+                        if (!f.exists()) {
+                            Bitmap icon = BitmapFactory.decodeResource(getResources(),
+                                    R.drawable.iseva_bus);
+                            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                            icon.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+                            try {
+                                f.createNewFile();
+                                FileOutputStream fo = new FileOutputStream(f);
+                                fo.write(bytes.toByteArray());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        Intent share = new Intent(Intent.ACTION_SEND);
+                        share.setType("image/jpeg");
+                        share.putExtra(Intent.EXTRA_TEXT, name+"\n\n"+contactDetails+"\n\n"+Globals.SHARE_APP_MSG + "\n " + Globals.SHARE_LINK_GENERIC);
+                        share.putExtra(Intent.EXTRA_STREAM,
+                                Uri.parse("file:///sdcard/iseva_bus.jpg"));
+                        startActivity(Intent.createChooser(share, "Share Image"));
+                    }
+                    @Override public void onPermissionDenied(PermissionDeniedResponse response) {
+
+                    }
+                    @Override public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+
+                    }
+                }).check();
     }
 
     /*private void callMerchant() {
@@ -273,10 +334,21 @@ public class Activity_ServiceProviderDetails_Show extends FragmentActivity {
                             location_map.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    Intent i = new Intent(Activity_ServiceProviderDetails_Show.this,Activity_location_show.class);
-                                    i.putExtra("destination_latitude",""+latitude);
-                                    i.putExtra("destination_longitude",""+longitude);
-                                    startActivity(i);
+
+
+                                    Dexter.withActivity(Activity_ServiceProviderDetails_Show.this)
+                                            .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                                            .withListener(new PermissionListener() {
+                                                @Override public void onPermissionGranted(PermissionGrantedResponse response) {
+                                                    Intent i = new Intent(Activity_ServiceProviderDetails_Show.this,Activity_location_show.class);
+                                                    i.putExtra("destination_latitude",""+latitude);
+                                                    i.putExtra("destination_longitude",""+longitude);
+                                                    startActivity(i);
+                                                }
+                                                @Override public void onPermissionDenied(PermissionDeniedResponse response) {/* ... */}
+                                                @Override public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {/* ... */}
+                                            }).check();
+
                                 }
                             });
                         }
@@ -288,7 +360,8 @@ public class Activity_ServiceProviderDetails_Show extends FragmentActivity {
                         } else {
                             linear.setVisibility(View.VISIBLE);
                             TextView txtDetails = (TextView) findViewById(R.id.txtContact);
-                            txtDetails.setText(obj.getString("contactdetails"));
+                            contactDetails = obj.getString("contactdetails");
+                            txtDetails.setText(contactDetails);
 
                             Linkify.addLinks(txtDetails, Linkify.ALL);
                         }

@@ -1420,6 +1420,7 @@ public class Activity_Home extends AppCompatActivity
 
         Intent i = new Intent(this, Activity_City_Choose.class);
         startActivity(i);
+        this.finish();
     }
 
 

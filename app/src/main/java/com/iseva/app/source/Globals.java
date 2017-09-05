@@ -8,6 +8,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import android.*;
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -51,6 +53,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 import com.squareup.picasso.LruCache;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
@@ -85,7 +93,7 @@ public class Globals {
     public static final String TEXT_CONNECTION_ERROR_HEADING = "Error in Connection";
     public static final String TEXT_CONNECTION_ERROR_DETAIL_TOAST ="Please check your internet connection and try again.";
 
-    public static final int IMAGELIMIT = 6;
+    public static final int IMAGELIMIT = 10;
 
 
 
@@ -177,16 +185,22 @@ public class Globals {
     static public String getdeviceId(Context context) {
         // GET DEVICE ID
         String deviceId = "";
-        try {
-            TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-            deviceId = telephonyManager.getDeviceId();
-            if (deviceId.equals("") && deviceId == null) {
+
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            try {
+                TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+                deviceId = telephonyManager.getDeviceId();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+
+         if (deviceId.equals("") || deviceId == null) {
                 deviceId = Settings.Secure.getString(context.getContentResolver(),
                         Settings.Secure.ANDROID_ID);
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+         }
+
         return deviceId;
     }
 
@@ -308,7 +322,7 @@ public class Globals {
                                                    Activity act, Boolean cancelable, String title) {
 
         if (mDialog == null) {
-            mDialog = new ProgressDialog(act, ProgressDialog.THEME_HOLO_LIGHT);
+            mDialog = new ProgressDialog(act);  //, ProgressDialog.THEME_HOLO_LIGHT
             mDialog.setTitle(title);
             mDialog.setMessage("Please wait for a moment...");
             mDialog.setCancelable(cancelable);
@@ -356,7 +370,7 @@ public class Globals {
         alertDialog.setTitle(title);
         alertDialog.setMessage(msg);
         alertDialog.setCancelable(isCancelable);
-        alertDialog.setIcon(android.R.drawable.ic_dialog_alert);
+        alertDialog.setIcon(R.drawable.dialog_icon);
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, positiveButtonText,
                 listnerPositive);
 
@@ -439,8 +453,29 @@ public class Globals {
 
 
     public static void call(final Context mContext,final String number) {
+
+        Dexter.withActivity((Activity) mContext)
+                .withPermission(Manifest.permission.CALL_PHONE)
+                .withListener(new PermissionListener() {
+                    @Override public void onPermissionGranted(PermissionGrantedResponse response) {
+                        initCall(mContext,number);
+
+                    }
+                    @Override public void onPermissionDenied(PermissionDeniedResponse response) {
+
+                    }
+                    @Override public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+
+                    }
+                }).check();
+
+
+    }
+
+
+    private static void initCall(final Context mContext,final String number){
         Globals.showAlertDialog(
-                "Alert",
+                "Call",
                 "Are you sure to call?",
                 mContext,
                 "Ok",

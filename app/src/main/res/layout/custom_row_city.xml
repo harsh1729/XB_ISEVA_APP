@@ -7,7 +7,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:background="@drawable/selecter_home_category">
+        android:background="@color/white"
+        >
 
         <TextView
             android:id="@+id/txtcityName"

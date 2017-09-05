@@ -1,5 +1,6 @@
 package com.iseva.app.source;
 
+import android.*;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -36,6 +37,11 @@ import com.android.volley.Response;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 
 import org.json.JSONArray;
@@ -49,6 +55,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -350,60 +357,86 @@ public class Activity_Add_New_BusinessExtra extends Activity {
         startActivity(i);
     }
 
-    private void selectImage(boolean isRemove, final int keyRemove, final LinearLayout linear) {
-        final CharSequence[] items = {"Take Photo", "Choose from Library"};
-        final CharSequence[] itemsRemove = {"Take Photo", "Choose from Library","Remove"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Add Photo!");
+    private void selectImage(final boolean isRemove, final int keyRemove, final LinearLayout linear) {
 
-        if(!isRemove) {
-            builder.setItems(items, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int item) {
-                    if (items[item].equals("Take Photo")) {
-                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                         startActivityForResult(intent, REQUEST_CAMERA);
-                    } else if (items[item].equals("Choose from Library")) {
-                        Intent intent = new Intent(
-                                Intent.ACTION_PICK,
-                                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        intent.setType("image/*");
 
-                        startActivityForResult(
-                                Intent.createChooser(intent, "Select File"),
-                                SELECT_FILE);
-                    }
-                }
-            });
-            builder.show();
-        }else{
-            builder.setItems(itemsRemove, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int item) {
-                    if (itemsRemove[item].equals("Take Photo")) {
-                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(intent, REQUEST_CAMERA);
-                    } else if (itemsRemove[item].equals("Choose from Library")) {
-                        Intent intent = new Intent(
-                                Intent.ACTION_PICK,
-                                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        intent.setType("image/*");
-                        startActivityForResult(
-                                Intent.createChooser(intent, "Select File"),
-                                SELECT_FILE);
-                    }else if(itemsRemove[item].equals("Remove")){
-                       linear.removeView(selectedImageView);
-                        offersImages.remove(keyRemove);
-                        try{
-                          imageid.remove(keyRemove);
-                        }catch (Exception e){
 
+        Dexter.withActivity(this)
+                .withPermissions(
+                        android.Manifest.permission.CAMERA,
+                        android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ).withListener(new MultiplePermissionsListener() {
+
+
+            @Override
+            public void onPermissionsChecked(MultiplePermissionsReport report) {
+
+                final CharSequence[] items = {"Take Photo", "Choose from Library"};
+                final CharSequence[] itemsRemove = {"Take Photo", "Choose from Library","Remove"};
+                AlertDialog.Builder builder = new AlertDialog.Builder(Activity_Add_New_BusinessExtra.this);
+                builder.setTitle("Add Photo!");
+
+                if(!isRemove) {
+                    builder.setItems(items, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int item) {
+                            if (items[item].equals("Take Photo")) {
+                                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                startActivityForResult(intent, REQUEST_CAMERA);
+                            } else if (items[item].equals("Choose from Library")) {
+                                Intent intent = new Intent(
+                                        Intent.ACTION_PICK,
+                                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                intent.setType("image/*");
+
+                                startActivityForResult(
+                                        Intent.createChooser(intent, "Select File"),
+                                        SELECT_FILE);
+                            }
                         }
-                    }
+                    });
+                    builder.show();
+                }else{
+                    builder.setItems(itemsRemove, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int item) {
+                            if (itemsRemove[item].equals("Take Photo")) {
+                                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                startActivityForResult(intent, REQUEST_CAMERA);
+                            } else if (itemsRemove[item].equals("Choose from Library")) {
+                                Intent intent = new Intent(
+                                        Intent.ACTION_PICK,
+                                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                intent.setType("image/*");
+                                startActivityForResult(
+                                        Intent.createChooser(intent, "Select File"),
+                                        SELECT_FILE);
+                            }else if(itemsRemove[item].equals("Remove")){
+                                linear.removeView(selectedImageView);
+                                offersImages.remove(keyRemove);
+                                try{
+                                    imageid.remove(keyRemove);
+                                }catch (Exception e){
+
+                                }
+                            }
+                        }
+                    });
+                    builder.show();
                 }
-            });
-            builder.show();
-        }
+
+            }
+            @Override public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+
+
+
+
+            }
+
+        }).check();
+
+
     }
 
     private void openDialog() {

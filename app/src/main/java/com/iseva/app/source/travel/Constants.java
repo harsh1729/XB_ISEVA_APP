@@ -61,6 +61,7 @@ public class Constants {
 
         // NEW API
         public static String BASE_URL = "http://api.iamgds.com/ota/";
+
         public static String BASE_TRANSACTION_URL = "http://tranapi.iamgds.com/ota/";
 
         public static final String GET_CITY_LIST = BASE_URL + "CityList";
@@ -69,7 +70,11 @@ public class Constants {
 
         public static final String GET_CHART = BASE_URL + "Chart";
 
+        public static final String GET_IS_CANCELLABLE = BASE_TRANSACTION_URL + "IsCancellable";
 
+        public static final String GET_BOOK_DETAILS = BASE_TRANSACTION_URL + "BookingDetails";
+
+        public static final String GET_CANCEL_BOOKED_TICKET = BASE_TRANSACTION_URL + "CancelSeats";
 
     }
     public class URL_XB {

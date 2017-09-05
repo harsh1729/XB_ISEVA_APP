@@ -51,7 +51,7 @@ public class Activity_location_choose extends FragmentActivity implements Locati
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location_choose);
         init();
-        set_on_click_listner();
+
 
 
     }
@@ -74,6 +74,8 @@ public class Activity_location_choose extends FragmentActivity implements Locati
         }
         googleMap.setMyLocationEnabled(true);
         googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+
+        set_on_click_listner();
     }
 
     @Override

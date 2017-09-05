@@ -32,7 +32,7 @@ import java.util.Map;
 public class Activity_City_Choose extends Activity {
 
     private Custom_Adapter_City adapter = null;
-   private ProgressDialog pd = null;
+     private ProgressDialog pd = null;
 
 
     @Override
@@ -204,7 +204,7 @@ public class Activity_City_Choose extends Activity {
             if(obj.has("success")){
                 adapter.mapCity = null;
                 adapter = null;
-                Intent i = new Intent(this, Activity_Home.class);
+                Intent i = new Intent(this, Activity_first.class);
                 startActivity(i);
                 this.finish();
             }else{

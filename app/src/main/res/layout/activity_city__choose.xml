@@ -48,6 +48,10 @@
         <ListView
             android:id="@+id/ListViewCity"
            android:layout_width="match_parent"
+            android:dividerHeight="1dp"
+            android:footerDividersEnabled="false"
+            android:headerDividersEnabled="true"
+            android:divider="@color/app_blue"
            android:layout_height="wrap_content">
           </ListView>
 

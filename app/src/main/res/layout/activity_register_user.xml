@@ -40,6 +40,7 @@
                          android:layout_weight="1.0"
                          android:textSize="@dimen/txt_app_labels_normal"
                          android:typeface="serif"
+                         android:textColor="@color/black"
                          android:layout_height="wrap_content"
                          android:text="Name" />
 
@@ -132,6 +133,7 @@
                          android:layout_weight="1.0"
                          android:textSize="@dimen/txt_app_labels_normal"
                          android:typeface="serif"
+                         android:textColor="@color/black"
                          android:layout_height="wrap_content"
                          android:text="Number" />
 
@@ -164,6 +166,7 @@
                          android:layout_weight="1.0"
                          android:textSize="@dimen/txt_app_labels_normal"
                          android:typeface="serif"
+                         android:textColor="@color/black"
                          android:layout_height="wrap_content"
                          android:text="Username" />
 
@@ -195,6 +198,7 @@
                          android:layout_weight="1.0"
                          android:textSize="@dimen/txt_app_labels_normal"
                          android:typeface="serif"
+                         android:textColor="@color/black"
                          android:layout_height="wrap_content"
                          android:text="Password" />
 
@@ -233,6 +237,7 @@
                      android:layout_height="wrap_content"
                      android:text="Show"
                      android:typeface="serif"
+                     android:textColor="@color/black"
                      android:id="@+id/checkBoxPassword"
                      android:layout_marginRight="5dp"
                      android:layout_gravity="right" />
@@ -252,6 +257,7 @@
                          android:layout_weight="1.0"
                          android:textSize="@dimen/txt_app_labels_normal"
                          android:typeface="serif"
+                         android:textColor="@color/black"
                          android:layout_height="wrap_content"
                          android:text="Promo Code" />
 
@@ -277,6 +283,7 @@
                      android:layout_height="wrap_content"
                      android:text="Have promo code"
                      android:typeface="serif"
+                     android:textColor="@color/black"
                      android:id="@+id/checkBoxPromoCode" />
 
                  <!--  <CheckBox

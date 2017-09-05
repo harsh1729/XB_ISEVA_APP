@@ -3,7 +3,7 @@ package com.iseva.app.source;
 import java.util.ArrayList;
 
 
-
+import com.jsibbold.zoomage.ZoomageView;
 import com.squareup.picasso.Picasso;
 
 import android.app.Activity;
@@ -41,14 +41,14 @@ public class Custom_adapterImage_Display extends PagerAdapter {
 	     
 	    @Override
 	    public Object instantiateItem(ViewGroup container, int position) {
-	    	Custom_touchImageView imgDisplay;
+			ZoomageView imgDisplay;
 	      View viewLayout = null;
 	        inflater = (LayoutInflater) _activity
 	                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	        viewLayout = inflater.inflate(R.layout.custom_show_image, container,
 	                false);
 	        
-	        imgDisplay = (Custom_touchImageView) viewLayout.findViewById(R.id.imgDisplay);
+	        imgDisplay = (ZoomageView) viewLayout.findViewById(R.id.ZoomageView);
 	       
 	         
 	       
