@@ -3,10 +3,14 @@ package com.iseva.app.source.Fragments;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import com.iseva.app.source.R;
 import com.iseva.app.source.Realm_objets.Bus_routes_detail;
 import com.iseva.app.source.Realm_objets.Filter;
 import com.iseva.app.source.travel.Activity_Bus_Routes;
 import com.iseva.app.source.travel.Constants.BUS_TYPE;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import io.realm.Realm;
 import io.realm.RealmQuery;
@@ -17,7 +21,8 @@ public class Fragment_Parent extends Fragment {
 
     Realm My_realm;
     RealmResults<Bus_routes_detail> rout;
-
+    int all_routes_count= 0;
+    ArrayList<HashMap<String, String>> routes_hashmap;
 
     public Fragment_Parent() {
 
@@ -111,5 +116,38 @@ public class Fragment_Parent extends Fragment {
     }
 
 
+    protected  void setRoutesHashMap(){
+
+        routes_hashmap = new ArrayList<HashMap<String, String>>();
+        all_routes_count = 0;
+        if(!rout.isEmpty())
+        {
+
+            for (int i=0;i <rout.size();i++)
+            {
+                HashMap<String, String> single_map = new HashMap<String, String>();
+                single_map.put("bus_id",Integer.toString(rout.get(i).getRouteBusId()));
+                single_map.put("company_id",Integer.toString(rout.get(i).getCompanyId()));
+                single_map.put("company_name",rout.get(i).getCompanyName());
+                single_map.put("fare", getResources().getString(R.string.Rs)+" "+Double.toString(rout.get(i).getFare()));
+                single_map.put("fare_offer",getResources().getString(R.string.Rs)+" "+Double.toString(rout.get(i).getFare_after_offer()));
+                single_map.put("bus_label",rout.get(i).getBusLabel());
+                single_map.put("time",rout.get(i).getDepTime()+" - "+rout.get(i).getArrTime());
+                single_map.put("Availabel_Seats",""+rout.get(i).getAvailableSeats());
+                single_map.put("duration",rout.get(i).getDuration());
+                single_map.put("timeDep",rout.get(i).getDepTime());
+                single_map.put("timeArr",rout.get(i).getArrTime());
+                single_map.put("dateTimeDep",rout.get(i).getDepDateTime());
+                single_map.put("dateTimeArr",rout.get(i).getArrDateTime());
+                single_map.put("isAC",String.valueOf(rout.get(i).getHasAC()));
+                single_map.put("commPCT",Double.toString(rout.get(i).getCommPCT()));
+
+                routes_hashmap.add(single_map);
+
+            }
+
+            all_routes_count = rout.size();
+        }
+    }
 
 }

@@ -386,7 +386,6 @@ public class Activity_Passenger_Details extends Activity {
                 {
                     seattype = "Seater";
                 }
-                String is_seatac = Boolean.toString(Selected_seat_list.get(k).getIsAc());
 
                 String gender = "";
                 RadioGroup rg = (RadioGroup)v.findViewWithTag("radio_group"+(k+1));
@@ -441,14 +440,6 @@ public class Activity_Passenger_Details extends Activity {
                 Pro_seatType.setValue(seattype);
                 Pro_seatType.setType(String.class);
                 passenger.addProperty(Pro_seatType);
-
-                PropertyInfo Pro_isacseat =  new PropertyInfo();
-                Pro_isacseat.setName("IsAcSeat");
-                Pro_isacseat.setValue(is_seatac);
-                Pro_isacseat.setType(Boolean.class);
-                passenger.addProperty(Pro_isacseat);
-
-
 
 
                 passengers_object.addSoapObject(passenger);

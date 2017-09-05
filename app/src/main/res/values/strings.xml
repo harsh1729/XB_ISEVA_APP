@@ -82,7 +82,15 @@
     <!-- bus routes screen -->
 
     <string name="bus_id">bus_id</string>
+    <string name="bus_label">bus_label</string>
+    <string name="arr_time">arr_time</string>
+    <string name="arr_date_time">arr_date_time</string>
+    <string name="dep_time">dep_time</string>
+    <string name="dep_date_time">dep_date_time</string>
+    <string name="company_name">company_name</string>
+    <string name="commition_percentage">comm_pct</string>
 
+    <string name="is_ac">is_ac</string>
 
     <!--filter screen strings start-->
     <string name="no_filter_selectet">No filter selected</string>

@@ -11,7 +11,6 @@ public class Selected_Seats extends RealmObject {
     private   String SeatNo;
     private  String Gender;
     private    int Deck;
-    private   Boolean IsAc;
     private    Boolean IsSleeper;
     private    float Fare;
     private     float Fare_after_offer;
@@ -30,10 +29,6 @@ public class Selected_Seats extends RealmObject {
        return this.Deck;
     }
 
-    public Boolean getIsAc()
-    {
-        return this.IsAc;
-    }
     public Boolean getIsSleeper()
     {
         return this.IsSleeper;
@@ -62,10 +57,6 @@ public class Selected_Seats extends RealmObject {
         this.Deck = deck;
     }
 
-    public void setIsAc(Boolean isAc)
-    {
-        this.IsAc = isAc;
-    }
     public void setIsSleeper(Boolean isSleeper)
     {
         this.IsSleeper = isSleeper;

@@ -18,13 +18,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.iseva.app.source.R;
-import com.iseva.app.source.Realm_objets.Seat_details;
+import com.iseva.app.source.Realm_objets.Realm_Seat_Details;
 import com.iseva.app.source.Realm_objets.Selected_Seats;
 import com.iseva.app.source.travel.Activity_Select_Seats;
 import com.iseva.app.source.travel.Constants;
-
-import java.util.ArrayList;
-import java.util.Collections;
+import com.iseva.app.source.travel.Constants.SEAT_DETAILS;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -45,7 +43,7 @@ public class Fragment_Deck2 extends Fragment {
 
     int fix_margin_left = 0;
     int fix_margin_right =0;
-    int max_col = 0;
+    public int max_col = 0;
     int Seat_height;
     int Seat_width;
     int all_col;
@@ -55,7 +53,7 @@ public class Fragment_Deck2 extends Fragment {
     int margin_top_seat = 0;
     int fixtopmargin = 30;
 
-    ArrayList<Integer> colm_numbers;
+   // ArrayList<Integer> colm_numbers;
 
     TextView Seat_view;
     FrameLayout.LayoutParams params;
@@ -70,37 +68,25 @@ public class Fragment_Deck2 extends Fragment {
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
 
-        colm_numbers = new ArrayList<Integer>();
-        RealmResults<Seat_details> all_seats = My_realm.where(Seat_details.class).equalTo("Deck",2).notEqualTo("SeatNo",".DOOR").findAll();
+//        colm_numbers = new ArrayList<Integer>();
+        RealmResults<Realm_Seat_Details> all_seats = My_realm.where(Realm_Seat_Details.class).equalTo("Deck",2).notEqualTo("SeatNo",".DOOR").findAll();
 
 
 
-        for(int l=0;l<all_seats.size();l++)
-        {
+//        for(int l=0;l<all_seats.size();l++)
+//        {
+//
+//            if(!colm_numbers.contains(all_seats.get(l).getCol()))
+//                {
+//                    colm_numbers.add(all_seats.get(l).getCol());
+//                }
+//            }
+//
+//        Collections.sort(colm_numbers);
 
-            if(all_seats.get(l).getCol() == 0 && all_seats.get(l).getIsAisle() == true)
-            {
+//        colm_numbers.add((colm_numbers.size()/2),99);
 
-            }
-            else
-            {
-                if(!colm_numbers.contains(all_seats.get(l).getCol()))
-                {
-                    colm_numbers.add(all_seats.get(l).getCol());
-                }
-            }
-
-
-
-
-
-
-
-        }
-
-        Collections.sort(colm_numbers);
-        colm_numbers.add((colm_numbers.size()/2),99);
-        max_col = colm_numbers.size();
+//        max_col = colm_numbers.size();
         Log.e("vikas all seat=",""+all_seats.size());
         Log.e("vikas max col=",""+max_col);
 
@@ -124,13 +110,8 @@ public class Fragment_Deck2 extends Fragment {
         for(int i=0;i < all_seats.size(); i++)
         {
 
-            for (int j= 0;j<colm_numbers.size();j++)
-            {
-
-                if(all_seats.get(i).getCol() == colm_numbers.get(j))
-                {
                     int row = all_seats.get(i).getRow();
-                    int col = j;
+                    int col = all_seats.get(i).getCol();
 
                     final int height = all_seats.get(i).getHeight();
                     final int width = all_seats.get(i).getWidth();
@@ -166,11 +147,10 @@ public class Fragment_Deck2 extends Fragment {
                     Seat_view.setTag(R.string.Gender,all_seats.get(i).getGender());
                     Seat_view.setTag(R.string.Fare,all_seats.get(i).getFare());
                     Seat_view.setTag(R.string.Offer_Fare,all_seats.get(i).getFare_after_offer());
-                    Seat_view.setTag(R.string.IsAc,all_seats.get(i).getIsAc());
                     Seat_view.setTag(R.string.IsSleeper,all_seats.get(i).getIsSleeper());
 
 
-                    if(all_seats.get(i).getIsAvailable() && all_seats.get(i).getGender().equals("anyType{}") || all_seats.get(i).getIsAvailable() && all_seats.get(i).getGender().equals("M") || all_seats.get(i).getIsAvailable() && all_seats.get(i).getGender().equals(""))
+                    if(all_seats.get(i).getIsAvailable() &&  (all_seats.get(i).getGender() == SEAT_DETAILS.VALUE_GENDER_ALL || all_seats.get(i).getGender() == SEAT_DETAILS.VALUE_GENDER_MALE))
                     {
                         if(height == 2 && width == 1)
                         {
@@ -226,7 +206,6 @@ public class Fragment_Deck2 extends Fragment {
                                         selected_seats.setGender(v.getTag(R.string.Gender).toString());
                                         selected_seats.setFare(Float.parseFloat(v.getTag(R.string.Fare).toString()));
                                         selected_seats.setFare_after_offer(Float.parseFloat(v.getTag(R.string.Offer_Fare).toString()));
-                                        selected_seats.setIsAc(Boolean.parseBoolean(v.getTag(R.string.IsAc).toString()));
                                         selected_seats.setIsSleeper(Boolean.parseBoolean(v.getTag(R.string.IsSleeper).toString()));
                                         My_realm.commitTransaction();
 
@@ -263,15 +242,10 @@ public class Fragment_Deck2 extends Fragment {
 
                             }
                         });
-                        if(all_seats.get(i).getSeatNo().equals("anyType{}") || all_seats.get(i).getIsAisle().equals("true"))
-                        {
-
-                            Seat_view.setVisibility(View.GONE);
-                        }
 
                         layout.addView(Seat_view);
                     }
-                    else if(!all_seats.get(i).getIsAvailable() && all_seats.get(i).getGender().equals("anyType{}") || !all_seats.get(i).getIsAvailable() && all_seats.get(i).getGender().equals("M") || !all_seats.get(i).getIsAvailable() && all_seats.get(i).getGender().equals(""))
+                    else if(!all_seats.get(i).getIsAvailable() && (all_seats.get(i).getGender() == SEAT_DETAILS.VALUE_GENDER_ALL || all_seats.get(i).getGender() == SEAT_DETAILS.VALUE_GENDER_MALE))
                     {
 
                         if(height == 2 && width == 1)
@@ -287,14 +261,10 @@ public class Fragment_Deck2 extends Fragment {
                             Seat_view.setBackgroundResource(R.drawable.seat_layout_booked_seat_port);
                         }
 
-                        if(all_seats.get(i).getSeatNo().equals("anyType{}") || all_seats.get(i).getIsAisle().equals("true"))
-                        {
 
-                            Seat_view.setVisibility(View.GONE);
-                        }
                         layout.addView(Seat_view);
                     }
-                    else if(all_seats.get(i).getIsAvailable() && all_seats.get(i).getGender().equals("F"))
+                    else if(all_seats.get(i).getIsAvailable() && all_seats.get(i).getGender() == SEAT_DETAILS.VALUE_GENDER_FEMALE)
                     {
                         if(height == 2 && width == 1)
                         {
@@ -346,7 +316,6 @@ public class Fragment_Deck2 extends Fragment {
                                         selected_seats.setGender(v.getTag(R.string.Gender).toString());
                                         selected_seats.setFare(Float.parseFloat(v.getTag(R.string.Fare).toString()));
                                         selected_seats.setFare_after_offer(Float.parseFloat(v.getTag(R.string.Offer_Fare).toString()));
-                                        selected_seats.setIsAc(Boolean.parseBoolean(v.getTag(R.string.IsAc).toString()));
                                         selected_seats.setIsSleeper(Boolean.parseBoolean(v.getTag(R.string.IsSleeper).toString()));
                                         My_realm.commitTransaction();
 
@@ -385,7 +354,7 @@ public class Fragment_Deck2 extends Fragment {
 
                         layout.addView(Seat_view);
                     }
-                    else if(!all_seats.get(i).getIsAvailable() && all_seats.get(i).getGender().equals("F"))
+                    else if(!all_seats.get(i).getIsAvailable() && all_seats.get(i).getGender() == SEAT_DETAILS.VALUE_GENDER_FEMALE)
                     {
                         if(height == 2 && width == 1)
                         {
@@ -403,19 +372,6 @@ public class Fragment_Deck2 extends Fragment {
                         layout.addView(Seat_view);
                     }
 
-
-                }
-                else
-                {
-
-                }
-
-
-
-
-
-
-            }
 
 
 

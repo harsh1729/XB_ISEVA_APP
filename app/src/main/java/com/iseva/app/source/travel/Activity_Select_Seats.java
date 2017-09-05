@@ -27,9 +27,11 @@ import com.iseva.app.source.Adapter.PagerAdapter_Select_Seat;
 import com.iseva.app.source.Custom_VolleyAppController;
 import com.iseva.app.source.Custom_VolleyObjectRequest;
 import com.iseva.app.source.R;
-import com.iseva.app.source.Realm_objets.Seat_details;
+import com.iseva.app.source.Realm_objets.Pickup_Place_Detail;
+import com.iseva.app.source.Realm_objets.Realm_Seat_Details;
 import com.iseva.app.source.Realm_objets.Selected_Seats;
 import com.iseva.app.source.travel.Constants.JSON_KEYS;
+import com.iseva.app.source.travel.Constants.SEAT_DETAILS;
 import com.iseva.app.source.travel.Constants.URL_TY;
 import com.iseva.app.source.travel.Global_Travel.TRAVEL_DATA;
 
@@ -60,8 +62,14 @@ public class Activity_Select_Seats extends Activity_Parent_AppCompat implements 
 
     int bus_id;
     int count;
-    int maxrow;
-    int maxcol;
+
+    double comm_pct = 0.0;
+
+    int max_row_deck_1 = 0;
+    int max_col_deck_1 = 0;
+
+    int max_row_deck_2 = 0;
+    int max_col_deck_2 = 0;
 
     String response;
     String message;
@@ -93,7 +101,16 @@ public class Activity_Select_Seats extends Activity_Parent_AppCompat implements 
 
         My_realm = Realm.getDefaultInstance();
         Intent i = getIntent();
-        bus_id = Integer.parseInt(i.getStringExtra("bus_id"));
+
+        try {
+
+            bus_id = Integer.parseInt(i.getStringExtra("bus_id"));
+            comm_pct = Double.parseDouble(i.getStringExtra("comm_pct"));
+
+        }catch (Exception ex){
+
+            //Exc
+        }
 
 
         Total_Fare_tv = (TextView) findViewById(R.id.Total_Fare);
@@ -261,11 +278,14 @@ public class Activity_Select_Seats extends Activity_Parent_AppCompat implements 
 
         My_realm.beginTransaction();
 
-        RealmResults<Seat_details> deck2_seat = My_realm.where(Seat_details.class).equalTo("Deck", 2).findAll();
+        RealmResults<Realm_Seat_Details> deck2_seat = My_realm.where(Realm_Seat_Details.class).equalTo("Deck", 2).findAll();
         My_realm.commitTransaction();
         if (deck2_seat.size() == 0) {
             ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager_select_seat);
-            viewPager.setAdapter(new PagerAdapter_Select_Seat(getSupportFragmentManager(), 1));
+
+            PagerAdapter_Select_Seat adap = new PagerAdapter_Select_Seat(getSupportFragmentManager(), 1,max_col_deck_1,max_col_deck_2);
+
+            viewPager.setAdapter(adap);
 
             tabsStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs_select_seat);
 
@@ -274,7 +294,7 @@ public class Activity_Select_Seats extends Activity_Parent_AppCompat implements 
         } else {
 
             ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager_select_seat);
-            viewPager.setAdapter(new PagerAdapter_Select_Seat(getSupportFragmentManager(), 2));
+            viewPager.setAdapter(new PagerAdapter_Select_Seat(getSupportFragmentManager(), 2,max_col_deck_1,max_col_deck_2));
 
             tabsStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs_select_seat);
 
@@ -315,10 +335,12 @@ public class Activity_Select_Seats extends Activity_Parent_AppCompat implements 
                 Log.e("vikas", "deck2 not 0");
             }
 
-            setCancellationTerms();
+
 
 
         }
+
+        setCancellationTerms();
 
     }
 
@@ -327,7 +349,7 @@ public class Activity_Select_Seats extends Activity_Parent_AppCompat implements 
         loader_layout.setVisibility(View.GONE);
         LinearLayout cancellation_text = (LinearLayout) findViewById(R.id.cancellation_text);
         try {
-            for (int j = 0; j < cancellation_Policy_data.length() - 1; j++) {
+            for (int j = 0; j < cancellation_Policy_data.length(); j++) {
 
 
                 LinearLayout divider = new LinearLayout(Activity_Select_Seats.this);
@@ -358,10 +380,20 @@ public class Activity_Select_Seats extends Activity_Parent_AppCompat implements 
                 tv1.setLayoutParams(param);
                 tv2.setLayoutParams(param1);
 
-                tv1.setText("Between " + cancellation_Policy_data.getJSONObject(j).getString("condition") + " Hrs. to " + cancellation_Policy_data.getJSONObject(j+1).getString("condition") + "Hrs.");
+                if( j == cancellation_Policy_data.length() - 1){ //Last Element
+
+                    tv1.setText("After " + cancellation_Policy_data.getJSONObject(j).getString("condition") + " Hrs. ");
 
 
-                int percentage_int = Integer.parseInt(cancellation_Policy_data.getJSONObject(j).getString("percentage"));
+                }else{
+
+                    tv1.setText("Between " + cancellation_Policy_data.getJSONObject(j).getString("condition") + " Hrs. to " + cancellation_Policy_data.getJSONObject(j+1).getString("condition") + "Hrs.");
+
+                }
+
+
+
+                int percentage_int = Integer.parseInt(cancellation_Policy_data.getJSONObject(j).getString("percentage")+"%");
 
                 tv2.setText("" + (100 - percentage_int));
 
@@ -448,16 +480,99 @@ public class Activity_Select_Seats extends Activity_Parent_AppCompat implements 
 
                                 }
 
+                                Realm thread_realm = Realm.getDefaultInstance();
+
+                                thread_realm.beginTransaction();
+                                thread_realm.delete(Selected_Seats.class);
+                                thread_realm.delete(Pickup_Place_Detail.class);
+                                thread_realm.delete(Realm_Seat_Details.class);
+                                thread_realm.commitTransaction();
+
+
+                                try{
+
+                                    //TODO : Avail Seats check and Drop, Pick
+                                    
+                                    JSONObject objJsonL1_ChartLayout =  objJsonData.getJSONObject("ChartLayout");
+                                    JSONObject objJsonL1_ChartSeats =  objJsonData.getJSONObject("ChartSeats");
+                                    JSONObject objJsonL1_SeatsStatus =  objJsonData.getJSONObject("SeatsStatus");
+                                    JSONObject objJsonL1_AvailSeats =  objJsonData.getJSONObject("AvailSeats");
+                                    JSONArray objJsonL1_Dropoffs =  objJsonData.getJSONArray("Dropoffs");
+                                    JSONArray objJsonL1_Pickups =  objJsonData.getJSONArray("Pickups");
+
+                                    JSONObject objJsonL2_Layout =  objJsonL1_ChartLayout.getJSONObject("Layout");
+                                    JSONObject objJsonL2_Info =  objJsonL1_ChartLayout.getJSONObject("Info");
+
+                                    JSONArray arrJsonL2_SeatNos = objJsonL1_ChartSeats.getJSONArray("Seats");
+
+                                    JSONArray arrJsonL2_Fares = objJsonL1_SeatsStatus.getJSONArray("Fares");
+
+                                    JSONArray arrJsonL2_Status = objJsonL1_SeatsStatus.getJSONArray("Status");
+
+
+                                    if(objJsonL2_Info.has("Lower")){
+
+                                        JSONObject objJsonL3_InfoLower =  objJsonL2_Info.getJSONObject("Lower");
+
+                                        max_col_deck_1 = objJsonL3_InfoLower.getInt("MaxCols");
+                                        max_row_deck_1 = objJsonL3_InfoLower.getInt("MaxRows");
+                                    }
+
+                                    if(objJsonL2_Info.has("Upper")){
+
+                                        JSONObject objJsonL3_InfoUpper =  objJsonL2_Info.getJSONObject("Upper");
+
+                                        max_col_deck_2 = objJsonL3_InfoUpper.getInt("MaxCols");
+                                        max_row_deck_2 = objJsonL3_InfoUpper.getInt("MaxRows");
+                                    }
+
+
+
+
+
+                                    thread_realm.beginTransaction();
+
+                                    if (objJsonL2_Layout.has("Lower")) {
+
+                                        JSONArray arrJsonL3_LowerDeckSeats = objJsonL2_Layout.getJSONArray("Lower");
+
+                                        setSeatLayout(SEAT_DETAILS.VALUE_DECK_1, arrJsonL3_LowerDeckSeats, arrJsonL2_SeatNos, arrJsonL2_Status, arrJsonL2_Fares, thread_realm);
+
+
+                                    }
+
+                                    if (objJsonL2_Layout.has("Upper")) {
+
+                                        JSONArray arrJsonL3_UpperDeckSeats = objJsonL2_Layout.getJSONArray("Upper");
+
+                                        setSeatLayout(SEAT_DETAILS.VALUE_DECK_2, arrJsonL3_UpperDeckSeats, arrJsonL2_SeatNos, arrJsonL2_Status, arrJsonL2_Fares, thread_realm);
+
+
+                                    }
+
+
+                                    thread_realm.commitTransaction();
+
+
+
+                                }catch (Exception ex){
+
+                                }
+
 
                             }
 
+
+
+                            set_dynamic_data();
 
                         } else {
 
                             callAlertBox(getResources().getString(R.string.server_error_title), getResources().getString(R.string.server_error_message_try_again));
                         }
 
-                        setCancellationTerms();
+
+
                     } catch (JSONException e) {
 
                         callAlertBox(getResources().getString(R.string.server_error_title), getResources().getString(R.string.server_error_message_try_again));
@@ -495,6 +610,118 @@ public class Activity_Select_Seats extends Activity_Parent_AppCompat implements 
             ex.printStackTrace();
 
         }
+    }
+
+
+    private void setSeatLayout(int deck, JSONArray arrJsonL3_DeckSeats , JSONArray arrJsonL2_SeatNos , JSONArray arrJsonL2_Status ,JSONArray arrJsonL2_Fares , Realm thread_realm ){
+
+        for (int i = 0; i < arrJsonL3_DeckSeats.length() ; i++){
+
+            try {
+                JSONArray arrJsonL4_Seat = arrJsonL3_DeckSeats.getJSONArray(i);
+                Realm_Seat_Details seat_details = thread_realm.createObject(Realm_Seat_Details.class);
+
+                seat_details.setRow(arrJsonL4_Seat.getInt(SEAT_DETAILS.INDEX_SEAT_LAYOUT_ROW));
+                seat_details.setCol(arrJsonL4_Seat.getInt(SEAT_DETAILS.INDEX_SEAT_LAYOUT_COL));
+                seat_details.setHeight(arrJsonL4_Seat.getInt(SEAT_DETAILS.INDEX_SEAT_LAYOUT_HEIGHT));
+                seat_details.setWidth(arrJsonL4_Seat.getInt(SEAT_DETAILS.INDEX_SEAT_LAYOUT_WIDTH));
+
+                if (arrJsonL2_SeatNos.length() > arrJsonL4_Seat.getInt(SEAT_DETAILS.INDEX_SEAT_LAYOUT_SEQ_NO)) {
+
+                    seat_details.setSeatNo(arrJsonL2_SeatNos.getString(arrJsonL4_Seat.getInt(SEAT_DETAILS.INDEX_SEAT_LAYOUT_SEQ_NO)));
+                } else {
+
+                    seat_details.setSeatNo(arrJsonL4_Seat.getInt(SEAT_DETAILS.INDEX_SEAT_LAYOUT_SEQ_NO) + "");
+                }
+
+                int seatType = arrJsonL4_Seat.getInt(SEAT_DETAILS.INDEX_SEAT_LAYOUT_SEAT_TYPE);
+
+                boolean isSleeper = false;
+                switch (seatType) {
+
+                    case SEAT_DETAILS.VALUE_SEAT_TYPE_SEATING:
+                        isSleeper = false;
+                        break;
+
+                    case SEAT_DETAILS.VALUE_SEAT_TYPE_SEMI_SLEEPER:
+                        isSleeper = false;
+                        break;
+
+                    case SEAT_DETAILS.VALUE_SEAT_TYPE_SLEEPER:
+                        isSleeper = true;
+                        break;
+
+                }
+
+
+                int gender = SEAT_DETAILS.VALUE_GENDER_ALL;
+                boolean isAvl = false;
+                int seatStatus = arrJsonL2_Status.getInt(arrJsonL4_Seat.getInt(SEAT_DETAILS.INDEX_SEAT_LAYOUT_SEQ_NO));
+
+                switch (seatStatus) {
+
+                    case SEAT_DETAILS.VALUE_SEAT_STATUS_AVL_FOR_ALL:
+
+                        gender = SEAT_DETAILS.VALUE_GENDER_ALL;
+                        isAvl = true;
+                        break;
+
+                    case SEAT_DETAILS.VALUE_SEAT_STATUS_AVL_FOR_FEMALE:
+
+                        gender = SEAT_DETAILS.VALUE_GENDER_FEMALE;
+                        isAvl = true;
+                        break;
+
+                    case SEAT_DETAILS.VALUE_SEAT_STATUS_AVL_FOR_MALE:
+
+                        gender = SEAT_DETAILS.VALUE_GENDER_MALE;
+                        isAvl = true;
+                        break;
+
+                    case SEAT_DETAILS.VALUE_SEAT_STATUS_NOT_AVL:
+
+                        gender = SEAT_DETAILS.VALUE_GENDER_ALL;
+                        isAvl = false;
+                        break;
+
+                    case SEAT_DETAILS.VALUE_SEAT_STATUS_BOOKED_BY_FEMALE:
+                        gender = SEAT_DETAILS.VALUE_GENDER_FEMALE;
+                        isAvl = false;
+
+                        break;
+
+                    case SEAT_DETAILS.VALUE_SEAT_STATUS_BOOKED_BY_MALE:
+
+                        gender = SEAT_DETAILS.VALUE_GENDER_MALE;
+                        isAvl = false;
+                        break;
+
+                }
+
+
+                int total_fare = 0;
+
+                JSONArray arrJsonFaresForSeat = arrJsonL2_Fares.getJSONArray(SEAT_DETAILS.INDEX_SEAT_LAYOUT_SEQ_NO);
+
+                int totalFare = arrJsonFaresForSeat.getInt(SEAT_DETAILS.INDEX_FARE_TOTAL);
+
+                double after_offer_seat_fare = Global_Travel.getFareAfterDiscount((double) totalFare, comm_pct);
+
+                seat_details.setGender(gender);
+                seat_details.setDeck(deck);
+
+                seat_details.setIsSleeper(isSleeper);
+                seat_details.setIsAvailable(isAvl);
+                seat_details.setFare(totalFare);
+                seat_details.setFare_after_offer(after_offer_seat_fare);
+
+            }
+            catch (Exception ex){
+
+                //Exp
+            }
+        }
+
     }
 
 }

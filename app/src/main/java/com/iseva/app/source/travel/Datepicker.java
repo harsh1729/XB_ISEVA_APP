@@ -35,38 +35,42 @@ public class Datepicker extends DialogFragment implements DatePickerDialog.OnDat
 
 
     @Override
-    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
 
 
 
         EditText et = (EditText)getActivity().findViewById(R.id.journey_date);
         String date ="";
-        if(i1 > 9 && i2 > 9)
+        month = month + 1;
+
+        if(month > 9 && day > 9)
         {
 
-            TRAVEL_DATA.JOURNEY_DATE = i+"-"+(i1+1)+"-"+i2;
-            date = i+"-"+(i1+1)+"-"+i2;
+            date = year+"-"+month+"-"+day;
+            TRAVEL_DATA.JOURNEY_DATE = date;
             et.setText(changeDateForm(date));
         }
-        else if(i1 < 10 && i2 < 10)
+        else if(month < 10 && day < 10)
         {
 
-            TRAVEL_DATA.JOURNEY_DATE = ""+i+"-"+"0"+(i1+1)+"-"+"0"+i2;
-            date = ""+i+"-"+"0"+(i1+1)+"-"+"0"+i2;
+            date = ""+year+"-"+"0"+month+"-"+"0"+day;
+            TRAVEL_DATA.JOURNEY_DATE = date;
+
             et.setText(changeDateForm(date));
         }
-        else if(i1 < 10 && i2 >9)
+        else if(month < 10 && day >9)
         {
 
-            TRAVEL_DATA.JOURNEY_DATE = i+"-"+"0"+(i1+1)+"-"+i2;
-            date = i+"-"+"0"+(i1+1)+"-"+i2;
+            date = year+"-"+"0"+month+"-"+day;
+            TRAVEL_DATA.JOURNEY_DATE = date;
+
             et.setText(changeDateForm(date));
         }
-        else if(i1 > 9 && i2 < 10)
+        else if(month > 9 && day < 10)
         {
 
-            TRAVEL_DATA.JOURNEY_DATE = i+"-"+(i1+1)+"-"+"0"+i2;
-            date = i+"-"+(i1+1)+"-"+"0"+i2;
+            date = year+"-"+month+"-"+"0"+day;
+            TRAVEL_DATA.JOURNEY_DATE = date;
             et.setText(changeDateForm(date));
         }
 

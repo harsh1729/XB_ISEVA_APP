@@ -17,9 +17,6 @@ import com.iseva.app.source.R;
 import com.iseva.app.source.Realm_objets.Bus_routes_detail;
 import com.iseva.app.source.travel.Activity_Bus_Routes;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import io.realm.RealmQuery;
 import io.realm.Sort;
 
@@ -30,8 +27,6 @@ import io.realm.Sort;
 public class Fragment_Routes_Price extends Fragment_Parent {
 
     LinearLayout routes_loader_price;
-    ArrayList<HashMap<String, String>> routes_hashmap;
-    int all_routes_count= 0;
 
     ListView all_routes_list;
     LinearLayout listview_layout;
@@ -110,29 +105,7 @@ public class Fragment_Routes_Price extends Fragment_Parent {
     {
 
         makequery();
-        routes_hashmap = new ArrayList<HashMap<String, String>>();
-        all_routes_count = 0;
-        if(!rout.isEmpty())
-        {
-
-            for (int i=0;i <rout.size();i++)
-            {
-                HashMap<String, String> single_map = new HashMap<String, String>();
-                single_map.put("bus_id",Integer.toString(rout.get(i).getRouteBusId()));
-                single_map.put("company_id",Integer.toString(rout.get(i).getCompanyId()));
-                single_map.put("company_name",rout.get(i).getCompanyName());
-                single_map.put("fare", getResources().getString(R.string.Rs)+" "+Double.toString(rout.get(i).getFare()));
-                single_map.put("fare_offer",getResources().getString(R.string.Rs)+" "+Double.toString(rout.get(i).getFare_after_offer()));
-                single_map.put("bus_label",rout.get(i).getBusLabel());
-                single_map.put("time",rout.get(i).getDepTime()+" - "+rout.get(i).getArrTime());
-                single_map.put("Availabel_Seats",""+rout.get(i).getAvailableSeats());
-                single_map.put("duration",rout.get(i).getDuration());
-
-                routes_hashmap.add(single_map);
-
-            }
-            all_routes_count = rout.size();
-        }
+        setRoutesHashMap();
 
 
 

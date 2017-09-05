@@ -133,7 +133,44 @@ public class Constants {
 
 
         public static final String SINGLE_AXLE = "SINGLE_AXLE";
-        public static final String MULTI_AXLE = "SINGLE_AXLE";
+        public static final String MULTI_AXLE = "MULTI_AXLE";
+
+
+
+
+    }
+
+    public class SEAT_DETAILS{
+
+        public static final int VALUE_DECK_1 = 1;
+        public static final int VALUE_DECK_2 = 2;
+
+        public static final int VALUE_SEAT_TYPE_SEATING = 1;
+        public static final int VALUE_SEAT_TYPE_SLEEPER = 2;
+        public static final int VALUE_SEAT_TYPE_SEMI_SLEEPER = 4;
+
+
+        public static final int VALUE_SEAT_STATUS_NOT_AVL = 0;
+        public static final int VALUE_SEAT_STATUS_AVL_FOR_ALL = 1;
+        public static final int VALUE_SEAT_STATUS_AVL_FOR_MALE = 2;
+        public static final int VALUE_SEAT_STATUS_AVL_FOR_FEMALE = 3;
+        public static final int VALUE_SEAT_STATUS_BOOKED_BY_MALE = -2;
+        public static final int VALUE_SEAT_STATUS_BOOKED_BY_FEMALE = -3;
+
+        public static final int INDEX_SEAT_LAYOUT_SEQ_NO = 0;
+        public static final int INDEX_SEAT_LAYOUT_ROW = 1;
+        public static final int INDEX_SEAT_LAYOUT_COL = 2;
+        public static final int INDEX_SEAT_LAYOUT_WIDTH = 3;
+        public static final int INDEX_SEAT_LAYOUT_HEIGHT = 4;
+        public static final int INDEX_SEAT_LAYOUT_SEAT_TYPE = 5;
+
+        public static final int INDEX_FARE_TOTAL = 0;
+        public static final int INDEX_FARE_BASE = 1;
+
+
+        public static final int VALUE_GENDER_MALE = 0;
+        public static final int VALUE_GENDER_FEMALE = 1;
+        public static final int VALUE_GENDER_ALL= 2;
 
     }
 

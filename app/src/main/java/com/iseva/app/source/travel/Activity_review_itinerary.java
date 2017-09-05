@@ -36,7 +36,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.iseva.app.source.R;
-import com.iseva.app.source.Realm_objets.Schedule_Details;
+import com.iseva.app.source.Realm_objets.Realm_Selected_Bus_Details;
 import com.iseva.app.source.Realm_objets.Selected_Seats;
 import com.iseva.app.source.travel.Constants.URL_XB;
 import com.iseva.app.source.travel.Global_Travel.TRAVEL_DATA;
@@ -123,7 +123,7 @@ public class Activity_review_itinerary extends Activity {
     int coupan_id =0;
     CountDownTimer countDownTimer;
 
-    RealmResults<Schedule_Details> schedule_details;
+    RealmResults<Realm_Selected_Bus_Details> schedule_details;
     RealmResults<Selected_Seats> Selected_seat_list;
 
     private ProgressDialog progress;
@@ -284,7 +284,7 @@ public class Activity_review_itinerary extends Activity {
         session_manager = new Session_manager(Activity_review_itinerary.this);
 
         My_realm.beginTransaction();
-        schedule_details = My_realm.where(Schedule_Details.class).findAll();
+        schedule_details = My_realm.where(Realm_Selected_Bus_Details.class).findAll();
         Selected_seat_list = My_realm.where(Selected_Seats.class).findAll();
         My_realm.commitTransaction();
 
@@ -329,11 +329,11 @@ public class Activity_review_itinerary extends Activity {
 
         travels_name_tv.setText(schedule_details.get(0).getCompanyName());
         bus_label_tv.setText(schedule_details.get(0).getBusLabel());
-        dep_time_tv.setText(getTime(schedule_details.get(0).getDepTime()));
-        arr_time_tv.setText(getTime(schedule_details.get(0).getArrTime()));
-        dep_date_tv.setText(change_date_form(schedule_details.get(0).getDepTime()));
-        arr_date_tv.setText(change_date_form(schedule_details.get(0).getArrTime()));
-        Departure_time = schedule_details.get(0).getDepTime();
+        dep_time_tv.setText(schedule_details.get(0).getDepTimeOnly());
+        arr_time_tv.setText(schedule_details.get(0).getArrTimeOnly());
+        dep_date_tv.setText(change_date_form(schedule_details.get(0).getDepDateTime()));
+        arr_date_tv.setText(change_date_form(schedule_details.get(0).getArrDateTime()));
+        Departure_time = schedule_details.get(0).getDepDateTime();
         no_of_travellers_tv.setText(""+Selected_seat_list.size());
         String seat = "";
         for (int l=0;l<Selected_seat_list.size();l++)
@@ -826,8 +826,8 @@ public class Activity_review_itinerary extends Activity {
             @Override
             public void onResponse(String s) {
 
-                sendmessage(order_id,ticket_no,pnr_no,TRAVEL_DATA.FROM_CITY_NAME,TRAVEL_DATA.TO_CITY_NAME, TRAVEL_DATA.JOURNEY_DATE,repoting_time,BoardingTime,status,ps.toString(),Boarding_point_address, schedule_details.get(0).getBusTypeName(), schedule_details.get(0).getCompanyName(),contact_phone,TotalFare,cancellation_data_string);
-                sendmail(order_id,ticket_no,pnr_no,TRAVEL_DATA.FROM_CITY_NAME,TRAVEL_DATA.TO_CITY_NAME, TRAVEL_DATA.JOURNEY_DATE,repoting_time,BoardingTime,status,ps.toString(),Boarding_point_address, schedule_details.get(0).getBusTypeName(), schedule_details.get(0).getCompanyName(),Boarding_point_phone,TotalFare,cancellation_data_string);
+                sendmessage(order_id,ticket_no,pnr_no,TRAVEL_DATA.FROM_CITY_NAME,TRAVEL_DATA.TO_CITY_NAME, TRAVEL_DATA.JOURNEY_DATE,repoting_time,BoardingTime,status,ps.toString(),Boarding_point_address, schedule_details.get(0).getBusLabel(), schedule_details.get(0).getCompanyName(),contact_phone,TotalFare,cancellation_data_string);
+                sendmail(order_id,ticket_no,pnr_no,TRAVEL_DATA.FROM_CITY_NAME,TRAVEL_DATA.TO_CITY_NAME, TRAVEL_DATA.JOURNEY_DATE,repoting_time,BoardingTime,status,ps.toString(),Boarding_point_address, schedule_details.get(0).getBusLabel(), schedule_details.get(0).getCompanyName(),Boarding_point_phone,TotalFare,cancellation_data_string);
             }
         }, new Response.ErrorListener() {
 
@@ -1347,7 +1347,7 @@ public class Activity_review_itinerary extends Activity {
                             p.put("Gender", ((SoapObject) ((SoapObject) soapresult_detail.getProperty("Passengers")).getProperty(i)).getPrimitiveProperty("Gender").toString());
                             p.put("SeatNo", ((SoapObject) ((SoapObject) soapresult_detail.getProperty("Passengers")).getProperty(i)).getPrimitiveProperty("SeatNo").toString());
                             p.put("SeatType", ((SoapObject) ((SoapObject) soapresult_detail.getProperty("Passengers")).getProperty(i)).getPrimitiveProperty("SeatType").toString());
-                            p.put("IsAcSeat", ((SoapObject) ((SoapObject) soapresult_detail.getProperty("Passengers")).getProperty(i)).getPrimitiveProperty("IsAcSeat").toString());
+                            p.put("IsAcSeat", TRAVEL_DATA.IS_AC_STR);
                             ps.put(p);
 
                         }
@@ -1755,7 +1755,7 @@ public class Activity_review_itinerary extends Activity {
                 i.putExtra("passanger", ps.toString());
                 i.putExtra("from_city",TRAVEL_DATA.FROM_CITY_NAME);
                 i.putExtra("to_city",TRAVEL_DATA.TO_CITY_NAME);
-                i.putExtra("booking_date",schedule_details.get(0).getJourneyDate());
+                i.putExtra("booking_date",TRAVEL_DATA.JOURNEY_DATE);
                 i.putExtra("boarding_time",BoardingTime);
                 i.putExtra("boarding_point_address",Boarding_point_address);
                 i.putExtra("boarding_point_name",BoardingPoint);
@@ -1782,7 +1782,7 @@ public class Activity_review_itinerary extends Activity {
                 i.putExtra("passanger", ps.toString());
                 i.putExtra("from_city",TRAVEL_DATA.FROM_CITY_NAME);
                 i.putExtra("to_city",TRAVEL_DATA.TO_CITY_NAME);
-                i.putExtra("booking_date",schedule_details.get(0).getJourneyDate());
+                i.putExtra("booking_date",TRAVEL_DATA.JOURNEY_DATE);
                 i.putExtra("boarding_time",BoardingTime);
                 i.putExtra("boarding_point_address",Boarding_point_address);
                 i.putExtra("boarding_point_name",BoardingPoint);
@@ -1914,44 +1914,44 @@ public class Activity_review_itinerary extends Activity {
         return final_date;
     }
 
-    public String getTime(String time)
-    {
-        String final_time="";
-        time = time.substring(11,16);
-        String post="";
-        int hour = parseInt(time.substring(0,2));
-        String min = time.substring(2,time.length());
-
-        if(hour > 12)
-        {
-            hour = hour%12;
-            post = "PM";
-        }
-        else if(hour == 0)
-        {
-            hour = 12;
-            post = "AM";
-        }
-        else if(hour == 12)
-        {
-            post = "PM";
-        }
-        else
-        {
-            post = "AM";
-        }
-
-        if(hour >9)
-        {
-            final_time = hour+min+" "+post;
-        }
-        else
-        {
-            final_time = "0"+hour+min+" "+post;
-        }
-
-        return final_time;
-
-    }
+//    public String getTime(String time)
+//    {
+//        String final_time="";
+//        time = time.substring(11,16);
+//        String post="";
+//        int hour = parseInt(time.substring(0,2));
+//        String min = time.substring(2,time.length());
+//
+//        if(hour > 12)
+//        {
+//            hour = hour%12;
+//            post = "PM";
+//        }
+//        else if(hour == 0)
+//        {
+//            hour = 12;
+//            post = "AM";
+//        }
+//        else if(hour == 12)
+//        {
+//            post = "PM";
+//        }
+//        else
+//        {
+//            post = "AM";
+//        }
+//
+//        if(hour >9)
+//        {
+//            final_time = hour+min+" "+post;
+//        }
+//        else
+//        {
+//            final_time = "0"+hour+min+" "+post;
+//        }
+//
+//        return final_time;
+//
+//    }
 
 }

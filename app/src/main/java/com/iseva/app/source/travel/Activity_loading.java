@@ -15,6 +15,7 @@ import com.iseva.app.source.Custom_VolleyAppController;
 import com.iseva.app.source.Custom_VolleyObjectRequest;
 import com.iseva.app.source.R;
 import com.iseva.app.source.Realm_objets.Bus_routes_detail;
+import com.iseva.app.source.Realm_objets.Realm_Selected_Bus_Details;
 import com.iseva.app.source.travel.Constants.BUS_TYPE;
 import com.iseva.app.source.travel.Constants.JSON_KEYS;
 import com.iseva.app.source.travel.Constants.URL_TY;
@@ -123,6 +124,7 @@ public class Activity_loading extends Activity_Parent_Travel implements Parent_I
 
                             My_realm.beginTransaction();
                             My_realm.delete(Bus_routes_detail.class);
+                            My_realm.delete(Realm_Selected_Bus_Details.class);
                             My_realm.commitTransaction();
 
                             My_realm.beginTransaction();
@@ -138,6 +140,8 @@ public class Activity_loading extends Activity_Parent_Travel implements Parent_I
 
                                 JSONObject objJsonBus = arrJsonBuses.getJSONObject(i);
 
+                                bus_rout.setArrDateTime(objJsonBus.optString("ArrTime"));
+                                bus_rout.setDepDateTime(objJsonBus.optString("DeptTime"));
                                 bus_rout.setDepTime(getTime12(objJsonBus.optString("DeptTime")));
                                 bus_rout.setArrTime(getTime12(objJsonBus.optString("ArrTime")));
                                 bus_rout.setDepTimeVal(getTime24(objJsonBus.optString("DeptTime")));
@@ -195,19 +199,10 @@ public class Activity_loading extends Activity_Parent_Travel implements Parent_I
                                     bus_rout.setFare(total_fare);
 
 
-                                    double offer_per;
-                                    double fare_after_total_discount;
+                                    double fare_after_total_discount = Global_Travel.getFareAfterDiscount(total_fare,commition_per);
 
-                                    if (TRAVEL_DATA.ISEVA_SHARE_PCT <= commition_per) {
-                                        offer_per = commition_per - TRAVEL_DATA.ISEVA_SHARE_PCT;
-                                    } else {
-                                        offer_per = 0;
-                                    }
-
-                                    fare_after_total_discount = (total_fare * (100 - offer_per)) / 100;
 
                                     total_commition_amount = (double)(total_fare * (commition_per)) / 100;
-                                    fare_after_total_discount = (double) Math.round(fare_after_total_discount);
 
                                     bus_rout.setFare_after_offer(fare_after_total_discount);
 

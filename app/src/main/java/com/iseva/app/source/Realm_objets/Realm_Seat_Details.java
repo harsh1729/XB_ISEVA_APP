@@ -6,23 +6,19 @@ import io.realm.RealmObject;
  * Created by xb_sushil on 1/28/2017.
  */
 
-public class Seat_details extends RealmObject {
+public class Realm_Seat_Details extends RealmObject {
 
     private int Row;
     private int Col;
     private   int Height;
     private int Width;
     private   String SeatNo;
-    private  String Gender;
-    private    Boolean IsAisle;
+    private  int Gender;
     private    int Deck;
-    private   Boolean IsAc;
     private    Boolean IsSleeper;
     private   Boolean IsAvailable;
     private    float Fare;
-    private    float Fare_after_offer;
-    private    float ChildFare;
-    private  float InfantFare;
+    private    double Fare_after_offer;
 
 
 
@@ -47,24 +43,13 @@ public class Seat_details extends RealmObject {
     public String getSeatNo()
     {
         return this.SeatNo;
-    }public String getGender()
-    {
-        return this.Gender;
     }
     public int getDeck()
     {
         return this.Deck;
     }
 
-    public Boolean getIsAc()
-    {
-        return this.IsAc;
 
-    }
-    public Boolean getIsAisle()
-    {
-        return this.IsAisle;
-    }
     public Boolean getIsSleeper()
     {
         return this.IsSleeper;
@@ -73,22 +58,18 @@ public class Seat_details extends RealmObject {
     {
         return this.IsAvailable;
     }
+    public int getGender()
+    {
+        return this.Gender;
+    }
 
     public float getFare()
     {
         return this.Fare;
     }
-    public float getFare_after_offer()
+    public double getFare_after_offer()
     {
         return this.Fare_after_offer;
-    }
-    public float getChildFare()
-    {
-        return this.ChildFare;
-    }
-    public float getInfantFare()
-    {
-        return this.InfantFare;
     }
 
 
@@ -112,23 +93,16 @@ public class Seat_details extends RealmObject {
     {
         this.SeatNo = seatNo;
     }
-    public void setGender(String  gender)
+    public void setGender(int  gender)
     {
         this.Gender = gender;
     }
-    /*public void setIsAisle(Boolean isAisle)
-    {
-        this.IsAisle = isAisle;
 
-    }*/
     public void setDeck(int deck)
     {
         this.Deck = deck;
     }
-    public void setIsAc(Boolean isAc)
-    {
-        this.IsAc = isAc;
-    }
+
     public void setIsSleeper(Boolean isSleeper)
     {
         this.IsSleeper = isSleeper;
@@ -141,23 +115,12 @@ public class Seat_details extends RealmObject {
     {
         this.Fare = fare;
     }
-    public void setFare_after_offer(float fare_after_offer)
+    public void setFare_after_offer(double fare_after_offer)
     {
         this.Fare_after_offer = fare_after_offer;
 
     }
-    public void setChildFare(float childFare)
-    {
-        this.ChildFare = childFare;
-    }
-    public void setInfantFare(float infantFare)
-    {
-        this.InfantFare = infantFare;
-    }
-    public void setIsAisle(Boolean isAisle)
-    {
-        this.IsAisle = isAisle;
-    }
+
 
 
 

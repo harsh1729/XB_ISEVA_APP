@@ -66,10 +66,24 @@ public class Global_Travel {
         b.setTextColor(ContextCompat.getColor(context, R.color.app_white));
     }
 
+    public static double getFareAfterDiscount(double total_fare, double commition_per){
 
+        double offer_per;
+        double fare_after_total_discount;
 
+        if (TRAVEL_DATA.ISEVA_SHARE_PCT <= commition_per) {
+            offer_per = commition_per - TRAVEL_DATA.ISEVA_SHARE_PCT;
+        } else {
+            offer_per = 0;
+        }
 
+        fare_after_total_discount = (total_fare * (100 - offer_per)) / 100;
 
+        fare_after_total_discount = (double) Math.round(fare_after_total_discount);
+
+        return fare_after_total_discount;
+
+    }
 
     public static class TRAVEL_DATA {
 
@@ -81,6 +95,7 @@ public class Global_Travel {
         public static String TO_CITY_NAME ="";
         public static String JOURNEY_DATE ="";
         public static String ROUTE_BUS_ID ="";
+        public static String IS_AC_STR = "false";
 
         public static int MAX_COL;
         public static int MAX_ROW;

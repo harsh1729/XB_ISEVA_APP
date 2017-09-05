@@ -38,9 +38,31 @@ public class Bus_routes_detail extends RealmObject{
 
     private double CommPCT = 0;
     private double CommAmount = 0.0;
+
+    public String getDepDateTime() {
+        return DepDateTime;
+    }
+
+    public void setDepDateTime(String depDateTime) {
+        DepDateTime = depDateTime;
+    }
+
+    public String getArrDateTime() {
+        return ArrDateTime;
+    }
+
+    public void setArrDateTime(String arrDateTime) {
+        ArrDateTime = arrDateTime;
+    }
+
     private int AvailableSeats ;
     private double DurationVal = 0.0;
     private double DepTimeVal = 0.0;
+
+
+    private String DepDateTime ;
+
+    private String ArrDateTime ;
 
     public double getDepTimeVal() {
         return DepTimeVal;

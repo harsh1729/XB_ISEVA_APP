@@ -14,12 +14,17 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.iseva.app.source.R;
+import com.iseva.app.source.Realm_objets.Realm_Selected_Bus_Details;
 import com.iseva.app.source.travel.Activity_Select_Seats;
+import com.iseva.app.source.travel.Global_Travel.TRAVEL_DATA;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import io.realm.Realm;
+
 import static com.iseva.app.source.R.id.bus_label;
+import static com.iseva.app.source.R.id.company_name;
 
 /**
  * Created by xb_sushil on 4/1/2017.
@@ -73,7 +78,7 @@ public class Listview_adapter extends BaseAdapter{
 
 
 
-        holder.company_name_tv = (TextView)rowView.findViewById(R.id.company_name);
+        holder.company_name_tv = (TextView)rowView.findViewById(company_name);
         holder.fare_tv = (TextView)rowView.findViewById(R.id.fare);
         holder.offer_fare_tv = (TextView)rowView.findViewById(R.id.offer_fare);
         holder.bus_label_tv = (TextView)rowView.findViewById(bus_label);
@@ -109,22 +114,84 @@ public class Listview_adapter extends BaseAdapter{
         holder.time_view_tv.setText(routes_hashmap.get(i).get("time"));
         holder.available_seat_tv.setText(routes_hashmap.get(i).get("Availabel_Seats")+" "+"Seats");
         holder.duration_tv.setText(routes_hashmap.get(i).get("duration"));
+
+
         rowView.setTag(R.string.bus_id,routes_hashmap.get(i).get("bus_id"));
+        rowView.setTag(R.string.bus_label,routes_hashmap.get(i).get("bus_label"));
+        rowView.setTag(R.string.company_name,routes_hashmap.get(i).get("company_name"));
+
+        rowView.setTag(R.string.arr_date_time,routes_hashmap.get(i).get("dateTimeArr"));
+        rowView.setTag(R.string.arr_time,routes_hashmap.get(i).get("timeArr"));
+        rowView.setTag(R.string.dep_time,routes_hashmap.get(i).get("timeDep"));
+        rowView.setTag(R.string.dep_date_time,routes_hashmap.get(i).get("dateTimeDep"));
+        rowView.setTag(R.string.commition_percentage,routes_hashmap.get(i).get("commPCT"));
+        rowView.setTag(R.string.is_ac,routes_hashmap.get(i).get("isAC"));
 
 
         rowView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
+                String bus_id_str = view.getTag(R.string.bus_id).toString();
+
+                String comm_pct_str =  view.getTag(R.string.commition_percentage).toString();
+
+                int bus_id = 0;
+                double comm_pct = 0;
+
+                try {
+                    bus_id = Integer.parseInt(bus_id_str);
+                    comm_pct = Double.parseDouble(comm_pct_str);
+
+                }catch (NumberFormatException ex){
+
+                }
+
+                String arr_date_time = view.getTag(R.string.arr_date_time).toString();
+                String arr_time = view.getTag(R.string.arr_time).toString();
+                String bus_label = view.getTag(R.string.bus_label).toString();
+                String company_name = view.getTag(R.string.company_name).toString();
+                String dep_date_time = view.getTag(R.string.dep_date_time).toString();
+                String dep_time = view.getTag(R.string.dep_time).toString();
+                String is_ac = view.getTag(R.string.is_ac).toString();
+
+                addRealmBookingDetails(bus_id,bus_label,company_name,arr_time,arr_date_time ,dep_time,dep_date_time);
+
                 Intent i = new Intent(context,Activity_Select_Seats.class);
 
+                TRAVEL_DATA.IS_AC_STR = is_ac;
 
-                i.putExtra("bus_id",view.getTag(R.string.bus_id).toString());
+
+                i.putExtra("bus_id",bus_id_str);
+                i.putExtra("comm_pct",comm_pct_str);
+
                 Bundle bundle = ActivityOptions.makeCustomAnimation(context, R.anim.anim_in, R.anim.anim_none).toBundle();
                 context.startActivity(i,bundle);
             }
         });
 
         return rowView;
+    }
+
+
+    private void addRealmBookingDetails(int bus_id , String bus_label, String company_name, String arr_time , String arr_date_time,String dep_time , String dep_date_time){
+
+        Realm my_realm = Realm.getDefaultInstance();
+
+        my_realm.beginTransaction();
+
+        Realm_Selected_Bus_Details objSelectedBusDetails =  my_realm.createObject(Realm_Selected_Bus_Details.class);
+
+        objSelectedBusDetails.setBusId(bus_id);
+        objSelectedBusDetails.setBusLabel(bus_label);
+        objSelectedBusDetails.setCompanyName(company_name);
+        objSelectedBusDetails.setArrTime(arr_time);
+        objSelectedBusDetails.setArrDateTime(arr_date_time);
+        objSelectedBusDetails.setDepDateTime(dep_date_time);
+        objSelectedBusDetails.setDepTime(dep_time);
+
+        my_realm.commitTransaction();
     }
 
     public class Holder
