@@ -8,24 +8,38 @@ import io.realm.RealmObject;
 
 public class Pickup_Place_Detail extends RealmObject {
 
-   private int ProviderId;
-   private int PickupId;
+   private String PickupCode;
    private String PickupName;
    private String PkpTime;
+    private String PickupArea;
    private String Address;
    private String Landmark;
-   private String ProviderPickupId;
-   private String Phone;
+   private String Contact;
 
+    public String getPickupCode() {
+        return PickupCode;
+    }
 
-    public int getProviderId()
-    {
-        return this.ProviderId;
+    public void setPickupCode(String pickupCode) {
+        PickupCode = pickupCode;
     }
-    public int getPickupId()
-    {
-        return this.PickupId;
+
+    public String getPickupArea() {
+        return PickupArea;
     }
+
+    public void setPickupArea(String pickupArea) {
+        PickupArea = pickupArea;
+    }
+
+    public String getContact() {
+        return Contact;
+    }
+
+    public void setContact(String contact) {
+        Contact = contact;
+    }
+
     public String getPickupName()
     {
         return this.PickupName;
@@ -43,28 +57,13 @@ public class Pickup_Place_Detail extends RealmObject {
     {
         return this.Landmark;
     }
-    public String getProviderPickupId()
-    {
-        return this.ProviderPickupId;
-    }
-    public String getPhone()
-    {
-        return this.Phone;
-    }
 
 
 
 
 
 
-    public void setProviderId(int providerId)
-    {
-        this.ProviderId = providerId;
-    }
-    public void setPickupId(int pickupId)
-    {
-        this.PickupId = pickupId;
-    }
+
     public void setPickupName(String pickupName)
     {
         this.PickupName = pickupName;
@@ -82,12 +81,6 @@ public class Pickup_Place_Detail extends RealmObject {
     {
         this.Landmark = landmark;
     }
-    public void setProviderPickupId(String providerPickupId)
-    {
-        this.ProviderPickupId = providerPickupId;
-    }
-    public void setPhone(String phone)
-    {
-        this.Phone = phone;
-    }
+
+
 }

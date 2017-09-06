@@ -393,9 +393,9 @@ public class Activity_Select_Seats extends Activity_Parent_AppCompat implements 
 
 
 
-                int percentage_int = Integer.parseInt(cancellation_Policy_data.getJSONObject(j).getString("percentage")+"%");
+                int percentage_int = Integer.parseInt(cancellation_Policy_data.getJSONObject(j).getString("percentage"));
 
-                tv2.setText("" + (100 - percentage_int));
+                tv2.setText("" + (100 - percentage_int)+"%");
 
                 single_layout.addView(tv1);
                 single_layout.addView(tv2);
@@ -497,7 +497,7 @@ public class Activity_Select_Seats extends Activity_Parent_AppCompat implements 
                                     JSONObject objJsonL1_ChartSeats =  objJsonData.getJSONObject("ChartSeats");
                                     JSONObject objJsonL1_SeatsStatus =  objJsonData.getJSONObject("SeatsStatus");
                                     JSONObject objJsonL1_AvailSeats =  objJsonData.getJSONObject("AvailSeats");
-                                    JSONArray objJsonL1_Dropoffs =  objJsonData.getJSONArray("Dropoffs");
+                                    //JSONArray objJsonL1_Dropoffs =  objJsonData.getJSONArray("Dropoffs"); //Not using dropoffs for now
                                     JSONArray objJsonL1_Pickups =  objJsonData.getJSONArray("Pickups");
 
                                     JSONObject objJsonL2_Layout =  objJsonL1_ChartLayout.getJSONObject("Layout");
@@ -551,7 +551,30 @@ public class Activity_Select_Seats extends Activity_Parent_AppCompat implements 
                                     }
 
 
+
                                     thread_realm.commitTransaction();
+
+                                    //Add Pickup Points
+
+                                    thread_realm.beginTransaction();
+
+                                    for(int p = 0 ; p < objJsonL1_Pickups.length();p++){
+
+                                        JSONObject objPickup = objJsonL1_Pickups.getJSONObject(p);
+
+                                        Pickup_Place_Detail  pickup_place_detail  = thread_realm.createObject(Pickup_Place_Detail.class);
+
+                                        pickup_place_detail.setPickupCode(objPickup.optString("PickupCode"));
+                                        pickup_place_detail.setPickupArea(objPickup.optString("PickupArea"));
+                                        pickup_place_detail.setPickupName(objPickup.optString("PickupName"));
+                                        pickup_place_detail.setPkpTime(objPickup.optString("PickupTime"));
+                                        pickup_place_detail.setAddress(objPickup.optString("Address"));
+                                        pickup_place_detail.setLandmark(objPickup.optString("Landmark"));
+                                        pickup_place_detail.setContact(objPickup.optString("Contact"));
+
+                                    }
+
+                                   thread_realm.commitTransaction();
 
 
 

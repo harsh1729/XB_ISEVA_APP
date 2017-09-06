@@ -70,7 +70,7 @@ public class Activity_Passenger_Details extends Activity {
     String cancellation_data_string;
 
     int spinner_position = 0;
-    int pickup_id = 0;
+    String pickup_id = "";
 
     EditText contact_mobile;
     EditText contact_email;
@@ -141,7 +141,6 @@ public class Activity_Passenger_Details extends Activity {
             contact_mobile.setText(session_manager.getphone());
             contact_email.setText(session_manager.getusername());
         }
-
 
 
         float Total_Fare = 0;
@@ -468,7 +467,7 @@ public class Activity_Passenger_Details extends Activity {
                         String totalfare = Float.toString(Total_offer_fare);
                         String boarding_point_name = pickup_place_detail_list.get(spinner_position - 1).getPickupName();
                         String boarding_point_address = pickup_place_detail_list.get(spinner_position-1).getAddress();
-                        String boarding_point_phone = pickup_place_detail_list.get(spinner_position-1).getPhone();
+                        String boarding_point_phone = pickup_place_detail_list.get(spinner_position-1).getContact();
                         String boarding_point_landmark = pickup_place_detail_list.get(spinner_position-1).getLandmark();
                         String time = getTime(pickup_place_detail_list.get(spinner_position - 1).getPkpTime());
 
@@ -822,7 +821,7 @@ public class Activity_Passenger_Details extends Activity {
                     spinner_position = position;
                     if(position != 0)
                     {
-                        pickup_id = pickup_place_detail_list.get(position - 1).getPickupId();
+                        pickup_id = pickup_place_detail_list.get(position - 1).getPickupCode();
                     }
 
                     TextView tv = (TextView) findViewById(R.id.spinnerTarget_list);

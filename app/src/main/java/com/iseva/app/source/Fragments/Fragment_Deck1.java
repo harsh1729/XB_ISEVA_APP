@@ -247,7 +247,7 @@ public class Fragment_Deck1 extends Fragment {
 
                                     My_realm.beginTransaction();
                                     RealmResults<Selected_Seats> single_row = My_realm.where(Selected_Seats.class).equalTo("SeatNo",v.getTag(R.string.SeatNo).toString()).findAll();
-                                    single_row.remove(0);
+                                    single_row.deleteAllFromRealm();
                                     My_realm.commitTransaction();
 
                                     ((Activity_Select_Seats) getActivity()).update_seat_fare();
