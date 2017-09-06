@@ -15,10 +15,21 @@ public class Realm_Seat_Details extends RealmObject {
     private   String SeatNo;
     private  int Gender;
     private    int Deck;
+
+    public int getSeatType() {
+        return SeatType;
+    }
+
+    public void setSeatType(int seatType) {
+        SeatType = seatType;
+    }
+
     private    Boolean IsSleeper;
     private   Boolean IsAvailable;
     private    float Fare;
     private    double Fare_after_offer;
+
+    private int SeatType;
 
 
 

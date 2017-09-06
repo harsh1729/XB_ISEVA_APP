@@ -35,30 +35,6 @@ public class Constants {
     public static class URL_TY {
 
 
-
-        public static final String GLOBAL_NAMESPACE = "http://tempuri.org/";
-
-        public static final String METHOD_AUNTHENTICATION ="Authenticate";
-
-        public static final String METHOD_GETCITYFROM ="GetFromCities";
-
-        public static final String METHOD_GETCITYTO ="GetToCities";
-
-        public static final String METHOD_GET_ROUTES ="GetDetailedRoutes";
-        public static final String METHOD_GET_ROUTES1 = "GetRoutes2";
-
-        public static final String METHOD_GetRouteScheduleDetail = "GetRouteScheduleDetailsWithComm";
-
-        public static final String METHOD_HoldSeatsForSchedule = "HoldSeatsForSchedule";
-
-        public static final String METHOD_BookSeats = "BookSeats";
-
-        public static final String METHOD_ISCANCELABLE ="IsCancellable2";
-
-        public static final String METHOD_CANCEL_TICKET = "CancelTicket2";
-
-        public static final String METHOD_TICKET_DETAIL = "GetBookingInfo";
-
         // NEW API
         public static String BASE_URL = "http://api.iamgds.com/ota/";
 
@@ -70,11 +46,15 @@ public class Constants {
 
         public static final String GET_CHART = BASE_URL + "Chart";
 
+        //TRANSACTION APIS
+
+        public static final String HOLD_SEATS = BASE_TRANSACTION_URL + "HoldSeats";
+
         public static final String GET_IS_CANCELLABLE = BASE_TRANSACTION_URL + "IsCancellable";
 
-        public static final String GET_BOOK_DETAILS = BASE_TRANSACTION_URL + "BookingDetails";
+        public static final String GET_BOOKING_DETAILS = BASE_TRANSACTION_URL + "BookingDetails";
 
-        public static final String GET_CANCEL_BOOKED_TICKET = BASE_TRANSACTION_URL + "CancelSeats";
+        public static final String CANCEL_BOOKED_TICKET = BASE_TRANSACTION_URL + "CancelSeats";
 
     }
     public class URL_XB {

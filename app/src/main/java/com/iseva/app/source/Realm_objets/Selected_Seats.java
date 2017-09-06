@@ -13,7 +13,17 @@ public class Selected_Seats extends RealmObject {
     private    int Deck;
     private    Boolean IsSleeper;
     private    float Fare;
+
+    public int getSeat_Type() {
+        return Seat_Type;
+    }
+
+    public void setSeat_Type(int seat_Type) {
+        Seat_Type = seat_Type;
+    }
+
     private     float Fare_after_offer;
+    private     int Seat_Type;
 
     public String getSeatNo()
     {

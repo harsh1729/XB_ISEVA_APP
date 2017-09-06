@@ -659,6 +659,8 @@ public class Activity_Select_Seats extends Activity_Parent_AppCompat implements 
 
                 int seatType = arrJsonL4_Seat.getInt(SEAT_DETAILS.INDEX_SEAT_LAYOUT_SEAT_TYPE);
 
+                seat_details.setSeatType(seatType);
+
                 boolean isSleeper = false;
                 switch (seatType) {
 

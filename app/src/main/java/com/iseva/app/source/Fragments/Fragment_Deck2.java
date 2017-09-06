@@ -148,6 +148,7 @@ public class Fragment_Deck2 extends Fragment {
                     Seat_view.setTag(R.string.Fare,all_seats.get(i).getFare());
                     Seat_view.setTag(R.string.Offer_Fare,all_seats.get(i).getFare_after_offer());
                     Seat_view.setTag(R.string.IsSleeper,all_seats.get(i).getIsSleeper());
+                    Seat_view.setTag(R.string.Seat_Type,all_seats.get(i).getSeatType());
 
 
                     if(all_seats.get(i).getIsAvailable() &&  (all_seats.get(i).getGender() == SEAT_DETAILS.VALUE_GENDER_ALL || all_seats.get(i).getGender() == SEAT_DETAILS.VALUE_GENDER_MALE))
@@ -207,6 +208,7 @@ public class Fragment_Deck2 extends Fragment {
                                         selected_seats.setFare(Float.parseFloat(v.getTag(R.string.Fare).toString()));
                                         selected_seats.setFare_after_offer(Float.parseFloat(v.getTag(R.string.Offer_Fare).toString()));
                                         selected_seats.setIsSleeper(Boolean.parseBoolean(v.getTag(R.string.IsSleeper).toString()));
+                                        selected_seats.setSeat_Type(Integer.parseInt(v.getTag(R.string.Seat_Type).toString()));
                                         My_realm.commitTransaction();
 
                                         ((Activity_Select_Seats) getActivity()).update_seat_fare();
@@ -232,7 +234,7 @@ public class Fragment_Deck2 extends Fragment {
 
                                     My_realm.beginTransaction();
                                     RealmResults<Selected_Seats> single_row = My_realm.where(Selected_Seats.class).equalTo("SeatNo",v.getTag(R.string.SeatNo).toString()).findAll();
-                                    single_row.remove(0);
+                                    single_row.deleteAllFromRealm();
                                     My_realm.commitTransaction();
 
                                     ((Activity_Select_Seats) getActivity()).update_seat_fare();
@@ -317,6 +319,7 @@ public class Fragment_Deck2 extends Fragment {
                                         selected_seats.setFare(Float.parseFloat(v.getTag(R.string.Fare).toString()));
                                         selected_seats.setFare_after_offer(Float.parseFloat(v.getTag(R.string.Offer_Fare).toString()));
                                         selected_seats.setIsSleeper(Boolean.parseBoolean(v.getTag(R.string.IsSleeper).toString()));
+                                        selected_seats.setSeat_Type(Integer.parseInt(v.getTag(R.string.Seat_Type).toString()));
                                         My_realm.commitTransaction();
 
                                         ((Activity_Select_Seats) getActivity()).update_seat_fare();

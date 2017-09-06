@@ -1,13 +1,10 @@
 package com.iseva.app.source.travel;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -36,13 +33,9 @@ import com.iseva.app.source.travel.Constants.URL_XB;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.ksoap2.SoapEnvelope;
-import org.ksoap2.serialization.SoapObject;
-import org.ksoap2.serialization.SoapSerializationEnvelope;
 
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 
@@ -232,7 +225,7 @@ public class Activity_show_detail_booked_ticket extends Activity_Parent_Travel {
 
             progress = Globals.showLoadingDialog(progress,this,false,"");
 
-            String GET_BOOK_DETAILS_URL = Constants.URL_TY.GET_BOOK_DETAILS +
+            String GET_BOOK_DETAILS_URL = Constants.URL_TY.GET_BOOKING_DETAILS +
                     "?PNR=" + pnr_no_txt + "&TicketNo=" + ticket_no_txt;
 
             Custom_VolleyObjectRequest jsonObjectRQST = new Custom_VolleyObjectRequest(
@@ -287,7 +280,7 @@ public class Activity_show_detail_booked_ticket extends Activity_Parent_Travel {
             progress = Globals.showLoadingDialog(progress,this,false,"");
 
             Custom_VolleyObjectRequest jsonObjectRQST = new Custom_VolleyObjectRequest(
-                    Request.Method.POST, Constants.URL_TY.GET_CANCEL_BOOKED_TICKET,
+                    Request.Method.POST, Constants.URL_TY.CANCEL_BOOKED_TICKET,
                     paramsMap, new Response.Listener<JSONObject>() {
 
                 @Override

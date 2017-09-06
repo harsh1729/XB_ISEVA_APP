@@ -1,12 +1,9 @@
 package com.iseva.app.source.travel;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.ConnectivityManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
@@ -27,30 +24,36 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.iseva.app.source.Custom_VolleyAppController;
 import com.iseva.app.source.R;
 import com.iseva.app.source.Realm_objets.Pickup_Place_Detail;
 import com.iseva.app.source.Realm_objets.Selected_Seats;
+import com.iseva.app.source.travel.Constants.JSON_KEYS;
+import com.iseva.app.source.travel.Constants.URL_TY;
 import com.iseva.app.source.travel.Global_Travel.TRAVEL_DATA;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
-import org.ksoap2.SoapEnvelope;
-import org.ksoap2.SoapFault;
-import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
-import org.ksoap2.serialization.SoapSerializationEnvelope;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
 
+import static com.iseva.app.source.travel.Activity_Select_Seats.selected_seat_activity;
 
 
-
-
-public class Activity_Passenger_Details extends Activity {
+public class Activity_Passenger_Details extends Activity_Parent_Travel {
 
     Session_manager session_manager;
 
@@ -82,13 +85,8 @@ public class Activity_Passenger_Details extends Activity {
 
     float Total_offer_fare = 0;
 
-    JSONArray passenger_list;
-
-    SoapObject passengers_object;
 
     View v;
-
-    private ProgressDialog progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,17 +180,15 @@ public class Activity_Passenger_Details extends Activity {
                 String validate_result = validate();
                 if(validate_result.equals("success"))
                 {
-                    if(isNetworkConnected())
+                    if(isNetworkConnected(false))
                     {
-                        BookingTicket bt = new BookingTicket();
-                        bt.execute();
+                        holdSeats();
                     }
                     else
                     {
                         Global_Travel.showAlertDialog(Activity_Passenger_Details.this,getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
                     }
 
-                    //showAlertDialog("Alert","this is success","ok");
                 }
                 else if(validate_result.equals("boarding_point"))
                 {
@@ -220,11 +216,6 @@ public class Activity_Passenger_Details extends Activity {
 
     }
 
-    private boolean isNetworkConnected() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        return cm.getActiveNetworkInfo() != null;
-    }
 
     public String validate()
     {
@@ -313,347 +304,6 @@ public class Activity_Passenger_Details extends Activity {
         }
         return "success";
     }
-
-
-
-    private class BookingTicket extends AsyncTask<Void,Void,Void>
-    {
-
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            progress = new ProgressDialog(Activity_Passenger_Details.this);
-            progress.setMessage("Booking...");
-            progress.setCanceledOnTouchOutside(false);
-            progress.setCancelable(false);
-            progress.show();
-
-            passenger_list = new JSONArray();
-            Contact_email_text = contact_email.getText().toString().trim();
-            Contact_mobile_text = contact_mobile.getText().toString().trim();
-            Contact_name_text = contact_name.getText().toString().trim();
-            for (int j =0;j<Selected_seat_list.size();j++)
-            {
-                JSONObject jo = new JSONObject();
-                EditText p_name = (EditText)v.findViewWithTag("edittext_name"+(j+1));
-                EditText p_age = (EditText)v.findViewWithTag("edittext_age"+(j+1));
-                try {
-                    jo.put("name",p_name.getText().toString().trim());
-                    jo.put("age",p_age.getText().toString().trim());
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-
-                passenger_list.put(jo);
-            }
-
-
-
-            passengers_object = new SoapObject(null, "Passengers");
-
-
-            for (int k=0;k<Selected_seat_list.size();k++)
-            {
-                String temp_name ="";
-                String temp_age = "";
-                try
-                {
-                    temp_name = passenger_list.getJSONObject(k).getString("name");
-                    temp_age = passenger_list.getJSONObject(k).getString("age");
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                    if(Global_Travel.build_type == 0)
-                    {
-                        Log.e("vikas","error json"+e);
-                    }
-
-                }
-                String seatno = Selected_seat_list.get(k).getSeatNo();
-                String fare = Float.toString(Selected_seat_list.get(k).getFare());
-                String seattype ="";
-                if(Selected_seat_list.get(k).getIsSleeper())
-                {
-                    seattype = "Sleeper";
-                }
-                else
-                {
-                    seattype = "Seater";
-                }
-
-                String gender = "";
-                RadioGroup rg = (RadioGroup)v.findViewWithTag("radio_group"+(k+1));
-                int selected_radio_id = rg.getCheckedRadioButtonId();
-
-                RadioButton radioButton = (RadioButton) findViewById(selected_radio_id);
-                String radiobtnTag = radioButton.getTag().toString();
-                if(radiobtnTag.equals("radio_mr"+(k+1)))
-                {
-                    gender = "M";
-                }
-                else
-                {
-                    gender = "F";
-                }
-
-
-                SoapObject passenger = new SoapObject(null, "Passenger");
-
-                PropertyInfo Pro_name =  new PropertyInfo();
-                Pro_name.setName("Name");
-                Pro_name.setValue(temp_name);
-                Pro_name.setType(String.class);
-                passenger.addProperty(Pro_name);
-
-                PropertyInfo Pro_age =  new PropertyInfo();
-                Pro_age.setName("Age");
-                Pro_age.setValue(temp_age);
-                Pro_age.setType(Integer.class);
-                passenger.addProperty(Pro_age);
-
-                PropertyInfo Pro_gender =  new PropertyInfo();
-                Pro_gender.setName("Gender");
-                Pro_gender.setValue(gender);
-                Pro_gender.setType(String.class);
-                passenger.addProperty(Pro_gender);
-
-                PropertyInfo Pro_seatno =  new PropertyInfo();
-                Pro_seatno.setName("SeatNo");
-                Pro_seatno.setValue(seatno);
-                Pro_seatno.setType(String.class);
-                passenger.addProperty(Pro_seatno);
-
-                PropertyInfo Pro_fare =  new PropertyInfo();
-                Pro_fare.setName("Fare");
-                Pro_fare.setValue(fare);
-                Pro_fare.setType(Double.class);
-                passenger.addProperty(Pro_fare);
-
-                PropertyInfo Pro_seatType =  new PropertyInfo();
-                Pro_seatType.setName("SeatType");
-                Pro_seatType.setValue(seattype);
-                Pro_seatType.setType(String.class);
-                passenger.addProperty(Pro_seatType);
-
-
-                passengers_object.addSoapObject(passenger);
-
-            }
-
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-
-            if (soapresult_detail != null) {
-
-                if(((SoapObject)soapresult_detail.getProperty("Response")).getPrimitiveProperty("IsSuccess").toString().equals("true"))
-                {
-                    try {
-                        message = soapresult_detail.toString();
-                        if(Global_Travel.build_type == 0)
-                        {
-                            Log.e("vikas",message);
-                        }
-
-                        String holdkey = soapresult_detail.getPrimitiveProperty("HoldKey").toString();
-                       // String totalfare = soapresult_detail.getPrimitiveProperty("TotalFare").toString();
-                        String totalfare = Float.toString(Total_offer_fare);
-                        String boarding_point_name = pickup_place_detail_list.get(spinner_position - 1).getPickupName();
-                        String boarding_point_address = pickup_place_detail_list.get(spinner_position-1).getAddress();
-                        String boarding_point_phone = pickup_place_detail_list.get(spinner_position-1).getContact();
-                        String boarding_point_landmark = pickup_place_detail_list.get(spinner_position-1).getLandmark();
-                        String time = getTime(pickup_place_detail_list.get(spinner_position - 1).getPkpTime());
-
-                        Intent i = new Intent(Activity_Passenger_Details.this,Activity_review_itinerary.class);
-                        i.putExtra("HoldKey",holdkey);
-                        i.putExtra("TotalFare",totalfare);
-                        i.putExtra("BoardingPoint",boarding_point_name);
-                        i.putExtra("BoardingTime",time);
-                        i.putExtra("cancellation_data",cancellation_data_string);
-                        i.putExtra("contact_name",Contact_name_text);
-                        i.putExtra("contact_email",Contact_email_text);
-                        i.putExtra("contact_phone",Contact_mobile_text);
-                        i.putExtra("boarding_point_address",boarding_point_address);
-                        i.putExtra("boarding_point_phone",boarding_point_phone);
-                        i.putExtra("boarding_point_landmark",boarding_point_landmark);
-                        startActivity(i);
-                        Activity_Select_Seats.selected_seat_activity.finish();
-                        Activity_Passenger_Details.this.finish();
-                    }
-                    catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    }
-                }
-                else
-                {
-                    Global_Travel.showAlertDialog(Activity_Passenger_Details.this,getResources().getString(R.string.validating_error_title),((SoapObject)soapresult_detail.getProperty("Response")).getPrimitivePropertyAsString("Message"),"Ok");
-                }
-
-
-
-            }
-            else
-            {
-                Global_Travel.showAlertDialog(Activity_Passenger_Details.this,getResources().getString(R.string.validating_error_title),getResources().getString(R.string.slow_internet_error),"Ok");
-            }
-
-            progress.dismiss();
-        }
-
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-
-            //TODO : HARSH Implement new API
-
-            SoapObject request = new SoapObject("", "");
-
-            //SoapObject request = new SoapObject(Constants.GLOBEL_NAMESPACE, Constants.METHOD_HoldSeatsForSchedule);
-
-            SoapObject sa = new SoapObject(null, "Authentication");
-
-
-//            PropertyInfo userid = new PropertyInfo();
-//            userid.setName("UserID");
-//            userid.setValue(LoginCridantial.UserId.trim());
-//            userid.setType(Integer.class);
-//            sa.addProperty(userid);
-//
-//            PropertyInfo usertype = new PropertyInfo();
-//            usertype.setName("UserType");
-//            usertype.setValue(LoginCridantial.UserType.trim());
-//            usertype.setType(String.class);
-//            sa.addProperty(usertype);
-//
-//            PropertyInfo userkey = new PropertyInfo();
-//            userkey.setName("Key");
-//            userkey.setValue(LoginCridantial.UserKey.trim());
-//            userkey.setType(String.class);
-//            sa.addProperty(userkey);
-
-            request.addSoapObject(sa);
-
-            PropertyInfo scheduleid = new PropertyInfo();
-            scheduleid.setName("RouteScheduleId");
-            scheduleid.setValue(bus_id);
-            scheduleid.setType(Integer.class);
-            request.addProperty(scheduleid);
-
-
-            PropertyInfo journeydate = new PropertyInfo();
-            journeydate.setName("JourneyDate");
-            journeydate.setValue(TRAVEL_DATA.JOURNEY_DATE);
-            journeydate.setType(String.class);
-            request.addProperty(journeydate);
-
-            PropertyInfo pickupid = new PropertyInfo();
-            pickupid.setName("PickUpID");
-            pickupid.setValue(pickup_id);
-            pickupid.setType(Integer.class);
-            request.addProperty(pickupid);
-
-
-            SoapObject contact_information = new SoapObject(null, "ContactInformation");
-
-            PropertyInfo customername = new PropertyInfo();
-            customername.setName("CustomerName");
-            customername.setValue(Contact_name_text);
-            customername.setType(String.class);
-            contact_information.addProperty(customername);
-
-
-            PropertyInfo email = new PropertyInfo();
-            email.setName("Email");
-            email.setValue(Contact_email_text);
-            email.setType(String.class);
-            contact_information.addProperty(email);
-
-            PropertyInfo Phone = new PropertyInfo();
-            Phone.setName("Phone");
-            Phone.setValue(Contact_mobile_text);
-            Phone.setType(String.class);
-            contact_information.addProperty(Phone);
-
-
-            PropertyInfo mobile = new PropertyInfo();
-            mobile.setName("Mobile");
-            mobile.setValue(Contact_mobile_text);
-            mobile.setType(String.class);
-            contact_information.addProperty(mobile);
-
-
-            request.addSoapObject(contact_information);
-            request.addSoapObject(passengers_object);
-
-            if(Global_Travel.build_type == 0)
-            {
-                Log.e("vikas envolop", request.toString());
-            }
-
-
-            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-            envelope.implicitTypes = true;
-            envelope.setAddAdornments(false);
-            envelope.dotNet = true;
-
-            envelope.setOutputSoapObject(request);
-
-            if (Global_Travel.build_type == 0)
-            {
-                Log.e("vikas envolop",envelope.toString());
-            }
-
-
-//               HttpTransportSE httpTransport = new HttpTransportSE(Constants.GLOBEL_URL);
-//               httpTransport.debug = true;
-
-//               try {
-//                   httpTransport.call(Constants.GLOBEL_NAMESPACE + Constants.METHOD_HoldSeatsForSchedule, envelope);
-//               } catch (HttpResponseException e) {
-//                   // TODO Auto-generated catch block
-//                   e.printStackTrace();
-//                   if(Global_Travel.build_type == 0)
-//                   {
-//                       Log.e("vikas","error http:"+e);
-//                   }
-//
-//               } catch (IOException e) {
-//                   // TODO Auto-generated catch block
-//                   e.printStackTrace();
-//               } catch (XmlPullParserException e) {
-//                   // TODO Auto-generated catch block
-//                   e.printStackTrace();
-//               } //send request
-               // SoapObject result = null;
-               soapresult_detail = null;
-
-               try {
-
-
-                   soapresult_detail = (SoapObject) envelope.getResponse();
-
-               } catch (SoapFault e) {
-                   // TODO Auto-generated catch block
-                   e.printStackTrace();
-               }
-
-
-
-
-
-
-            return null;
-        }
-    }
-
 
 
 
@@ -903,4 +553,554 @@ public class Activity_Passenger_Details extends Activity {
 
 
     }
+
+
+    public void holdSeats() {
+
+        try {
+
+            progress = new ProgressDialog(Activity_Passenger_Details.this);
+            progress.setMessage("Booking...");
+            progress.setCanceledOnTouchOutside(false);
+            progress.setCancelable(false);
+            progress.show();
+
+
+            JSONObject objJsonParamHoldRequest = new JSONObject();
+            JSONArray passenger_list=new JSONArray();
+            JSONObject ContactInfo = new JSONObject();
+
+            Contact_email_text = contact_email.getText().toString().trim();
+            Contact_mobile_text = contact_mobile.getText().toString().trim();
+            Contact_name_text = contact_name.getText().toString().trim();
+
+            try {
+                ContactInfo.accumulate("CustomerName",Contact_name_text);
+                ContactInfo.accumulate("Email",Contact_email_text);
+                ContactInfo.accumulate("Phone",Contact_mobile_text);
+                ContactInfo.accumulate("Mobile",Contact_mobile_text);
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+            for (int k=0;k<Selected_seat_list.size();k++)
+            {
+                String temp_name ="";
+                String temp_age = "";
+                try
+                {
+                    EditText et_p_name = (EditText)v.findViewWithTag("edittext_name"+(k+1));
+                    EditText et_p_age = (EditText)v.findViewWithTag("edittext_age"+(k+1));
+
+                    temp_name = et_p_name.getText().toString();
+                    temp_age = et_p_age.getText().toString();
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                    if(Global_Travel.build_type == 0)
+                    {
+                        Log.e("vikas","error json"+e);
+                    }
+
+                }
+                String seatno = Selected_seat_list.get(k).getSeatNo();
+                Float fare = Selected_seat_list.get(k).getFare();
+                int seattype = Selected_seat_list.get(k).getSeat_Type();
+
+                String gender = "";
+                RadioGroup rg = (RadioGroup)v.findViewWithTag("radio_group"+(k+1));
+                int selected_radio_id = rg.getCheckedRadioButtonId();
+
+                RadioButton radioButton = (RadioButton) findViewById(selected_radio_id);
+                String radiobtnTag = radioButton.getTag().toString();
+                if(radiobtnTag.equals("radio_mr"+(k+1)))
+                {
+                    gender = "M";
+                }
+                else
+                {
+                    gender = "F";
+                }
+
+
+                JSONObject temp_passenger= new JSONObject();
+                try {
+                    temp_passenger.accumulate("Name",temp_name);
+                    temp_passenger.accumulate("Age",Integer.parseInt(temp_age));
+                    temp_passenger.accumulate("Gender",gender);
+                    temp_passenger.accumulate("SeatNo",seatno);
+                    temp_passenger.accumulate("Fare",fare);
+                    temp_passenger.accumulate("SeatTypeId",seattype);
+                    temp_passenger.accumulate("IsAcSeat",Boolean.valueOf(TRAVEL_DATA.IS_AC_STR));
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                passenger_list.put(temp_passenger);
+
+            }
+
+
+            try {
+                objJsonParamHoldRequest.accumulate("FromCityId",Integer.parseInt(TRAVEL_DATA.FROM_CITY_ID));
+                objJsonParamHoldRequest.accumulate("ToCityId",Integer.parseInt(TRAVEL_DATA.TO_CITY_ID));
+                objJsonParamHoldRequest.accumulate("JourneyDate",TRAVEL_DATA.JOURNEY_DATE);
+                objJsonParamHoldRequest.accumulate("BusId",bus_id);
+                objJsonParamHoldRequest.accumulate("PickUpID",String.valueOf(pickup_id));
+                // objJsonParamHoldRequest.accumulate("DropOffID",String.valueOf(dropoff_id));
+                objJsonParamHoldRequest.accumulate("ContactInfo",ContactInfo);
+                objJsonParamHoldRequest.accumulate("Passengers",passenger_list);
+
+
+            } catch (JSONException e) {
+
+                callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again));
+
+            }
+
+
+            String url = URL_TY.HOLD_SEATS;
+
+            JsonObjectRequest holdSeat = new JsonObjectRequest(Request.Method.POST, url,objJsonParamHoldRequest, new Response.Listener<JSONObject>() {
+
+                @Override
+                public void onResponse(JSONObject response) {
+
+                    try {
+                        progress.cancel();
+
+                            if(response.getBoolean(JSON_KEYS.SUCCESS)) {
+
+
+
+                                Log.i("HARSH","HOLdresponse -> "+response);
+
+                                JSONObject objJsonData = response.getJSONObject(Constants.JSON_KEYS.DATA);
+                                String holdId =objJsonData.optString("HoldId");
+
+                                // String totalfare = soapresult_detail.getPrimitiveProperty("TotalFare").toString();
+                                String totalfare = Float.toString(Total_offer_fare);
+                                String boarding_point_name = pickup_place_detail_list.get(spinner_position - 1).getPickupName();
+                                String boarding_point_address = pickup_place_detail_list.get(spinner_position-1).getAddress();
+                                String boarding_point_phone = pickup_place_detail_list.get(spinner_position-1).getContact();
+                                String boarding_point_landmark = pickup_place_detail_list.get(spinner_position-1).getLandmark();
+                                String time = getTime(pickup_place_detail_list.get(spinner_position - 1).getPkpTime());
+
+                                Intent i = new Intent(Activity_Passenger_Details.this,Activity_review_itinerary.class);
+                                i.putExtra("HoldKey",holdId);
+                                i.putExtra("TotalFare",totalfare);
+                                i.putExtra("BoardingPoint",boarding_point_name);
+                                i.putExtra("BoardingTime",time);
+                                i.putExtra("cancellation_data",cancellation_data_string);
+                                i.putExtra("contact_name",Contact_name_text);
+                                i.putExtra("contact_email",Contact_email_text);
+                                i.putExtra("contact_phone",Contact_mobile_text);
+                                i.putExtra("boarding_point_address",boarding_point_address);
+                                i.putExtra("boarding_point_phone",boarding_point_phone);
+                                i.putExtra("boarding_point_landmark",boarding_point_landmark);
+                                startActivity(i);
+
+
+                                if (selected_seat_activity != null){
+
+                                    selected_seat_activity.finish();
+                                }
+
+                                Activity_Passenger_Details.this.finish();
+                            }
+
+
+                        else {
+
+
+                                callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again));
+                        }
+                    } catch (JSONException e) {
+
+                        e.printStackTrace();
+                        callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again));
+                    }
+                }
+
+
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError err) {
+
+                    callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again));
+
+                }
+            })
+            {
+
+
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<String, String>();
+
+                    headers.put("access-token",TRAVEL_DATA.TOKEN_ID);
+
+                    return headers;
+                }
+
+            };
+
+            Custom_VolleyAppController.getInstance().addToRequestQueue(
+                    holdSeat);
+
+        } catch (Exception ex) {
+
+            ex.printStackTrace();
+
+        }
+
+
+    }
+
 }
+
+/*
+
+private class BookingTicket extends AsyncTask<Void,Void,Void>
+{
+
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+
+        progress = new ProgressDialog(Activity_Passenger_Details.this);
+        progress.setMessage("Booking...");
+        progress.setCanceledOnTouchOutside(false);
+        progress.setCancelable(false);
+        progress.show();
+
+        passenger_list = new JSONArray();
+        Contact_email_text = contact_email.getText().toString().trim();
+        Contact_mobile_text = contact_mobile.getText().toString().trim();
+        Contact_name_text = contact_name.getText().toString().trim();
+        for (int j =0;j<Selected_seat_list.size();j++)
+        {
+            JSONObject jo = new JSONObject();
+            EditText p_name = (EditText)v.findViewWithTag("edittext_name"+(j+1));
+            EditText p_age = (EditText)v.findViewWithTag("edittext_age"+(j+1));
+            try {
+                jo.put("name",p_name.getText().toString().trim());
+                jo.put("age",p_age.getText().toString().trim());
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+
+            passenger_list.put(jo);
+        }
+
+
+
+        passengers_object = new SoapObject(null, "Passengers");
+
+
+        for (int k=0;k<Selected_seat_list.size();k++)
+        {
+            String temp_name ="";
+            String temp_age = "";
+            try
+            {
+                temp_name = passenger_list.getJSONObject(k).getString("name");
+                temp_age = passenger_list.getJSONObject(k).getString("age");
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+                if(Global_Travel.build_type == 0)
+                {
+                    Log.e("vikas","error json"+e);
+                }
+
+            }
+            String seatno = Selected_seat_list.get(k).getSeatNo();
+            String fare = Float.toString(Selected_seat_list.get(k).getFare());
+            String seattype ="";
+            if(Selected_seat_list.get(k).getIsSleeper())
+            {
+                seattype = "Sleeper";
+            }
+            else
+            {
+                seattype = "Seater";
+            }
+
+            String gender = "";
+            RadioGroup rg = (RadioGroup)v.findViewWithTag("radio_group"+(k+1));
+            int selected_radio_id = rg.getCheckedRadioButtonId();
+
+            RadioButton radioButton = (RadioButton) findViewById(selected_radio_id);
+            String radiobtnTag = radioButton.getTag().toString();
+            if(radiobtnTag.equals("radio_mr"+(k+1)))
+            {
+                gender = "M";
+            }
+            else
+            {
+                gender = "F";
+            }
+
+
+            SoapObject passenger = new SoapObject(null, "Passenger");
+
+            PropertyInfo Pro_name =  new PropertyInfo();
+            Pro_name.setName("Name");
+            Pro_name.setValue(temp_name);
+            Pro_name.setType(String.class);
+            passenger.addProperty(Pro_name);
+
+            PropertyInfo Pro_age =  new PropertyInfo();
+            Pro_age.setName("Age");
+            Pro_age.setValue(temp_age);
+            Pro_age.setType(Integer.class);
+            passenger.addProperty(Pro_age);
+
+            PropertyInfo Pro_gender =  new PropertyInfo();
+            Pro_gender.setName("Gender");
+            Pro_gender.setValue(gender);
+            Pro_gender.setType(String.class);
+            passenger.addProperty(Pro_gender);
+
+            PropertyInfo Pro_seatno =  new PropertyInfo();
+            Pro_seatno.setName("SeatNo");
+            Pro_seatno.setValue(seatno);
+            Pro_seatno.setType(String.class);
+            passenger.addProperty(Pro_seatno);
+
+            PropertyInfo Pro_fare =  new PropertyInfo();
+            Pro_fare.setName("Fare");
+            Pro_fare.setValue(fare);
+            Pro_fare.setType(Double.class);
+            passenger.addProperty(Pro_fare);
+
+            PropertyInfo Pro_seatType =  new PropertyInfo();
+            Pro_seatType.setName("SeatType");
+            Pro_seatType.setValue(seattype);
+            Pro_seatType.setType(String.class);
+            passenger.addProperty(Pro_seatType);
+
+
+            passengers_object.addSoapObject(passenger);
+
+        }
+
+    }
+
+    @Override
+    protected void onPostExecute(Void result) {
+        super.onPostExecute(result);
+
+        if (soapresult_detail != null) {
+
+            if(((SoapObject)soapresult_detail.getProperty("Response")).getPrimitiveProperty("IsSuccess").toString().equals("true"))
+            {
+                try {
+                    message = soapresult_detail.toString();
+                    if(Global_Travel.build_type == 0)
+                    {
+                        Log.e("vikas",message);
+                    }
+
+                    String holdkey = soapresult_detail.getPrimitiveProperty("HoldKey").toString();
+                    // String totalfare = soapresult_detail.getPrimitiveProperty("TotalFare").toString();
+                    String totalfare = Float.toString(Total_offer_fare);
+                    String boarding_point_name = pickup_place_detail_list.get(spinner_position - 1).getPickupName();
+                    String boarding_point_address = pickup_place_detail_list.get(spinner_position-1).getAddress();
+                    String boarding_point_phone = pickup_place_detail_list.get(spinner_position-1).getContact();
+                    String boarding_point_landmark = pickup_place_detail_list.get(spinner_position-1).getLandmark();
+                    String time = getTime(pickup_place_detail_list.get(spinner_position - 1).getPkpTime());
+
+                    Intent i = new Intent(Activity_Passenger_Details.this,Activity_review_itinerary.class);
+                    i.putExtra("HoldKey",holdkey);
+                    i.putExtra("TotalFare",totalfare);
+                    i.putExtra("BoardingPoint",boarding_point_name);
+                    i.putExtra("BoardingTime",time);
+                    i.putExtra("cancellation_data",cancellation_data_string);
+                    i.putExtra("contact_name",Contact_name_text);
+                    i.putExtra("contact_email",Contact_email_text);
+                    i.putExtra("contact_phone",Contact_mobile_text);
+                    i.putExtra("boarding_point_address",boarding_point_address);
+                    i.putExtra("boarding_point_phone",boarding_point_phone);
+                    i.putExtra("boarding_point_landmark",boarding_point_landmark);
+                    startActivity(i);
+                    Activity_Select_Seats.selected_seat_activity.finish();
+                    Activity_Passenger_Details.this.finish();
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            else
+            {
+                Global_Travel.showAlertDialog(Activity_Passenger_Details.this,getResources().getString(R.string.validating_error_title),((SoapObject)soapresult_detail.getProperty("Response")).getPrimitivePropertyAsString("Message"),"Ok");
+            }
+
+
+
+        }
+        else
+        {
+            Global_Travel.showAlertDialog(Activity_Passenger_Details.this,getResources().getString(R.string.validating_error_title),getResources().getString(R.string.slow_internet_error),"Ok");
+        }
+
+        progress.dismiss();
+    }
+
+
+    @Override
+    protected Void doInBackground(Void... voids) {
+
+        //TODO : HARSH Implement new API
+
+        SoapObject request = new SoapObject("", "");
+
+        //SoapObject request = new SoapObject(Constants.GLOBEL_NAMESPACE, Constants.METHOD_HoldSeatsForSchedule);
+
+        SoapObject sa = new SoapObject(null, "Authentication");
+
+
+//            PropertyInfo userid = new PropertyInfo();
+//            userid.setName("UserID");
+//            userid.setValue(LoginCridantial.UserId.trim());
+//            userid.setType(Integer.class);
+//            sa.addProperty(userid);
+//
+//            PropertyInfo usertype = new PropertyInfo();
+//            usertype.setName("UserType");
+//            usertype.setValue(LoginCridantial.UserType.trim());
+//            usertype.setType(String.class);
+//            sa.addProperty(usertype);
+//
+//            PropertyInfo userkey = new PropertyInfo();
+//            userkey.setName("Key");
+//            userkey.setValue(LoginCridantial.UserKey.trim());
+//            userkey.setType(String.class);
+//            sa.addProperty(userkey);
+
+        request.addSoapObject(sa);
+
+        PropertyInfo scheduleid = new PropertyInfo();
+        scheduleid.setName("RouteScheduleId");
+        scheduleid.setValue(bus_id);
+        scheduleid.setType(Integer.class);
+        request.addProperty(scheduleid);
+
+
+        PropertyInfo journeydate = new PropertyInfo();
+        journeydate.setName("JourneyDate");
+        journeydate.setValue(TRAVEL_DATA.JOURNEY_DATE);
+        journeydate.setType(String.class);
+        request.addProperty(journeydate);
+
+        PropertyInfo pickupid = new PropertyInfo();
+        pickupid.setName("PickUpID");
+        pickupid.setValue(pickup_id);
+        pickupid.setType(Integer.class);
+        request.addProperty(pickupid);
+
+
+        SoapObject contact_information = new SoapObject(null, "ContactInformation");
+
+        PropertyInfo customername = new PropertyInfo();
+        customername.setName("CustomerName");
+        customername.setValue(Contact_name_text);
+        customername.setType(String.class);
+        contact_information.addProperty(customername);
+
+
+        PropertyInfo email = new PropertyInfo();
+        email.setName("Email");
+        email.setValue(Contact_email_text);
+        email.setType(String.class);
+        contact_information.addProperty(email);
+
+        PropertyInfo Phone = new PropertyInfo();
+        Phone.setName("Phone");
+        Phone.setValue(Contact_mobile_text);
+        Phone.setType(String.class);
+        contact_information.addProperty(Phone);
+
+
+        PropertyInfo mobile = new PropertyInfo();
+        mobile.setName("Mobile");
+        mobile.setValue(Contact_mobile_text);
+        mobile.setType(String.class);
+        contact_information.addProperty(mobile);
+
+
+        request.addSoapObject(contact_information);
+        request.addSoapObject(passengers_object);
+
+        if(Global_Travel.build_type == 0)
+        {
+            Log.e("vikas envolop", request.toString());
+        }
+
+
+        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+        envelope.implicitTypes = true;
+        envelope.setAddAdornments(false);
+        envelope.dotNet = true;
+
+        envelope.setOutputSoapObject(request);
+
+        if (Global_Travel.build_type == 0)
+        {
+            Log.e("vikas envolop",envelope.toString());
+        }
+
+
+//               HttpTransportSE httpTransport = new HttpTransportSE(Constants.GLOBEL_URL);
+//               httpTransport.debug = true;
+
+//               try {
+//                   httpTransport.call(Constants.GLOBEL_NAMESPACE + Constants.METHOD_HoldSeatsForSchedule, envelope);
+//               } catch (HttpResponseException e) {
+//                   // TODO Auto-generated catch block
+//                   e.printStackTrace();
+//                   if(Global_Travel.build_type == 0)
+//                   {
+//                       Log.e("vikas","error http:"+e);
+//                   }
+//
+//               } catch (IOException e) {
+//                   // TODO Auto-generated catch block
+//                   e.printStackTrace();
+//               } catch (XmlPullParserException e) {
+//                   // TODO Auto-generated catch block
+//                   e.printStackTrace();
+//               } //send request
+        // SoapObject result = null;
+        soapresult_detail = null;
+
+        try {
+
+
+            soapresult_detail = (SoapObject) envelope.getResponse();
+
+        } catch (SoapFault e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+
+
+
+
+
+        return null;
+    }
+}
+
+*/
