@@ -1,14 +1,11 @@
 package com.iseva.app.source.travel;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.ConnectivityManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.content.ContextCompat;
@@ -30,14 +27,21 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
+import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.Response.ErrorListener;
+import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.iseva.app.source.Custom_VolleyAppController;
+import com.iseva.app.source.Custom_VolleyObjectRequest;
 import com.iseva.app.source.R;
 import com.iseva.app.source.Realm_objets.Realm_Selected_Bus_Details;
-import com.iseva.app.source.Realm_objets.Selected_Seats;
+import com.iseva.app.source.Realm_objets.Realm_Selected_Seats;
+import com.iseva.app.source.travel.Constants.JSON_KEYS;
+import com.iseva.app.source.travel.Constants.SEAT_DETAILS;
 import com.iseva.app.source.travel.Constants.URL_XB;
 import com.iseva.app.source.travel.Global_Travel.TRAVEL_DATA;
 import com.payUMoney.sdk.SdkConstants;
@@ -45,7 +49,6 @@ import com.payUMoney.sdk.SdkConstants;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.ksoap2.serialization.SoapObject;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -63,14 +66,12 @@ import static com.payUMoney.sdk.PayUmoneySdkInitilizer.startPaymentActivityForRe
 import static java.lang.Integer.parseInt;
 
 
-public class Activity_review_itinerary extends Activity {
-
-
+public class Activity_review_itinerary extends Activity_Parent_Travel {
 
 
     Realm My_realm;
 
-    SoapObject soapresult_detail;
+    //SoapObject soapresult_detail;
 
     LinearLayout layout_header_text;
     ImageView header_iv;
@@ -103,7 +104,7 @@ public class Activity_review_itinerary extends Activity {
     String TotalFare;
     String BaseFare;
     String ExtraCharge;
-    String DiscountFare= "0";
+    String DiscountFare = "0";
     String ServisTex = "0";
     String BoardingPoint;
     String BoardingTime;
@@ -120,13 +121,12 @@ public class Activity_review_itinerary extends Activity {
 
     String cancellation_data_string;
 
-    int coupan_id =0;
+    int coupan_id = 0;
     CountDownTimer countDownTimer;
 
     RealmResults<Realm_Selected_Bus_Details> schedule_details;
-    RealmResults<Selected_Seats> Selected_seat_list;
+    RealmResults<Realm_Selected_Seats> Selected_seat_list;
 
-    private ProgressDialog progress;
 
     Session_manager session_manager;
 
@@ -141,12 +141,14 @@ public class Activity_review_itinerary extends Activity {
 
     JSONArray ps;
 
+    String total_fare_book_responce = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review_itinerary);
         My_realm = Realm.getDefaultInstance();
-     //   Payu.setInstance(this);
+        //   Payu.setInstance(this);
 
 
         initialize();
@@ -157,38 +159,31 @@ public class Activity_review_itinerary extends Activity {
         setoffers();
     }
 
-    public void getextracharge()
-    {
+    public void getextracharge() {
         StringRequest promocodeapplyrequest = new StringRequest(Request.Method.POST,
                 URL_XB.GET_EXTRA_CHARGE, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String s) {
-                if(Global_Travel.build_type == 0)
-                {
-                    Log.e("vikas",s);
+                if (Global_Travel.build_type == 0) {
+                    Log.e("vikas", s);
                 }
 
                 JSONObject response = null;
-                try
-                {
+                try {
                     response = new JSONObject(s);
 
 
-                    if(response != null)
-                    {
-                        if(response.get("success").toString().equals("1"))
-                        {
-                                TextView tv = (TextView)findViewById(R.id.itinerary_service_tax_tv);
+                    if (response != null) {
+                        if (response.get("success").toString().equals("1")) {
+                            TextView tv = (TextView) findViewById(R.id.itinerary_service_tax_tv);
 
-                                ExtraCharge = response.getJSONObject("data").getString("commition");
-                                 TotalFare = Float.toString(Float.parseFloat(BaseFare) + Float.parseFloat(ExtraCharge));
-                                 proceed_btn.setText("Proceed to Pay \u20B9 "+TotalFare);
-                            tv.setText("\u20B9 "+ExtraCharge);
-                        }
-                        else
-                        {
-                            Toast.makeText(Activity_review_itinerary.this,"Something accured wrong",Toast.LENGTH_LONG).show();
+                            ExtraCharge = response.getJSONObject("data").getString("commition");
+                            TotalFare = Float.toString(Float.parseFloat(BaseFare) + Float.parseFloat(ExtraCharge));
+                            proceed_btn.setText("Proceed to Pay \u20B9 " + TotalFare);
+                            tv.setText("\u20B9 " + ExtraCharge);
+                        } else {
+                            Toast.makeText(Activity_review_itinerary.this, "Something is wrong", Toast.LENGTH_LONG).show();
                         }
                     }
 
@@ -203,16 +198,12 @@ public class Activity_review_itinerary extends Activity {
             public void onErrorResponse(VolleyError error) {
 
 
-                Toast.makeText(getApplicationContext(),"Error is -->> " + error.toString(),Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Error is -->> " + error.toString(), Toast.LENGTH_LONG).show();
             }
         }) {
             @Override
-            public Map<String, String> getParams(){
+            public Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-
-
-
-
 
 
                 return params;
@@ -228,21 +219,17 @@ public class Activity_review_itinerary extends Activity {
         requestQueue.add(promocodeapplyrequest);
     }
 
-    public void starttimer()
-    {
-        countDownTimer = new CountDownTimer(1000*60*10, 1000) {
+    public void starttimer() {
+        countDownTimer = new CountDownTimer(1000 * 60 * 10, 1000) {
 
             public void onTick(long millisUntilFinished) {
-                long min = millisUntilFinished /(1000*60);
-                long milisec = millisUntilFinished % (1000*60);
-                long sec = milisec/1000;
-                if(sec > 9)
-                {
-                    timer_tv.setText(min+":"+sec);
-                }
-                else
-                {
-                    timer_tv.setText(min+":0"+sec);
+                long min = millisUntilFinished / (1000 * 60);
+                long milisec = millisUntilFinished % (1000 * 60);
+                long sec = milisec / 1000;
+                if (sec > 9) {
+                    timer_tv.setText(min + ":" + sec);
+                } else {
+                    timer_tv.setText(min + ":0" + sec);
                 }
 
             }
@@ -254,8 +241,7 @@ public class Activity_review_itinerary extends Activity {
         }.start();
     }
 
-    public void initialize()
-    {
+    public void initialize() {
 
         progress = new ProgressDialog(Activity_review_itinerary.this);
         progress.setMessage("Please wait...");
@@ -263,7 +249,6 @@ public class Activity_review_itinerary extends Activity {
         progress.setCancelable(false);
 
         progress.show();
-
 
 
         Intent i = getIntent();
@@ -285,46 +270,46 @@ public class Activity_review_itinerary extends Activity {
 
         My_realm.beginTransaction();
         schedule_details = My_realm.where(Realm_Selected_Bus_Details.class).findAll();
-        Selected_seat_list = My_realm.where(Selected_Seats.class).findAll();
+        Selected_seat_list = My_realm.where(Realm_Selected_Seats.class).findAll();
         My_realm.commitTransaction();
 
-        layout_header_text = (LinearLayout)findViewById(R.id.layout_header_text);
+        layout_header_text = (LinearLayout) findViewById(R.id.layout_header_text);
         layout_header_text.setGravity(Gravity.CENTER_VERTICAL);
 
-        header_iv = (ImageView)findViewById(R.id.header_back_button);
-        header_tv = (TextView)findViewById(R.id.header_text);
-        header_tv.setPadding(getResources().getDimensionPixelSize(R.dimen.padding_margin_15),0,0,0);
+        header_iv = (ImageView) findViewById(R.id.header_back_button);
+        header_tv = (TextView) findViewById(R.id.header_text);
+        header_tv.setPadding(getResources().getDimensionPixelSize(R.dimen.padding_margin_15), 0, 0, 0);
         header_tv.setText(R.string.itinerary_header_text);
 
-        timer_tv = (TextView)findViewById(R.id.itinerary_timer_tv);
+        timer_tv = (TextView) findViewById(R.id.itinerary_timer_tv);
 
-        from_city = (TextView)findViewById(R.id.itinerary_from_city_name);
-        to_city = (TextView)findViewById(R.id.itinerary_to_city_name);
+        from_city = (TextView) findViewById(R.id.itinerary_from_city_name);
+        to_city = (TextView) findViewById(R.id.itinerary_to_city_name);
         from_city.setText(TRAVEL_DATA.FROM_CITY_NAME);
         to_city.setText(TRAVEL_DATA.TO_CITY_NAME);
 
-        travels_name_tv = (TextView)findViewById(R.id.itinerary_travals_name);
-        bus_label_tv = (TextView)findViewById(R.id.itinerary_bus_label);
-        dep_time_tv = (TextView)findViewById(R.id.itinerary_dep_time);
-        arr_time_tv = (TextView)findViewById(R.id.itinerary_arr_time);
-        dep_date_tv = (TextView)findViewById(R.id.itinerary_dep_date);
-        arr_date_tv = (TextView)findViewById(R.id.itinerary_arr_date);
-        no_of_travellers_tv = (TextView)findViewById(R.id.itinerary_no_of_travellers);
-        seats_tv = (TextView)findViewById(R.id.itinerary_no_of_seats);
-        boarding_point_name_tv = (TextView)findViewById(R.id.itinerary_boarding_point_name);
-        boarding_point_time_tv =(TextView)findViewById(R.id.itinerary_boarding_time);
-        base_fare_tv = (TextView)findViewById(R.id.itinerary_base_fare_tv);
-        promocode_tv = (TextView)findViewById(R.id.itinerary_promocode_tv) ;
-        proceed_btn = (Button)findViewById(R.id.itinerary_proceed_btn);
-        promocode_cancel_btn = (Button)findViewById(R.id.itinerary_promocode_cancel_btn);
-        promocode_apply_btn = (Button)findViewById(R.id.itinerary_promocode_apply_btn);
-        promocode_main_layout = (LinearLayout)findViewById(R.id.itinerary_promocode_main_layout);
-        cancelation_tv = (TextView)findViewById(R.id.itinerary_cancelation_tv);
-        cancel_cancellation_policy_layout = (TextView)findViewById(R.id.cancel_cancellation_layout);
-        login_alert_layout = (LinearLayout)findViewById(R.id.login_alert_layout);
-        login_alert_cancel_btn = (TextView)findViewById(R.id.login_alert_cancel_btn);
-        login_alert_login_btn = (TextView)findViewById(R.id.login_alert_login_btn);
-        login_alert_signup_btn = (TextView)findViewById(R.id.login_alert_signup_btn);
+        travels_name_tv = (TextView) findViewById(R.id.itinerary_travals_name);
+        bus_label_tv = (TextView) findViewById(R.id.itinerary_bus_label);
+        dep_time_tv = (TextView) findViewById(R.id.itinerary_dep_time);
+        arr_time_tv = (TextView) findViewById(R.id.itinerary_arr_time);
+        dep_date_tv = (TextView) findViewById(R.id.itinerary_dep_date);
+        arr_date_tv = (TextView) findViewById(R.id.itinerary_arr_date);
+        no_of_travellers_tv = (TextView) findViewById(R.id.itinerary_no_of_travellers);
+        seats_tv = (TextView) findViewById(R.id.itinerary_no_of_seats);
+        boarding_point_name_tv = (TextView) findViewById(R.id.itinerary_boarding_point_name);
+        boarding_point_time_tv = (TextView) findViewById(R.id.itinerary_boarding_time);
+        base_fare_tv = (TextView) findViewById(R.id.itinerary_base_fare_tv);
+        promocode_tv = (TextView) findViewById(R.id.itinerary_promocode_tv);
+        proceed_btn = (Button) findViewById(R.id.itinerary_proceed_btn);
+        promocode_cancel_btn = (Button) findViewById(R.id.itinerary_promocode_cancel_btn);
+        promocode_apply_btn = (Button) findViewById(R.id.itinerary_promocode_apply_btn);
+        promocode_main_layout = (LinearLayout) findViewById(R.id.itinerary_promocode_main_layout);
+        cancelation_tv = (TextView) findViewById(R.id.itinerary_cancelation_tv);
+        cancel_cancellation_policy_layout = (TextView) findViewById(R.id.cancel_cancellation_layout);
+        login_alert_layout = (LinearLayout) findViewById(R.id.login_alert_layout);
+        login_alert_cancel_btn = (TextView) findViewById(R.id.login_alert_cancel_btn);
+        login_alert_login_btn = (TextView) findViewById(R.id.login_alert_login_btn);
+        login_alert_signup_btn = (TextView) findViewById(R.id.login_alert_signup_btn);
 
 
         travels_name_tv.setText(schedule_details.get(0).getCompanyName());
@@ -334,17 +319,13 @@ public class Activity_review_itinerary extends Activity {
         dep_date_tv.setText(change_date_form(schedule_details.get(0).getDepDateTime()));
         arr_date_tv.setText(change_date_form(schedule_details.get(0).getArrDateTime()));
         Departure_time = schedule_details.get(0).getDepDateTime();
-        no_of_travellers_tv.setText(""+Selected_seat_list.size());
+        no_of_travellers_tv.setText("" + Selected_seat_list.size());
         String seat = "";
-        for (int l=0;l<Selected_seat_list.size();l++)
-        {
-            if(l == 0)
-            {
-                seat = seat+Selected_seat_list.get(l).getSeatNo();
-            }
-            else
-            {
-                seat = seat+","+Selected_seat_list.get(l).getSeatNo();
+        for (int l = 0; l < Selected_seat_list.size(); l++) {
+            if (l == 0) {
+                seat = seat + Selected_seat_list.get(l).getSeatNo();
+            } else {
+                seat = seat + "," + Selected_seat_list.get(l).getSeatNo();
             }
 
         }
@@ -361,29 +342,28 @@ public class Activity_review_itinerary extends Activity {
     }
 
 
-    public void setonclicklister()
-    {
-        cancelation_tv.setOnClickListener(new View.OnClickListener(){
+    public void setonclicklister() {
+        cancelation_tv.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 hidekeyboard();
-                LinearLayout cl = (LinearLayout)findViewById(R.id.cancellation_layout);
+                LinearLayout cl = (LinearLayout) findViewById(R.id.cancellation_layout);
                 cl.setVisibility(View.VISIBLE);
             }
         });
 
-        cancel_cancellation_policy_layout.setOnClickListener(new View.OnClickListener(){
+        cancel_cancellation_policy_layout.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 hidekeyboard();
-                LinearLayout cl = (LinearLayout)findViewById(R.id.cancellation_layout);
+                LinearLayout cl = (LinearLayout) findViewById(R.id.cancellation_layout);
                 cl.setVisibility(View.GONE);
             }
         });
 
-        header_iv.setOnClickListener(new View.OnClickListener(){
+        header_iv.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
@@ -392,29 +372,23 @@ public class Activity_review_itinerary extends Activity {
             }
         });
 
-        promocode_tv.setOnClickListener(new View.OnClickListener(){
+        promocode_tv.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 hidekeyboard();
-                if(isNetworkConnected())
-                {
-                    if(session_manager.isLoggedIn())
-                    {
+                if (isNetworkConnected(false)) {
+                    if (session_manager.isLoggedIn()) {
                         flag_manual_promo = true;
                         promocode_main_layout.setVisibility(View.VISIBLE);
-                    }
-                    else
-                    {
+                    } else {
                         login_alert_layout.setVisibility(View.VISIBLE);
                     }
 
 
-                }
-                else
-                {
+                } else {
 
-                    Global_Travel.showAlertDialog(Activity_review_itinerary.this,getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
+                    Global_Travel.showAlertDialog(Activity_review_itinerary.this, getResources().getString(R.string.internet_connection_error_title), getResources().getString(R.string.internet_connection_error_message), "Ok");
 
                 }
 
@@ -422,13 +396,13 @@ public class Activity_review_itinerary extends Activity {
             }
         });
 
-        promocode_cancel_btn.setOnClickListener(new View.OnClickListener(){
+        promocode_cancel_btn.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 hidekeyboard();
-                LinearLayout error_layout = (LinearLayout)findViewById(R.id.itinerary_promocode_error_layout);
-                EditText promocode_et = (EditText)findViewById(R.id.itinerary_promocode_et);
+                LinearLayout error_layout = (LinearLayout) findViewById(R.id.itinerary_promocode_error_layout);
+                EditText promocode_et = (EditText) findViewById(R.id.itinerary_promocode_et);
                 promocode_main_layout.setVisibility(View.INVISIBLE);
                 error_layout.setVisibility(View.INVISIBLE);
                 promocode_et.setText("");
@@ -438,96 +412,85 @@ public class Activity_review_itinerary extends Activity {
             }
         });
 
-        proceed_btn.setOnClickListener(new View.OnClickListener(){
+        proceed_btn.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 hidekeyboard();
 
-                if(isNetworkConnected())
-                {
-                    if(session_manager.isLoggedIn())
-                    {
+                if (isNetworkConnected(false)) {
+                    if (session_manager.isLoggedIn()) {
 
                         payu_transaction_id = "iSeva" + System.currentTimeMillis();
                         add_transaction_server();
-                        //navigateToBaseActivity();
+
                         makepayment();
 
-                      /*  BookSeat bookSeat = new BookSeat();
-                        bookSeat.execute();*/
-                    }
-                    else
-                    {
+                    } else {
                         login_alert_layout.setVisibility(View.VISIBLE);
                     }
 
 
-                }
-                else
-                {
-                    Global_Travel.showAlertDialog(Activity_review_itinerary.this,getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
+                } else {
+                    Global_Travel.showAlertDialog(Activity_review_itinerary.this, getResources().getString(R.string.internet_connection_error_title), getResources().getString(R.string.internet_connection_error_message), "Ok");
                 }
 
             }
         });
 
-        promocode_apply_btn.setOnClickListener(new View.OnClickListener(){
+        promocode_apply_btn.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 hidekeyboard();
 
-                final EditText promocode_et = (EditText)findViewById(R.id.itinerary_promocode_et);
+                final EditText promocode_et = (EditText) findViewById(R.id.itinerary_promocode_et);
                 final String promocode_et_txt = promocode_et.getText().toString().trim();
-                apply_promocode(promocode_et_txt,session_manager.getid(),"0");
-
-
+                apply_promocode(promocode_et_txt, session_manager.getid(), "0");
 
 
             }
         });
 
-        login_alert_cancel_btn.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View view) {
-                    login_alert_layout.setVisibility(View.GONE);
-            }
-        });
-
-        login_alert_login_btn.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View view) {
-                    login_alert_layout.setVisibility(View.GONE);
-                    Intent i = new Intent(Activity_review_itinerary.this,Activity_login.class);
-                    startActivity(i);
-                    overridePendingTransition(R.anim.anim_in, R.anim.anim_none);
-            }
-        });
-
-        login_alert_signup_btn.setOnClickListener(new View.OnClickListener(){
+        login_alert_cancel_btn.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 login_alert_layout.setVisibility(View.GONE);
-                Intent i = new Intent(Activity_review_itinerary.this,Activity_register.class);
+            }
+        });
+
+        login_alert_login_btn.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                login_alert_layout.setVisibility(View.GONE);
+                Intent i = new Intent(Activity_review_itinerary.this, Activity_login.class);
+                startActivity(i);
+                overridePendingTransition(R.anim.anim_in, R.anim.anim_none);
+            }
+        });
+
+        login_alert_signup_btn.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                login_alert_layout.setVisibility(View.GONE);
+                Intent i = new Intent(Activity_review_itinerary.this, Activity_register.class);
                 startActivity(i);
                 overridePendingTransition(R.anim.anim_in, R.anim.anim_none);
             }
         });
     }
 
-    public void makepayment()
-    {
+    public void makepayment() {
         session_manager = new Session_manager(Activity_review_itinerary.this);
 
         String phone = session_manager.getphone();
-        String productName = "Book TIcket";
+        String productName = "Book Ticket";
         String firstName = session_manager.getname();
         String txnId = payu_transaction_id;
-        String email=session_manager.getusername();
+        String email = session_manager.getusername();
         String sUrl = "http://xercesblue.website/iservice/success";
         String fUrl = "http://xercesblue.website/iservice/failiar";
         String udf1 = "";
@@ -536,7 +499,7 @@ public class Activity_review_itinerary extends Activity {
         String udf4 = "";
         String udf5 = "";
         boolean isDebug = false;
-            String key = "EaXKMGaq";
+        String key = "EaXKMGaq";
         String merchantId = "5755743";
 
        /* String key = "dRQuiA";
@@ -546,7 +509,11 @@ public class Activity_review_itinerary extends Activity {
         PaymentParam.Builder builder = new PaymentParam.Builder();
 
 
-        builder.setAmount(Double.parseDouble(TotalFare))
+        //TODO : HARSH : Remove hard coding of total fare
+
+        Double total_fare = 2.0; //Double.parseDouble(TotalFare)
+
+        builder.setAmount(total_fare)
                 .setTnxId(txnId)
                 .setPhone(phone)
                 .setProductName(productName)
@@ -577,12 +544,11 @@ public class Activity_review_itinerary extends Activity {
     }
 
 
-
     private void calculateServerSideHashAndInitiatePayment(final PaymentParam paymentParam) {
 
         // Replace your server side hash generator API URL
-       // String url = "https://test.payumoney.com/payment/op/calculateHashForTest";
-      String url = "http://xercesblue.website/iservice/client_requests/transaction/create_hash";
+        // String url = "https://test.payumoney.com/payment/op/calculateHashForTest";
+        String url = "http://xercesblue.website/iservice/client_requests/transaction/create_hash";
 
         StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -595,7 +561,6 @@ public class Activity_review_itinerary extends Activity {
                         if (status != null || status.equals("1")) {
 
                             String hash = jsonObject.getString(SdkConstants.RESULT);
-
 
 
                             paymentParam.setMerchantHash(hash);
@@ -654,29 +619,25 @@ public class Activity_review_itinerary extends Activity {
             if (resultCode == RESULT_OK) {
 
                 countDownTimer.cancel();
-                if(Global_Travel.build_type == 0)
-                {
+                if (Global_Travel.build_type == 0) {
                     Log.e("vikas", "Success - Payment ID : " + data.getStringExtra(SdkConstants.PAYMENT_ID));
                 }
 
                 send_success_payment_status(data.getStringExtra(SdkConstants.PAYMENT_ID));
-                BookSeat bookSeat = new BookSeat();
-                bookSeat.execute();
-
-
+                bookSeat();
 
 
             } else if (resultCode == RESULT_CANCELED) {
-                if(Global_Travel.build_type == 0) {
+                if (Global_Travel.build_type == 0) {
                     Log.i(TAG, "failure");
                 }
                 //showAlertDialog(getResources().getString(R.string.validating_error_title),"Payment not success","ok");
 
             } else if (resultCode == RESULT_FAILED) {
-                if(Global_Travel.build_type == 0) {
+                if (Global_Travel.build_type == 0) {
                     Log.i("app_activity", "failure");
                 }
-                Global_Travel.showAlertDialog(Activity_review_itinerary.this,getResources().getString(R.string.validating_error_title),"Payment not success","ok");
+                Global_Travel.showAlertDialog(Activity_review_itinerary.this, getResources().getString(R.string.validating_error_title), "Transaction Failed!", "ok");
                 if (data != null) {
                     if (data.getStringExtra(SdkConstants.RESULT).equals("cancel")) {
 
@@ -686,7 +647,7 @@ public class Activity_review_itinerary extends Activity {
                 }
                 //Write your code if there's no result
             } else if (resultCode == RESULT_BACK) {
-                if(Global_Travel.build_type == 0) {
+                if (Global_Travel.build_type == 0) {
                     Log.i(TAG, "User returned without login");
                 }
 
@@ -695,8 +656,7 @@ public class Activity_review_itinerary extends Activity {
     }
 
 
-    public void add_transaction_server()
-    {
+    public void add_transaction_server() {
         StringRequest addtransaction = new StringRequest(Request.Method.POST,
                 Constants.URL_XB.ADD_TRANSACTION, new Response.Listener<String>() {
 
@@ -710,23 +670,23 @@ public class Activity_review_itinerary extends Activity {
             public void onErrorResponse(VolleyError error) {
 
 
-                Toast.makeText(getApplicationContext(),"Something went wrong, try again",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Something went wrong, try again", Toast.LENGTH_LONG).show();
             }
         }) {
             @Override
-            public Map<String, String> getParams(){
+            public Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("user_id",session_manager.getid());
-                params.put("payu_transaction_id",payu_transaction_id);
-                params.put("coupan_id",""+coupan_id);
-                params.put("username",contact_name);
-                params.put("phone",contact_phone);
-                params.put("email",contact_email);
-                params.put("ticket_date",Departure_time);
-                params.put("from_city",TRAVEL_DATA.FROM_CITY_NAME);
-                params.put("to_city",TRAVEL_DATA.TO_CITY_NAME);
-                params.put("total_fare",TotalFare);
-                params.put("extra_charge",ExtraCharge);
+                params.put("user_id", session_manager.getid());
+                params.put("payu_transaction_id", payu_transaction_id);
+                params.put("coupan_id", "" + coupan_id);
+                params.put("username", contact_name);
+                params.put("phone", contact_phone);
+                params.put("email", contact_email);
+                params.put("ticket_date", Departure_time);
+                params.put("from_city", TRAVEL_DATA.FROM_CITY_NAME);
+                params.put("to_city", TRAVEL_DATA.TO_CITY_NAME);
+                params.put("total_fare", TotalFare);
+                params.put("extra_charge", ExtraCharge);
 
                 return params;
 
@@ -742,8 +702,7 @@ public class Activity_review_itinerary extends Activity {
         requestQueue_globel.add(addtransaction);
     }
 
-    public void send_success_payment_status(final String payu_payment_id)
-    {
+    public void send_success_payment_status(final String payu_payment_id) {
         StringRequest success_payment = new StringRequest(Request.Method.POST,
                 URL_XB.SUCCESS_PAYMENT, new Response.Listener<String>() {
 
@@ -757,14 +716,14 @@ public class Activity_review_itinerary extends Activity {
             public void onErrorResponse(VolleyError error) {
 
 
-                Toast.makeText(getApplicationContext(),"Something accured wrong",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Something is wrong", Toast.LENGTH_LONG).show();
             }
         }) {
             @Override
-            public Map<String, String> getParams(){
+            public Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("payu_transaction_id",payu_transaction_id);
-                params.put("payu_payment_id",payu_payment_id);
+                params.put("payu_transaction_id", payu_transaction_id);
+                params.put("payu_payment_id", payu_payment_id);
 
                 return params;
 
@@ -780,8 +739,7 @@ public class Activity_review_itinerary extends Activity {
         requestQueue_globel.add(success_payment);
     }
 
-    public void send_start_booking_status()
-    {
+    public void send_start_booking_status() {
         StringRequest start_booking = new StringRequest(Request.Method.POST,
                 URL_XB.START_BOOKING, new Response.Listener<String>() {
 
@@ -795,13 +753,13 @@ public class Activity_review_itinerary extends Activity {
             public void onErrorResponse(VolleyError error) {
                 progress.dismiss();
 
-                Toast.makeText(getApplicationContext(),"Something accured wrong",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Something is wrong", Toast.LENGTH_LONG).show();
             }
         }) {
             @Override
-            public Map<String, String> getParams(){
+            public Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("payu_transaction_id",payu_transaction_id);
+                params.put("payu_transaction_id", payu_transaction_id);
 
                 return params;
 
@@ -818,16 +776,15 @@ public class Activity_review_itinerary extends Activity {
     }
 
 
-    public void send_success_booking_status(final String mentis_transaction_id, final String pnr_no, final String ticket_no, final String order_id, final String repoting_time, final String status)
-    {
+    public void send_success_booking_status(final String mentis_transaction_id, final String pnr_no, final String ticket_no, final String order_id, final String repoting_time, final String status) {
         StringRequest success_booking = new StringRequest(Request.Method.POST,
                 URL_XB.SUCCESS_BOOKING, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String s) {
 
-                sendmessage(order_id,ticket_no,pnr_no,TRAVEL_DATA.FROM_CITY_NAME,TRAVEL_DATA.TO_CITY_NAME, TRAVEL_DATA.JOURNEY_DATE,repoting_time,BoardingTime,status,ps.toString(),Boarding_point_address, schedule_details.get(0).getBusLabel(), schedule_details.get(0).getCompanyName(),contact_phone,TotalFare,cancellation_data_string);
-                sendmail(order_id,ticket_no,pnr_no,TRAVEL_DATA.FROM_CITY_NAME,TRAVEL_DATA.TO_CITY_NAME, TRAVEL_DATA.JOURNEY_DATE,repoting_time,BoardingTime,status,ps.toString(),Boarding_point_address, schedule_details.get(0).getBusLabel(), schedule_details.get(0).getCompanyName(),Boarding_point_phone,TotalFare,cancellation_data_string);
+                sendmessage(order_id, ticket_no, pnr_no, TRAVEL_DATA.FROM_CITY_NAME, TRAVEL_DATA.TO_CITY_NAME, TRAVEL_DATA.JOURNEY_DATE, repoting_time, BoardingTime, status, ps.toString(), Boarding_point_address, schedule_details.get(0).getBusLabel(), schedule_details.get(0).getCompanyName(), contact_phone, TotalFare, cancellation_data_string);
+                sendmail(order_id, ticket_no, pnr_no, TRAVEL_DATA.FROM_CITY_NAME, TRAVEL_DATA.TO_CITY_NAME, TRAVEL_DATA.JOURNEY_DATE, repoting_time, BoardingTime, status, ps.toString(), Boarding_point_address, schedule_details.get(0).getBusLabel(), schedule_details.get(0).getCompanyName(), Boarding_point_phone, TotalFare, cancellation_data_string);
             }
         }, new Response.ErrorListener() {
 
@@ -835,16 +792,16 @@ public class Activity_review_itinerary extends Activity {
             public void onErrorResponse(VolleyError error) {
 
 
-                Toast.makeText(getApplicationContext(),"Something accured wrong",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Something is wrong", Toast.LENGTH_LONG).show();
             }
         }) {
             @Override
-            public Map<String, String> getParams(){
+            public Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("payu_transaction_id",payu_transaction_id);
-                params.put("mentis_id",mentis_transaction_id);
-                params.put("pnr_no",pnr_no);
-                params.put("ticket_no",ticket_no);
+                params.put("payu_transaction_id", payu_transaction_id);
+                params.put("mentis_id", mentis_transaction_id);
+                params.put("pnr_no", pnr_no);
+                params.put("ticket_no", ticket_no);
 
 
                 return params;
@@ -861,8 +818,7 @@ public class Activity_review_itinerary extends Activity {
         requestQueue_globel.add(success_booking);
     }
 
-    public void apply_promocode(final String coupan_code, final String userid, final String isglobel)
-    {
+    public void apply_promocode(final String coupan_code, final String userid, final String isglobel) {
         progress = new ProgressDialog(Activity_review_itinerary.this);
         progress.setMessage("Please wait...");
         progress.setCanceledOnTouchOutside(false);
@@ -870,8 +826,8 @@ public class Activity_review_itinerary extends Activity {
 
         progress.show();
         final EditText promocode_et = (EditText) findViewById(R.id.itinerary_promocode_et);
-        final LinearLayout error_layout = (LinearLayout)findViewById(R.id.itinerary_promocode_error_layout);
-        final TextView error_tv = (TextView)findViewById(R.id.itinerary_promocode_error_tv);
+        final LinearLayout error_layout = (LinearLayout) findViewById(R.id.itinerary_promocode_error_layout);
+        final TextView error_tv = (TextView) findViewById(R.id.itinerary_promocode_error_tv);
 
         StringRequest promocodeapplyrequest = new StringRequest(Request.Method.POST,
                 URL_XB.GET_OFFER_WITH_COUPON_NO, new Response.Listener<String>() {
@@ -879,73 +835,61 @@ public class Activity_review_itinerary extends Activity {
             @Override
             public void onResponse(String s) {
                 progress.dismiss();
-                if(Global_Travel.build_type ==0) {
+                if (Global_Travel.build_type == 0) {
                     Log.e("vikas", s);
                 }
                 JSONObject response = null;
-                try
-                {
+                try {
                     response = new JSONObject(s);
 
 
-                    if(response != null)
-                    {
-                        if(response.get("success").toString().equals("1"))
-                        {
+                    if (response != null) {
+                        if (response.get("success").toString().equals("1")) {
 
-                            JSONArray  offers = response.getJSONArray("data");
-                            if(Global_Travel.build_type == 0)
-                            {
-                                Log.e("vikas",offers.toString());
+                            JSONArray offers = response.getJSONArray("data");
+                            if (Global_Travel.build_type == 0) {
+                                Log.e("vikas", offers.toString());
                             }
 
 
-                            if(offers.length() != 0)
-                            {
-                                final LinearLayout discount_layout = (LinearLayout)findViewById(R.id.itinerary_discount_layout);
-                                TextView discount_tv = (TextView)findViewById(R.id.itinerary_discount_tv);
+                            if (offers.length() != 0) {
+                                final LinearLayout discount_layout = (LinearLayout) findViewById(R.id.itinerary_discount_layout);
+                                TextView discount_tv = (TextView) findViewById(R.id.itinerary_discount_tv);
 
                                 Float basefare = Float.parseFloat(BaseFare);
                                 int discount_percentage = parseInt(offers.getJSONObject(0).getString("discount_percentage"));
                                 int discount_amount = parseInt(offers.getJSONObject(0).getString("discount_amount"));
-                                int discount_amount_according_to_basefare = (int)(basefare*discount_percentage)/100;
-                                if(discount_amount == 0)
-                                {
+                                int discount_amount_according_to_basefare = (int) (basefare * discount_percentage) / 100;
+                                if (discount_amount == 0) {
                                     DiscountFare = Float.toString(discount_amount_according_to_basefare);
                                     TotalFare = Float.toString(basefare - discount_amount_according_to_basefare + Float.parseFloat(ExtraCharge));
-                                }
-                                else
-                                {
-                                    if(discount_amount < discount_amount_according_to_basefare)
-                                    {
+                                } else {
+                                    if (discount_amount < discount_amount_according_to_basefare) {
                                         DiscountFare = Integer.toString(discount_amount);
-                                        TotalFare = Float.toString(basefare - discount_amount +Float.parseFloat(ExtraCharge));
-                                    }
-                                    else
-                                    {
+                                        TotalFare = Float.toString(basefare - discount_amount + Float.parseFloat(ExtraCharge));
+                                    } else {
                                         DiscountFare = Float.toString(discount_amount_according_to_basefare);
-                                        TotalFare = Float.toString(basefare - discount_amount_according_to_basefare+Float.parseFloat(ExtraCharge));
+                                        TotalFare = Float.toString(basefare - discount_amount_according_to_basefare + Float.parseFloat(ExtraCharge));
                                     }
                                 }
                                 coupan_id = offers.getJSONObject(0).getInt("id");
-                                discount_tv.setText("\u20B9 "+DiscountFare);
+                                discount_tv.setText("\u20B9 " + DiscountFare);
                                 discount_layout.setVisibility(View.VISIBLE);
-                                proceed_btn.setText("Proceed to Pay \u20B9 "+TotalFare);
+                                proceed_btn.setText("Proceed to Pay \u20B9 " + TotalFare);
 
 
-
-                                final LinearLayout offer_top_layout = (LinearLayout)findViewById(R.id.itinerary_offer_top_layout);
-                                final LinearLayout offer_selected_layout = (LinearLayout)findViewById(R.id.itinerary_promocode_selected_offer_layout);
-                                TextView offer_selected_tag = (TextView)findViewById(R.id.activity_itinerary_selected_offer_tag_tv);
-                                TextView offer_selected_detail = (TextView)findViewById(R.id.activity_itinerary_selected_offer_detail_tv);
-                                TextView offer_selected_remove_btn = (TextView)findViewById(R.id.itinerare_selected_offer_remove_btn);
+                                final LinearLayout offer_top_layout = (LinearLayout) findViewById(R.id.itinerary_offer_top_layout);
+                                final LinearLayout offer_selected_layout = (LinearLayout) findViewById(R.id.itinerary_promocode_selected_offer_layout);
+                                TextView offer_selected_tag = (TextView) findViewById(R.id.activity_itinerary_selected_offer_tag_tv);
+                                TextView offer_selected_detail = (TextView) findViewById(R.id.activity_itinerary_selected_offer_detail_tv);
+                                TextView offer_selected_remove_btn = (TextView) findViewById(R.id.itinerare_selected_offer_remove_btn);
 
                                 offer_selected_tag.setText(offers.getJSONObject(0).getString("tag"));
                                 offer_selected_detail.setText(offers.getJSONObject(0).getString("detail"));
                                 offer_top_layout.setVisibility(View.GONE);
                                 offer_selected_layout.setVisibility(View.VISIBLE);
 
-                                offer_selected_remove_btn.setOnClickListener(new View.OnClickListener(){
+                                offer_selected_remove_btn.setOnClickListener(new View.OnClickListener() {
 
 
                                     @Override
@@ -957,32 +901,32 @@ public class Activity_review_itinerary extends Activity {
                                         title_tv.setTextSize(16);
                                         title_tv.setGravity(Gravity.CENTER);
                                         title_tv.setText("Alert");*/
-                                        LayoutInflater inflater = (LayoutInflater)Activity_review_itinerary.this.getSystemService
+                                        LayoutInflater inflater = (LayoutInflater) Activity_review_itinerary.this.getSystemService
                                                 (Context.LAYOUT_INFLATER_SERVICE);
 
-                                        View v =  inflater.inflate(R.layout.textview,null);
+                                        View v = inflater.inflate(R.layout.textview, null);
 
 
-                                        TextView title_tv = (TextView)v.findViewById(R.id.alert_title);
+                                        TextView title_tv = (TextView) v.findViewById(R.id.alert_title);
                                         title_tv.setText("Alert");
                                         AlertDialog.Builder builder = new AlertDialog.Builder(Activity_review_itinerary.this);
                                         builder.setCustomTitle(title_tv)
                                                 .setMessage("You are sure to remove promocode")
                                                 .setCancelable(false)
 
-                                                .setNegativeButton("No",new DialogInterface.OnClickListener() {
+                                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
                                                     public void onClick(DialogInterface dialog, int id) {
                                                         dialog.cancel();
                                                     }
                                                 })
-                                                .setPositiveButton("Yes", new DialogInterface.OnClickListener(){
+                                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 
                                                     @Override
                                                     public void onClick(DialogInterface dialogInterface, int i) {
 
                                                         coupan_id = 0;
                                                         TotalFare = Float.toString(Float.parseFloat(BaseFare) + Float.parseFloat(ExtraCharge));
-                                                        proceed_btn.setText("Proceed to Pay \u20B9 "+TotalFare);
+                                                        proceed_btn.setText("Proceed to Pay \u20B9 " + TotalFare);
                                                         setoffers();
                                                         offer_top_layout.setVisibility(View.VISIBLE);
                                                         offer_selected_layout.setVisibility(View.GONE);
@@ -998,39 +942,26 @@ public class Activity_review_itinerary extends Activity {
                                         Button b = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
                                         b.setTextColor(ContextCompat.getColor(Activity_review_itinerary.this, R.color.app_theme_color));
                                         Button c = alert.getButton(DialogInterface.BUTTON_POSITIVE);
-                                        c.setTextColor(ContextCompat.getColor(Activity_review_itinerary.this,R.color.app_theme_color));
+                                        c.setTextColor(ContextCompat.getColor(Activity_review_itinerary.this, R.color.app_theme_color));
                                     }
                                 });
-
-
-
-
-
-
 
 
                                 error_layout.setVisibility(View.INVISIBLE);
                                 promocode_et.setText("");
                                 promocode_main_layout.setVisibility(View.INVISIBLE);
                                 flag_manual_promo = false;
-                            }
-                            else
-                            {
+                            } else {
 
-                                if(flag_manual_promo)
-                                {
+                                if (flag_manual_promo) {
                                     error_tv.setText(response.getString("message"));
                                     error_layout.setVisibility(View.VISIBLE);
-                                }
-                                else
-                                {
-                                    Global_Travel.showAlertDialog(Activity_review_itinerary.this,"Alert","This code is Already used","Ok");
+                                } else {
+                                    Global_Travel.showAlertDialog(Activity_review_itinerary.this, "Alert", "This code is Already used", "Ok");
                                 }
                             }
-                        }
-                        else
-                        {
-                            Toast.makeText(Activity_review_itinerary.this,"Something accured wrong",Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(Activity_review_itinerary.this, "Something is wrong", Toast.LENGTH_LONG).show();
                         }
                     }
 
@@ -1045,18 +976,16 @@ public class Activity_review_itinerary extends Activity {
             public void onErrorResponse(VolleyError error) {
                 progress.dismiss();
 
-                Toast.makeText(getApplicationContext(),"Something accured wrong",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Something is wrong", Toast.LENGTH_LONG).show();
             }
         }) {
             @Override
-            public Map<String, String> getParams(){
+            public Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
 
-                params.put("coupan_no",coupan_code);
-                params.put("user_id",userid);
-                params.put("isglobel",isglobel);
-
-
+                params.put("coupan_no", coupan_code);
+                params.put("user_id", userid);
+                params.put("isglobel", isglobel);
 
 
                 return params;
@@ -1072,8 +1001,7 @@ public class Activity_review_itinerary extends Activity {
         requestQueue.add(promocodeapplyrequest);
     }
 
-    public void enable_promocode_server(final String promocode)
-    {
+    public void enable_promocode_server(final String promocode) {
         progress = new ProgressDialog(Activity_review_itinerary.this);
         progress.setMessage("Please wait...");
         progress.setCanceledOnTouchOutside(false);
@@ -1094,13 +1022,13 @@ public class Activity_review_itinerary extends Activity {
             public void onErrorResponse(VolleyError error) {
                 progress.dismiss();
 
-                Toast.makeText(getApplicationContext(),"Something accured wrong",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Something is wrong", Toast.LENGTH_LONG).show();
             }
         }) {
             @Override
-            public Map<String, String> getParams(){
+            public Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("promocode",promocode);
+                params.put("promocode", promocode);
 
                 return params;
 
@@ -1114,19 +1042,20 @@ public class Activity_review_itinerary extends Activity {
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue_globel.add(enable_promocode);
+
+
     }
 
-    public void hidekeyboard()
-    {
-        try  {
-            InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+    public void hidekeyboard() {
+        try {
+            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         } catch (Exception e) {
 
         }
     }
-    public void setcancellation_policy_data()
-    {
+
+    public void setcancellation_policy_data() {
         JSONArray cancellation_obj;
         try {
 
@@ -1165,19 +1094,15 @@ public class Activity_review_itinerary extends Activity {
 
                 if (j == 0) {
                     tv1.setText("Between 0 Hrs. to " + cancellation_obj.getJSONObject(j).getString("condition") + " Hrs.");
-                }
-                else if(j == cancellation_obj.length()-1)
-                {
+                } else if (j == cancellation_obj.length() - 1) {
                     tv1.setText("Above " + cancellation_obj.getJSONObject(j).getString("condition") + "Hrs.");
-                }
-                else
-                 {
+                } else {
                     tv1.setText("Between " + cancellation_obj.getJSONObject(j - 1).getString("condition") + " Hrs. to " + cancellation_obj.getJSONObject(j).getString("condition") + "Hrs.");
                 }
 
                 int percentage_int = parseInt(cancellation_obj.getJSONObject(j).getString("percentage"));
 
-                tv2.setText(""+(100 - percentage_int));
+                tv2.setText("" + (100 - percentage_int));
 
                 single_layout.addView(tv1);
                 single_layout.addView(tv2);
@@ -1188,14 +1113,10 @@ public class Activity_review_itinerary extends Activity {
         } catch (Throwable t) {
         }
     }
-    private boolean isNetworkConnected() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        return cm.getActiveNetworkInfo() != null;
-    }
 
-    public void activity_dismiss()
-    {
+
+    public void activity_dismiss() {
        /* TextView title_tv = new TextView(this);
         title_tv.setPadding(0,getResources().getDimensionPixelSize(R.dimen.padding_margin_10),0,0);
         title_tv.setTextColor(ContextCompat.getColor(Activity_review_itinerary.this,R.color.black));
@@ -1203,13 +1124,13 @@ public class Activity_review_itinerary extends Activity {
         title_tv.setGravity(Gravity.CENTER);
         title_tv.setText("Alert");*/
 
-        LayoutInflater inflater = (LayoutInflater)Activity_review_itinerary.this.getSystemService
+        LayoutInflater inflater = (LayoutInflater) Activity_review_itinerary.this.getSystemService
                 (Context.LAYOUT_INFLATER_SERVICE);
 
-        View v =  inflater.inflate(R.layout.textview,null);
+        View v = inflater.inflate(R.layout.textview, null);
 
 
-        TextView title_tv = (TextView)v.findViewById(R.id.alert_title);
+        TextView title_tv = (TextView) v.findViewById(R.id.alert_title);
         title_tv.setText("Alert");
 
         AlertDialog.Builder builder = new AlertDialog.Builder(Activity_review_itinerary.this);
@@ -1217,12 +1138,12 @@ public class Activity_review_itinerary extends Activity {
                 .setMessage("You will not be able to book this ticket till next 10 minutes.")
                 .setCancelable(false)
 
-                .setNegativeButton("cancel",new DialogInterface.OnClickListener() {
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
                     }
                 })
-                .setPositiveButton("ok", new DialogInterface.OnClickListener(){
+                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -1240,22 +1161,19 @@ public class Activity_review_itinerary extends Activity {
         Button b = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
         b.setTextColor(ContextCompat.getColor(this, R.color.app_theme_color));
         Button c = alert.getButton(DialogInterface.BUTTON_POSITIVE);
-        c.setTextColor(ContextCompat.getColor(this,R.color.app_theme_color));
+        c.setTextColor(ContextCompat.getColor(this, R.color.app_theme_color));
 
     }
 
     @Override
     public void onBackPressed() {
-        LinearLayout cl = (LinearLayout)findViewById(R.id.cancellation_layout);
-        LinearLayout pc = (LinearLayout)findViewById(R.id.itinerary_promocode_main_layout);
+        LinearLayout cl = (LinearLayout) findViewById(R.id.cancellation_layout);
+        LinearLayout pc = (LinearLayout) findViewById(R.id.itinerary_promocode_main_layout);
 
-        if(cl.getVisibility() == View.VISIBLE || pc.getVisibility() == View.VISIBLE)
-        {
+        if (cl.getVisibility() == View.VISIBLE || pc.getVisibility() == View.VISIBLE) {
             cl.setVisibility(View.GONE);
             pc.setVisibility(View.GONE);
-        }
-        else
-        {
+        } else {
            /* TextView title_tv = new TextView(this);
             title_tv.setPadding(0,getResources().getDimensionPixelSize(R.dimen.padding_margin_10),0,0);
             title_tv.setTextColor(ContextCompat.getColor(Activity_review_itinerary.this,R.color.black));
@@ -1263,13 +1181,13 @@ public class Activity_review_itinerary extends Activity {
             title_tv.setGravity(Gravity.CENTER);
             title_tv.setText("Alert");
 */
-            LayoutInflater inflater = (LayoutInflater)Activity_review_itinerary.this.getSystemService
+            LayoutInflater inflater = (LayoutInflater) Activity_review_itinerary.this.getSystemService
                     (Context.LAYOUT_INFLATER_SERVICE);
 
-            View v =  inflater.inflate(R.layout.textview,null);
+            View v = inflater.inflate(R.layout.textview, null);
 
 
-            TextView title_tv = (TextView)v.findViewById(R.id.alert_title);
+            TextView title_tv = (TextView) v.findViewById(R.id.alert_title);
             title_tv.setText("Alert");
 
             AlertDialog.Builder builder = new AlertDialog.Builder(Activity_review_itinerary.this);
@@ -1277,12 +1195,12 @@ public class Activity_review_itinerary extends Activity {
                     .setMessage("You will not be able to book this ticket till next 10 minutes.")
                     .setCancelable(false)
 
-                    .setNegativeButton("cancel",new DialogInterface.OnClickListener() {
+                    .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.cancel();
                         }
                     })
-                    .setPositiveButton("Ok", new DialogInterface.OnClickListener(){
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -1300,286 +1218,96 @@ public class Activity_review_itinerary extends Activity {
             Button b = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
             b.setTextColor(ContextCompat.getColor(this, R.color.app_theme_color));
             Button c = alert.getButton(DialogInterface.BUTTON_POSITIVE);
-            c.setTextColor(ContextCompat.getColor(this,R.color.app_theme_color));
+            c.setTextColor(ContextCompat.getColor(this, R.color.app_theme_color));
         }
-
-
 
 
     }
 
 
+    public String getreportingtime(String time) {
+        String reporting_time_local = "";
+        int hour = parseInt(time.substring(0, 2));
+        int min = parseInt(time.substring(3, 5));
 
-    private class BookSeat extends AsyncTask<Void, Void, Void> {
+        int total_min = (hour * 60) + min;
 
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-
-            if (soapresult_detail != null) {
-                String Is_success = ((SoapObject) soapresult_detail.getProperty("Response")).getPrimitiveProperty("IsSuccess").toString();
-                if (Is_success.equals("true")) {
-                    //Toast.makeText(Activity_review_itinerary.this,soapresult_detail.toString(),Toast.LENGTH_LONG).show();
-                    try {
-                        if(Global_Travel.build_type ==0)
-                        {
-                            Log.e("vikas", soapresult_detail.toString());
-                        }
-
-
-                        String order_id = soapresult_detail.getPrimitivePropertyAsString("TransactionId");
-                        String pnr_no = soapresult_detail.getPrimitivePropertyAsString("PNRNo");
-                        String ticket_no = soapresult_detail.getPrimitivePropertyAsString("TicketNo");
-                        String status = "BOOKED";
-
-
-
-                        String repoting_time = getreportingtime(BoardingTime);
-
-                        int passanger_count = ((SoapObject) soapresult_detail.getProperty("Passengers")).getPropertyCount();
-                        ps = new JSONArray();
-                        for (int i = 0; i < passanger_count; i++) {
-                            JSONObject p = new JSONObject();
-
-                            p.put("Name", ((SoapObject) ((SoapObject) soapresult_detail.getProperty("Passengers")).getProperty(i)).getPrimitiveProperty("Name").toString());
-                            p.put("Age", ((SoapObject) ((SoapObject) soapresult_detail.getProperty("Passengers")).getProperty(i)).getPrimitiveProperty("Age").toString());
-                            p.put("Gender", ((SoapObject) ((SoapObject) soapresult_detail.getProperty("Passengers")).getProperty(i)).getPrimitiveProperty("Gender").toString());
-                            p.put("SeatNo", ((SoapObject) ((SoapObject) soapresult_detail.getProperty("Passengers")).getProperty(i)).getPrimitiveProperty("SeatNo").toString());
-                            p.put("SeatType", ((SoapObject) ((SoapObject) soapresult_detail.getProperty("Passengers")).getProperty(i)).getPrimitiveProperty("SeatType").toString());
-                            p.put("IsAcSeat", TRAVEL_DATA.IS_AC_STR);
-                            ps.put(p);
-
-                        }
-
-
-                        send_success_booking_status(order_id,pnr_no,ticket_no,order_id,repoting_time,status);
-
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-
-                }
-                else
-                {
-                    Global_Travel.showAlertDialog(Activity_review_itinerary.this,getResources().getString(R.string.validating_error_title),((SoapObject)soapresult_detail.getProperty("Response")).getPrimitivePropertyAsString("Message"),"Ok");
-                }
-
-            } else {
-                Global_Travel.showAlertDialog(Activity_review_itinerary.this,getResources().getString(R.string.validating_error_title),getResources().getString(R.string.slow_internet_error),"Ok");
-            }
-
-
-
-
-
-
-
-
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            progress = new ProgressDialog(Activity_review_itinerary.this);
-            progress.setMessage("Please wait...");
-            progress.setCanceledOnTouchOutside(false);
-            progress.setCancelable(false);
-
-            progress.show();
-
-            send_start_booking_status();
-        }
-
-        @Override
-        protected Void doInBackground(Void... arg0) {
-
-            //TODO : Implement with new API , commented by Harsh
-//            SoapObject request = new SoapObject(Constants.GLOBEL_NAMESPACE, Constants.METHOD_BookSeats);
-//
-//
-//            SoapObject sa = new SoapObject(null,"Authentication");
-//
-//            PropertyInfo userid = new PropertyInfo();
-//            userid.setName("UserID");
-//
-//            userid.setValue(LoginCridantial.UserId.trim());
-//            userid.setType(Integer.class);
-//            sa.addProperty(userid);
-//
-//            PropertyInfo usertype = new PropertyInfo();
-//            usertype.setName("UserType");
-//            usertype.setValue(LoginCridantial.UserType.trim());
-//
-//
-//            usertype.setType(String.class);
-//            sa.addProperty(usertype);
-//
-//            PropertyInfo userkey = new PropertyInfo();
-//            userkey.setName("Key");
-//            userkey.setValue(LoginCridantial.UserKey.trim());
-//
-//            userkey.setType(String.class);
-//            sa.addProperty(userkey);
-//            request.addSoapObject(sa);
-//
-//            PropertyInfo holdkey = new PropertyInfo();
-//            holdkey.setName("HoldKey");
-//            holdkey.setValue(HoldKey);
-//            userkey.setType(Integer.class);
-//            request.addProperty(holdkey);
-//            if(Global_Travel.build_type == 0)
-//            {
-//                Log.e("vikas request print",request.toString());
-//            }
-//
-//
-//
-//
-//
-//
-//            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-//            envelope.implicitTypes = true;
-//            envelope.dotNet = true;
-//            envelope.setOutputSoapObject(request);
-//
-//            HttpTransportSE httpTransport = new HttpTransportSE(Constants.GLOBEL_URL);
-//            httpTransport.debug =true;
-//
-//
-//            try {
-//                httpTransport.call(Constants.GLOBEL_NAMESPACE+Constants.METHOD_BookSeats, envelope);
-//            } catch (HttpResponseException e) {
-//                e.printStackTrace();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            } catch (XmlPullParserException e) {
-//                e.printStackTrace();
-//            }
-//            soapresult_detail = null;
-//
-//            try {
-//                soapresult_detail  = (SoapObject)envelope.getResponse();
-//
-//            } catch (SoapFault e) {
-//
-//                e.printStackTrace();
-//            }
-
-
-
-            return null;
-        }
-    }
-
-    public String getreportingtime(String time)
-    {
-        String reporting_time_local ="";
-        int hour = parseInt(time.substring(0,2));
-        int min = parseInt(time.substring(3,5));
-
-        int total_min = (hour*60)+min;
-
-         total_min = total_min - 15;
-        hour = total_min /60;
+        total_min = total_min - 15;
+        hour = total_min / 60;
         min = total_min % 60;
-        if(hour > 9 && min > 9)
-        {
-            reporting_time_local = hour+":"+min+" "+time.substring(6,time.length());
-        }
-        else if(hour <10 && min <10)
-        {
-            reporting_time_local = "0"+hour+":0"+min+" "+time.substring(6,time.length());
-        }
-        else if(hour > 9 && min < 10)
-        {
-            reporting_time_local = hour+":0"+min+" "+time.substring(6,time.length());
-        }
-        else
-        {
-            reporting_time_local = "0"+hour+":"+min+" "+time.substring(6,time.length());
+        if (hour > 9 && min > 9) {
+            reporting_time_local = hour + ":" + min + " " + time.substring(6, time.length());
+        } else if (hour < 10 && min < 10) {
+            reporting_time_local = "0" + hour + ":0" + min + " " + time.substring(6, time.length());
+        } else if (hour > 9 && min < 10) {
+            reporting_time_local = hour + ":0" + min + " " + time.substring(6, time.length());
+        } else {
+            reporting_time_local = "0" + hour + ":" + min + " " + time.substring(6, time.length());
         }
         return reporting_time_local;
     }
 
 
-    public void setoffers()
-    {
+    public void setoffers() {
         StringRequest offerrequest = new StringRequest(Request.Method.POST,
                 URL_XB.GET_OFFER_GLOBAL, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String s) {
                 progress.dismiss();
-                if(Global_Travel.build_type ==0) {
+                if (Global_Travel.build_type == 0) {
                     Log.e("vikas", s);
                 }
                 JSONObject response = null;
-                try
-                {
+                try {
                     response = new JSONObject(s);
 
 
-                    if(response != null)
-                    {
-                        if(response.get("success").toString().equals("1"))
-                        {
-                            LinearLayout offer_main_layout = (LinearLayout)findViewById(R.id.activity_itinerary_offer_main_layout);
+                    if (response != null) {
+                        if (response.get("success").toString().equals("1")) {
+                            LinearLayout offer_main_layout = (LinearLayout) findViewById(R.id.activity_itinerary_offer_main_layout);
                             offer_main_layout.removeAllViews();
-                            JSONArray  offers = response.getJSONArray("data");
-                            if(Global_Travel.build_type == 0) {
+                            JSONArray offers = response.getJSONArray("data");
+                            if (Global_Travel.build_type == 0) {
                                 Log.e("vikas", offers.toString());
                             }
 
-                            if(offers.length() != 0)
-                            {
-                                for(int i=0;i<offers.length();i++)
-                                {
-                                    LayoutInflater inflater = (LayoutInflater)Activity_review_itinerary.this.getSystemService
+                            if (offers.length() != 0) {
+                                for (int i = 0; i < offers.length(); i++) {
+                                    LayoutInflater inflater = (LayoutInflater) Activity_review_itinerary.this.getSystemService
                                             (Context.LAYOUT_INFLATER_SERVICE);
 
-                                    View view =  inflater.inflate(R.layout.offer_row,null);
-                                    LinearLayout check_btn = (LinearLayout)view.findViewById(R.id.activity_itinerary_offer_check_btn);
-                                    TextView tag_tv = (TextView)view.findViewById(R.id.activity_itinerary_offer_tag_tv);
-                                    TextView detail_tv = (TextView)view.findViewById(R.id.activity_itinerary_offer_detail_tv);
+                                    View view = inflater.inflate(R.layout.offer_row, null);
+                                    LinearLayout check_btn = (LinearLayout) view.findViewById(R.id.activity_itinerary_offer_check_btn);
+                                    TextView tag_tv = (TextView) view.findViewById(R.id.activity_itinerary_offer_tag_tv);
+                                    TextView detail_tv = (TextView) view.findViewById(R.id.activity_itinerary_offer_detail_tv);
 
-                                    check_btn.setTag(R.string.promocode_id,offers.getJSONObject(i).getString("id"));
-                                    check_btn.setTag(R.string.max_uses_count,offers.getJSONObject(i).getString("max_uses_count"));
-                                    check_btn.setTag(R.string.discount_amount,offers.getJSONObject(i).getString("discount_amount"));
-                                    check_btn.setTag(R.string.discount_percentage,offers.getJSONObject(i).getString("discount_percentage"));
-                                    check_btn.setTag(R.string.coupan_code,offers.getJSONObject(i).getString("coupan_code"));
+                                    check_btn.setTag(R.string.promocode_id, offers.getJSONObject(i).getString("id"));
+                                    check_btn.setTag(R.string.max_uses_count, offers.getJSONObject(i).getString("max_uses_count"));
+                                    check_btn.setTag(R.string.discount_amount, offers.getJSONObject(i).getString("discount_amount"));
+                                    check_btn.setTag(R.string.discount_percentage, offers.getJSONObject(i).getString("discount_percentage"));
+                                    check_btn.setTag(R.string.coupan_code, offers.getJSONObject(i).getString("coupan_code"));
 
                                     tag_tv.setText(offers.getJSONObject(i).getString("coupan_code"));
                                     detail_tv.setText(offers.getJSONObject(i).getString("detail"));
 
-                                    check_btn.setOnClickListener(new View.OnClickListener(){
+                                    check_btn.setOnClickListener(new View.OnClickListener() {
 
                                         @Override
                                         public void onClick(View view) {
                                             String max_uses = view.getTag(R.string.max_uses_count).toString();
-                                            LinearLayout check_btn_middle = (LinearLayout)findViewById(R.id.activity_itinerary_offer_check_btn_middle);
-                                            if(isNetworkConnected())
-                                            {
-                                                if(session_manager.isLoggedIn())
-                                                {
-                                                    apply_promocode(view.getTag(R.string.coupan_code).toString(),session_manager.getid(),"1");
-                                                }
-                                                else
-                                                {
+                                            LinearLayout check_btn_middle = (LinearLayout) findViewById(R.id.activity_itinerary_offer_check_btn_middle);
+                                            if (isNetworkConnected(false)) {
+                                                if (session_manager.isLoggedIn()) {
+                                                    apply_promocode(view.getTag(R.string.coupan_code).toString(), session_manager.getid(), "1");
+                                                } else {
                                                     login_alert_layout.setVisibility(View.VISIBLE);
                                                 }
 
 
+                                            } else {
 
-
-                                            }
-                                            else
-                                            {
-
-                                                Global_Travel.showAlertDialog(Activity_review_itinerary.this,getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message),"Ok");
+                                                Global_Travel.showAlertDialog(Activity_review_itinerary.this, getResources().getString(R.string.internet_connection_error_title), getResources().getString(R.string.internet_connection_error_message), "Ok");
 
                                             }
                                         }
@@ -1587,27 +1315,21 @@ public class Activity_review_itinerary extends Activity {
 
                                     offer_main_layout.addView(view);
                                 }
-                            }
-                            else
-                            {
+                            } else {
                                 LinearLayout.LayoutParams lp_tv = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                                lp_tv.setMargins(0,10,0,10);
+                                lp_tv.setMargins(0, 10, 0, 10);
                                 TextView tv = new TextView(Activity_review_itinerary.this);
                                 tv.setText("No Offers");
-                                tv.setPadding(getResources().getDimensionPixelSize(R.dimen.padding_margin_5),0,0,getResources().getDimensionPixelSize(R.dimen.padding_margin_10));
-                                tv.setTextColor(ContextCompat.getColor(Activity_review_itinerary.this,R.color.black));
+                                tv.setPadding(getResources().getDimensionPixelSize(R.dimen.padding_margin_5), 0, 0, getResources().getDimensionPixelSize(R.dimen.padding_margin_10));
+                                tv.setTextColor(ContextCompat.getColor(Activity_review_itinerary.this, R.color.black));
                                 offer_main_layout.addView(tv);
                                 offer_main_layout.setGravity(Gravity.CENTER);
                             }
+                        } else {
+                            Toast.makeText(Activity_review_itinerary.this, "Something is wrong", Toast.LENGTH_LONG).show();
                         }
-                        else
-                        {
-                            Toast.makeText(Activity_review_itinerary.this,"Something accured wrong",Toast.LENGTH_LONG).show();
-                        }
-                    }
-                    else
-                    {
-                        Toast.makeText(Activity_review_itinerary.this,"Something accured wrong",Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(Activity_review_itinerary.this, "Something is wrong", Toast.LENGTH_LONG).show();
                     }
 
                 } catch (JSONException e) {
@@ -1621,16 +1343,12 @@ public class Activity_review_itinerary extends Activity {
             public void onErrorResponse(VolleyError error) {
 
                 progress.dismiss();
-                Toast.makeText(getApplicationContext(),"Something accured wrong",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Something is wrong", Toast.LENGTH_LONG).show();
             }
         }) {
             @Override
-            public Map<String, String> getParams(){
+            public Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-
-
-
-
 
 
                 return params;
@@ -1644,13 +1362,10 @@ public class Activity_review_itinerary extends Activity {
     }
 
 
-
-
-    public void sendmessage(final String order_no,final String ticket_no,final String pnr_no, final String from_city_name, final String to_city_name,
-                         final String journey_date, final String reporting_time, final String departure_time, final String status, final String passanger_detail, final String boarding_address,
-                         final String bus_type, final String company_name, final String boarding_contact_no, final String totalFare, final String cancellation_data)
-    {
-        if(Global_Travel.build_type == 0) {
+    public void sendmessage(final String order_no, final String ticket_no, final String pnr_no, final String from_city_name, final String to_city_name,
+                            final String journey_date, final String reporting_time, final String departure_time, final String status, final String passanger_detail, final String boarding_address,
+                            final String bus_type, final String company_name, final String boarding_contact_no, final String totalFare, final String cancellation_data) {
+        if (Global_Travel.build_type == 0) {
             Log.e("vikas", "call volley");
         }
         StringRequest send_message = new StringRequest(Request.Method.POST,
@@ -1667,52 +1382,46 @@ public class Activity_review_itinerary extends Activity {
             public void onErrorResponse(VolleyError error) {
 
 
-                Toast.makeText(getApplicationContext(),"Something accured wrong",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Something is wrong", Toast.LENGTH_LONG).show();
             }
         }) {
             @Override
-            public Map<String, String> getParams(){
+            public Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("order_no",order_no);
-                params.put("pnr_no",pnr_no);
-                params.put("from_city",from_city_name);
-                params.put("to_city",to_city_name);
-                params.put("date_of_journey",journey_date);
-                params.put("reporing_time",reporting_time);
-                params.put("departure_time",departure_time);
-                params.put("status",status);
-                params.put("boarding_address",boarding_address);
-                params.put("bus_type",bus_type);
-                params.put("company_name",company_name);
-                params.put("contact_no",boarding_contact_no);
-                params.put("total_fare",totalFare);
-                params.put("to_mail",contact_email.toString().trim());
-                params.put("contact_name",contact_name);
-                params.put("ticket_no",ticket_no);
+                params.put("order_no", order_no);
+                params.put("pnr_no", pnr_no);
+                params.put("from_city", from_city_name);
+                params.put("to_city", to_city_name);
+                params.put("date_of_journey", journey_date);
+                params.put("reporing_time", reporting_time);
+                params.put("departure_time", departure_time);
+                params.put("status", status);
+                params.put("boarding_address", boarding_address);
+                params.put("bus_type", bus_type);
+                params.put("company_name", company_name);
+                params.put("contact_no", boarding_contact_no);
+                params.put("total_fare", totalFare);
+                params.put("to_mail", contact_email.toString().trim());
+                params.put("contact_name", contact_name);
+                params.put("ticket_no", ticket_no);
                 try {
                     JSONArray ps = new JSONArray(passanger_detail);
                     JSONArray cd = new JSONArray(cancellation_data);
 
-                    for(int i=0;i<ps.length();i++)
-                    {
-                        params.put("p_name"+i,ps.getJSONObject(i).getString("Name"));
-                        params.put("p_seat"+i,ps.getJSONObject(i).getString("SeatNo"));
+                    for (int i = 0; i < ps.length(); i++) {
+                        params.put("p_name" + i, ps.getJSONObject(i).getString("Name"));
+                        params.put("p_seat" + i, ps.getJSONObject(i).getString("SeatNo"));
                     }
-                    params.put("p_length",""+ps.length());
+                    params.put("p_length", "" + ps.length());
 
-                    for (int j=0;j<cd.length();j++)
-                    {
-                        params.put("cd_condition"+j,cd.getJSONObject(j).getString("condition"));
-                        params.put("cd_percentage"+j,cd.getJSONObject(j).getString("percentage"));
+                    for (int j = 0; j < cd.length(); j++) {
+                        params.put("cd_condition" + j, cd.getJSONObject(j).getString("condition"));
+                        params.put("cd_percentage" + j, cd.getJSONObject(j).getString("percentage"));
                     }
-                    params.put("cd_length",""+cd.length());
-                }
-                catch (Exception e)
-                {
+                    params.put("cd_length", "" + cd.length());
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-
 
 
                 return params;
@@ -1730,17 +1439,11 @@ public class Activity_review_itinerary extends Activity {
     }
 
 
-
-
-
-
-    public void sendmail(final String order_no, final String ticket_no,final String pnr_no, final String from_city_name, final String to_city_name,
+    public void sendmail(final String order_no, final String ticket_no, final String pnr_no, final String from_city_name, final String to_city_name,
                          final String journey_date, final String reporting_time, final String departure_time, final String status, final String passanger_detail, final String boarding_address,
-                         final String bus_type, final String company_name, final String boarding_contact_no, final String totalFare, final String cancellation_data)
-    {
-        if(Global_Travel.build_type == 0)
-        {
-            Log.e("vikas","call volley");
+                         final String bus_type, final String company_name, final String boarding_contact_no, final String totalFare, final String cancellation_data) {
+        if (Global_Travel.build_type == 0) {
+            Log.e("vikas", "call volley");
         }
 
         StringRequest send_mail = new StringRequest(Request.Method.POST,
@@ -1753,19 +1456,19 @@ public class Activity_review_itinerary extends Activity {
                 i.putExtra("pnr_no", pnr_no);
                 i.putExtra("ticket_no", ticket_no);
                 i.putExtra("passanger", ps.toString());
-                i.putExtra("from_city",TRAVEL_DATA.FROM_CITY_NAME);
-                i.putExtra("to_city",TRAVEL_DATA.TO_CITY_NAME);
-                i.putExtra("booking_date",TRAVEL_DATA.JOURNEY_DATE);
-                i.putExtra("boarding_time",BoardingTime);
-                i.putExtra("boarding_point_address",Boarding_point_address);
-                i.putExtra("boarding_point_name",BoardingPoint);
-                i.putExtra("company_name",schedule_details.get(0).getCompanyName());
-                i.putExtra("bus_label",schedule_details.get(0).getBusLabel());
-                i.putExtra("passenger_name",contact_name);
-                i.putExtra("boarding_point_landmark",Boarding_point_landmark);
-                i.putExtra("boarding_point_mobile",contact_phone);
+                i.putExtra("from_city", TRAVEL_DATA.FROM_CITY_NAME);
+                i.putExtra("to_city", TRAVEL_DATA.TO_CITY_NAME);
+                i.putExtra("booking_date", TRAVEL_DATA.JOURNEY_DATE);
+                i.putExtra("boarding_time", BoardingTime);
+                i.putExtra("boarding_point_address", Boarding_point_address);
+                i.putExtra("boarding_point_name", BoardingPoint);
+                i.putExtra("company_name", schedule_details.get(0).getCompanyName());
+                i.putExtra("bus_label", schedule_details.get(0).getBusLabel());
+                i.putExtra("passenger_name", contact_name);
+                i.putExtra("boarding_point_landmark", Boarding_point_landmark);
+                i.putExtra("boarding_point_mobile", Boarding_point_phone);
 
-                i.putExtra("total_fare",soapresult_detail.getPrimitivePropertyAsString("TotalFare"));
+                i.putExtra("total_fare", total_fare_book_responce);
 
                 startActivity(i);
                 overridePendingTransition(R.anim.anim_in, R.anim.anim_none);
@@ -1780,68 +1483,63 @@ public class Activity_review_itinerary extends Activity {
                 i.putExtra("pnr_no", pnr_no);
                 i.putExtra("ticket_no", ticket_no);
                 i.putExtra("passanger", ps.toString());
-                i.putExtra("from_city",TRAVEL_DATA.FROM_CITY_NAME);
-                i.putExtra("to_city",TRAVEL_DATA.TO_CITY_NAME);
-                i.putExtra("booking_date",TRAVEL_DATA.JOURNEY_DATE);
-                i.putExtra("boarding_time",BoardingTime);
-                i.putExtra("boarding_point_address",Boarding_point_address);
-                i.putExtra("boarding_point_name",BoardingPoint);
-                i.putExtra("company_name",schedule_details.get(0).getCompanyName());
-                i.putExtra("bus_label",schedule_details.get(0).getBusLabel());
-                i.putExtra("passenger_name",contact_name);
-                i.putExtra("boarding_point_landmark",Boarding_point_landmark);
-                i.putExtra("boarding_point_mobile",contact_phone);
+                i.putExtra("from_city", TRAVEL_DATA.FROM_CITY_NAME);
+                i.putExtra("to_city", TRAVEL_DATA.TO_CITY_NAME);
+                i.putExtra("booking_date", TRAVEL_DATA.JOURNEY_DATE);
+                i.putExtra("boarding_time", BoardingTime);
+                i.putExtra("boarding_point_address", Boarding_point_address);
+                i.putExtra("boarding_point_name", BoardingPoint);
+                i.putExtra("company_name", schedule_details.get(0).getCompanyName());
+                i.putExtra("bus_label", schedule_details.get(0).getBusLabel());
+                i.putExtra("passenger_name", contact_name);
+                i.putExtra("boarding_point_landmark", Boarding_point_landmark);
+                i.putExtra("boarding_point_mobile", Boarding_point_phone);
 
-                i.putExtra("total_fare",soapresult_detail.getPrimitivePropertyAsString("TotalFare"));
+                i.putExtra("total_fare", total_fare_book_responce);
 
                 startActivity(i);
                 overridePendingTransition(R.anim.anim_in, R.anim.anim_none);
                 Activity_review_itinerary.this.finish();
-                Toast.makeText(getApplicationContext(),"Something accured wrong",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Something is wrong", Toast.LENGTH_LONG).show();
             }
         }) {
             @Override
-            public Map<String, String> getParams(){
+            public Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("order_no",order_no);
-                params.put("pnr_no",pnr_no);
-                params.put("from_city",from_city_name);
-                params.put("to_city",to_city_name);
-                params.put("date_of_journey",journey_date);
-                params.put("reporing_time",reporting_time);
-                params.put("departure_time",departure_time);
-                params.put("status",status);
-                params.put("boarding_address",boarding_address);
-                params.put("bus_type",bus_type);
-                params.put("company_name",company_name);
-                params.put("contact_no",boarding_contact_no);
-                params.put("total_fare",totalFare);
-                params.put("to_mail",contact_email.toString().trim());
-                params.put("contact_name",contact_name);
+                params.put("order_no", order_no);
+                params.put("ticket_no", ticket_no);
+                params.put("pnr_no", pnr_no);
+                params.put("from_city", from_city_name);
+                params.put("to_city", to_city_name);
+                params.put("date_of_journey", journey_date);
+                params.put("reporing_time", reporting_time);
+                params.put("departure_time", departure_time);
+                params.put("status", status);
+                params.put("boarding_address", boarding_address);
+                params.put("bus_type", bus_type);
+                params.put("company_name", company_name);
+                params.put("contact_no", boarding_contact_no);
+                params.put("total_fare", totalFare);
+                params.put("to_mail", contact_email.toString().trim());
+                params.put("contact_name", contact_name);
                 try {
                     JSONArray ps = new JSONArray(passanger_detail);
                     JSONArray cd = new JSONArray(cancellation_data);
 
-                    for(int i=0;i<ps.length();i++)
-                    {
-                        params.put("p_name"+i,ps.getJSONObject(i).getString("Name"));
-                        params.put("p_seat"+i,ps.getJSONObject(i).getString("SeatNo"));
+                    for (int i = 0; i < ps.length(); i++) {
+                        params.put("p_name" + i, ps.getJSONObject(i).getString("Name"));
+                        params.put("p_seat" + i, ps.getJSONObject(i).getString("SeatNo"));
                     }
-                    params.put("p_length",""+ps.length());
+                    params.put("p_length", "" + ps.length());
 
-                    for (int j=0;j<cd.length();j++)
-                    {
-                        params.put("cd_condition"+j,cd.getJSONObject(j).getString("condition"));
-                        params.put("cd_percentage"+j,cd.getJSONObject(j).getString("percentage"));
+                    for (int j = 0; j < cd.length(); j++) {
+                        params.put("cd_condition" + j, cd.getJSONObject(j).getString("condition"));
+                        params.put("cd_percentage" + j, cd.getJSONObject(j).getString("percentage"));
                     }
-                    params.put("cd_length",""+cd.length());
+                    params.put("cd_length", "" + cd.length());
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-
-
 
 
                 return params;
@@ -1858,61 +1556,338 @@ public class Activity_review_itinerary extends Activity {
         requestQueue_globel.add(send_mail);
     }
 
-    /*public void showAlertDialog(String title,String message,String buttonlabel)
-    {
-        TextView title_tv = new TextView(this);
-        title_tv.setPadding(0,getResources().getDimensionPixelSize(R.dimen.padding_margin_10),0,0);
-        title_tv.setTextColor(ContextCompat.getColor(Activity_review_itinerary.this,R.color.black));
-        title_tv.setTextSize(getResources().getDimension(R.dimen.text_size_mediam));
-        title_tv.setGravity(Gravity.CENTER);
-        title_tv.setText(title);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(Activity_review_itinerary.this);
-        builder.setCustomTitle(title_tv)
-                .setMessage(message)
-                .setCancelable(false)
-                .setNegativeButton(buttonlabel,new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
 
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        Button b = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
-        b.setLayoutParams(lp);
-        b.setBackgroundResource(R.drawable.btn_background);
-        b.setTextColor(ContextCompat.getColor(Activity_review_itinerary.this, R.color.app_white));
-    }*/
+    public String change_date_form(String date) {
+        String[] days = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+        String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 
-    public String change_date_form(String date)
-    {
-        String[] days ={"Sun","Mon","Tue","Wed","Thu","Fri","Sat"};
-        String[] months={"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"};
-
-        String day = date.substring(8,10);
-        String month = date.substring(5,7);
-        String year = date.substring(0,4);
+        String day = date.substring(8, 10);
+        String month = date.substring(5, 7);
+        String year = date.substring(0, 4);
 
         int day_int = parseInt(day);
         int month_int = parseInt(month);
         int year_int = parseInt(year);
 
         Calendar calendar = Calendar.getInstance();
-        calendar.set(year_int,month_int-1,day_int);
+        calendar.set(year_int, month_int - 1, day_int);
 
         int day_of_weak_int = calendar.get(calendar.DAY_OF_WEEK);
-        String day_of_weak = days[day_of_weak_int-1];
+        String day_of_weak = days[day_of_weak_int - 1];
 
 
         //String final_date = day+"-"+months[month_int]+"-"+year+","+day_of_weak;
 
-        String final_date = day_of_weak+", "+day+" "+months[month_int-1]+" "+year.substring(2,year.length());
+        String final_date = day_of_weak + ", " + day + " " + months[month_int - 1] + " " + year.substring(2, year.length());
 
 
         return final_date;
     }
+
+
+    private void bookSeat() {
+
+        try {
+
+            HashMap<String, String> paramsMap = new HashMap<String, String>(); // No Params required to fetch cities
+
+            paramsMap.put("HoldId",HoldKey);
+
+            send_start_booking_status();
+
+            Custom_VolleyObjectRequest jsonObjectRQST = new Custom_VolleyObjectRequest(
+                    Method.POST,
+                    Constants.URL_TY.BOOK_SEATS,
+                    paramsMap, new Listener<JSONObject>() {
+
+                @Override
+                public void onResponse(JSONObject response) {
+                    Log.i("Gopal", "json Response recieved !!" + response);
+
+//                    if(progress != null) {
+//                        progress.dismiss();
+//                    }
+
+                    try {
+
+                        if (response.getBoolean(JSON_KEYS.SUCCESS)) {
+
+                            JSONObject data = response.getJSONObject(Constants.JSON_KEYS.DATA);
+
+                            String order_id = data.optString("HoldId");
+
+                            String pnr_no =  data.optString("PNRNo");
+                            String ticket_no = data.optString("TicketNo");
+                            total_fare_book_responce = data.optString("TotalFare");
+                            String status = "BOOKED";
+
+
+
+                            String repoting_time = getreportingtime(BoardingTime);
+
+                    ps = new JSONArray();
+                    for (int i = 0; i < Selected_seat_list.size(); i++) {
+
+                        JSONObject p = new JSONObject();
+                        Realm_Selected_Seats selectedSeat = Selected_seat_list.get(i);
+
+                        String gender = "Male";
+
+                        if(selectedSeat.getGender().equals("F") ){
+                            gender = "Female";
+                        }
+
+                        String seatType = "Seating";
+
+                        switch (selectedSeat.getSeat_Type()){
+
+                            case SEAT_DETAILS.VALUE_SEAT_TYPE_SEATING:
+                                 seatType = "Seating";
+                                break;
+
+                            case SEAT_DETAILS.VALUE_SEAT_TYPE_SEMI_SLEEPER:
+                                seatType = "SemiSleeper";
+                                break;
+
+                            case SEAT_DETAILS.VALUE_SEAT_TYPE_SLEEPER:
+                                seatType = "Sleeper";
+                                break;
+                        }
+
+
+                        p.put("Name", selectedSeat.getName());
+                        p.put("Age", selectedSeat.getAge());
+                        p.put("Gender",gender);
+                        p.put("SeatNo", selectedSeat.getSeatNo());
+                        p.put("SeatType",seatType);
+                        p.put("IsAcSeat", TRAVEL_DATA.IS_AC_STR);
+                        ps.put(p);
+
+                    }
+
+
+                    send_success_booking_status(order_id,pnr_no,ticket_no,order_id,repoting_time,status);
+
+
+
+
+
+                        }else{
+
+                            callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again));
+                        }
+
+                    } catch (JSONException e) {
+
+                        callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again));
+                        e.printStackTrace();
+
+                    }
+                }
+
+
+            }, new ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError err) {
+                    Log.i("SUSHIL", "ERROR VolleyError");
+
+                    callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again));
+                }
+            })
+            {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<String, String>();
+
+                    headers.put("access-token", TRAVEL_DATA.TOKEN_ID);
+
+                    return headers;
+                }
+
+            };
+
+
+            Custom_VolleyAppController.getInstance().addToRequestQueue(
+                    jsonObjectRQST);
+        } catch (Exception ex) {
+
+            ex.printStackTrace();
+
+        }
+
+
+    }
+
+}
+
+
+//
+//private class BookSeat extends AsyncTask<Void, Void, Void> {
+//
+//
+//    @Override
+//    protected void onPostExecute(Void result) {
+//        super.onPostExecute(result);
+//
+//        if (soapresult_detail != null) {
+//            String Is_success = ((SoapObject) soapresult_detail.getProperty("Response")).getPrimitiveProperty("IsSuccess").toString();
+//            if (Is_success.equals("true")) {
+//                //Toast.makeText(Activity_review_itinerary.this,soapresult_detail.toString(),Toast.LENGTH_LONG).show();
+//                try {
+//                    if(Global_Travel.build_type ==0)
+//                    {
+//                        Log.e("vikas", soapresult_detail.toString());
+//                    }
+//
+//
+//                    String order_id = soapresult_detail.getPrimitivePropertyAsString("TransactionId");
+//                    String pnr_no = soapresult_detail.getPrimitivePropertyAsString("PNRNo");
+//                    String ticket_no = soapresult_detail.getPrimitivePropertyAsString("TicketNo");
+//                    String status = "BOOKED";
+//
+//
+//
+//                    String repoting_time = getreportingtime(BoardingTime);
+//
+//                    int passanger_count = ((SoapObject) soapresult_detail.getProperty("Passengers")).getPropertyCount();
+//                    ps = new JSONArray();
+//                    for (int i = 0; i < passanger_count; i++) {
+//                        JSONObject p = new JSONObject();
+//
+//                        p.put("Name", ((SoapObject) ((SoapObject) soapresult_detail.getProperty("Passengers")).getProperty(i)).getPrimitiveProperty("Name").toString());
+//                        p.put("Age", ((SoapObject) ((SoapObject) soapresult_detail.getProperty("Passengers")).getProperty(i)).getPrimitiveProperty("Age").toString());
+//                        p.put("Gender", ((SoapObject) ((SoapObject) soapresult_detail.getProperty("Passengers")).getProperty(i)).getPrimitiveProperty("Gender").toString());
+//                        p.put("SeatNo", ((SoapObject) ((SoapObject) soapresult_detail.getProperty("Passengers")).getProperty(i)).getPrimitiveProperty("SeatNo").toString());
+//                        p.put("SeatType", ((SoapObject) ((SoapObject) soapresult_detail.getProperty("Passengers")).getProperty(i)).getPrimitiveProperty("SeatType").toString());
+//                        p.put("IsAcSeat", TRAVEL_DATA.IS_AC_STR);
+//                        ps.put(p);
+//
+//                    }
+//
+//
+//                    send_success_booking_status(order_id,pnr_no,ticket_no,order_id,repoting_time,status);
+//
+//
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//
+//
+//            }
+//            else
+//            {
+//                Global_Travel.showAlertDialog(Activity_review_itinerary.this,getResources().getString(R.string.validating_error_title),((SoapObject)soapresult_detail.getProperty("Response")).getPrimitivePropertyAsString("Message"),"Ok");
+//            }
+//
+//        } else {
+//            Global_Travel.showAlertDialog(Activity_review_itinerary.this,getResources().getString(R.string.validating_error_title),getResources().getString(R.string.slow_internet_error),"Ok");
+//        }
+//
+//
+//
+//
+//
+//
+//
+//
+//    }
+//
+//    @Override
+//    protected void onPreExecute() {
+//        super.onPreExecute();
+//
+//        progress = new ProgressDialog(Activity_review_itinerary.this);
+//        progress.setMessage("Please wait...");
+//        progress.setCanceledOnTouchOutside(false);
+//        progress.setCancelable(false);
+//
+//        progress.show();
+//
+//        send_start_booking_status();
+//    }
+//
+//    @Override
+//    protected Void doInBackground(Void... arg0) {
+//
+//        //TODO : Implement with new API , commented by Harsh
+////            SoapObject request = new SoapObject(Constants.GLOBEL_NAMESPACE, Constants.METHOD_BookSeats);
+////
+////
+////            SoapObject sa = new SoapObject(null,"Authentication");
+////
+////            PropertyInfo userid = new PropertyInfo();
+////            userid.setName("UserID");
+////
+////            userid.setValue(LoginCridantial.UserId.trim());
+////            userid.setType(Integer.class);
+////            sa.addProperty(userid);
+////
+////            PropertyInfo usertype = new PropertyInfo();
+////            usertype.setName("UserType");
+////            usertype.setValue(LoginCridantial.UserType.trim());
+////
+////
+////            usertype.setType(String.class);
+////            sa.addProperty(usertype);
+////
+////            PropertyInfo userkey = new PropertyInfo();
+////            userkey.setName("Key");
+////            userkey.setValue(LoginCridantial.UserKey.trim());
+////
+////            userkey.setType(String.class);
+////            sa.addProperty(userkey);
+////            request.addSoapObject(sa);
+////
+////            PropertyInfo holdkey = new PropertyInfo();
+////            holdkey.setName("HoldKey");
+////            holdkey.setValue(HoldKey);
+////            userkey.setType(Integer.class);
+////            request.addProperty(holdkey);
+////            if(Global_Travel.build_type == 0)
+////            {
+////                Log.e("vikas request print",request.toString());
+////            }
+////
+////
+////
+////
+////
+////
+////            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+////            envelope.implicitTypes = true;
+////            envelope.dotNet = true;
+////            envelope.setOutputSoapObject(request);
+////
+////            HttpTransportSE httpTransport = new HttpTransportSE(Constants.GLOBEL_URL);
+////            httpTransport.debug =true;
+////
+////
+////            try {
+////                httpTransport.call(Constants.GLOBEL_NAMESPACE+Constants.METHOD_BookSeats, envelope);
+////            } catch (HttpResponseException e) {
+////                e.printStackTrace();
+////            } catch (IOException e) {
+////                e.printStackTrace();
+////            } catch (XmlPullParserException e) {
+////                e.printStackTrace();
+////            }
+////            soapresult_detail = null;
+////
+////            try {
+////                soapresult_detail  = (SoapObject)envelope.getResponse();
+////
+////            } catch (SoapFault e) {
+////
+////                e.printStackTrace();
+////            }
+//
+//
+//
+//        return null;
+//    }
+//}
+
 
 //    public String getTime(String time)
 //    {
@@ -1954,4 +1929,4 @@ public class Activity_review_itinerary extends Activity {
 //
 //    }
 
-}
+

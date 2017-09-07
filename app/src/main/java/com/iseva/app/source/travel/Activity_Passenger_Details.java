@@ -32,7 +32,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.iseva.app.source.Custom_VolleyAppController;
 import com.iseva.app.source.R;
 import com.iseva.app.source.Realm_objets.Pickup_Place_Detail;
-import com.iseva.app.source.Realm_objets.Selected_Seats;
+import com.iseva.app.source.Realm_objets.Realm_Selected_Seats;
 import com.iseva.app.source.travel.Constants.JSON_KEYS;
 import com.iseva.app.source.travel.Constants.URL_TY;
 import com.iseva.app.source.travel.Global_Travel.TRAVEL_DATA;
@@ -61,7 +61,7 @@ public class Activity_Passenger_Details extends Activity_Parent_Travel {
     LinearLayout header_text_layout;
     TextView header_tv;
     RealmResults<Pickup_Place_Detail> pickup_place_detail_list;
-    RealmResults<Selected_Seats> Selected_seat_list;
+    RealmResults<Realm_Selected_Seats> Selected_seat_list;
     Spinner boarding_point_spinner;
     ImageView header_iv;
     Button proceed_to_book_btn;
@@ -105,7 +105,7 @@ public class Activity_Passenger_Details extends Activity_Parent_Travel {
 
         My_realm.beginTransaction();
         pickup_place_detail_list = My_realm.where(Pickup_Place_Detail.class).findAll();
-        Selected_seat_list = My_realm.where(Selected_Seats.class).findAll();
+        Selected_seat_list = My_realm.where(Realm_Selected_Seats.class).findAll();
         My_realm.commitTransaction();
 
         boarding_point_spinner  = (Spinner)findViewById(R.id.boarding_point_spinner);
@@ -145,7 +145,7 @@ public class Activity_Passenger_Details extends Activity_Parent_Travel {
 
 
         My_realm.beginTransaction();
-        RealmResults<Selected_Seats> All_row = My_realm.where(Selected_Seats.class).findAll();
+        RealmResults<Realm_Selected_Seats> All_row = My_realm.where(Realm_Selected_Seats.class).findAll();
         My_realm.commitTransaction();
 
         for(int n=0;n<All_row.size();n++)
@@ -607,6 +607,8 @@ public class Activity_Passenger_Details extends Activity_Parent_Travel {
                     }
 
                 }
+
+
                 String seatno = Selected_seat_list.get(k).getSeatNo();
                 Float fare = Selected_seat_list.get(k).getFare();
                 int seattype = Selected_seat_list.get(k).getSeat_Type();
@@ -642,9 +644,44 @@ public class Activity_Passenger_Details extends Activity_Parent_Travel {
                 }
                 passenger_list.put(temp_passenger);
 
+
+
+
             }
 
+            //Update Name and Age for selected Seats in DB | START
 
+
+            try {
+
+                My_realm.beginTransaction();
+
+                for(int h = 0; h < passenger_list.length() ; h++){
+
+                    if(Selected_seat_list.size() > h){
+
+                        Realm_Selected_Seats seat = Selected_seat_list.get(h);
+                        JSONObject temp_passenger = passenger_list.getJSONObject(h);
+
+                        seat.setName(temp_passenger.optString("Name"));
+                        seat.setAge(temp_passenger.optInt("Age"));
+                        seat.setSelectedGender(temp_passenger.optString("Gender"));
+
+                    }
+
+
+                }
+
+                My_realm.commitTransaction();
+
+
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+            }
+
+            //Update Name and Age for selected Seats in DB | ENDS
             try {
                 objJsonParamHoldRequest.accumulate("FromCityId",Integer.parseInt(TRAVEL_DATA.FROM_CITY_ID));
                 objJsonParamHoldRequest.accumulate("ToCityId",Integer.parseInt(TRAVEL_DATA.TO_CITY_ID));
@@ -671,10 +708,13 @@ public class Activity_Passenger_Details extends Activity_Parent_Travel {
                 public void onResponse(JSONObject response) {
 
                     try {
-                        progress.cancel();
+
+                        if(progress != null){
+
+                            progress.cancel();
+                        }
 
                             if(response.getBoolean(JSON_KEYS.SUCCESS)) {
-
 
 
                                 Log.i("HARSH","HOLdresponse -> "+response);

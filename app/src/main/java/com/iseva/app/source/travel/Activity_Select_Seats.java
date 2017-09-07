@@ -29,7 +29,7 @@ import com.iseva.app.source.Custom_VolleyObjectRequest;
 import com.iseva.app.source.R;
 import com.iseva.app.source.Realm_objets.Pickup_Place_Detail;
 import com.iseva.app.source.Realm_objets.Realm_Seat_Details;
-import com.iseva.app.source.Realm_objets.Selected_Seats;
+import com.iseva.app.source.Realm_objets.Realm_Selected_Seats;
 import com.iseva.app.source.travel.Constants.JSON_KEYS;
 import com.iseva.app.source.travel.Constants.SEAT_DETAILS;
 import com.iseva.app.source.travel.Constants.URL_TY;
@@ -45,6 +45,8 @@ import java.util.Map;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+
+import static com.iseva.app.source.R.id.Selected_Seats;
 
 
 public class Activity_Select_Seats extends Activity_Parent_AppCompat implements  Parent_Interface {
@@ -114,7 +116,7 @@ public class Activity_Select_Seats extends Activity_Parent_AppCompat implements 
 
 
         Total_Fare_tv = (TextView) findViewById(R.id.Total_Fare);
-        Total_Seats_tv = (TextView) findViewById(R.id.Selected_Seats);
+        Total_Seats_tv = (TextView) findViewById(Selected_Seats);
         progress_layout = (LinearLayout) findViewById(R.id.select_seat_dynamic_data_layout);
         instruction_layout = (LinearLayout) findViewById(R.id.seat_instruction_layout);
         progressBar = (ProgressBar) findViewById(R.id.activity_seat_progress_bar);
@@ -195,7 +197,7 @@ public class Activity_Select_Seats extends Activity_Parent_AppCompat implements 
             public void onClick(View view) {
 
                 My_realm.beginTransaction();
-                RealmResults<Selected_Seats> All_row = My_realm.where(Selected_Seats.class).findAll();
+                RealmResults<Realm_Selected_Seats> All_row = My_realm.where(Realm_Selected_Seats.class).findAll();
                 My_realm.commitTransaction();
 
                 if (All_row.size() == 0) {
@@ -255,7 +257,7 @@ public class Activity_Select_Seats extends Activity_Parent_AppCompat implements 
         String Total_Seat = "";
 
         My_realm.beginTransaction();
-        RealmResults<Selected_Seats> All_row = My_realm.where(Selected_Seats.class).findAll();
+        RealmResults<Realm_Selected_Seats> All_row = My_realm.where(Realm_Selected_Seats.class).findAll();
         My_realm.commitTransaction();
         for (int i = 0; i < All_row.size(); i++) {
             Total_Fare = Total_Fare + All_row.get(i).getFare_after_offer();
@@ -483,7 +485,7 @@ public class Activity_Select_Seats extends Activity_Parent_AppCompat implements 
                                 Realm thread_realm = Realm.getDefaultInstance();
 
                                 thread_realm.beginTransaction();
-                                thread_realm.delete(Selected_Seats.class);
+                                thread_realm.delete(Realm_Selected_Seats.class);
                                 thread_realm.delete(Pickup_Place_Detail.class);
                                 thread_realm.delete(Realm_Seat_Details.class);
                                 thread_realm.commitTransaction();

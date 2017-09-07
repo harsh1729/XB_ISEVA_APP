@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 import com.iseva.app.source.R;
 import com.iseva.app.source.Realm_objets.Realm_Seat_Details;
-import com.iseva.app.source.Realm_objets.Selected_Seats;
+import com.iseva.app.source.Realm_objets.Realm_Selected_Seats;
 import com.iseva.app.source.travel.Activity_Select_Seats;
 import com.iseva.app.source.travel.Constants;
 import com.iseva.app.source.travel.Constants.SEAT_DETAILS;
@@ -190,7 +190,7 @@ public class Fragment_Deck1 extends Fragment {
                                 {
 
                                     My_realm.beginTransaction();
-                                    RealmResults<Selected_Seats> Selected_seat_list = My_realm.where(Selected_Seats.class).findAll();
+                                    RealmResults<Realm_Selected_Seats> Selected_seat_list = My_realm.where(Realm_Selected_Seats.class).findAll();
                                     My_realm.commitTransaction();
 
                                     if(Selected_seat_list.size() >= Constants.MAX_SEATS)
@@ -215,7 +215,7 @@ public class Fragment_Deck1 extends Fragment {
                                         }
 
                                         My_realm.beginTransaction();
-                                        Selected_Seats selected_seats = My_realm.createObject(Selected_Seats.class);
+                                        Realm_Selected_Seats selected_seats = My_realm.createObject(Realm_Selected_Seats.class);
                                         selected_seats.setSeatNo(v.getTag(R.string.SeatNo).toString());
                                         selected_seats.setDeck(Integer.parseInt(v.getTag(R.string.Deck).toString()));
                                         selected_seats.setGender(v.getTag(R.string.Gender).toString());
@@ -247,7 +247,7 @@ public class Fragment_Deck1 extends Fragment {
                                     }
 
                                     My_realm.beginTransaction();
-                                    RealmResults<Selected_Seats> single_row = My_realm.where(Selected_Seats.class).equalTo("SeatNo",v.getTag(R.string.SeatNo).toString()).findAll();
+                                    RealmResults<Realm_Selected_Seats> single_row = My_realm.where(Realm_Selected_Seats.class).equalTo("SeatNo",v.getTag(R.string.SeatNo).toString()).findAll();
                                     single_row.deleteAllFromRealm();
                                     My_realm.commitTransaction();
 
@@ -306,7 +306,7 @@ public class Fragment_Deck1 extends Fragment {
                                 {
 
                                     My_realm.beginTransaction();
-                                    RealmResults<Selected_Seats> Selected_seat_list = My_realm.where(Selected_Seats.class).findAll();
+                                    RealmResults<Realm_Selected_Seats> Selected_seat_list = My_realm.where(Realm_Selected_Seats.class).findAll();
                                     My_realm.commitTransaction();
 
                                     if(Selected_seat_list.size() >= Constants.MAX_SEATS)
@@ -327,7 +327,7 @@ public class Fragment_Deck1 extends Fragment {
                                             v.setBackgroundResource(R.drawable.seat_layout_selected_seat_port);
                                         }
                                         My_realm.beginTransaction();
-                                        Selected_Seats selected_seats = My_realm.createObject(Selected_Seats.class);
+                                        Realm_Selected_Seats selected_seats = My_realm.createObject(Realm_Selected_Seats.class);
                                         selected_seats.setSeatNo(v.getTag(R.string.SeatNo).toString());
                                         selected_seats.setDeck(Integer.parseInt(v.getTag(R.string.Deck).toString()));
                                         selected_seats.setGender(v.getTag(R.string.Gender).toString());
@@ -357,7 +357,7 @@ public class Fragment_Deck1 extends Fragment {
                                     }
 
                                     My_realm.beginTransaction();
-                                    RealmResults<Selected_Seats> single_row = My_realm.where(Selected_Seats.class).equalTo("SeatNo",v.getTag(R.string.SeatNo).toString()).findAll();
+                                    RealmResults<Realm_Selected_Seats> single_row = My_realm.where(Realm_Selected_Seats.class).equalTo("SeatNo",v.getTag(R.string.SeatNo).toString()).findAll();
                                     single_row.deleteAllFromRealm();
                                     My_realm.commitTransaction();
 

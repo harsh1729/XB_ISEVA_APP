@@ -6,13 +6,30 @@ import io.realm.RealmObject;
  * Created by xb_sushil on 2/1/2017.
  */
 
-public class Selected_Seats extends RealmObject {
+public class Realm_Selected_Seats extends RealmObject {
 
+    private   String Name;
+    private   int Age;
     private   String SeatNo;
+
+
     private  String Gender;
     private    int Deck;
     private    Boolean IsSleeper;
+
+
+
     private    float Fare;
+
+    private  String SelectedGender;
+
+    public int getAge() {
+        return Age;
+    }
+
+    public void setAge(int age) {
+        Age = age;
+    }
 
     public int getSeat_Type() {
         return Seat_Type;
@@ -78,6 +95,22 @@ public class Selected_Seats extends RealmObject {
     public void setFare_after_offer(float fare_after_offer)
     {
         this.Fare_after_offer = fare_after_offer;
+    }
+
+    public String getName() {
+        return Name;
+    }
+
+    public void setName(String name) {
+        Name = name;
+    }
+
+    public String getSelectedGender() {
+        return SelectedGender;
+    }
+
+    public void setSelectedGender(String selectedGender) {
+        SelectedGender = selectedGender;
     }
 
 }

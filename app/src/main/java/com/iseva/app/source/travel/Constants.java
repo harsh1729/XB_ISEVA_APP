@@ -50,6 +50,9 @@ public class Constants {
 
         public static final String HOLD_SEATS = BASE_TRANSACTION_URL + "HoldSeats";
 
+
+        public static final String BOOK_SEATS = BASE_TRANSACTION_URL + "BookSeats";
+
         public static final String GET_IS_CANCELLABLE = BASE_TRANSACTION_URL + "IsCancellable";
 
         public static final String GET_BOOKING_DETAILS = BASE_TRANSACTION_URL + "BookingDetails";

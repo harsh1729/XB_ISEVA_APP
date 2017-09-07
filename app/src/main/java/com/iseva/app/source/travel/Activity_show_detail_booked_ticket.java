@@ -114,21 +114,21 @@ public class Activity_show_detail_booked_ticket extends Activity_Parent_Travel {
     public void initialize()
     {
         Intent i = getIntent();
-       /* pnr_no_txt = i.getStringExtra("pnr_no");
+        pnr_no_txt = i.getStringExtra("pnr_no");
         ticket_no_txt = i.getStringExtra("ticket_no");
         iscancelable = i.getStringExtra("iscancelable");
         payu_payment_id = i.getStringExtra("payu_payment_id");
         total_fare = i.getStringExtra("total_fare");
-        extra_charge = i.getStringExtra("extra_charge");*/
+        extra_charge = i.getStringExtra("extra_charge");
 
 
         /*{"success":true,"data":{"HoldId":19857554,
                 "TotalFare":193.42,"TicketNo":"5017182280","PNRNo":"103811648-1022157"}}*/
 
-        pnr_no_txt = "103857280-1025528";
-        ticket_no_txt = "5017182299";
-        total_fare = "407.2";
-        iscancelable = "0";
+//        pnr_no_txt = "103857280-1025528";
+//        ticket_no_txt = "5017182299";
+//        total_fare = "407.2";
+//        iscancelable = "0";
 
         session_manager = new Session_manager(this);
         header_tv = (TextView)findViewById(R.id.header_text);
