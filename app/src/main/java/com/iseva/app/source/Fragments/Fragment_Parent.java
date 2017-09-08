@@ -80,7 +80,7 @@ public class Fragment_Parent extends Fragment {
                     {
 
                             realmQuery.contains("Make", BUS_TYPE.MAKE_VOLVO);
-                            realmQuery.or().contains("Make", BUS_TYPE.MAKE_VOLVO_ISHIFT);
+                            //realmQuery.or().contains("Make", BUS_TYPE.MAKE_VOLVO_ISHIFT);
 
                     }
                     else if(all_row.get(i).getFilter_name().equals("Mercesdes"))
