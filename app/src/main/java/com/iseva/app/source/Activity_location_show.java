@@ -55,7 +55,7 @@ public class Activity_location_show extends AppCompatActivity  implements OnMapR
         setContentView(R.layout.activity_location_show);
         init();
 
-        checklocationenable();
+
 
 
     }
@@ -80,6 +80,8 @@ public class Activity_location_show extends AppCompatActivity  implements OnMapR
 
         googleMap = map;
         googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+
+        checklocationenable();
     }
 
     public void checklocationenable() {
