@@ -141,7 +141,9 @@ public class Activity_review_itinerary extends Activity_Parent_Travel {
 
     JSONArray ps;
 
-    String total_fare_book_responce = "";
+    int service_calls_count = 0;
+
+    //String total_fare_book_responce = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,12 +153,36 @@ public class Activity_review_itinerary extends Activity_Parent_Travel {
         //   Payu.setInstance(this);
 
 
+        showProgress();
         initialize();
-        getextracharge();
+
+        service_calls_count = 2;
+
+        getextracharge(); //1
         starttimer();
         setonclicklister();
         setcancellation_policy_data();
-        setoffers();
+        setoffers(); //2
+    }
+
+    private void dismissProgress(){
+
+        service_calls_count--;
+
+        if(service_calls_count == 0 && progress != null){
+            progress.dismiss();
+        }
+    }
+
+    private void showProgress(){
+
+        progress = new ProgressDialog(Activity_review_itinerary.this);
+        progress.setMessage("Please wait...");
+        progress.setCanceledOnTouchOutside(false);
+        progress.setCancelable(false);
+
+        progress.show();
+
     }
 
     public void getextracharge() {
@@ -168,6 +194,8 @@ public class Activity_review_itinerary extends Activity_Parent_Travel {
                 if (Global_Travel.build_type == 0) {
                     Log.e("vikas", s);
                 }
+
+                dismissProgress();
 
                 JSONObject response = null;
                 try {
@@ -183,7 +211,7 @@ public class Activity_review_itinerary extends Activity_Parent_Travel {
                             proceed_btn.setText("Proceed to Pay \u20B9 " + TotalFare);
                             tv.setText("\u20B9 " + ExtraCharge);
                         } else {
-                            Toast.makeText(Activity_review_itinerary.this, "Something is wrong", Toast.LENGTH_LONG).show();
+                            //Toast.makeText(Activity_review_itinerary.this, "Something is wrong", Toast.LENGTH_LONG).show();
                         }
                     }
 
@@ -198,6 +226,7 @@ public class Activity_review_itinerary extends Activity_Parent_Travel {
             public void onErrorResponse(VolleyError error) {
 
 
+                dismissProgress();
                 Toast.makeText(getApplicationContext(), "Error is -->> " + error.toString(), Toast.LENGTH_LONG).show();
             }
         }) {
@@ -242,14 +271,6 @@ public class Activity_review_itinerary extends Activity_Parent_Travel {
     }
 
     public void initialize() {
-
-        progress = new ProgressDialog(Activity_review_itinerary.this);
-        progress.setMessage("Please wait...");
-        progress.setCanceledOnTouchOutside(false);
-        progress.setCancelable(false);
-
-        progress.show();
-
 
         Intent i = getIntent();
         HoldKey = i.getStringExtra("HoldKey");
@@ -325,7 +346,7 @@ public class Activity_review_itinerary extends Activity_Parent_Travel {
             if (l == 0) {
                 seat = seat + Selected_seat_list.get(l).getSeatNo();
             } else {
-                seat = seat + "," + Selected_seat_list.get(l).getSeatNo();
+                seat = seat + ", " + Selected_seat_list.get(l).getSeatNo();
             }
 
         }
@@ -509,9 +530,7 @@ public class Activity_review_itinerary extends Activity_Parent_Travel {
         PaymentParam.Builder builder = new PaymentParam.Builder();
 
 
-        //TODO : HARSH : Remove hard coding of total fare
-
-        Double total_fare = 2.0; //Double.parseDouble(TotalFare)
+        Double total_fare = Double.parseDouble(TotalFare);
 
         builder.setAmount(total_fare)
                 .setTnxId(txnId)
@@ -746,14 +765,17 @@ public class Activity_review_itinerary extends Activity_Parent_Travel {
             @Override
             public void onResponse(String s) {
 
+                Log.i("HARSH","send_start_booking_status Success");
+
             }
         }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                progress.dismiss();
 
-                Toast.makeText(getApplicationContext(), "Something is wrong", Toast.LENGTH_LONG).show();
+                Log.i("HARSH","send_start_booking_status Error");
+
+                //Toast.makeText(getApplicationContext(), "Something is wrong", Toast.LENGTH_LONG).show();
             }
         }) {
             @Override
@@ -783,6 +805,7 @@ public class Activity_review_itinerary extends Activity_Parent_Travel {
             @Override
             public void onResponse(String s) {
 
+                Log.i("HARSH","send_success_booking_status Success");
                 sendmessage(order_id, ticket_no, pnr_no, TRAVEL_DATA.FROM_CITY_NAME, TRAVEL_DATA.TO_CITY_NAME, TRAVEL_DATA.JOURNEY_DATE, repoting_time, BoardingTime, status, ps.toString(), Boarding_point_address, schedule_details.get(0).getBusLabel(), schedule_details.get(0).getCompanyName(), contact_phone, TotalFare, cancellation_data_string);
                 sendmail(order_id, ticket_no, pnr_no, TRAVEL_DATA.FROM_CITY_NAME, TRAVEL_DATA.TO_CITY_NAME, TRAVEL_DATA.JOURNEY_DATE, repoting_time, BoardingTime, status, ps.toString(), Boarding_point_address, schedule_details.get(0).getBusLabel(), schedule_details.get(0).getCompanyName(), Boarding_point_phone, TotalFare, cancellation_data_string);
             }
@@ -790,9 +813,11 @@ public class Activity_review_itinerary extends Activity_Parent_Travel {
 
             @Override
             public void onErrorResponse(VolleyError error) {
+                Log.i("HARSH","send_success_booking_status Error");
 
+                navigateToBookingDetails(pnr_no,ticket_no);
 
-                Toast.makeText(getApplicationContext(), "Something is wrong", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "Something is wrong", Toast.LENGTH_LONG).show();
             }
         }) {
             @Override
@@ -819,12 +844,11 @@ public class Activity_review_itinerary extends Activity_Parent_Travel {
     }
 
     public void apply_promocode(final String coupan_code, final String userid, final String isglobel) {
-        progress = new ProgressDialog(Activity_review_itinerary.this);
-        progress.setMessage("Please wait...");
-        progress.setCanceledOnTouchOutside(false);
-        progress.setCancelable(false);
 
-        progress.show();
+        showProgress();
+
+        service_calls_count++;
+
         final EditText promocode_et = (EditText) findViewById(R.id.itinerary_promocode_et);
         final LinearLayout error_layout = (LinearLayout) findViewById(R.id.itinerary_promocode_error_layout);
         final TextView error_tv = (TextView) findViewById(R.id.itinerary_promocode_error_tv);
@@ -834,10 +858,13 @@ public class Activity_review_itinerary extends Activity_Parent_Travel {
 
             @Override
             public void onResponse(String s) {
-                progress.dismiss();
+
+                Log.i("HARSH","apply_promocode Success");
                 if (Global_Travel.build_type == 0) {
                     Log.e("vikas", s);
                 }
+
+                dismissProgress();
                 JSONObject response = null;
                 try {
                     response = new JSONObject(s);
@@ -961,12 +988,11 @@ public class Activity_review_itinerary extends Activity_Parent_Travel {
                                 }
                             }
                         } else {
-                            Toast.makeText(Activity_review_itinerary.this, "Something is wrong", Toast.LENGTH_LONG).show();
+                           // Toast.makeText(Activity_review_itinerary.this, "Something is wrong", Toast.LENGTH_LONG).show();
                         }
                     }
 
                 } catch (JSONException e) {
-                    progress.dismiss();
                     e.printStackTrace();
                 }
             }
@@ -974,9 +1000,10 @@ public class Activity_review_itinerary extends Activity_Parent_Travel {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                progress.dismiss();
 
-                Toast.makeText(getApplicationContext(), "Something is wrong", Toast.LENGTH_LONG).show();
+                dismissProgress();
+                Log.i("HARSH","apply_promocode Error");
+                //Toast.makeText(getApplicationContext(), "Something is wrong", Toast.LENGTH_LONG).show();
             }
         }) {
             @Override
@@ -1002,27 +1029,28 @@ public class Activity_review_itinerary extends Activity_Parent_Travel {
     }
 
     public void enable_promocode_server(final String promocode) {
-        progress = new ProgressDialog(Activity_review_itinerary.this);
-        progress.setMessage("Please wait...");
-        progress.setCanceledOnTouchOutside(false);
-        progress.setCancelable(false);
 
-        progress.show();
+        showProgress();
+        service_calls_count++;
         StringRequest enable_promocode = new StringRequest(Request.Method.POST,
                 URL_XB.ENABLE_PROMOCODE, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String s) {
 
-                progress.dismiss();
+                Log.i("HARSH","enable_promocode_server Success");
+                dismissProgress();
+
             }
         }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                progress.dismiss();
 
-                Toast.makeText(getApplicationContext(), "Something is wrong", Toast.LENGTH_LONG).show();
+                Log.i("HARSH","enable_promocode_server Error");
+                dismissProgress();
+
+                //Toast.makeText(getApplicationContext(), "Something is wrong", Toast.LENGTH_LONG).show();
             }
         }) {
             @Override
@@ -1254,14 +1282,14 @@ public class Activity_review_itinerary extends Activity_Parent_Travel {
 
             @Override
             public void onResponse(String s) {
-                progress.dismiss();
-                if (Global_Travel.build_type == 0) {
-                    Log.e("vikas", s);
-                }
+
+                Log.i("HARSH","setoffers Success " + s);
+
                 JSONObject response = null;
                 try {
                     response = new JSONObject(s);
 
+                    dismissProgress();
 
                     if (response != null) {
                         if (response.get("success").toString().equals("1")) {
@@ -1326,14 +1354,13 @@ public class Activity_review_itinerary extends Activity_Parent_Travel {
                                 offer_main_layout.setGravity(Gravity.CENTER);
                             }
                         } else {
-                            Toast.makeText(Activity_review_itinerary.this, "Something is wrong", Toast.LENGTH_LONG).show();
+                           // Toast.makeText(Activity_review_itinerary.this, "Something is wrong", Toast.LENGTH_LONG).show();
                         }
                     } else {
-                        Toast.makeText(Activity_review_itinerary.this, "Something is wrong", Toast.LENGTH_LONG).show();
+                       // Toast.makeText(Activity_review_itinerary.this, "Something is wrong", Toast.LENGTH_LONG).show();
                     }
 
                 } catch (JSONException e) {
-                    progress.dismiss();
                     e.printStackTrace();
                 }
             }
@@ -1342,8 +1369,10 @@ public class Activity_review_itinerary extends Activity_Parent_Travel {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                progress.dismiss();
-                Toast.makeText(getApplicationContext(), "Something is wrong", Toast.LENGTH_LONG).show();
+                Log.i("HARSH","setoffers Error ");
+                dismissProgress();
+
+               // Toast.makeText(getApplicationContext(), "Something is wrong", Toast.LENGTH_LONG).show();
             }
         }) {
             @Override
@@ -1374,6 +1403,7 @@ public class Activity_review_itinerary extends Activity_Parent_Travel {
             @Override
             public void onResponse(String s) {
 
+                Log.i("HARSH","sendmessage Success ");
 
             }
         }, new Response.ErrorListener() {
@@ -1381,8 +1411,9 @@ public class Activity_review_itinerary extends Activity_Parent_Travel {
             @Override
             public void onErrorResponse(VolleyError error) {
 
+                Log.i("HARSH","sendmessage Error ");
 
-                Toast.makeText(getApplicationContext(), "Something is wrong", Toast.LENGTH_LONG).show();
+               // Toast.makeText(getApplicationContext(), "Something is wrong", Toast.LENGTH_LONG).show();
             }
         }) {
             @Override
@@ -1411,6 +1442,8 @@ public class Activity_review_itinerary extends Activity_Parent_Travel {
                     for (int i = 0; i < ps.length(); i++) {
                         params.put("p_name" + i, ps.getJSONObject(i).getString("Name"));
                         params.put("p_seat" + i, ps.getJSONObject(i).getString("SeatNo"));
+                        params.put("p_gender" + i, ps.getJSONObject(i).getString("Gender"));
+
                     }
                     params.put("p_length", "" + ps.length());
 
@@ -1438,6 +1471,33 @@ public class Activity_review_itinerary extends Activity_Parent_Travel {
         requestQueue_globel.add(send_message);
     }
 
+    public void navigateToBookingDetails(String pnr_no,String ticket_no){
+
+        progress.dismiss();
+
+        Intent i = new Intent(Activity_review_itinerary.this, Activity_ticket_confirmation.class);
+        i.putExtra("pnr_no", pnr_no);
+        i.putExtra("ticket_no", ticket_no);
+        i.putExtra("passanger", ps.toString());
+        i.putExtra("from_city", TRAVEL_DATA.FROM_CITY_NAME);
+        i.putExtra("to_city", TRAVEL_DATA.TO_CITY_NAME);
+        i.putExtra("booking_date", TRAVEL_DATA.JOURNEY_DATE);
+        i.putExtra("boarding_time", BoardingTime);
+        i.putExtra("boarding_point_address", Boarding_point_address);
+        i.putExtra("boarding_point_name", BoardingPoint);
+        i.putExtra("company_name", schedule_details.get(0).getCompanyName());
+        i.putExtra("bus_label", schedule_details.get(0).getBusLabel());
+        i.putExtra("passenger_name", contact_name);
+        i.putExtra("boarding_point_landmark", Boarding_point_landmark);
+        i.putExtra("boarding_point_mobile", Boarding_point_phone);
+
+        i.putExtra("total_fare", TotalFare );//total_fare_book_responce
+
+        startActivity(i);
+        overridePendingTransition(R.anim.anim_in, R.anim.anim_none);
+        Activity_review_itinerary.this.finish();
+
+    }
 
     public void sendmail(final String order_no, final String ticket_no, final String pnr_no, final String from_city_name, final String to_city_name,
                          final String journey_date, final String reporting_time, final String departure_time, final String status, final String passanger_detail, final String boarding_address,
@@ -1451,56 +1511,24 @@ public class Activity_review_itinerary extends Activity_Parent_Travel {
 
             @Override
             public void onResponse(String s) {
-                progress.dismiss();
-                Intent i = new Intent(Activity_review_itinerary.this, Activity_ticket_confirmation.class);
-                i.putExtra("pnr_no", pnr_no);
-                i.putExtra("ticket_no", ticket_no);
-                i.putExtra("passanger", ps.toString());
-                i.putExtra("from_city", TRAVEL_DATA.FROM_CITY_NAME);
-                i.putExtra("to_city", TRAVEL_DATA.TO_CITY_NAME);
-                i.putExtra("booking_date", TRAVEL_DATA.JOURNEY_DATE);
-                i.putExtra("boarding_time", BoardingTime);
-                i.putExtra("boarding_point_address", Boarding_point_address);
-                i.putExtra("boarding_point_name", BoardingPoint);
-                i.putExtra("company_name", schedule_details.get(0).getCompanyName());
-                i.putExtra("bus_label", schedule_details.get(0).getBusLabel());
-                i.putExtra("passenger_name", contact_name);
-                i.putExtra("boarding_point_landmark", Boarding_point_landmark);
-                i.putExtra("boarding_point_mobile", Boarding_point_phone);
 
-                i.putExtra("total_fare", total_fare_book_responce);
+                Log.i("HARSH","sendmail Success ");
 
-                startActivity(i);
-                overridePendingTransition(R.anim.anim_in, R.anim.anim_none);
-                Activity_review_itinerary.this.finish();
+
+
+                navigateToBookingDetails(pnr_no,ticket_no);
+
             }
         }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                progress.dismiss();
-                Intent i = new Intent(Activity_review_itinerary.this, Activity_ticket_confirmation.class);
-                i.putExtra("pnr_no", pnr_no);
-                i.putExtra("ticket_no", ticket_no);
-                i.putExtra("passanger", ps.toString());
-                i.putExtra("from_city", TRAVEL_DATA.FROM_CITY_NAME);
-                i.putExtra("to_city", TRAVEL_DATA.TO_CITY_NAME);
-                i.putExtra("booking_date", TRAVEL_DATA.JOURNEY_DATE);
-                i.putExtra("boarding_time", BoardingTime);
-                i.putExtra("boarding_point_address", Boarding_point_address);
-                i.putExtra("boarding_point_name", BoardingPoint);
-                i.putExtra("company_name", schedule_details.get(0).getCompanyName());
-                i.putExtra("bus_label", schedule_details.get(0).getBusLabel());
-                i.putExtra("passenger_name", contact_name);
-                i.putExtra("boarding_point_landmark", Boarding_point_landmark);
-                i.putExtra("boarding_point_mobile", Boarding_point_phone);
 
-                i.putExtra("total_fare", total_fare_book_responce);
+                Log.i("HARSH","sendmail Error ");
 
-                startActivity(i);
-                overridePendingTransition(R.anim.anim_in, R.anim.anim_none);
-                Activity_review_itinerary.this.finish();
-                Toast.makeText(getApplicationContext(), "Something is wrong", Toast.LENGTH_LONG).show();
+                navigateToBookingDetails(pnr_no,ticket_no);
+
+               // Toast.makeText(getApplicationContext(), "Something is wrong", Toast.LENGTH_LONG).show();
             }
         }) {
             @Override
@@ -1529,6 +1557,7 @@ public class Activity_review_itinerary extends Activity_Parent_Travel {
                     for (int i = 0; i < ps.length(); i++) {
                         params.put("p_name" + i, ps.getJSONObject(i).getString("Name"));
                         params.put("p_seat" + i, ps.getJSONObject(i).getString("SeatNo"));
+                        params.put("p_gender" + i, ps.getJSONObject(i).getString("Gender"));
                     }
                     params.put("p_length", "" + ps.length());
 
@@ -1588,6 +1617,9 @@ public class Activity_review_itinerary extends Activity_Parent_Travel {
 
     private void bookSeat() {
 
+        showProgress();
+        service_calls_count++;
+
         try {
 
             HashMap<String, String> paramsMap = new HashMap<String, String>(); // No Params required to fetch cities
@@ -1605,9 +1637,7 @@ public class Activity_review_itinerary extends Activity_Parent_Travel {
                 public void onResponse(JSONObject response) {
                     Log.i("Gopal", "json Response recieved !!" + response);
 
-//                    if(progress != null) {
-//                        progress.dismiss();
-//                    }
+                    dismissProgress();
 
                     try {
 
@@ -1619,7 +1649,7 @@ public class Activity_review_itinerary extends Activity_Parent_Travel {
 
                             String pnr_no =  data.optString("PNRNo");
                             String ticket_no = data.optString("TicketNo");
-                            total_fare_book_responce = data.optString("TotalFare");
+                            //total_fare_book_responce = data.optString("TotalFare");
                             String status = "BOOKED";
 
 
@@ -1634,7 +1664,7 @@ public class Activity_review_itinerary extends Activity_Parent_Travel {
 
                         String gender = "Male";
 
-                        if(selectedSeat.getGender().equals("F") ){
+                        if(selectedSeat.getSelectedGender().equals("F") ){
                             gender = "Female";
                         }
 
@@ -1675,12 +1705,24 @@ public class Activity_review_itinerary extends Activity_Parent_Travel {
 
                         }else{
 
-                            callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again));
+                            String msg = "";
+
+                            if(response.has(Constants.JSON_KEYS.ERROR)){
+
+                                JSONObject objJsonError = response.getJSONObject(Constants.JSON_KEYS.ERROR);
+
+                                if(objJsonError.has("Msg")){
+
+                                    msg =  "\n"+getResources().getString(R.string.error_message_detail_text)+" " + objJsonError.optString("Msg");
+                                }
+                            }
+
+                            callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again) + msg,getResources().getString(R.string.alert_cancel_btn_text_ok));
                         }
 
                     } catch (JSONException e) {
 
-                        callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again));
+                        callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again),getResources().getString(R.string.alert_cancel_btn_text_ok));
                         e.printStackTrace();
 
                     }
@@ -1692,7 +1734,8 @@ public class Activity_review_itinerary extends Activity_Parent_Travel {
                 public void onErrorResponse(VolleyError err) {
                     Log.i("SUSHIL", "ERROR VolleyError");
 
-                    callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again));
+                    dismissProgress();
+                    callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again),getResources().getString(R.string.alert_cancel_btn_text_ok));
                 }
             })
             {
@@ -1809,8 +1852,6 @@ public class Activity_review_itinerary extends Activity_Parent_Travel {
 //
 //    @Override
 //    protected Void doInBackground(Void... arg0) {
-//
-//        //TODO : Implement with new API , commented by Harsh
 ////            SoapObject request = new SoapObject(Constants.GLOBEL_NAMESPACE, Constants.METHOD_BookSeats);
 ////
 ////

@@ -17,14 +17,14 @@ import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
 
-public class Fragment_Parent extends Fragment {
+public class Fragment_Routes_Parent extends Fragment {
 
     Realm My_realm;
     RealmResults<Bus_routes_detail> rout;
     int all_routes_count= 0;
     ArrayList<HashMap<String, String>> routes_hashmap;
 
-    public Fragment_Parent() {
+    public Fragment_Routes_Parent() {
 
     }
         // Required empty public constructor

@@ -693,11 +693,11 @@
             android:id="@+id/itinerary_proceed_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_bt_login"
+            android:background="@drawable/btn_background"
             android:textColor="#FFFFFF"
             android:textSize="@dimen/text_size_large"
             android:textAllCaps="false"
-            android:text="Proceed to Pay \u20B9 350"
+            android:text="Proceed to Pay \u20B9 "
             android:textStyle="bold"/>
 
     </LinearLayout>

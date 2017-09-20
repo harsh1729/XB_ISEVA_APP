@@ -29,6 +29,7 @@ public class Activity_ticket_confirmation extends Activity {
     TextView ticket_confirmation_company_name_tv;
     TextView ticket_confirmation_bus_label_tv;
     TextView ticket_confirmation_seat_no_tv;
+    TextView tv_seats_label;
     TextView ticket_confirmation_passenger_name_tv;
     TextView ticket_confirmation_boarding_point_address_tv;
     TextView ticket_confirmation_boarding_point_landmark_tv;
@@ -129,6 +130,7 @@ public class Activity_ticket_confirmation extends Activity {
         ticket_confirmation_company_name_tv = (TextView)findViewById(R.id.activity_ticket_confirmation_company_name_tv);
         ticket_confirmation_bus_label_tv = (TextView)findViewById(R.id.activity_ticket_confirmation_bus_label_tv);
         ticket_confirmation_seat_no_tv = (TextView)findViewById(R.id.activity_ticket_confirmation_seat_no_tv);
+        tv_seats_label = (TextView)findViewById(R.id.tv_seat_label);
         ticket_confirmation_passenger_name_tv = (TextView)findViewById(R.id.activity_ticket_confirmation_passenger_name_tv);
         ticket_confirmation_boarding_point_address_tv = (TextView)findViewById(R.id.activity_ticket_confirmation_boarding_address_tv);
         ticket_confirmation_boarding_point_landmark_tv = (TextView)findViewById(R.id.activity_ticket_confirmation_boarding_landmark_tv);
@@ -155,6 +157,14 @@ public class Activity_ticket_confirmation extends Activity {
         ticket_confirmation_company_name_tv.setText(ticket_confirmation_company_name_txt);
         ticket_confirmation_bus_label_tv.setText(ticket_confirmation_bus_label_txt);
         ticket_confirmation_seat_no_tv.setText(ticket_confirmation_seat_no_txt);
+
+        if(ticket_confirmation_seat_no_txt.contains(",")){ //multiple seats
+
+            tv_seats_label.setText("SEATS");
+        }else{
+            tv_seats_label.setText("SEAT");
+        }
+
         ticket_confirmation_passenger_name_tv.setText(ticket_confirmation_passenger_name_txt);
         ticket_confirmation_boarding_point_address_tv.setText(ticket_confirmation_boarding_point_address_txt);
         ticket_confirmation_boarding_point_landmark_tv.setText(ticket_confirmation_boarding_point_landmark_txt);

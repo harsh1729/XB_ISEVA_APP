@@ -152,12 +152,12 @@ public class Activity_Main extends Activity_Parent_Travel implements OnNavigatio
                         } else {
 
 
-                            callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again));
+                            callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again),getResources().getString(R.string.alert_cancel_btn_text_retry));
 
                         }
                     } catch (JSONException e) {
 
-                        callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again));
+                        callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again),getResources().getString(R.string.alert_cancel_btn_text_retry));
                         e.printStackTrace();
 
                     }
@@ -268,12 +268,12 @@ public class Activity_Main extends Activity_Parent_Travel implements OnNavigatio
 
                         }else{
 
-                            callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again));
+                            callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again),getResources().getString(R.string.alert_cancel_btn_text_retry));
                         }
 
                     } catch (JSONException e) {
 
-                        callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again));
+                        callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again),getResources().getString(R.string.alert_cancel_btn_text_retry));
                         e.printStackTrace();
 
                     }
@@ -285,7 +285,7 @@ public class Activity_Main extends Activity_Parent_Travel implements OnNavigatio
                 public void onErrorResponse(VolleyError err) {
                     Log.i("SUSHIL", "ERROR VolleyError");
 
-                    callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again));
+                    callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again),getResources().getString(R.string.alert_cancel_btn_text_retry));
                 }
             })
             {
@@ -701,7 +701,6 @@ public class Activity_Main extends Activity_Parent_Travel implements OnNavigatio
     public Action getIndexApiAction() {
         Thing object = new Thing.Builder()
                 .setName("Main Page") // TODO: Define a title for the content shown.
-                // TODO: Make sure this auto-generated URL is correct.
                 .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
                 .build();
         return new Action.Builder(Action.TYPE_VIEW)

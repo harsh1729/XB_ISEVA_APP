@@ -252,6 +252,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content">
                                 <com.iseva.app.source.customcomponent.TextViewRegular
+                                    android:id="@+id/tv_seat_label"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:textSize="@dimen/text_size_small"
@@ -282,7 +283,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:textSize="@dimen/text_size_small"
-                                    android:text="CONTACT NAME"/>
+                                    android:text="CONTACT"/>
                             </LinearLayout>
                             <LinearLayout
                                 android:layout_width="wrap_content"
@@ -293,7 +294,7 @@
                                     android:layout_height="wrap_content"
                                     android:textColor="#333"
                                     android:textSize="@dimen/text_size_normal"
-                                    android:text="Vikas Sharma"/>
+                                    android:text=""/>
                             </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
