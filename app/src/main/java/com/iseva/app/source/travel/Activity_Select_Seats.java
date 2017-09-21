@@ -732,11 +732,21 @@ public class Activity_Select_Seats extends Activity_Parent_AppCompat implements 
                 }
 
 
-                int total_fare = 0;
+                int totalFare = 0;
 
-                JSONArray arrJsonFaresForSeat = arrJsonL2_Fares.getJSONArray(arrJsonL4_Seat.getInt(SEAT_DETAILS.INDEX_SEAT_LAYOUT_SEQ_NO));
+                try {
 
-                int totalFare = arrJsonFaresForSeat.getInt(SEAT_DETAILS.INDEX_FARE_TOTAL);
+                     int pos = arrJsonL4_Seat.getInt(SEAT_DETAILS.INDEX_SEAT_LAYOUT_SEQ_NO);
+                    JSONArray arrJsonFaresForSeat = arrJsonL2_Fares.getJSONArray(pos);
+
+                    if (arrJsonFaresForSeat != null) {
+
+                        totalFare = arrJsonFaresForSeat.getInt(SEAT_DETAILS.INDEX_FARE_TOTAL);
+                    }
+
+                }catch (Exception ex){
+
+                }
 
                 double after_offer_seat_fare = Global_Travel.getFareAfterDiscount((double) totalFare, comm_pct);
 
