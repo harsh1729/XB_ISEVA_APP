@@ -174,7 +174,6 @@ public class Activity_loading extends Activity_Parent_Travel implements Parent_I
                                     double total_tax = objJsonBusStatus.getDouble("TotalTax");
                                     double total_commition_amount = 0.0;
 
-                                    total_fare = total_fare + total_tax;
 
                                     if (objJsonBusStatus.has("BaseFares")) {
 
@@ -182,20 +181,24 @@ public class Activity_loading extends Activity_Parent_Travel implements Parent_I
 
                                         if (arrJsonBaseFares.length() > 0) {
 
-                                            //Consider first element only for fare as per travelyari Tech support!
-                                            total_fare = total_fare + arrJsonBaseFares.getDouble(0);
+                                            if(total_tax>0.0)
+                                                total_fare = (arrJsonBaseFares.getDouble(0)*(100+total_tax))/100;
+                                            else
+                                                total_fare =total_fare+ arrJsonBaseFares.getDouble(0);
+
                                         }
 
                                     }
 
                                     // HARSH : SET FARES AND AMOUNT AFTER COMMITION
-                                    bus_rout.setFare(total_fare);
+
+                                    bus_rout.setFare(Math.ceil(total_fare));
 
 
                                     double fare_after_total_discount = Global_Travel.getFareAfterDiscount(total_fare,commition_per);
 
 
-                                    total_commition_amount = (double)(total_fare * (commition_per)) / 100;
+                                    total_commition_amount = (total_fare * (commition_per)) / 100;
 
                                     bus_rout.setFare_after_offer(fare_after_total_discount);
 

@@ -732,7 +732,7 @@ public class Activity_Select_Seats extends Activity_Parent_AppCompat implements 
                 }
 
 
-                int totalFare = 0;
+                Double totalFare = 0.0;
 
                 try {
 
@@ -741,21 +741,21 @@ public class Activity_Select_Seats extends Activity_Parent_AppCompat implements 
 
                     if (arrJsonFaresForSeat != null) {
 
-                        totalFare = arrJsonFaresForSeat.getInt(SEAT_DETAILS.INDEX_FARE_TOTAL);
+                        totalFare = arrJsonFaresForSeat.getDouble(SEAT_DETAILS.INDEX_FARE_TOTAL);
                     }
 
                 }catch (Exception ex){
 
                 }
 
-                double after_offer_seat_fare = Global_Travel.getFareAfterDiscount((double) totalFare, comm_pct);
+                double after_offer_seat_fare = Global_Travel.getFareAfterDiscount(totalFare, comm_pct);
 
                 seat_details.setGender(gender);
                 seat_details.setDeck(deck);
 
                 seat_details.setIsSleeper(isSleeper);
                 seat_details.setIsAvailable(isAvl);
-                seat_details.setFare(totalFare);
+                seat_details.setFare(Math.ceil(totalFare));
                 seat_details.setFare_after_offer(after_offer_seat_fare);
 
             }

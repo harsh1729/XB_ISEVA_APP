@@ -346,7 +346,7 @@ public class Activity_Passenger_Details extends Activity_Parent_Travel {
             ms.setId(Constants.RADIO_MS+(i+1));
             ms.setTag("radio_ms"+(i+1));
 
-            if(Selected_seat_list.get(i).getGender().equals("F"))
+            if(Selected_seat_list.get(i).getGender().equals("F") || Selected_seat_list.get(i).getGender().equals(Constants.SEAT_DETAILS.VALUE_GENDER_FEMALE +""))
             {
                 rg.check(Constants.RADIO_MRS+(i+1));
                 mr.setClickable(false);

@@ -74,12 +74,12 @@ public class Global_Travel {
         if (TRAVEL_DATA.ISEVA_SHARE_PCT <= commition_per) {
             offer_per = commition_per - TRAVEL_DATA.ISEVA_SHARE_PCT;
         } else {
-            offer_per = 0;
+            offer_per = 0.0;
         }
 
         fare_after_total_discount = (total_fare * (100 - offer_per)) / 100;
 
-        fare_after_total_discount = (double) Math.round(fare_after_total_discount);
+        fare_after_total_discount = Math.ceil(fare_after_total_discount);
 
         return fare_after_total_discount;
 

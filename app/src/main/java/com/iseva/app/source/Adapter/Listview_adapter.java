@@ -26,9 +26,7 @@ import io.realm.Realm;
 import static com.iseva.app.source.R.id.bus_label;
 import static com.iseva.app.source.R.id.company_name;
 
-/**
- * Created by xb_sushil on 4/1/2017.
- */
+
 public class Listview_adapter extends BaseAdapter{
 
 
@@ -89,7 +87,7 @@ public class Listview_adapter extends BaseAdapter{
         holder.fare_tv.setText(routes_hashmap.get(i).get("fare"));
         String fare = routes_hashmap.get(i).get("fare");
         String offer_fare = routes_hashmap.get(i).get("fare_offer");
-        if(Float.parseFloat(fare.substring(2,fare.length())) > Float.parseFloat(offer_fare.substring(2,offer_fare.length())))
+        if(Float.parseFloat(fare.substring(2,fare.length())) >= Float.parseFloat(offer_fare.substring(2,offer_fare.length())))
         {
             holder.fare_tv.setTextSize(12);
             holder.fare_tv.setPaintFlags(holder.fare_tv.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
