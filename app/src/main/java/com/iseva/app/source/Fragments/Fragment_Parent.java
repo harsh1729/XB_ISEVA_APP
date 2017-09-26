@@ -129,8 +129,8 @@ public class Fragment_Parent extends Fragment {
                 single_map.put("bus_id",Integer.toString(rout.get(i).getRouteBusId()));
                 single_map.put("company_id",Integer.toString(rout.get(i).getCompanyId()));
                 single_map.put("company_name",rout.get(i).getCompanyName());
-                single_map.put("fare", getResources().getString(R.string.Rs)+" "+Double.toString(rout.get(i).getFare()));
-                single_map.put("fare_offer",getResources().getString(R.string.Rs)+" "+Double.toString(rout.get(i).getFare_after_offer()));
+                single_map.put("fare", getResources().getString(R.string.Rs)+" "+Math.round(rout.get(i).getFare()));
+                single_map.put("fare_offer",getResources().getString(R.string.Rs)+" "+ Math.round(rout.get(i).getFare_after_offer()));
                 single_map.put("bus_label",rout.get(i).getBusLabel());
                 single_map.put("time",rout.get(i).getDepTime()+" - "+rout.get(i).getArrTime());
                 single_map.put("Availabel_Seats",""+rout.get(i).getAvailableSeats());

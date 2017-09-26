@@ -141,4 +141,9 @@
     <string name="activity_show_booked_ticket_tag_total_fare">activity_show_booked_ticket_tag_total_fare</string>
     <string name="activity_show_booked_ticket_tag_extra_charge">activity_show_booked_ticket_tag_extra_charge</string>
 
+    <!-- used in show booking ticket short layout -->
+    <string name="booking_detail_short_layout_booked_date">booking_detail_short_layout_booked_date</string>
+    <string name="booking_deatail_short_layout_from_city">booking_deatail_short_layout_from_city</string>
+    <string name="booking_deatail_short_layout_to_city">booking_deatail_short_layout_to_city</string>
+
 </resources>

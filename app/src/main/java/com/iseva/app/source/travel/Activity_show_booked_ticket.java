@@ -183,6 +183,10 @@ public class Activity_show_booked_ticket extends Activity {
                                     main.setTag(R.string.activity_show_booked_ticket_tag_extra_charge,response.getJSONArray("data").getJSONObject(i).getString("extra_charge"));
                                     main.setTag(R.string.activity_show_booked_ticket_tag_total_fare,response.getJSONArray("data").getJSONObject(i).getString("total_fare"));
 
+                                    main.setTag(R.string.booking_detail_short_layout_booked_date,response.getJSONArray("data").getJSONObject(i).getString("ticket_date"));
+                                    main.setTag(R.string.booking_deatail_short_layout_from_city,response.getJSONArray("data").getJSONObject(i).getString("from"));
+                                    main.setTag(R.string.booking_deatail_short_layout_to_city,response.getJSONArray("data").getJSONObject(i).getString("to"));
+
 
                                     From.setText(response.getJSONArray("data").getJSONObject(i).getString("from"));
                                     To.setText(response.getJSONArray("data").getJSONObject(i).getString("to"));
@@ -201,6 +205,11 @@ public class Activity_show_booked_ticket extends Activity {
                                                 i.putExtra("payu_payment_id",view.getTag(R.string.activity_show_booked_ticket_tag_payment_id).toString());
                                                 i.putExtra("total_fare",view.getTag(R.string.activity_show_booked_ticket_tag_total_fare).toString());
                                                 i.putExtra("extra_charge",view.getTag(R.string.activity_show_booked_ticket_tag_extra_charge).toString());
+
+                                                i.putExtra("booked_date",view.getTag(R.string.booking_detail_short_layout_booked_date).toString());
+                                                i.putExtra("from_city",view.getTag(R.string.booking_deatail_short_layout_from_city).toString());
+                                                i.putExtra("to_city",view.getTag(R.string.booking_deatail_short_layout_to_city).toString());
+
                                                 startActivity(i);
                                                 overridePendingTransition(R.anim.anim_in, R.anim.anim_none);
                                             }

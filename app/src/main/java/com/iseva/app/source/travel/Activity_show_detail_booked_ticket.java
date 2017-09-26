@@ -46,6 +46,14 @@ public class Activity_show_detail_booked_ticket extends Activity_Parent_Travel {
     private ImageView header_iv;
     private TextView header_tv_second;
 
+    LinearLayout booking_ticket_detail_main_layout;
+    LinearLayout booking_ticket_detail_short_layout;
+    TextView booking_ticket_detail_short_layout_date;
+    TextView booking_ticket_detail_short_layout_from_city;
+    TextView booking_ticket_detail_short_layout_to_city;
+    TextView booking_ticket_detail_short_layout_ticket_no;
+    TextView booking_ticket_detail_short_layout_pnr_no;
+
     TextView ticket_detail_booking_date_tv;
     TextView ticket_detail_from_city_tv;
     TextView ticket_detail_to_city_tv;
@@ -82,6 +90,10 @@ public class Activity_show_detail_booked_ticket extends Activity_Parent_Travel {
     private String total_fare;
     private String extra_charge;
 
+    private String booked_date;
+    private String from_city;
+    private String to_city;
+
     private int volley_timeout = 15000;
 
     private String refund_amount;
@@ -116,10 +128,15 @@ public class Activity_show_detail_booked_ticket extends Activity_Parent_Travel {
         Intent i = getIntent();
         pnr_no_txt = i.getStringExtra("pnr_no");
         ticket_no_txt = i.getStringExtra("ticket_no");
+
         iscancelable = i.getStringExtra("iscancelable");
         payu_payment_id = i.getStringExtra("payu_payment_id");
         total_fare = i.getStringExtra("total_fare");
         extra_charge = i.getStringExtra("extra_charge");
+
+        booked_date=change_date_form(i.getStringExtra("booked_date"));
+        from_city=i.getStringExtra("from_city");
+        to_city=i.getStringExtra("to_city");
 
 
         /*{"success":true,"data":{"HoldId":19857554,
@@ -133,6 +150,16 @@ public class Activity_show_detail_booked_ticket extends Activity_Parent_Travel {
         session_manager = new Session_manager(this);
         header_tv = (TextView)findViewById(R.id.header_text);
         header_iv = (ImageView)findViewById(R.id.header_back_button);
+
+        booking_ticket_detail_main_layout=(LinearLayout)findViewById(R.id.activity_show_deatail_booked_main_layout);
+        booking_ticket_detail_short_layout=(LinearLayout)findViewById(R.id.confirm_ticket_short_detail_layout_on_gds_error);
+        booking_ticket_detail_short_layout_date = (TextView)findViewById(R.id.activity_ticket_confirmed_short_layout_date_tv);
+        booking_ticket_detail_short_layout_from_city = (TextView)findViewById(R.id.activity_ticket_confirmed_short_layout_from_city_tv);
+        booking_ticket_detail_short_layout_to_city = (TextView)findViewById(R.id.activity_ticket_confirmed_short_layout_to_city_tv);
+        booking_ticket_detail_short_layout_pnr_no = (TextView)findViewById(R.id.activity_ticket_confirmed_short_layout_pnr_no_tv);
+        booking_ticket_detail_short_layout_ticket_no = (TextView)findViewById(R.id.activity_ticket_confirmed_short_layout_ticket_no_tv);
+
+
 
         ticket_detail_booking_date_tv = (TextView)findViewById(R.id.activity_ticket_detail_booking_date_tv);
         ticket_detail_from_city_tv = (TextView)findViewById(R.id.activity_ticket_detail_from_city_tv);
@@ -366,7 +393,7 @@ public class Activity_show_detail_booked_ticket extends Activity_Parent_Travel {
 
 
                     }else{
-                        initErrorToast(response);
+                        initErrorToast(false);
                     }
                 }
             } catch (Exception e) {
@@ -410,7 +437,7 @@ public class Activity_show_detail_booked_ticket extends Activity_Parent_Travel {
                              }
                          }
                      }else{
-                         initErrorToast(response);
+                         initErrorToast(false);
                      }
                  }
              }catch (Exception e){
@@ -563,7 +590,7 @@ public class Activity_show_detail_booked_ticket extends Activity_Parent_Travel {
 
                     }else{
                         // some error on travelyari server
-                        initErrorToast(response);
+                        initErrorToast(true);
                     }
 
                 }
@@ -576,22 +603,32 @@ public class Activity_show_detail_booked_ticket extends Activity_Parent_Travel {
     }
 
 
-    private void initErrorToast(JSONObject response){
-        if(response != null){
+    private void initErrorToast(boolean showShortLayout){
+
             try {
                 Globals.hideLoadingDialog(progress);
 
-                if (response.has("Error")) {
-                    Globals.showShortToast(this, response.getJSONObject("Error").getString("Msg"));
+                if (showShortLayout) {
+
+                   booking_ticket_detail_main_layout.setVisibility(View.GONE);
+                      booking_ticket_detail_short_layout_pnr_no.setText(pnr_no_txt);
+                     booking_ticket_detail_short_layout_ticket_no.setText(ticket_no_txt);
+                     booking_ticket_detail_short_layout_date.setText(booked_date);
+                     booking_ticket_detail_short_layout_from_city.setText(from_city);
+                     booking_ticket_detail_short_layout_to_city.setText(to_city);
+
+
+                    booking_ticket_detail_short_layout.setVisibility(View.VISIBLE);
+
+
                 }else{
                     // show app error msg
                     Globals.showShortToast(this, "Some error occured, Please try again!");
                 }
                 //this.finish();
-            }catch (Exception e){
+            }catch (Exception e) {
                 e.printStackTrace();
             }
-        }
     }
 
 
