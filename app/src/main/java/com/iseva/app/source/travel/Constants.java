@@ -29,6 +29,7 @@ public class Constants {
         public static final String CITY_ID = "CityId";
         public static final String CITY_NAME = "City";
 
+        public static final String ERROR = "Error";
     }
 
 
@@ -67,7 +68,7 @@ public class Constants {
 
         public static final String CLIENT_REQ_URL = BASE_URL + "client_requests/";
 
-        public static final String SEND_MAIL_URL = BASE_URL + "testmail.php";
+        public static final String SEND_MAIL_URL = BASE_URL + "email_booking_confirmation_receipt.php";
         public static final String GET_OFFER_GLOBAL = CLIENT_REQ_URL + "promocodes/get_all_offers";
         public static final String GET_OFFER_WITH_COUPON_NO = CLIENT_REQ_URL + "promocodes/get_offer_with_coupan_no";
         public static final String ADD_TRANSACTION = CLIENT_REQ_URL + "transaction/add_transaction";

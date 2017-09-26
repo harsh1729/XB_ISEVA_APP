@@ -71,6 +71,11 @@
 
     <string name="server_error_title">Something went wrong</string>
     <string name="server_error_message_try_again">Error occured at server, Please try again.</string>
+    <string name="error_message_detail_text">Details : </string>
+    <string name="alert_cancel_btn_text_retry">Retry</string>
+    <string name="alert_cancel_btn_text_cancel">Cancel</string>
+    <string name="alert_cancel_btn_text_ok">Ok</string>
+
     <string name="internet_connection_error_title">No Internet Connection!</string>
     <string name="internet_connection_error_message_try_again">We can not detect any internet connectivity. Please check your internet connection and try again.</string>
     <string name="internet_connection_error_message">We can not detect any internet connectivity. Please check your internet connection.</string>

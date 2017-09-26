@@ -23,7 +23,7 @@ import io.realm.RealmQuery;
  * Created by xb_sushil on 1/25/2017.
  */
 
-public class Fragment_Routes_Populer extends Fragment_Parent {
+public class Fragment_Routes_Populer extends Fragment_Routes_Parent {
 
     LinearLayout routes_loader;
     ListView all_routes_list;

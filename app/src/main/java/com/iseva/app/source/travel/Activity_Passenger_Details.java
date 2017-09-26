@@ -326,14 +326,8 @@ public class Activity_Passenger_Details extends Activity_Parent_Travel {
            View v =  inflater.inflate(R.layout.passenger_single,null);
 
            TextView textView_label =  (TextView)v.findViewById(R.id.label_textview);
-            if(i > 0)
-            {
-                textView_label.setText("Passenger"+" "+(i+1));
-            }
-            else
-            {
-                textView_label.setText("Passenger");
-            }
+            textView_label.setText("Passenger"+" "+(i+1));
+
 
 
             RadioGroup rg = (RadioGroup)v.findViewById(R.id.radioGroup);
@@ -695,7 +689,7 @@ public class Activity_Passenger_Details extends Activity_Parent_Travel {
 
             } catch (JSONException e) {
 
-                callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again));
+                callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again),getResources().getString(R.string.alert_cancel_btn_text_ok));
 
             }
 
@@ -756,13 +750,28 @@ public class Activity_Passenger_Details extends Activity_Parent_Travel {
 
                         else {
 
+                                String msg = "";
 
-                                callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again));
+                                if(response.has(Constants.JSON_KEYS.ERROR)){
+
+                                    JSONObject objJsonError = response.getJSONObject(Constants.JSON_KEYS.ERROR);
+
+                                    if(objJsonError.has("Msg")){
+
+                                        msg =  "\n"+getResources().getString(R.string.error_message_detail_text) +" " + objJsonError.optString("Msg");
+                                    }
+                                }
+
+
+
+
+
+                                callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again) + msg,getResources().getString(R.string.alert_cancel_btn_text_ok));//error_message_detail_text
                         }
                     } catch (JSONException e) {
 
                         e.printStackTrace();
-                        callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again));
+                        callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again),getResources().getString(R.string.alert_cancel_btn_text_ok));
                     }
                 }
 
@@ -771,7 +780,7 @@ public class Activity_Passenger_Details extends Activity_Parent_Travel {
                 @Override
                 public void onErrorResponse(VolleyError err) {
 
-                    callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again));
+                    callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again),getResources().getString(R.string.alert_cancel_btn_text_ok));
 
                 }
             })
@@ -1001,7 +1010,6 @@ private class BookingTicket extends AsyncTask<Void,Void,Void>
     @Override
     protected Void doInBackground(Void... voids) {
 
-        //TODO : HARSH Implement new API
 
         SoapObject request = new SoapObject("", "");
 
@@ -1107,7 +1115,6 @@ private class BookingTicket extends AsyncTask<Void,Void,Void>
 //               try {
 //                   httpTransport.call(Constants.GLOBEL_NAMESPACE + Constants.METHOD_HoldSeatsForSchedule, envelope);
 //               } catch (HttpResponseException e) {
-//                   // TODO Auto-generated catch block
 //                   e.printStackTrace();
 //                   if(Global_Travel.build_type == 0)
 //                   {
@@ -1115,10 +1122,8 @@ private class BookingTicket extends AsyncTask<Void,Void,Void>
 //                   }
 //
 //               } catch (IOException e) {
-//                   // TODO Auto-generated catch block
 //                   e.printStackTrace();
 //               } catch (XmlPullParserException e) {
-//                   // TODO Auto-generated catch block
 //                   e.printStackTrace();
 //               } //send request
         // SoapObject result = null;

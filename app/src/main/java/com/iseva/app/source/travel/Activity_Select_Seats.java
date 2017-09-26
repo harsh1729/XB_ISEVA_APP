@@ -59,6 +59,7 @@ public class Activity_Select_Seats extends Activity_Parent_AppCompat implements 
     TextView cancellation_tv;
     TextView Total_Fare_tv;
     TextView Total_Seats_tv;
+    TextView tv_select_seats_label;
     TextView cancel_cancellation_policy_layout;
 
 
@@ -117,6 +118,7 @@ public class Activity_Select_Seats extends Activity_Parent_AppCompat implements 
 
         Total_Fare_tv = (TextView) findViewById(R.id.Total_Fare);
         Total_Seats_tv = (TextView) findViewById(Selected_Seats);
+        tv_select_seats_label =  (TextView) findViewById(R.id.txt_selected_seats_label);
         progress_layout = (LinearLayout) findViewById(R.id.select_seat_dynamic_data_layout);
         instruction_layout = (LinearLayout) findViewById(R.id.seat_instruction_layout);
         progressBar = (ProgressBar) findViewById(R.id.activity_seat_progress_bar);
@@ -269,6 +271,12 @@ public class Activity_Select_Seats extends Activity_Parent_AppCompat implements 
 
         }
 
+        if(All_row.size() > 1){
+            tv_select_seats_label.setText("Selected Seats");
+
+        }else{
+            tv_select_seats_label.setText("Selected Seat");
+        }
 
         Total_Fare_tv.setText("\u20B9 " + Total_Fare);
         Total_Seats_tv.setText(Total_Seat);
@@ -429,9 +437,7 @@ public class Activity_Select_Seats extends Activity_Parent_AppCompat implements 
 
             // HashMap<String, String> paramsMap = new HashMap<String, String>();
 
-
             String url = URL_TY.GET_CHART + "?fromCityId=" + TRAVEL_DATA.FROM_CITY_ID + "&toCityId=" + TRAVEL_DATA.TO_CITY_ID + "&journeyDate=" + TRAVEL_DATA.JOURNEY_DATE + "&busId=" + bus_id;
-
 
             //  Params has to be sent in url for GET req
 
@@ -493,7 +499,7 @@ public class Activity_Select_Seats extends Activity_Parent_AppCompat implements 
 
                                 try{
 
-                                    //TODO : Avail Seats check and Drop, Pick
+                                    //TODO : Avail Seats check
                                     
                                     JSONObject objJsonL1_ChartLayout =  objJsonData.getJSONObject("ChartLayout");
                                     JSONObject objJsonL1_ChartSeats =  objJsonData.getJSONObject("ChartSeats");
@@ -726,11 +732,21 @@ public class Activity_Select_Seats extends Activity_Parent_AppCompat implements 
                 }
 
 
-                int total_fare = 0;
+                int totalFare = 0;
 
-                JSONArray arrJsonFaresForSeat = arrJsonL2_Fares.getJSONArray(SEAT_DETAILS.INDEX_SEAT_LAYOUT_SEQ_NO);
+                try {
 
-                int totalFare = arrJsonFaresForSeat.getInt(SEAT_DETAILS.INDEX_FARE_TOTAL);
+                     int pos = arrJsonL4_Seat.getInt(SEAT_DETAILS.INDEX_SEAT_LAYOUT_SEQ_NO);
+                    JSONArray arrJsonFaresForSeat = arrJsonL2_Fares.getJSONArray(pos);
+
+                    if (arrJsonFaresForSeat != null) {
+
+                        totalFare = arrJsonFaresForSeat.getInt(SEAT_DETAILS.INDEX_FARE_TOTAL);
+                    }
+
+                }catch (Exception ex){
+
+                }
 
                 double after_offer_seat_fare = Global_Travel.getFareAfterDiscount((double) totalFare, comm_pct);
 
@@ -800,7 +816,6 @@ public class Activity_Select_Seats extends Activity_Parent_AppCompat implements 
 //            Realm thread_realm = Realm.getDefaultInstance();
 //            SoapObject request = new SoapObject("","");
 //
-//            //TODO HArsh implement new API
 //            //SoapObject request = new SoapObject(Constants.GLOBEL_NAMESPACE,Constants.METHOD_GetRouteScheduleDetail);
 //
 //            SoapObject sa = new SoapObject(null,"Authentication");
@@ -865,13 +880,10 @@ public class Activity_Select_Seats extends Activity_Parent_AppCompat implements 
 //            try {
 //                httpTransport.call(Constants.GLOBEL_NAMESPACE+Constants.METHOD_GetRouteScheduleDetail, envelope);
 //            } catch (HttpResponseException e) {
-//                // TODO Auto-generated catch block
 //                e.printStackTrace();
 //            } catch (IOException e) {
-//                // TODO Auto-generated catch block
 //                e.printStackTrace();
 //            } catch (XmlPullParserException e) {
-////                // TODO Auto-generated catch block
 ////                e.printStackTrace();
 ////            } //send request
 //           // SoapObject result = null;
@@ -883,7 +895,6 @@ public class Activity_Select_Seats extends Activity_Parent_AppCompat implements 
 //                soapresult_schedule_detail = (SoapObject)envelope.getResponse();
 //
 //            } catch (SoapFault e) {
-//                // TODO Auto-generated catch block
 //                e.printStackTrace();
 //            }
 //

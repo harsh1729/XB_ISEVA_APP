@@ -207,6 +207,7 @@
         android:paddingRight="@dimen/padding_margin_5">
 
         <com.iseva.app.source.customcomponent.TextViewRegular
+            android:id="@+id/txt_selected_seats_label"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"

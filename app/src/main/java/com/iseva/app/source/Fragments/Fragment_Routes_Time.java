@@ -24,7 +24,7 @@ import io.realm.Sort;
  * Created by xb_sushil on 1/25/2017.
  */
 
-public class Fragment_Routes_Time extends Fragment_Parent {
+public class Fragment_Routes_Time extends Fragment_Routes_Parent {
 
     LinearLayout routes_loader_time;
 

@@ -181,7 +181,7 @@ public class Fragment_Deck2 extends Fragment {
 
                                     if(Selected_seat_list.size() >= Constants.MAX_SEATS)
                                     {
-                                        showAlertDialog("Alert","Maximum 5 Tickets can be booked at one time","Ok");
+                                        showAlertDialog("Limit Reached!","Maximum 5 tickets can be booked in a single booking","Ok");
                                     }
                                     else {
 
@@ -296,7 +296,7 @@ public class Fragment_Deck2 extends Fragment {
 
                                     if(Selected_seat_list.size() >= Constants.MAX_SEATS)
                                     {
-                                        showAlertDialog("Alert","Maximum 5 Tickets can be booked at one time","Ok");
+                                        showAlertDialog("Limit Reached!","Maximum 5 tickets can be booked in a single booking","Ok");
                                     }
                                     else
                                     {
@@ -391,7 +391,7 @@ public class Fragment_Deck2 extends Fragment {
         TextView title_tv = new TextView(getContext());
         title_tv.setPadding(0,10,0,0);
         title_tv.setTextColor(ContextCompat.getColor(getContext(),R.color.black));
-        title_tv.setTextSize(getResources().getDimension(R.dimen.text_size_mediam));
+        title_tv.setTextSize(getResources().getDimension(R.dimen.text_size_small));
         title_tv.setGravity(Gravity.CENTER);
         title_tv.setText(title);
 

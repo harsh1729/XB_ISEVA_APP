@@ -95,13 +95,6 @@ public class Activity_loading extends Activity_Parent_Travel implements Parent_I
 
         try {
 
-           // HashMap<String, String> paramsMap = new HashMap<String, String>();
-
-            //TODO Remove hardcoding when going LIVE
-            TRAVEL_DATA.FROM_CITY_ID = "4292";
-            TRAVEL_DATA.TO_CITY_ID = "4562";
-            //TRAVEL_DATA.JOURNEY_DATE = "2017-08-25";
-            //TODO Remove hardcoding when going LIVE
 
             String url = URL_TY.SEARCH_BUSES + "?fromCityId="+ TRAVEL_DATA.FROM_CITY_ID  +"&toCityId="+ TRAVEL_DATA.TO_CITY_ID +"&journeyDate="+ TRAVEL_DATA.JOURNEY_DATE;
 
@@ -310,12 +303,12 @@ public class Activity_loading extends Activity_Parent_Travel implements Parent_I
 
                         }else{
 
-                            callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again));
+                            callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again) ,getResources().getString(R.string.alert_cancel_btn_text_retry) );//
                         }
 
                     } catch (JSONException e) {
 
-                        callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again));
+                        callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again),getResources().getString(R.string.alert_cancel_btn_text_retry));
                         e.printStackTrace();
 
                     }
@@ -327,7 +320,7 @@ public class Activity_loading extends Activity_Parent_Travel implements Parent_I
                 public void onErrorResponse(VolleyError err) {
                     Log.i("SUSHIL", "ERROR VolleyError");
 
-                    callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again));
+                    callAlertBox(getResources().getString(R.string.server_error_title),getResources().getString(R.string.server_error_message_try_again),getResources().getString(R.string.alert_cancel_btn_text_retry));
                 }
             })
             {
@@ -556,7 +549,6 @@ public class Activity_loading extends Activity_Parent_Travel implements Parent_I
 //
 //            Realm thread_realm = Realm.getDefaultInstance();
 //
-//            //TODO : HARSH Implement new API
 //            SoapObject request = new SoapObject("","");
 //            SoapObject search_request = new SoapObject(null,"SearchRequest");
 //
@@ -671,7 +663,6 @@ public class Activity_loading extends Activity_Parent_Travel implements Parent_I
 //
 //
 //            } catch (SoapFault e) {
-//                // TODO Auto-generated catch block
 //                e.printStackTrace();
 //            }
 //

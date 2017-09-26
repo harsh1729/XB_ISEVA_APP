@@ -38,7 +38,7 @@ public class Activity_Parent_Travel extends Activity {
 
             if(reconnect){
 
-                callAlertBox(getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message_try_again));
+                callAlertBox(getResources().getString(R.string.internet_connection_error_title),getResources().getString(R.string.internet_connection_error_message_try_again),getResources().getString(R.string.alert_cancel_btn_text_retry));//
 
             }
             return false;
@@ -46,7 +46,7 @@ public class Activity_Parent_Travel extends Activity {
 
     }
 
-    protected void callAlertBox(String title,String error ) {
+    protected void callAlertBox(String title,String error,String cancelBtnText ) {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService
                 (Context.LAYOUT_INFLATER_SERVICE);
 
@@ -60,7 +60,7 @@ public class Activity_Parent_Travel extends Activity {
         builder.setCustomTitle(title_tv)
                 .setMessage(error)
                 .setCancelable(false)
-                .setNegativeButton("Retry", new DialogInterface.OnClickListener() {
+                .setNegativeButton(cancelBtnText, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
 
