@@ -35,7 +35,8 @@ public class Custom_App_updater {
         //window.setLayout(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 
         LinearLayout.LayoutParams l1lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        l1lp.setMargins(20,0,20,0);
+        l1lp.setMargins(20,0,20,20);
+
 
         LinearLayout ll = new LinearLayout(mContext);
         ll.setLayoutParams(l1lp);
@@ -43,15 +44,18 @@ public class Custom_App_updater {
         ll.setOrientation(LinearLayout.VERTICAL);
         TextView tv = new TextView(mContext);
         tv.setText("Please update your iSeva app to latest version.");
-        tv.setWidth(240);
-        tv.setPadding(6, 10, 6, 10);
+
+        tv.setTextSize(20);
+        tv.setPadding(6, 30, 6, 30);
         ll.addView(tv);
 
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-             layoutParams.setMargins(0,10,0,0);
+      //  LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+       //      layoutParams.setMargins(0,10,0,0);
         Button b1 = new Button(mContext);
-        b1.setLayoutParams(layoutParams);
+     //   b1.setLayoutParams(layoutParams);
         b1.setText("Update");
+        b1.setTextSize(18);
+
         b1.setBackground(ContextCompat.getDrawable(mContext,R.drawable.btn_background));
         b1.setTextColor(ContextCompat.getColor(mContext,R.color.app_white));
         b1.setOnClickListener(new OnClickListener() {
@@ -66,7 +70,7 @@ public class Custom_App_updater {
         if(!force_update.trim().equals("3"))
         {
             Button b2 = new Button(mContext);
-            b2.setLayoutParams(layoutParams);
+         //   b2.setLayoutParams(layoutParams);
             b2.setText("Remind Me Later");
             b2.setBackground(ContextCompat.getDrawable(mContext,R.drawable.btn_background));
             b2.setTextColor(ContextCompat.getColor(mContext,R.color.app_white));

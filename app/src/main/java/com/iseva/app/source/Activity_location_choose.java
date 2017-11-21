@@ -1,15 +1,20 @@
 package com.iseva.app.source;
 
+import android.*;
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
@@ -24,6 +29,7 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -53,35 +59,39 @@ public class Activity_location_choose extends FragmentActivity implements Locati
         init();
 
 
-
     }
 
     public void init() {
         search_textview = (TextView) findViewById(R.id.search_txtview);
-        location_filal_btn = (Button)findViewById(R.id.location_filal_btn);
-        SupportMapFragment supportMapFragment = (SupportMapFragment)
-                getSupportFragmentManager().findFragmentById(R.id.map);
-
+        location_filal_btn = (Button) findViewById(R.id.location_filal_btn);
+        SupportMapFragment supportMapFragment = ((SupportMapFragment)
+                getSupportFragmentManager().findFragmentById(R.id.map));
+        Log.i("gopal", "supportMapFragment-> " + supportMapFragment);
         supportMapFragment.getMapAsync(this);
+
 
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
+            if (ActivityCompat.checkSelfPermission(Activity_location_choose.this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(Activity_location_choose.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+               return;
+            }
+               else{
+            googleMap.setMyLocationEnabled(true);
+            googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+            checklocationenable();
+            set_on_click_listner();
         }
-        googleMap.setMyLocationEnabled(true);
-        googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-
-        set_on_click_listner();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        checklocationenable();
+
     }
 
     public void set_on_click_listner()
@@ -281,4 +291,5 @@ public class Activity_location_choose extends FragmentActivity implements Locati
             checklocationenable();
         }
     }
+
 }

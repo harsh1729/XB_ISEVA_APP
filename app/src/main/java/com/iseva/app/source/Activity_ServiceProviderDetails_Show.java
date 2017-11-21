@@ -4,29 +4,51 @@ import android.*;
 import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
+import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.CardView;
 import android.text.util.Linkify;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+
+
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookDialog;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+import com.facebook.share.Sharer;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -37,16 +59,22 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class Activity_ServiceProviderDetails_Show extends FragmentActivity {
@@ -57,12 +85,17 @@ public class Activity_ServiceProviderDetails_Show extends FragmentActivity {
     private String name = "";
     private String contact = "";
     private String contactDetails = "";
-
-
+    private String services="";
+    private PopupWindow popupWindow;
+    private CallbackManager callbackManager;
+    private int REQUEST_CODE=11;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_show);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         inti();
 
 
@@ -97,45 +130,253 @@ public class Activity_ServiceProviderDetails_Show extends FragmentActivity {
             @Override
             public void onClick(View v) {
                // shareClick();
-                initShareIntent();
+                //initShareIntent();
+
+                popupWindowShareIntent();
+
             }
         });
     }
 
+            private void popupWindowShareIntent(){
+
+
+                    View popupView = getLayoutInflater().inflate(R.layout.popup_layout_share_intent, null);
+
+                    popupWindow = new PopupWindow(popupView,
+                            ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+                    // Example: If you have a TextView inside `popup_layout.xml`
+                    ImageView whatsapp = (ImageView) popupView.findViewById(R.id.ivWhatsapp);
+                    ImageView fb = (ImageView) popupView.findViewById(R.id.ivFacebook);
+                    ImageView gmail = (ImageView) popupView.findViewById(R.id.ivGmail);
+                    ImageView twitter = (ImageView) popupView.findViewById(R.id.ivTwitter);
+
+                    whatsapp.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            initShareIntent(view);
+
+                        }
+
+                    });
+
+                    fb.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            initShareIntent(view);
+
+                        }
+                    });
+
+                    gmail.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            initShareIntent(view);
+
+                        }
+                    });
+
+                    twitter.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            initShareIntent(view);
+
+                        }
+                    });
+
+                    // Initialize more widgets from `popup_layout.xml`
+
+                    // If the PopupWindow should be focusable
+                    popupWindow.setFocusable(true);
+
+                    // If you need the PopupWindow to dismiss when when touched outside
+                    popupWindow.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#ececec")));
+
+                    //int location[] = new int[2];
+
+                    // Get the View's(the one that was clicked in the Fragment) location
+                    //anchorView.getLocationOnScreen(location);
+
+                    // Using location, the PopupWindow will be displayed right under anchorView
+                    popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0
+                    );
+
+            }
 
 
 
-
-    private void initShareIntent(){
+      private void initShareIntent(final View view){
 
         Dexter.withActivity(this)
                 .withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .withListener(new PermissionListener() {
                     @Override public void onPermissionGranted(PermissionGrantedResponse response) {
 
+                        popupWindow.dismiss();
 
-                        File f = new File(Environment.getExternalStorageDirectory()
-                                + File.separator + "iseva_bus.jpg");
-                        if (!f.exists()) {
-                            Bitmap icon = BitmapFactory.decodeResource(getResources(),
-                                    R.drawable.iseva_bus);
-                            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                            icon.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-                            try {
-                                f.createNewFile();
-                                FileOutputStream fo = new FileOutputStream(f);
-                                fo.write(bytes.toByteArray());
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+                        String imagePath = "http://xercesblue.website/iseva_bus.jpg";
+                        final Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                        shareIntent.setType("image/jpeg");
+                        shareIntent.putExtra(Intent.EXTRA_TEXT, name + "\n\n" + contactDetails + "\n\n" + services + "\n\n"
+                                + Globals.SHARE_APP_MSG + "\n " + Globals.SHARE_LINK_GENERIC);
+
+
+
+                        switch (view.getId()) {
+
+                                case R.id.ivWhatsapp:
+
+                                    Picasso.with(getApplicationContext()).load(imagePath).into(new Target() {
+                                        @Override
+                                        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+
+                                            shareIntent.putExtra(Intent.EXTRA_STREAM, getLocalBitmapUri(bitmap));
+                                            if (isPackageInstalled("com.whatsapp", Activity_ServiceProviderDetails_Show.this)) {
+                                                shareIntent.setPackage("com.whatsapp");
+                                                startActivity(Intent.createChooser(shareIntent, "Share News"));
+
+                                            } else {
+
+                                                Toast.makeText(getApplicationContext(), "Please Install Whatsapp", Toast.LENGTH_LONG).show();
+                                            }
+
+
+                                        }
+
+                                        @Override
+                                        public void onBitmapFailed(Drawable errorDrawable) {
+                                        }
+
+                                        @Override
+                                        public void onPrepareLoad(Drawable placeHolderDrawable) {
+                                        }
+                                    });
+
+
+
+                                    break;
+
+                                case R.id.ivGmail:
+
+                                    Picasso.with(getApplicationContext()).load(imagePath).into(new Target() {
+                                        @Override
+                                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+
+                                    shareIntent.putExtra(Intent.EXTRA_STREAM, getLocalBitmapUri(bitmap));
+                                    shareIntent.putExtra(Intent.EXTRA_SUBJECT,"ISeva App");
+
+                                    if (isPackageInstalled("com.google.android.gm", Activity_ServiceProviderDetails_Show.this)) {
+                                        shareIntent.setPackage("com.google.android.gm");
+                                        startActivity(Intent.createChooser(shareIntent, "Share Details"));
+
+                                    } else {
+
+                                        Toast.makeText(getApplicationContext(), "Please Install Gmail", Toast.LENGTH_LONG).show();
+                                    }
+
+
+                                }
+
+                                @Override
+                                public void onBitmapFailed(Drawable errorDrawable) {
+                                }
+
+                                @Override
+                                public void onPrepareLoad(Drawable placeHolderDrawable) {
+                                }
+                        });
+
+
+                                    break;
+
+                            case R.id.ivTwitter:
+
+                                Picasso.with(getApplicationContext()).load(imagePath).into(new Target() {
+                                    @Override
+                                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+
+                                        shareIntent.putExtra(Intent.EXTRA_STREAM, getLocalBitmapUri(bitmap));
+                                        if (isPackageInstalled("com.twitter.android", Activity_ServiceProviderDetails_Show.this)) {
+                                            shareIntent.setPackage("com.twitter.android");
+                                            startActivity(Intent.createChooser(shareIntent, "Share Details"));
+
+                                        } else {
+
+                                            Toast.makeText(getApplicationContext(), "Please Install Twitter", Toast.LENGTH_LONG).show();
+                                        }
+
+                                    }
+
+                                    @Override
+                                    public void onBitmapFailed(Drawable errorDrawable) {
+                                    }
+
+                                    @Override
+                                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+                                    }
+                                });
+
+
+                                break;
+
+                            case R.id.ivFacebook:
+                               /* ShareDialog dialog = null;
+                                callbackManager = CallbackManager.Factory.create();
+                                AccessToken accessToken = AccessToken.getCurrentAccessToken();
+                                if(accessToken==null){
+LoginManager.getInstance().logInWithPublishPermissions(
+        Activity_ServiceProviderDetails_Show.this,Arrays.asList("publish_actions") );}*/
+
+                                ShareDialog dialog = new ShareDialog(Activity_ServiceProviderDetails_Show.this);
+                                   ShareLinkContent.Builder builder = new ShareLinkContent.Builder();
+                                   builder.setContentUrl(Uri.parse(Globals.SHARE_LINK_GENERIC));
+                                   builder.setQuote(name + "\n\n" + contactDetails + "\n" + services + "\n\n" + Globals.SHARE_APP_MSG_MAX_DISCOUNT);
+                                   dialog.show(Activity_ServiceProviderDetails_Show.this, builder.build());
+
+
+
+/*
+
+                                dialog.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
+                                    @Override
+                                    public void onSuccess(Sharer.Result result) {
+                                     //   Toast.makeText(Activity_ServiceProviderDetails_Show.this, result.getPostId().toString(),Toast.LENGTH_LONG).show();
+                                        Log.d("gopal", "shared successfully "+result.getPostId().toString());
+                                        //add your code to handle successful sharing
+                                        Toast.makeText(Activity_ServiceProviderDetails_Show.this,"Post Shared Successfully On Facebook",Toast.LENGTH_LONG).show();
+                                    }
+
+                                    @Override
+                                    public void onCancel() {
+                                        Log.d("gopal", "sharing cancelled");
+                                        //add your code to handle cancelled sharing
+                                        Toast.makeText(Activity_ServiceProviderDetails_Show.this,"Sharing Cancelled",Toast.LENGTH_LONG).show();
+
+
+                                    }
+
+
+                                    @Override
+                                    public void onError(FacebookException error) {
+                                        Log.d("gopal", "sharing error");
+                                        //add your code to handle sharing error
+                                        Toast.makeText(Activity_ServiceProviderDetails_Show.this,"Sharing Failed!\nTry Again Later.",Toast.LENGTH_LONG).show();
+                                    }
+                                });
+*/
+
+
+
+
+
+                                break;
+
+
                         }
 
-                        Intent share = new Intent(Intent.ACTION_SEND);
-                        share.setType("image/jpeg");
-                        share.putExtra(Intent.EXTRA_TEXT, name+"\n\n"+contactDetails+"\n\n"+Globals.SHARE_APP_MSG + "\n " + Globals.SHARE_LINK_GENERIC);
-                        share.putExtra(Intent.EXTRA_STREAM,
-                                Uri.parse("file:///sdcard/iseva_bus.jpg"));
-                        startActivity(Intent.createChooser(share, "Share Image"));
+
+
                     }
                     @Override public void onPermissionDenied(PermissionDeniedResponse response) {
 
@@ -144,6 +385,40 @@ public class Activity_ServiceProviderDetails_Show extends FragmentActivity {
 
                     }
                 }).check();
+    }
+
+
+ /*   @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+       *//* if( resultCode == RESULT_OK) {
+            Toast.makeText(Activity_ServiceProviderDetails_Show.this, "Post Shared Successfully On Facebook", Toast.LENGTH_LONG).show();
+        }
+         else{
+            Toast.makeText(Activity_ServiceProviderDetails_Show.this, "NOt POsted", Toast.LENGTH_LONG).show();
+
+
+        }*//*
+
+
+
+
+        }*/
+
+
+    public Uri getLocalBitmapUri(Bitmap bmp) {
+        Uri bmpUri = null;
+        try {
+            File file =  new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "Share News" + System.currentTimeMillis() + ".jpg");
+            FileOutputStream out = new FileOutputStream(file);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.close();
+            bmpUri = Uri.fromFile(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bmpUri;
     }
 
     /*private void callMerchant() {
@@ -263,12 +538,15 @@ public class Activity_ServiceProviderDetails_Show extends FragmentActivity {
                         Globals.preloadImage(getApplicationContext(), objectImageProfile.getString("imageurl"));
                         //Custom_RoundedImageView imgDoctor = (Custom_RoundedImageView) findViewById(R.id.imgDoctor);
                         int totalContent = Globals.getScreenSize((Activity) this).x;
-                        int imgWidth = totalContent - ((totalContent * 75) / 100);
+                       // int imgWidth = totalContent - ((totalContent * 75) / 100);
+                        int imgWidth = totalContent - ((totalContent * 65) / 100);
 
                         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) img
                                 .getLayoutParams();
                         lp.width = imgWidth;
                         lp.height = (int) (imgWidth * 1.1);
+
+
                         img.setLayoutParams(lp);
 
 
@@ -387,6 +665,7 @@ public class Activity_ServiceProviderDetails_Show extends FragmentActivity {
                             linear.setVisibility(View.VISIBLE);
                             TextView txtDetails = (TextView) findViewById(R.id.txtServices);
                             txtDetails.setText(obj.getString("services"));
+                             services=obj.getString("services");
                             Linkify.addLinks(txtDetails, Linkify.ALL);
                         }
                     }
@@ -631,4 +910,17 @@ public class Activity_ServiceProviderDetails_Show extends FragmentActivity {
         });
 
     }
+
+    private boolean isPackageInstalled(String packagename, Context context) {
+        PackageManager pm = context.getPackageManager();
+        try {
+            pm.getPackageInfo(packagename, PackageManager.GET_ACTIVITIES);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+    }
+
+
+
 }

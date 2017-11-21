@@ -2,20 +2,19 @@ apply plugin: 'com.android.application'
 apply plugin: 'realm-android'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.1'
 
+    compileSdkVersion 25
+    buildToolsVersion '26.0.2'
     dexOptions {
         javaMaxHeapSize "4g"
     }
-
     defaultConfig {
         multiDexEnabled true
         applicationId "com.iseva.app"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 11
-        versionName "2.4"
+        versionCode 13
+        versionName "2.5"
     }
     buildTypes {
         release {
@@ -23,7 +22,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
     packagingOptions {
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/LICENSE'
@@ -31,28 +29,29 @@ android {
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/NOTICE.txt'
     }
-
 }
 repositories {
     maven { url 'https://oss.sonatype.org/content/repositories/ksoap2-android-releases/' }
 
 }
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile fileTree(include: ['*.jar'],dir: 'libs')
     /*compile files('libs/universal-image-loader-1.8.5-with-sources.jar')*/
+
     /*compile 'com.mcxiaoke.volley:library-aar:1.0.0'*/
+
     //compile 'org.apache.httpcomponents:httpmime:4.5.1'
+
     //compile 'org.apache.httpcomponents:httpclient:4.5.1'
     compile files('libs/httpclient-4.3.6.jar')
     compile files('libs/httpcore-4.3.3.jar')
     compile files('libs/httpmime-4.3.6.jar')
+    //compile files('libs/facebook-android-sdk.jar')
     //compile 'org.apache.httpcomponents:httpcore:4.3.3'
     compile project(':payUMoneysdk')
-
     compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
         transitive = true;
     }
-
     compile 'com.jsibbold:zoomage:1.1.0'
     compile 'com.karumi:dexter:4.1.0'
     compile 'com.android.support:appcompat-v7:25.3.1'
@@ -73,7 +72,24 @@ dependencies {
     compile 'org.florescu.android.rangeseekbar:rangeseekbar-library:0.3.0'
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.facebook.android:facebook-android-sdk:[4,5)'
+    compile 'com.facebook.android:facebook-share:[4,5)'
+    compile 'com.google.code.gson:gson:2.7'
+    compile 'com.android.support:animated-vector-drawable:25.3.1'
+    compile 'com.android.support:mediarouter-v7:25.3.1'
+    compile 'com.mcxiaoke.volley:library:1.0.17'
+//fbb
+    compile 'com.facebook.android:facebook-core:[4,5)'
+    compile 'com.facebook.android:facebook-login:[4,5)'
+  //  compile 'com.facebook.android:facebook-share:[4,5)'
+    compile 'com.facebook.android:facebook-places:[4,5)'
+   // compile 'com.facebook.android:facebook-messenger:[4,5)'
+    compile 'com.facebook.android:facebook-applinks:[4,5)'
+//fbb
     testCompile 'junit:junit:4.12'
+
+
+
 }
 apply plugin: 'io.fabric'
 

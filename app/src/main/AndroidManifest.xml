@@ -28,7 +28,7 @@
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
-
+    <uses-permission android:name="android.permission.CAMERA"/>
     <application
         android:name=".Custom_VolleyAppController"
         android:allowBackup="true"
@@ -37,6 +37,12 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+    <provider android:authorities="com.facebook.app.FacebookContentProvider1052680501540957"
+           android:name="com.facebook.FacebookContentProvider"
+           android:exported="true"/>
+      <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAkVjHCB1gn34GJdIRHBtWxrHsqjds2gxA"/>
@@ -83,6 +89,7 @@
             </intent-filter>
         </receiver>
         -->
+
 
         <activity
             android:name=".Activity_Splash"
@@ -197,6 +204,7 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|adjustResize"/>
+
         <activity
             android:name=".Activity_MyBusinessExtra"
             android:launchMode="singleTask"

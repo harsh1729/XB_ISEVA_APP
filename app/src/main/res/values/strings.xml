@@ -151,4 +151,8 @@
     <string name="booking_deatail_short_layout_from_city">booking_deatail_short_layout_from_city</string>
     <string name="booking_deatail_short_layout_to_city">booking_deatail_short_layout_to_city</string>
 
+
+    <!-- For FaceBook Sahring -->
+    <string name="facebook_app_id">1052680501540957</string>
+
 </resources>

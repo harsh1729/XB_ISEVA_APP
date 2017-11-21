@@ -89,6 +89,8 @@ public class Globals {
     public final static String SHARE_LINK_GENERIC = "https://play.google.com/store/apps/details?id="+PNAME;
 
     public final static String SHARE_APP_MSG = "Please download this awesome app 'iSeva' at  ";
+    public final static String SHARE_APP_MSG_MAX_DISCOUNT = "Please download this awesome app 'iSeva' for Maximum Discount" +
+            " on Bus Tickets Booking. ";
 
     public static final String TEXT_CONNECTION_ERROR_HEADING = "Error in Connection";
     public static final String TEXT_CONNECTION_ERROR_DETAIL_TOAST ="Please check your internet connection and try again.";

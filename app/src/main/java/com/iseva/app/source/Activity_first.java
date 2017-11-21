@@ -1,17 +1,26 @@
 package com.iseva.app.source;
 
+import android.*;
+import android.Manifest;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
@@ -43,18 +52,21 @@ import com.iseva.app.source.travel.Global_Travel;
 import com.iseva.app.source.travel.Activity_Main;
 import com.iseva.app.source.travel.Session_manager;
 
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Activity_first extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,BaseSliderView.OnSliderClickListener,ViewPagerEx.OnPageChangeListener{
     static boolean pushNotification = false;
     private ProgressDialog pd;
     private View view;
+    final private int REQUEST_CODE_ASK_PERMISSION = 10;
     private android.support.v7.widget.SearchView searchView;
 
     private int lancherId = 1;
@@ -228,6 +240,8 @@ public class Activity_first extends AppCompatActivity implements NavigationView.
         });
 
         getAddver();
+
+        checkPermissions();
     }
 
     public void get_version_code()
@@ -256,6 +270,7 @@ public class Activity_first extends AppCompatActivity implements NavigationView.
                             server_version = response.getInt("version_name");
                             force_update = response.getString("force_update");
                             session_manager.set_url(response.getString("url"));
+
                             if(server_version > app_version)
                             {
                                 if(force_update.trim().equals("1"))
@@ -925,4 +940,105 @@ public class Activity_first extends AppCompatActivity implements NavigationView.
     public void onPageScrollStateChanged(int state) {
 
     }
+
+    protected void checkPermissions() {
+
+        String[] permissions= new String[]{
+                android.Manifest.permission.ACCESS_NETWORK_STATE,
+                android.Manifest.permission.GET_ACCOUNTS,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                android.Manifest.permission.ACCESS_WIFI_STATE,
+                android.Manifest.permission.READ_PHONE_STATE,
+                android.Manifest.permission.VIBRATE,
+                android.Manifest.permission.WAKE_LOCK,
+                android.Manifest.permission.ACCESS_FINE_LOCATION,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.CAMERA};
+
+        int result;
+        List<String> listPermissionsNeeded = new ArrayList<>();
+        for (String p:permissions) {
+            result = ContextCompat.checkSelfPermission(this,p);
+            if (result != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(p);
+            }
+        }
+        if (!listPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]),REQUEST_CODE_ASK_PERMISSION );
+        }
+
+
+    }
+
+
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+
+        switch (requestCode) {
+            case REQUEST_CODE_ASK_PERMISSION:{
+
+
+                int flag=0;
+
+                for(String singlepermission: permissions){
+                    if(ActivityCompat.shouldShowRequestPermissionRationale(this, singlepermission)){
+                        Log.i("gopal","denied permission-> "+ singlepermission);
+                        //denied
+
+                    }
+                    else if(ActivityCompat.checkSelfPermission(this, singlepermission) == PackageManager.PERMISSION_GRANTED){
+                        Log.i("gopal","allowed permission-> "+ singlepermission);
+                        //allowed
+                    }
+
+                    else{
+                        //set to never ask again
+                        Log.i("gopal","never ask again permission-> "+ singlepermission);
+                        flag=1;
+                    }
+                }
+
+
+                if(flag==1){
+
+
+                    android.content.DialogInterface.OnClickListener listnerNegative = new android.content.DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            //Activity_first.this.finish();
+                            arg0.dismiss();
+
+                        }
+
+                    };
+
+                    android.content.DialogInterface.OnClickListener listenerPositive = new android.content.DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                            Uri uri = Uri.fromParts("package", getPackageName(), null);
+                            intent.setData(uri);
+                            startActivity(intent);
+
+                        }
+
+                    };
+
+                    Globals.showAlertDialog("PERMISSION REQUIRED", "Please Go To App Setting In Your Mobile And Allow 'Permissions' To The App ", this, "APP SETTING", listenerPositive, "CANCEL", listnerNegative, false);
+
+
+                }
+
+
+
+            }
+        }
+    }
+
+
 }

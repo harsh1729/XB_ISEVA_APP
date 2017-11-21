@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,6 +18,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -143,18 +146,14 @@ public class Activity_Category_Choose extends Activity {
             @Override
             public void onClick(View view) {
 
+                if (ActivityCompat.checkSelfPermission(Activity_Category_Choose.this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(Activity_Category_Choose.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-                Dexter.withActivity(Activity_Category_Choose.this)
-                        .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-                        .withListener(new PermissionListener() {
-                            @Override public void onPermissionGranted(PermissionGrantedResponse response) {
-                                Intent i  = new Intent(Activity_Category_Choose.this,Activity_location_choose.class);
-                                startActivity(i);
-                            }
-                            @Override public void onPermissionDenied(PermissionDeniedResponse response) {/* ... */}
-                            @Override public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {/* ... */}
-                        }).check();
-
+                    ActivityCompat.requestPermissions(Activity_Category_Choose.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 225);
+                }
+                 else{
+                    Intent i  = new Intent(Activity_Category_Choose.this,Activity_location_choose.class);
+                    startActivity(i);
+                }
             }
         });
 
@@ -187,15 +186,18 @@ public class Activity_Category_Choose extends Activity {
 
     private void selectImage(final boolean isRemove, final int keyRemove, final LinearLayout linear) {
 
-        Dexter.withActivity(this)
-                .withPermissions(
-                        android.Manifest.permission.CAMERA,
-                        android.Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ).withListener(new MultiplePermissionsListener() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(Activity_Category_Choose.this, new String[]{Manifest.permission.CAMERA,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE}, 225);
+
+        }
 
 
-            @Override public void onPermissionsChecked(MultiplePermissionsReport report) {
+        else {
+
+
 
                 final CharSequence[] items = {"Take Photo", "Choose from Library"};
                 final CharSequence[] itemsRemove = {"Take Photo", "Choose from Library","Remove"};
@@ -252,14 +254,6 @@ public class Activity_Category_Choose extends Activity {
                 }
 
             }
-            @Override public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
-
-
-
-
-            }
-
-        }).check();
 
 
     }
@@ -561,7 +555,7 @@ public class Activity_Category_Choose extends Activity {
 
     private void selectImage() {
 
-        Dexter.withActivity(this)
+      /*  Dexter.withActivity(this)
                 .withPermissions(
                         android.Manifest.permission.CAMERA,
                         android.Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -581,7 +575,19 @@ public class Activity_Category_Choose extends Activity {
 
             }
 
-             }).check();
+             }).check();*/
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(Activity_Category_Choose.this, new String[]{Manifest.permission.CAMERA,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE}, 225);
+
+        }
+
+         else{
+            initImageSelecter();
+        }
 
 
 
@@ -1511,5 +1517,7 @@ public class Activity_Category_Choose extends Activity {
         Log.i("SUSHIL", "ratate is image angle "+rotate);
         return rotate;
     }
+
+
 
 }
